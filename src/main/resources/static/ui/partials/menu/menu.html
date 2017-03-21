@@ -1,0 +1,208 @@
+<style>
+    .card-square > .company-card {
+        background: url('/ui/img/company.png') bottom right 15% no-repeat #46B6AC;
+    }
+    .card-square > .branch-card {
+        background: url('/ui/img/branch.png') bottom right 15% no-repeat #46B6AC;
+    }
+    .card-square > .department-card {
+        background: url('/ui/img/department.png') bottom right 15% no-repeat #46B6AC;
+    }
+    .card-square > .employee-card {
+        background: url('/ui/img/employee.png') bottom right 15% no-repeat #46B6AC;
+    }
+    .card-square > .team-card {
+        background: url('/ui/img/team.png') bottom right 15% no-repeat #46B6AC;
+    }
+    .card-square > .person-card {
+        background: url('/ui/img/person.png') bottom right 15% no-repeat #46B6AC;
+    }
+    .card-square > .task-card {
+        background: url('/ui/img/task.png') bottom right 15% no-repeat #46B6AC;
+    }
+    .card-square > .report-model-card {
+        background: url('/ui/img/report-model.png') bottom right 15% no-repeat #46B6AC;
+    }
+    .card-square > .mdl-card__actions > .mdl-button{
+        width: 100%;
+    }
+</style>
+
+<!-- Always shows a header, even in smaller screens. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+    <header class="mdl-layout__header">
+        <div class="mdl-layout-icon">
+            <a class="mdl-button mdl-js-button mdl-button--icon" ui-sref="menu">
+                <i class="material-icons">{{MDLIcon}}</i>
+            </a>
+        </div>
+        <div class="mdl-layout__header-row">
+            <button id="menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">more_vert</i>
+            </button>
+            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu-lower-left">
+                <li class="mdl-menu__item">
+                    <span>المساعدة</span>
+                </li>
+                <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">
+                    <span>الملف الشخصي</span>
+                </li>
+                <li class="mdl-menu__item" ng-click="logout()">
+                    <span>تسجيل الخروج</span>
+                </li>
+            </ul>
+            <div class="mdl-layout-spacer"></div>
+            <span class="mdl-layout__title">{{pageTitle}}</span>
+        </div>
+    </header>
+
+    <main class="mdl-layout__content">
+
+        <div class="row" dir="rtl" style="margin-top: 10px">
+
+            <div class="container">
+
+                <div class="form-group row">
+
+                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                        <div class="card-square mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title mdl-card--expand company-card">
+                                <h2 class="mdl-card__title-text">الشركات</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <strong>عدد الشركات 2</strong>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <button ng-click="goToCompany()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>الدخول</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_BRANCH_CREATE', 'ROLE_BRANCH_UPDATE', 'ROLE_BRANCH_DELETE', 'ROLE_BRANCH_REPORT'])">
+                        <div class="card-square mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title mdl-card--expand branch-card">
+                                <h2 class="mdl-card__title-text">الفروع</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <strong>عدد الفروع 4</strong>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <button ng-click="goToBranch()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>الدخول</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_DEPARTMENT_CREATE', 'ROLE_DEPARTMENT_UPDATE', 'ROLE_DEPARTMENT_DELETE', 'ROLE_DEPARTMENT_REPORT'])">
+                        <div class="card-square mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title mdl-card--expand department-card">
+                                <h2 class="mdl-card__title-text">الأقسام</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <strong>عدد الأقسام 4</strong>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <button ng-click="goToDepartment()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>الدخول</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_EMPLOYEE_CREATE', 'ROLE_EMPLOYEE_UPDATE', 'ROLE_EMPLOYEE_DELETE', 'ROLE_EMPLOYEE_REPORT'])">
+                        <div class="card-square mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title mdl-card--expand employee-card">
+                                <h2 class="mdl-card__title-text">الموظفون</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <strong>عدد الموظفون 5</strong>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <button ng-click="goToEmployee()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>الدخول</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+
+                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_TEAM_CREATE', 'ROLE_TEAM_UPDATE', 'ROLE_TEAM_DELETE', 'ROLE_TEAM_REPORT'])">
+                        <div class="card-square mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title mdl-card--expand team-card">
+                                <h2 class="mdl-card__title-text">الصلاحيات</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <strong>---</strong>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <button ng-click="goToTeam()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>الدخول</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_PERSON_CREATE', 'ROLE_PERSON_UPDATE', 'ROLE_PERSON_DELETE', 'ROLE_PERSON_REPORT'])">
+                        <div class="card-square mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title mdl-card--expand person-card">
+                                <h2 class="mdl-card__title-text">المستخدمون</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <strong>عدد المستخدمون 15</strong>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <button ng-click="goToPerson()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>الدخول</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_TASK_CREATE', 'ROLE_TASK_UPDATE', 'ROLE_TASK_DELETE', 'ROLE_TASK_REPORT'])">
+                        <div class="card-square mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title mdl-card--expand task-card">
+                                <h2 class="mdl-card__title-text">المهام</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <strong>عدد المهام 15</strong>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <button ng-click="goToTask()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>الدخول</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card-square mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title mdl-card--expand report-model-card">
+                                <h2 class="mdl-card__title-text">نماذج الطباعة</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <strong>عدد النماذج 15</strong>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <button ng-click="goToReportModel()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>الدخول</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>

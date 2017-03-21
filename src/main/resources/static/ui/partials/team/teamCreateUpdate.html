@@ -1,0 +1,199 @@
+<form dir="rtl" name="from" ng-submit="submit()" novalidate="novalidate" focus-group="">
+
+    <div class="modal-header">
+        <h3 class="modal-title text-center" id="modal-title">{{title}}</h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group text-right col-md-12" ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong>فضلاً اكمل الحقول المطلوبة</strong>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">البيانات الأساسية</div>
+                    <div class="panel-body">
+
+                        <div class="row">
+
+                            <div class="form-group text-right col-md-12">
+                                <label>اسم المجموعة</label>
+                                <input type="text"
+                                       focus-index="1"
+                                       required="required"
+                                       disable-validation-message=""
+                                       class="form-control text-right"
+                                       ng-model="team.name">
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="text-center" width="50px">م</th>
+                            <th class="text-center" width="50px">اسم الشاشة</th>
+                            <th class="text-center" width="50px">
+                                <div dir="ltr">
+                                    <toggle-switch
+                                            style="width: 100%"
+                                            ng-model="buffer.createAll"
+                                            class="switch-success"
+                                            on-label="اضافة"
+                                            off-label="اضافة">
+                                    </toggle-switch>
+                                </div>
+                            </th>
+                            <th class="text-center" width="50px">
+                                <div dir="ltr">
+                                    <toggle-switch
+                                            style="width: 100%"
+                                            ng-model="buffer.updateAll"
+                                            class="switch-success"
+                                            on-label="تعديل"
+                                            off-label="تعديل">
+                                    </toggle-switch>
+                                </div>
+                            </th>
+                            <th class="text-center" width="50px">
+                                <div dir="ltr">
+                                    <toggle-switch
+                                            style="width: 100%"
+                                            ng-model="buffer.deleteAll"
+                                            class="switch-success"
+                                            on-label="حذف"
+                                            off-label="حذف">
+                                    </toggle-switch>
+                                </div>
+                            </th>
+                            <th class="text-center" width="50px">
+                                <div dir="ltr">
+                                    <toggle-switch
+                                            style="width: 100%"
+                                            ng-model="buffer.reportAll"
+                                            class="switch-success"
+                                            on-label="تقرير"
+                                            off-label="تقرير">
+                                    </toggle-switch>
+                                </div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="text-right"
+                            ng-repeat="role in roles | orderBy:role.permission.screen.key">
+                            <td>{{$index+1}}</td>
+                            <td class="text-center info">
+                                <div dir="ltr">
+                                    <toggle-switch
+                                            style="width: 100%"
+                                            ng-model="role.all"
+                                            on-change="changeAllRow(role)"
+                                            class="switch-success"
+                                            on-label="{{role.permission.screen.name}}"
+                                            off-label="{{role.permission.screen.name}}">
+                                    </toggle-switch>
+                                </div>
+                            </td>
+                            <td>
+                                <div dir="ltr">
+                                    <toggle-switch
+                                            style="width: 100%"
+                                            ng-model="role.permission.createEntity"
+                                            class="switch-success"
+                                            on-label="تفعيل"
+                                            off-label="تعطيل">
+                                    </toggle-switch>
+                                </div>
+                            </td>
+                            <td>
+                                <div dir="ltr">
+                                    <toggle-switch
+                                            style="width: 100%"
+                                            ng-model="role.permission.updateEntity"
+                                            class="switch-success"
+                                            on-label="تفعيل"
+                                            off-label="تعطيل">
+                                    </toggle-switch>
+                                </div>
+                            </td>
+                            <td>
+                                <div dir="ltr">
+                                    <toggle-switch
+                                            style="width: 100%"
+                                            ng-model="role.permission.deleteEntity"
+                                            class="switch-success"
+                                            on-label="تفعيل"
+                                            off-label="تعطيل">
+                                    </toggle-switch>
+                                </div>
+                            </td>
+                            <td>
+                                <div dir="ltr">
+                                    <toggle-switch
+                                            style="width: 100%"
+                                            ng-model="role.permission.reportEntity"
+                                            class="switch-success"
+                                            on-label="تفعيل"
+                                            off-label="تعطيل">
+                                    </toggle-switch>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="form-group col-md-12" role="group">
+            <button type="button"
+                    focus-index="13"
+                    ng-click="cancel()"
+                    class="btn btn-danger pull-left">
+                <span>خروج</span>
+                <i class="fa fa-power-off  fa-lg"></i>
+            </button>
+            <button type="reset"
+                    focus-index="12"
+                    class="btn btn-info pull-left">
+                <span>مسح الحقول</span>
+                <i class="fa fa-recycle  fa-lg"></i>
+            </button>
+            <button ng-show="action=='update'"
+                    type="submit"
+                    focus-index="11"
+                    class="btn btn-warning pull-right">
+                <span>تعديل</span>
+                <i class="fa fa-edit fa-lg"></i>
+            </button>
+            <button ng-show="action=='create'"
+                    type="submit"
+                    focus-index="10"
+                    class="btn btn-success pull-right">
+                <span>اضافة</span>
+                <i class="fa fa-plus-square fa-lg"></i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

@@ -1,0 +1,1161 @@
+<!-- Always shows a header, even in smaller screens. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+    <header class="mdl-layout__header">
+        <div class="mdl-layout-icon">
+            <a class="mdl-button mdl-js-button mdl-button--icon" ui-sref="menu">
+                <i class="material-icons">{{MDLIcon}}</i>
+            </a>
+        </div>
+        <div class="mdl-layout__header-row">
+            <button id="menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">more_vert</i>
+            </button>
+            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu-lower-left">
+                <li class="mdl-menu__item">
+                    <span>المساعدة</span>
+                </li>
+                <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">
+                    <span>الملف الشخصي</span>
+                </li>
+                <li class="mdl-menu__item" ng-click="logout()">
+                    <span>تسجيل الخروج</span>
+                </li>
+            </ul>
+            <div class="mdl-layout-spacer"></div>
+            <span class="mdl-layout__title">{{pageTitle}}</span>
+        </div>
+        <div class="mdl-layout__header-row" style="height: auto!important;padding: 0px !important;">
+            <div class="panel panel-body" style="width: 100%; margin-bottom: 0px !important;">
+                <div class="col-md-2 full-width-menu pull-right">
+                    <button id="menu-lower-right" style="width: 100%;"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                        <span>العمليات</span>
+                    </button>
+                    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="menu-lower-right">
+                        <li class="mdl-menu__item" ng-click="reload()">
+                            <span>تحديث</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="showSlideFilter()">
+                            <span>بحث وطباعة</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="openCreateModel()"
+                            ng-if="contains(authorities, ['ROLE_TASK_CREATE'])">
+                            <span>اضافة مهمة</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="openCreateOperationModel()"
+                            ng-hide="!tasks || tasks.length==0"
+                            ng-if="contains(authorities, ['ROLE_TASK_OPERATION_CREATE']) && toggleList==='1'">
+                            <span>اضافة حركة</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="openUpdateModel()" ng-hide="!tasks || tasks.length==0"
+                            ng-if="contains(authorities, ['ROLE_TASK_UPDATE']) && toggleList==='1'">
+                            <span>تعديل بيانات مهمة</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="remove()" ng-hide="!tasks || tasks.length==0"
+                            ng-if="contains(authorities, ['ROLE_TASK_DELETE']) && toggleList==='1'">
+                            <span>حذف مهمة</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="openRequestCloseModel()"
+                            ng-hide="!tasks || tasks.length==0" ng-if="toggleList==='1'">
+                            <span>طلب إغلاق</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="showSlideOperation()" ng-if="toggleList==='1'"
+                            ng-hide="!tasks || tasks.length==0">
+                            <span>الحركات / المرفقات</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pull-left" ng-init="toggleList=3">
+                    <div class="btn-toolbar">
+                        <div class="btn-group" data-toggle="buttons">
+                            <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                                    type="button" ng-click="toggleList=1"
+                                    ng-class="{'active':toggleList===1}">
+                                <input type="radio" name="options"/>
+                                <i class="material-icons">reorder</i>
+                            </button>
+                            <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                                    type="button" ng-click="toggleList=2"
+                                    ng-class="{'active':toggleList===2}">
+                                <input type="radio" name="options"/>
+                                <i class="material-icons">view_column</i>
+                            </button>
+                            <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                                    type="button" ng-click="toggleList=3"
+                                    ng-class="{'active':toggleList===3}">
+                                <input type="radio" name="options"/>
+                                <i class="material-icons">web</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="mdl-layout__content">
+
+        <div dir="rtl" style="margin-top: 10px">
+
+            <div class="col-md-12" ng-show="toggleList===1">
+                <div class="col-md-12">
+                    <div class="panel panel-body">
+                        <div class="table-responsive">
+                            <table st-table="collection" st-safe-src="tasks" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                                <thead>
+                                <tr>
+                                    <th class="text-right">
+                                        <span>م</span>
+                                        <a href="" ng-click="showSlideFilter()">
+                                            <span style="font-size: 25px" class="fa fa-filter fa-lg"></span></a>
+                                    </th>
+                                    <th st-sort="code" class="text-right">
+                                        <span> الرقم</span>
+                                    </th>
+                                    <th st-sort="title" class="text-right">
+                                        <span>العنوان</span>
+                                    </th>
+                                    <th st-sort="startDate" class="text-right">
+                                        <span>تاريخ الإنشاء</span>
+                                    </th>
+                                    <th st-sort="person.name" class="text-right">
+                                        <span>جهة التكليف</span>
+                                    </th>
+                                    <th st-sort="person.name" class="text-right">
+                                        <span>الموظفون</span>
+                                    </th>
+                                    <th st-sort="endDate" class="text-right">
+                                        <span>تاريخ التسليم</span>
+                                    </th>
+                                    <th st-sort="endDate" class="text-right">
+                                        <span>الحالة</span>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="text-right"
+                                    ng-repeat="task in collection"
+                                    context-menu="rowMenu"
+                                    ng-click="setSelected(task)"
+                                    ng-right-click="setSelected(task)"
+                                    st-select-mode="single"
+                                    ng-class="{'mdl-color--light-blue-100':task.isSelected}">
+                                    <td st-select-row-custom="task">{{$index+1}}</td>
+                                    <td st-select-row-custom="task">{{task.code}}</td>
+                                    <td st-select-row-custom="task">
+                                        {{task.title}}
+                                        <span class="fa fa-info-circle"
+                                              uib-tooltip="{{task.content}}"></span>
+                                    </td>
+                                    <td st-select-row-custom="task">
+                                        {{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                        <span class="label label-success">{{task.startDate | date:'h:m a'}}</span>
+                                    </td>
+                                    <td st-select-row-custom="task">
+                                        <span class="label label-danger">{{task.person.name}}</span>
+                                    </td>
+                                    <td st-select-row-custom="task">
+                                    <span class="label label-info" ng-repeat="to in task.tos"
+                                          style="margin: 2px">{{to}}</span>
+                                    </td>
+                                    <td st-select-row-custom="task">{{task.endDate | kdate: 'yyyy-mm-dd' :
+                                        'ar' :
+                                        'ummalqura'}}
+                                    </td>
+                                    <td>
+                                        <span ng-class="task.endDate < today ? 'label label-danger' : 'label label-success'">{{task.endDate < today ? 'مغلقة' : 'سارية'}}</span>
+                                    </td>
+                                </tr>
+                                <tr class="blank_row"
+                                    style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collection || collection.length ==0">
+                                    <td colspan="8">لا توجد بيانات</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12" ng-show="toggleList===2">
+                <div class="col-md-12" st-table="collection" st-safe-src="tasks">
+                    <div class="col-md-3" ng-repeat="task in collection">
+                        <!-- CONTACT ITEM -->
+                        <div class="panel panel-default">
+                            <div class="panel-body profile">
+                                <div class="profile-image">
+                                    <img width="100" height="100" src="/ui/img/no-task.png"
+                                         alt="{{task.name}}"/>
+                                </div>
+                                <div class="profile-data">
+                                    <div class="profile-data-name">{{task.title}}</div>
+                                </div>
+                                <div class="profile-controls">
+                                    <!--<a href="" class="profile-control-left"><span class="fa fa-info-circle"></span></a>-->
+                                    <!--<a href="" class="profile-control-right"><span class="fa fa-phone"></span></a>-->
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="contact-info">
+                                    <p>
+                                        <small>جهة التكليف</small>
+                                        <br/>{{task.person.name}}
+                                    </p>
+                                    <p>
+                                        <small>تاريخ التسليم</small>
+                                        <br/>{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                    </p>
+                                    <p>
+                                        <a href="">المزيد...</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="btn-group btn-group-justified">
+                                    <a ng-if="contains(authorities, ['ROLE_TASK_DELETE'])"
+                                       uib-tooltip="حذف"
+                                       tooltip-append-to-body="true"
+                                       type="button"
+                                       ng-click="delete(task)"
+                                       class="btn btn-primary">
+                                        <i class="fa fa-trash fa-lg"></i>
+                                    </a>
+                                    <a ng-if="contains(authorities, ['ROLE_TASK_UPDATE'])"
+                                       uib-tooltip="تعديل"
+                                       tooltip-append-to-body="true"
+                                       type="button"
+                                       ng-click="openUpdateModel(task)"
+                                       class="btn btn-primary">
+                                        <i class="fa fa-edit fa-lg"></i>
+                                    </a>
+                                    <a uib-tooltip="الحركات / المرفقات"
+                                       tooltip-append-to-body="true"
+                                       type="button"
+                                       ng-click="showSlideOperation();setSelected(task)"
+                                       class="btn btn-primary">
+                                        <i class="fa fa-gg fa-lg"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END CONTACT ITEM -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12" ng-show="toggleList===3">
+
+                <div class="col-md-4">
+                    <div class="panel panel-danger">
+
+                        <div class="panel-heading">
+                            <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                                <li>
+                                    <a href="" ng-click="findTaskCloseRequests()" uib-tooltip="تحديث">
+                                        <span class="fa fa-refresh fa-lg"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <h3 class="panel-title pull-right">
+                                <span class="fa fa-power-off"></span>
+                                <span>طلبات الإغلاق</span>
+                            </h3>
+                        </div>
+
+                        <div class="panel-body">
+
+                            <div class="form-group row">
+
+                                <div class="form-group col-md-12">
+
+                                    <div class="table-responsive">
+                                        <table st-table="collectionCloseRequests"
+                                               st-safe-src="selected.taskCloseRequests"
+                                               class="table table-bordered">
+                                            <tbody>
+                                            <tr st-select-mode="single"
+                                                ng-class="{'animated flash':taskOperation.isSelected}"
+                                                ng-repeat="taskCloseRequest in collectionCloseRequests">
+                                                <td st-select-row-custom="taskCloseRequest">
+                                                    <table width="100%">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td colspan="1" class="text-right"><span
+                                                                    class="label label-info">{{taskCloseRequest.person.name}}</span>
+                                                            </td>
+                                                            <td colspan="1" class="text-left">
+                                                    <span class="label label-success">
+                                                        <timer interval="60000"
+                                                               start-time="taskCloseRequest.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span> {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
+                                                    </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" class="text-right" style="padding: 5px;">
+                                                                <span>{{taskCloseRequest.note}}</span>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr class="blank_row"
+                                                style="height: 10px !important; background-color: #FFFFFF;"
+                                                ng-show="!collectionCloseRequests || collectionCloseRequests.length ==0">
+                                                <td colspan="1">لا توجد طلبات إغلاق</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="panel panel-warning">
+
+                        <div class="panel-heading">
+                            <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                                <li>
+                                    <a href="" ng-click="findTaskOperations()" uib-tooltip="تحديث">
+                                        <span class="fa fa-refresh fa-lg"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <h3 class="panel-title pull-right">
+                                <span class="fa fa-comments-o"></span>
+                                <span>الحركات</span>
+                            </h3>
+                        </div>
+
+                        <div class="panel-body">
+
+                            <div class="form-group row">
+
+                                <div class="form-group col-md-12">
+
+                                    <div class="table-responsive">
+                                        <table st-table="collection2" st-safe-src="selected.taskOperations"
+                                               class="table table-bordered">
+                                            <tbody>
+                                            <tr ng-click="setSelectedOperation(taskOperation)"
+                                                ng-right-click="setSelectedOperation(taskOperation)"
+                                                st-select-mode="single"
+                                                ng-class="{'animated flash':taskOperation.isSelected}"
+                                                ng-repeat="taskOperation in collection2">
+                                                <td st-select-row-custom="taskOperation">
+                                                    <table width="100%">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td colspan="1" class="text-right"><span
+                                                                    class="label label-info">{{taskOperation.sender.name}}</span>
+                                                            </td>
+                                                            <td colspan="1" class="text-left">
+                                                    <span class="label label-success">
+                                                        <timer interval="60000" start-time="taskOperation.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span> {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
+                                                    </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" class="text-right" style="padding: 5px;">
+                                                                <span>{{taskOperation.content}}</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" class="text-right">
+                                                    <span ng-repeat="taskOperationAttach in taskOperation.taskOperationAttaches">
+                                                        <a uib-tooltip="{{taskOperationAttach.name}}"
+                                                           tooltip-append-to-body="true" href=""
+                                                           ng-href="{{taskOperationAttach.link}}" target="_blank"><i
+                                                                class="fa fa-link fa-lg"></i></a>
+                                                    </span>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr class="blank_row"
+                                                style="height: 10px !important; background-color: #FFFFFF;"
+                                                ng-show="!collection2 || collection2.length ==0">
+                                                <td colspan="1">لا توجد حركات</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="panel panel-success">
+
+                        <div class="panel-heading">
+                            <h3 class="panel-title pull-right">
+                                <span class="fa fa-tasks"></span>
+                                <span>المهام</span>
+                            </h3>
+                        </div>
+
+                        <div class="panel-body">
+
+                            <div class="form-group row">
+
+                                <div class="form-group col-md-12">
+
+                                    <div class="table-responsive">
+                                        <table st-table="collection" st-safe-src="tasks" class="table table-bordered">
+                                            <tbody>
+                                            <tr class="text-right"
+                                                ng-repeat="task in collection"
+                                                context-menu="rowMenu"
+                                                ng-click="setSelected(task)"
+                                                ng-right-click="setSelected(task)"
+                                                st-select-mode="single"
+                                                ng-class="{'animated flash':task.isSelected}">
+                                                <td st-select-row-custom="task">
+                                                    <table width="100%">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td colspan="1" class="text-right"><span
+                                                                    class="label label-danger">{{task.person.name}}</span>
+                                                            </td>
+                                                            <td colspan="1" class="text-left">
+                                                    <span class="label label-success">
+                                                        <timer interval="60000" start-time="task.startDate"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span> {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
+                                                    </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" class="text-right" style="padding: 5px;">
+                                                                <span>{{task.title}}</span>
+                                                                <a href="" uib-tooltip="{{task.content}}"
+                                                                   tooltip-append-to-body="true"><i
+                                                                        class="fa fa-info-circle fa-lg"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <timer end-time="task.endDate" interval="60000">
+                                                                    <div class="progress progress-small">
+                                                                        <div class="progress-bar progress-bar-striped {{displayProgressActive}}"
+                                                                             style="width: {{progressBar}}%">
+                                                                            {{progressBar}}
+                                                                        </div>
+                                                                    </div>
+                                                                </timer>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="1" class="text-right">
+                                                    <span class="label label-primary">
+                                                        <span> باقي </span>
+                                                        <timer interval="60000" end-time="task.endDate">{{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
+                                                    </span>
+                                                            </td>
+                                                            <td colspan="1" class="text-left"><a href="">المزيد...</a>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr class="blank_row"
+                                                style="height: 10px !important; background-color: #FFFFFF;"
+                                                ng-show="!collection || collection.length ==0">
+                                                <td colspan="1">لا توجد مهام</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <style>
+                #slide .chosen-container.chosen-with-drop .chosen-drop {
+                    right: 0 !important;
+                    left: auto !important;
+                }
+
+                #slide .chosen-container .chosen-drop {
+                    right: -9999px !important;
+                    left: auto !important;
+                }
+            </style>
+
+            <div dir="rtl" id="slide"
+                 ng-init="showSlide"
+                 ps-open="showSlide"
+                 pageslide=""
+                 ng-style="{'opacity':sideOpacity}"
+                 ps-side="left"
+                 ps-click-outside="false"
+                 onclose="onclose"
+                 ps-size="{{sideSize}}">
+
+                <div ng-show="showFilter">
+
+                    <div class="panel panel-info"
+                         focus-group=""
+                         focus-stack=""
+                         focus-group-head="loop"
+                         focus-group-tail="loop">
+
+                        <div class="panel-heading">
+                            <a class="pull-left" href="" ng-click="showSlide=false"><span
+                                    class="fa fa-close fa-2x"></span></a>
+                            <h3 class="panel-title pull-right">
+                                <span class="fa fa-database"></span>
+                                <span>بحث وطباعة</span>
+                            </h3>
+                        </div>
+
+                        <div class="panel-body"
+                             style="overflow-y: auto; overflow-x: hidden;"
+                             ng-style="resizeWithOffset(130)"
+                             resize="">
+
+                            <div class="row">
+
+                                <div>
+                                    <uib-accordion close-others="true">
+                                        <div uib-accordion-group class="panel panel-primary" is-open="false">
+                                            <uib-accordion-heading>
+                                                <i class="fa fa-search fa-lg"></i>
+                                                <span>البحث</span>
+                                                <span class="fa fa-info-circle"
+                                                      uib-tooltip="يمكنك البحث المتعدد واستعراض النتائج قبل الطباعة"
+                                                      tooltip-append-to-body="true"></span>
+                                            </uib-accordion-heading>
+
+                                            <div class="row">
+
+                                                <div class="form-group text-right col-md-12">
+                                                    <label for="title" class="control-label">عنوان المهمة يحتوي
+                                                        على </label>
+                                                    <input id="title"
+                                                           type="text"
+                                                           focus-index="1"
+                                                           class="form-control text-right"
+                                                           placeholder="ادخل نص البحث"
+                                                           ng-model="buffer.title">
+                                                </div>
+
+                                                <div class="form-group text-right col-md-6">
+                                                    <label for="codeTo" class="control-label">رقم المهمة إلى </label>
+                                                    <input id="codeTo"
+                                                           type="number"
+                                                           min="1"
+                                                           focus-index="2"
+                                                           class="form-control text-right"
+                                                           placeholder="ادخل رقم المهمة إلى"
+                                                           ng-model="buffer.codeTo">
+                                                </div>
+
+                                                <div class="form-group text-right col-md-6">
+                                                    <label for="codeFrom" class="control-label">رقم المهمة من </label>
+                                                    <input id="codeFrom"
+                                                           type="number"
+                                                           min="1"
+                                                           focus-index="1"
+                                                           class="form-control text-right"
+                                                           placeholder="ادخل رقم المهمة من"
+                                                           ng-model="buffer.codeFrom">
+                                                </div>
+
+                                                <div class="form-group text-right col-sm-6">
+                                                    <label for="startDateTo" class="control-label">تاريخ إنشاء المهمة
+                                                        إلى</label>
+                                                    <div dir="ltr" class="input-group">
+                                                        <input dir="rtl"
+                                                               id="startDateTo"
+                                                               type="text"
+                                                               focus-index="3"
+                                                               class="form-control text-right is-calendarPicker"
+                                                               ng-model="buffer.startDateTo"
+                                                               calendarType="ummalqura"
+                                                               language="en"
+                                                               dateFormat="yyyy/mm/dd"
+                                                               showOnFocus="false"
+                                                               placeholder="تاريخ إنشاء المهمة إلى"
+                                                               readonly="readonly"
+                                                               kdatepicker>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group text-right col-sm-6">
+                                                    <label for="startDateFrom" class="control-label">تاريخ إنشاء المهمة
+                                                        من</label>
+                                                    <div dir="ltr" class="input-group">
+                                                        <input dir="rtl"
+                                                               id="startDateFrom"
+                                                               type="text"
+                                                               focus-index="3"
+                                                               class="form-control text-right is-calendarPicker"
+                                                               ng-model="buffer.startDateFrom"
+                                                               calendarType="ummalqura"
+                                                               language="en"
+                                                               dateFormat="yyyy/mm/dd"
+                                                               showOnFocus="false"
+                                                               readonly="readonly"
+                                                               placeholder="تاريخ إنشاء المهمة من"
+                                                               kdatepicker>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group text-right col-sm-6">
+                                                    <label for="endDateTo" class="control-label">تاريخ تسليم المهمة
+                                                        إلى</label>
+                                                    <div dir="ltr" class="input-group">
+                                                        <input dir="rtl"
+                                                               id="endDateTo"
+                                                               type="text"
+                                                               focus-index="3"
+                                                               class="form-control text-right is-calendarPicker"
+                                                               ng-model="buffer.endDateTo"
+                                                               calendarType="ummalqura"
+                                                               language="en"
+                                                               dateFormat="yyyy/mm/dd"
+                                                               showOnFocus="false"
+                                                               placeholder="تاريخ تسليم المهمة إلى"
+                                                               readonly="readonly"
+                                                               kdatepicker>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group text-right col-sm-6">
+                                                    <label for="endDateFrom" class="control-label">تاريخ تسليم المهمة
+                                                        من</label>
+                                                    <div dir="ltr" class="input-group">
+                                                        <input dir="rtl"
+                                                               id="endDateFrom"
+                                                               type="text"
+                                                               focus-index="3"
+                                                               class="form-control text-right is-calendarPicker"
+                                                               ng-model="buffer.endDateFrom"
+                                                               calendarType="ummalqura"
+                                                               language="en"
+                                                               dateFormat="yyyy/mm/dd"
+                                                               showOnFocus="false"
+                                                               readonly="readonly"
+                                                               placeholder="تاريخ تسليم المهمة من"
+                                                               kdatepicker>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group text-right col-md-12">
+                                                    <toggle-switch
+                                                            dir="ltr"
+                                                            style="width: 100%"
+                                                            ng-model="buffer.isTaskOpen"
+                                                            class="switch-success"
+                                                            on-label="مهام سارية"
+                                                            off-label="مهام مغلقة">
+                                                    </toggle-switch>
+                                                </div>
+
+                                                <div class="form-group text-right col-md-12">
+                                                    <toggle-switch
+                                                            dir="ltr"
+                                                            style="width: 100%"
+                                                            ng-model="buffer.taskType"
+                                                            class="switch-success"
+                                                            on-label="مهام واردة"
+                                                            off-label="مهام صادرة">
+                                                    </toggle-switch>
+                                                </div>
+
+                                                <div class="form-group text-right col-md-12">
+                                                    <label for="fromPerson" class="control-label">{{buffer.taskType?'الموظفون':'جهة
+                                                        التكليف'}}</label>
+                                                    <select id="fromPerson"
+                                                            data-placeholder="ابحث عن الاسم"
+                                                            no-results-text="'لا توجد بيانات توافق بحثك'"
+                                                            placeholder-text-single="'اختر {{buffer.taskType?'الموظفون':'جهة التكليف'}}'"
+                                                            class="form-control text-right"
+                                                            chosen=""
+                                                            ng-model="buffer.person"
+                                                            focus-index="1"
+                                                            ng-options="person.name for person in persons track by person.id">
+                                                    </select>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div uib-accordion-group class="panel panel-danger" is-open="false">
+
+                                            <uib-accordion-heading>
+                                                <i class="fa fa-print fa-lg"></i>
+                                                <span>الطباعة</span>
+                                                <span class="fa fa-info-circle"
+                                                      uib-tooltip="سيتم طباعة التقرير بناءاً على خيارات البحث"
+                                                      tooltip-append-to-body="true"></span>
+                                            </uib-accordion-heading>
+
+                                            <div class="row">
+
+                                                <div class="form-group text-right col-md-12">
+                                                    <label for="reportModel" class="control-label">النموذج</label>
+                                                    <select id="reportModel"
+                                                            data-placeholder="ابحث عن اسم النموذج"
+                                                            no-results-text="'لا توجد بيانات توافق بحثك'"
+                                                            placeholder-text-single="'اختر النموذج'"
+                                                            class="form-control text-right"
+                                                            chosen=""
+                                                            ng-model="buffer.reportModel"
+                                                            ng-change="setReportProp()"
+                                                            focus-index="1"
+                                                            ng-options="reportModel.name for reportModel in reportModels track by reportModel.id">
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group text-right col-md-6">
+                                                    <label for="orientation" class="control-label">إتجاة الطباعة</label>
+                                                    <select id="orientation"
+                                                            style="height: 40px"
+                                                            class="form-control text-right"
+                                                            ng-model="reportProp.orientation"
+                                                            focus-index="2">
+                                                        <option value="Landscape">
+                                                            <span>افقي Landscape</span>
+                                                        </option>
+                                                        <option value="Portrait">
+                                                            <span>عمودي Portrait</span>
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group text-right col-md-6">
+                                                    <label for="exportType" class="control-label">نوع الملف
+                                                        المستخرج</label>
+                                                    <select id="exportType"
+                                                            style="height: 40px"
+                                                            class="form-control text-right"
+                                                            ng-model="reportProp.exportType"
+                                                            focus-index="2">
+                                                        <option value="pdf">
+                                                            <span>ملف من نوع PDF</span>
+                                                        </option>
+                                                        <option value="html">
+                                                            <span>ملف من نوع HTML</span>
+                                                        </option>
+                                                        <option value="rtf">
+                                                            <span>ملف من نوع RTF</span>
+                                                        </option>
+                                                        <option value="xhtml">
+                                                            <span>ملف من نوع XHTML</span>
+                                                        </option>
+                                                        <option value="xlsx">
+                                                            <span>ملف من نوع XLSX</span>
+                                                        </option>
+                                                        <option value="csv">
+                                                            <span>ملف من نوع CSV</span>
+                                                        </option>
+                                                        <option value="pptx">
+                                                            <span>ملف من نوع PPTX</span>
+                                                        </option>
+                                                        <option value="docx">
+                                                            <span>ملف من نوع DOCX</span>
+                                                        </option>
+                                                        <option value="ods">
+                                                            <span>ملف من نوع ODS</span>
+                                                        </option>
+                                                        <option value="odt">
+                                                            <span>ملف من نوع ODT</span>
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group text-right col-sm-12">
+                                                    <label for="reportTitle" class="control-label">عنوان التقرير</label>
+                                                    <input id="reportTitle"
+                                                           type="text"
+                                                           focus-index="2"
+                                                           class="form-control text-right"
+                                                           placeholder="ادخل عنوان التقرير"
+                                                           ng-model="reportProp.title">
+                                                </div>
+
+                                                <div class="form-group text-right col-sm-12">
+
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered">
+                                                            <tbody ui-sortable="{ 'ui-floating': true, handle: '> .myHandle' }"
+                                                                   ng-model="reportProp.columns">
+                                                            <tr class="text-right" style="background-color: white"
+                                                                ng-repeat="column in reportProp.columns">
+                                                                <td ng-if="!column.viewProp" class="myHandle fit"
+                                                                    style="cursor: move;">
+                                                                    <table style="width: 100%;">
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <td class="text-right">
+                                                                                <span>{{column.name}}</span>
+                                                                            </td>
+                                                                            <td class="text-left">
+                                                                                <toggle-switch
+                                                                                        dir="ltr"
+                                                                                        ng-model="column.view"
+                                                                                        class="switch-success"
+                                                                                        on-label="إظهار"
+                                                                                        off-label="إخفاء">
+                                                                                </toggle-switch>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class="text-right">
+                                                                            <td><a href=""
+                                                                                   ng-click="column.viewProp=true">خصائص...</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                                <td ng-if="column.viewProp">
+                                                                    <div class="panel panel-info">
+                                                                        <div class="panel-heading">
+                                                                            <a class="pull-left" href=""
+                                                                               ng-click="column.viewProp=false"><span
+                                                                                    class="fa fa-close fa-2x"></span></a>
+                                                                            <p class="panel-title pull-right">
+                                                                                <span>خصائص العمود </span>
+                                                                                {{column.name}}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="panel-body">
+                                                                            <table>
+                                                                                <tbody>
+                                                                                <tr>
+                                                                                    <td colspan="2">
+                                                                                        <label class="help-block">
+                                                                                            <input style="height: 10px !important;"
+                                                                                                   type="checkbox"
+                                                                                                   ng-model="column.view"/>
+                                                                                            <span>إظهار هذا العمود</span>
+                                                                                        </label>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td colspan="2">
+                                                                                        <label class="help-block">
+                                                                                            <input style="height: 10px !important;"
+                                                                                                   type="checkbox"
+                                                                                                   ng-model="column.groupBy"/>
+                                                                                            <span>تجميع البيانات وعرضها فى مجموعات بناءاً على هذا العمود</span>
+                                                                                        </label>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td colspan="2">
+                                                                                        <label class="help-block">
+                                                                                            <input style="height: 10px !important;"
+                                                                                                   type="checkbox"
+                                                                                                   ng-model="column.sortBy"/>
+                                                                                            <span>ترتيب البيانات حسب هذا العمود</span>
+                                                                                        </label>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="fit">محاذاة النص</td>
+                                                                                    <td>
+                                                                                        <div class="btn-group"
+                                                                                             data-toggle="buttons">
+                                                                                            <a class="btn btn-default"
+                                                                                               type="button"
+                                                                                               uib-tooltip="ناحية اليسار"
+                                                                                               tooltip-append-to-body="true"
+                                                                                               ng-click="column.dataTextAlign='Left'"
+                                                                                               ng-class="{'active':column.dataTextAlign==='Left'}">
+                                                                                                <input type="radio"
+                                                                                                       name="options">
+                                                                                                <i class="fa fa-align-left"></i>
+                                                                                            </a>
+                                                                                            <a class="btn btn-default"
+                                                                                               type="button"
+                                                                                               uib-tooltip="توسيط"
+                                                                                               tooltip-append-to-body="true"
+                                                                                               ng-click="column.dataTextAlign='Center'"
+                                                                                               ng-class="{'active':column.dataTextAlign==='Center'}">
+                                                                                                <input type="radio"
+                                                                                                       name="options">
+                                                                                                <i class="fa fa-align-center"></i>
+                                                                                            </a>
+                                                                                            <a class="btn btn-default"
+                                                                                               type="button"
+                                                                                               uib-tooltip="ناحية اليمين"
+                                                                                               tooltip-append-to-body="true"
+                                                                                               ng-click="column.dataTextAlign='Right'"
+                                                                                               ng-class="{'active':column.dataTextAlign==='Right'}">
+                                                                                                <input type="radio"
+                                                                                                       name="options">
+                                                                                                <i class="fa fa-align-right"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </uib-accordion>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="panel-footer">
+
+                            <div class="row">
+
+                                <div class="form-group col-md-4 pull-left">
+                                    <button type="button"
+                                            focus-index="5"
+                                            style="width: 100%"
+                                            ng-click="printFilteredTasks()"
+                                            class="btn btn-primary">
+                                        <span>إستخراج وتنزيل الملف</span>
+                                        <i class="fa fa-print fa-lg"></i>
+                                    </button>
+                                </div>
+                                <div class="form-group col-md-4 pull-left">
+                                    <button type="button"
+                                            ng-click="clear()"
+                                            focus-index="13"
+                                            style="width: 100%"
+                                            class="btn btn-primary">
+                                        <span>مسح الحقول</span>
+                                        <i class="fa fa-recycle  fa-lg"></i>
+                                    </button>
+                                </div>
+                                <div class="form-group col-md-4 pull-left">
+                                    <button type="button"
+                                            focus-index="5"
+                                            style="width: 100%"
+                                            ng-click="filter()"
+                                            class="btn btn-primary">
+                                        <span>بحث</span>
+                                        <i class="fa fa-filter fa-lg"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div ng-show="showOperation">
+                    <div class="panel panel-info">
+
+                        <div class="panel-heading">
+                            <a class="pull-left" href="" ng-click="showSlide=false"><span
+                                    class="fa fa-close fa-2x"></span></a>
+                            <h3 class="panel-title pull-right">
+                                <span class="fa fa-comments-o"></span>
+                                <span>الحركات / المرفقات</span>
+                            </h3>
+                        </div>
+
+                        <div class="panel-body"
+                             style="overflow-y: auto; overflow-x: hidden;"
+                             ng-style="resizeWithOffset(130)"
+                             resize="">
+
+                            <div class="row">
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="task" class="control-label">عنوان المهمة</label>
+                                    <div dir="ltr" class="input-group" id="task">
+                                        <div class="input-group-btn">
+                                            <button type="button"
+                                                    ng-click="findTaskOperations()"
+                                                    class="btn btn-primary">
+                                                <span>تحميل الحركات / المرفقات</span>
+                                                <i class="fa fa-download"></i>
+                                            </button>
+                                        </div>
+                                        <select dir="rtl"
+                                                data-placeholder="ابحث عن اسم المهمة"
+                                                no-results-text="'لا توجد بيانات توافق بحثك'"
+                                                placeholder-text-single="'اختر المهمة'"
+                                                class="form-control text-right"
+                                                chosen=""
+                                                ng-model="selected"
+                                                ng-change="setSelected(selected)"
+                                                focus-index="1"
+                                                ng-options="task.title for task in tasks track by task.id">
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group text-right col-md-4">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <div class="panel-title-box pull-right">
+                                                <h3>المرفقات</h3>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body panel-body-table">
+                                            <div class="table-responsive">
+                                                <table st-table="collection3"
+                                                       st-safe-src="selectedOperation.taskOperationAttaches"
+                                                       class="table table-bordered">
+                                                    <tbody>
+                                                    <tr class="text-right"
+                                                        ng-repeat="taskOperationAttach in collection3">
+                                                        <td><a href="" target="_blank"
+                                                               ng-href="{{taskOperationAttach.link}}">{{taskOperationAttach.name}}</a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="blank_row"
+                                                        style="height: 10px !important; background-color: #FFFFFF;"
+                                                        ng-show="collection3.length == 0">
+                                                        <td colspan="1">لا توجد مرفقات على هذة الحركة</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group text-right col-md-8">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                                                <li>
+                                                    <a href="" ng-click="findTaskOperations()" uib-tooltip="تحديث">
+                                                        <span class="fa fa-refresh fa-spin fa-fw"></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <div class="panel-title-box pull-right">
+                                                <h3>الحركات</h3>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body panel-body-table">
+                                            <div class="table-responsive">
+                                                <table st-table="collection2" st-safe-src="selected.taskOperations"
+                                                       class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th class="text-right">
+                                                            <span>رقم الحركة</span>
+                                                        </th>
+                                                        <th class="text-right" st-sort="date" st-sort-default="reverse">
+                                                            <span>التاريخ والوقت</span>
+                                                        </th>
+                                                        <th class="text-right">
+                                                            <span>الحركة</span>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr class="text-right"
+                                                        ng-click="setSelectedOperation(taskOperation)"
+                                                        ng-right-click="setSelectedOperation(taskOperation)"
+                                                        st-select-mode="single"
+                                                        ng-class="{'animated flash':taskOperation.isSelected}"
+                                                        ng-repeat="taskOperation in collection2">
+                                                        <td st-select-row-custom="taskOperation" class="fit">
+                                                            {{taskOperation.code}}
+                                                        </td>
+                                                        <td st-select-row-custom="taskOperation" class="fit">
+                                                            {{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' :
+                                                            'ummalqura'}}
+                                                            <span class="label label-success">{{taskOperation.date | date:'h:m a'}}</span>
+                                                        </td>
+                                                        <td st-select-row-custom="taskOperation">
+                                                            {{taskOperation.content}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="blank_row"
+                                                        style="height: 10px !important; background-color: #FFFFFF;"
+                                                        ng-show="collection2.length == 0">
+                                                        <td colspan="3">لا توجد حركات على هذة المهمة</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="panel-footer">
+
+                            <div class="row">
+
+                                <div class="form-group col-md-2 pull-left">
+                                    <button type="button"
+                                            style="width: 100%"
+                                            ng-click="openCreateOperationModel()"
+                                            class="btn btn-success">
+                                        <i class="fa fa-clock-o fa-lg"></i>
+                                        <span>اضافة حركة جديدة</span>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+
+
+
+
+

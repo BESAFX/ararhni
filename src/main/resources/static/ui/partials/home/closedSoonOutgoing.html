@@ -1,0 +1,268 @@
+<div class="row" ng-init="showBody='true';hideWidget='false'"
+     ng-hide="hideWidget=='true'">
+    <div class="col-md-12">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                    <button id="closed-soon-outgoing-menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                    <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+                        for="closed-soon-outgoing-menu-lower-left">
+                        <li class="mdl-menu__item" ng-click="showBody=='true' ? showBody='false' : showBody='true'">
+                            <span>{{showBody=='true' ? 'اخفاء' : 'اظهار'}}</span>
+                        </li>
+                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="hideWidget='true'">
+                            <span>حذف</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="fetchThisDay()">
+                            <span>مهام اليوم</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="fetchThisWeek()">
+                            <span>مهام الاسبوع</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="fetchThisMonth()">
+                            <span>مهام الشهر</span>
+                        </li>
+                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="fetchThisYear()">
+                            <span>مهام العام</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="refresh()">
+                            <span>تحديث البيانات</span>
+                        </li>
+                    </ul>
+                </ul>
+                <div class="panel-title-box pull-right">
+                    <h3>{{!viewType ? 'المهام الواردة المغلقة حسب الوقت' : viewType}}</h3>
+                    <span>عرض المهام التى أوشكت على الإغلاق والمغلقة ايضا خلال مدة زمنية تحددها من خلال زر عرض</span>
+                </div>
+            </div>
+            <div class="panel-body" ng-show="showBody=='true'">
+                <div class="row">
+                    <div class="table-responsive">
+                        <table st-table="collection" st-safe-src="tasks" class="table table-bordered table-striped">
+                            <tbody>
+                            <tr ng-repeat="task in collection | orderBy:date:true">
+                                <td>
+                                    <table width="100%">
+                                        <tbody>
+                                        <tr>
+                                            <td colspan="1" class="text-right">
+                                                <span>جهة التكليف / </span>
+                                                <span><a href="" ng-click="viewInfo===1?viewInfo=false:viewInfo=1"><strong>{{task.person.name}}</strong></a></span>
+                                                <span> العنوان / </span>
+                                                <span><a href="" ng-click="viewInfo===2?viewInfo=false:viewInfo=2"><strong>{{task.title}}</strong></a></span>
+                                            </td>
+                                            <td colspan="1" class="text-left">
+                                                    <span class="label label-success">
+                                                        <timer interval="60000" start-time="task.startDate"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span> {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
+                                                    </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="1" class="text-right" style="padding: 5px;">
+                                                <strong>{{task.content}}</strong>
+                                                <a href="" ng-click="viewInfo===3?viewInfo=false:viewInfo=3">
+                                                        <span class="label label-danger">
+                                                            <span>عدد الحركات</span>
+                                                            <span>{{task.taskOperations.length}}</span>
+                                                        </span>
+                                                </a>
+                                                <span style="padding: 0px 5px 0px 10px"></span>
+                                                <a ng-show="task.taskOperations.length > 0" href="" ng-click="viewInfo===4?viewInfo=false:viewInfo=4">
+                                                    <span class="label label-danger">
+                                                        <span>عدد نماذج الطباعة</span>
+                                                        <span>{{reportModels.length}}</span>
+                                                    </span>
+                                                </a>
+                                            </td>
+                                            <td colspan="1" class="text-left" style="padding: 10px 0px 10px 0px;">
+                                                <button id="closed-soon-outgoing-menu-lower-left-{{task.id}}" class="mdl-button mdl-js-button mdl-button--icon">
+                                                    <i class="material-icons">more_vert</i>
+                                                </button>
+                                                <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="closed-soon-outgoing-menu-lower-left-{{task.id}}">
+                                                    <li class="mdl-menu__item"
+                                                        ng-if="contains(authorities, ['ROLE_TASK_DELETE'])"
+                                                        ng-click="delete(task)">
+                                                        <span>حذف</span>
+                                                    </li>
+                                                    <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
+                                                        ng-if="contains(authorities, ['ROLE_TASK_UPDATE'])"
+                                                        ng-click="openUpdateModel(task)">
+                                                        <span>تعديل</span>
+                                                    </li>
+                                                    <li class="mdl-menu__item"
+                                                        ng-if="contains(authorities, ['ROLE_TASK_OPERATION_CREATE'])"
+                                                        ng-click="openCreateOperationModel(task)">
+                                                        <span>اضافة حركة</span>
+                                                    </li>
+                                                    <li class="mdl-menu__item"
+                                                        ng-if="contains(authorities, ['ROLE_TASK_CREATE'])"
+                                                        ng-click="openCreateModel(task)">
+                                                        <span>اضافة مهمة</span>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" class="text-left" style="padding: 5px">
+                                                <span>
+                                                    <timer interval="60000" end-time="task.endDate">
+                                                        <span> {{(minutes < 1 && hours < 1 && days < 1 )? 'تم إغلاق المهمة' : 'باقي من الزمن'}} </span>
+                                                        {{days > 0 ? days : ''}}
+                                                        {{days > 0 ? 'يوم' : ''}}
+                                                        {{hours > 0 ? hours : ''}}
+                                                        {{hours > 0 ? 'ساعة' : ''}}
+                                                        {{minutes > 0 ? minutes : ''}}
+                                                        {{minutes > 0 ? 'دقيقة' : ''}}
+                                                    </timer>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="viewInfo===1">
+                                            <td colspan="2">
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td colspan="2" class="success"><strong>بيانات جهة التكليف</strong></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>الاسم</td>
+                                                        <td>{{task.person.name}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>البريد الإلكتروني</td>
+                                                        <td>{{task.person.email}}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="viewInfo===2">
+                                            <td colspan="2">
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td colspan="2" class="success"><strong>بيانات
+                                                            المهمة</strong></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="20%">رقم المهمة</td>
+                                                        <td>{{task.code}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>عنوان المهمة</td>
+                                                        <td>{{task.title}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>تفاصيل المهمة</td>
+                                                        <td>{{task.content}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>تاريخ الإنشاء</td>
+                                                        <td>{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' :
+                                                            'ummalqura'}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>تاريخ التسليم</td>
+                                                        <td>{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' :
+                                                            'ummalqura'}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>جهة التكليف</td>
+                                                        <td>{{task.person.name}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>الحالة</td>
+                                                        <td>
+                                                            <timer interval="60000" end-time="task.endDate">
+                                                                <span> {{(minutes < 1 && hours < 1 && days < 1 )? 'تم إغلاق المهمة' : 'باقي من الزمن'}} </span>
+                                                                {{days > 0 ? days : ''}}
+                                                                {{days > 0 ? 'يوم' : ''}}
+                                                                {{hours > 0 ? hours : ''}}
+                                                                {{hours > 0 ? 'ساعة' : ''}}
+                                                                {{minutes > 0 ? minutes : ''}}
+                                                                {{minutes > 0 ? 'دقيقة' : ''}}
+                                                            </timer>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>الموظفون</td>
+                                                        <td>
+                                                                <span class="label label-info"
+                                                                      ng-repeat="to in task.taskTos"
+                                                                      style="margin: 2px">{{to.person.name}}</span>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="viewInfo===3">
+                                            <td colspan="2">
+                                                <div class="table-responsive">
+                                                    <table st-table="collectionOperation" st-safe-src="task.taskOperations" class="table table-bordered">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td colspan="3" class="success"><strong>الحركات</strong></td>
+                                                        </tr>
+                                                        <tr ng-repeat="taskOperation in collectionOperation | orderBy:date:true">
+                                                            <td width="15%">{{taskOperation.sender.name}}</td>
+                                                            <td>
+                                                                {{taskOperation.content}}
+                                                                <span ng-repeat="taskOperationAttach in taskOperation.taskOperationAttaches"><a uib-tooltip="{{taskOperationAttach.name}}" tooltip-append-to-body="true" href="" ng-href="{{taskOperationAttach.link}}" target="_blank"><i class="fa fa-link fa-lg"></i></a></span>
+                                                            </td>
+                                                            <td width="20%"><timer interval="60000" start-time="taskOperation.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span> {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer></td>
+                                                        </tr>
+                                                        <tr class="blank_row"
+                                                            style="height: 10px !important; background-color: #FFFFFF;"
+                                                            ng-show="!collectionOperation || collectionOperation.length ==0">
+                                                            <td colspan="3">لا توجد حركات</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="viewInfo===4">
+                                            <td colspan="2">
+                                                <div class="table-responsive">
+                                                    <table st-table="collectionReportModel"
+                                                           st-safe-src="reportModels"
+                                                           class="table table-bordered">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td colspan="3" class="success"><strong>نماذج الطباعة</strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr ng-repeat="reportModel in collectionReportModel">
+                                                            <td><a href="" ng-click="printTask(task.id, reportModel)">{{reportModel.name}}</a></td>
+                                                        </tr>
+                                                        <tr class="blank_row"
+                                                            style="height: 10px !important; background-color: #FFFFFF;"
+                                                            ng-show="!collectionReportModel || collectionReportModel.length ==0">
+                                                            <td colspan="1">لا توجد نماذج حتى الآن</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                ng-show="!collection || collection.length ==0">
+                                <td colspan="1">لا توجد نتائج</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,239 @@
+@charset "UTF-8";
+
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+    display: none !important;
+}
+
+.st-sort-ascent:before {
+    content: '\25B2';
+}
+
+.st-sort-descent:before {
+    content: '\25BC';
+}
+
+html * {
+    font-family: 'Cairo', sans-serif;
+}
+
+html,
+body {
+    background: #f5f5f5 url('../img/bg.png') left top repeat;
+}
+
+.xlg .modal-dialog {
+    width: 80%;
+}
+
+.chosen-container-multi .chosen-choices,
+.chosen-container-single .chosen-single {
+    height: 40px !important;
+}
+
+.chosen-container-multi .chosen-choices span,
+.chosen-container-single .chosen-single span {
+    margin-top: 5px !important;
+    height: 40px !important;
+    font-size: 15px;
+}
+
+.chosen-container-multi .chosen-choices div,
+.chosen-container-single .chosen-single div {
+    top: 5px !important;
+    left: 5px !important;
+    right: auto !important;
+}
+
+.table td.fit,
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}
+
+input, .btn {
+    height: 40px !important;
+}
+
+textarea.form-control {
+    height: auto !important;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: white !important;
+}
+
+.form-control[disabled], .form-control[readonly] {
+    color: black !important;
+}
+
+.panel-green {
+    border-color: #5cb85c;
+}
+
+.panel-green > .panel-heading {
+    border-color: #5cb85c;
+    color: white;
+    background-color: #5cb85c;
+}
+
+.panel-green > a {
+    color: #5cb85c;
+}
+
+.panel-green > a:hover {
+    color: #3d8b3d;
+}
+
+.panel-red {
+    border-color: #d9534f;
+}
+
+.panel-red > .panel-heading {
+    border-color: #d9534f;
+    color: white;
+    background-color: #d9534f;
+}
+
+.panel-red > a {
+    color: #d9534f;
+}
+
+.panel-red > a:hover {
+    color: #b52b27;
+}
+
+.panel-yellow {
+    border-color: #f0ad4e;
+}
+
+.panel-yellow > .panel-heading {
+    border-color: #f0ad4e;
+    color: white;
+    background-color: #f0ad4e;
+}
+
+.panel-yellow > a {
+    color: #f0ad4e;
+}
+
+.panel-yellow > a:hover {
+    color: #df8a13;
+}
+
+.mCSB_scrollTools {
+    right: auto !important;
+    left: 0 !important;
+}
+
+.ng-pageslide {
+    background: white;
+    opacity: 0;
+    box-shadow: 2px 0px 20px 20px rgba(0, 0, 0, 0.1);
+}
+
+.panel .panel-title {
+    float: right !important;
+}
+
+.profile .profile-data {
+    height: 20px !important;
+}
+
+.profile .profile-data .profile-data-name {
+    font-size: 0.8vw !important;
+}
+
+input[type=checkbox] {
+    transform: scale(2) !important;
+    -ms-transform: scale(2) !important;
+    -webkit-transform: scale(2) !important;
+    padding: 10px !important;
+    margin: 0px 5px 0px !important;
+}
+
+.mdl-layout__header > .mdl-layout-icon {
+    left: auto !important;
+    right: 15px !important;
+}
+
+.mdl-layout__header {
+    min-height: 50px !important;
+}
+
+.mdl-layout__header-row .mdl-navigation {
+    height: 50px !important;
+}
+
+.mdl-layout__header > .mdl-layout-icon {
+    top: 10px !important;
+}
+
+.mdl-layout__header-row {
+    padding: 0px 50px 0px 20px !important;
+    height: 50px !important;
+}
+
+.mdl-layout__title, .mdl-layout-title, .mdl-button {
+    font-family: 'Cairo', serif;
+    font-weight: bold;
+}
+
+.mdl-menu__item {
+    text-align: right;
+}
+
+.mdl-data-table{
+    width: 100%;
+}
+
+.mdl-data-table th{
+    font-size: 15px;
+}
+
+.mdl-data-table tbody tr td{
+    font-size: 12px;
+}
+
+.mdl-data-table thead tr{
+    background-color: lightgray;
+}
+
+.mdl-data-table th, .mdl-data-table tbody tr, .mdl-data-table tbody tr td{
+    line-height: 15px;
+    height: 30px;
+}
+
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+.material-icons.md-120 { font-size: 120px; }
+
+.panel{
+    border-radius: 0px !important;
+}
+
+.card-square.mdl-card {
+    width: 100%;
+}
+.card-square > .mdl-card__title {
+    color: #fff;
+}
+
+.card-square > .title-card {
+    background-color: #46B6AC;
+}
+
+.full-width-menu{
+    padding-left: 0px!important;; padding-right: 0px!important;
+}
+.full-width-menu .mdl-menu__container,
+.full-width-menu .mdl-menu__container .mdl-menu__outline,
+.full-width-menu .mdl-menu__container .mdl-menu{
+    width: 100% !important;
+}

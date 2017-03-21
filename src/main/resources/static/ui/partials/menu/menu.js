@@ -1,0 +1,30 @@
+app.controller("menuCtrl", ['$scope', '$rootScope', '$state', '$timeout', function ($scope, $rootScope, $state, $timeout) {
+
+    $scope.goToCompany = function () {
+        $state.go('company');
+    };
+    $scope.goToBranch = function () {
+        $state.go('branch');
+    };
+    $scope.goToDepartment = function () {
+        $state.go('department');
+    };
+    $scope.goToEmployee = function () {
+        $state.go('employee');
+    };
+    $scope.goToTeam = function () {
+        $state.go('team');
+    };
+    $scope.goToPerson = function () {
+        $state.go('person');
+    };
+    $scope.goToReportModel = function () {
+        $state.go('reportModel');
+    };
+    $scope.goToTask = function () {
+        $state.go('task');
+    };
+    $timeout(function () {
+        window.componentHandler.upgradeAllRegistered();
+    }, 1500);
+}]);

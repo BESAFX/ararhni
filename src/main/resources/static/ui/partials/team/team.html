@@ -1,0 +1,149 @@
+<!-- Always shows a header, even in smaller screens. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+    <header class="mdl-layout__header">
+        <div class="mdl-layout-icon">
+            <a class="mdl-button mdl-js-button mdl-button--icon" ui-sref="menu">
+                <i class="material-icons">{{MDLIcon}}</i>
+            </a>
+        </div>
+        <div class="mdl-layout__header-row">
+            <button id="header-menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">more_vert</i>
+            </button>
+            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="header-menu-lower-left">
+                <li class="mdl-menu__item">
+                    <span>المساعدة</span>
+                </li>
+                <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">
+                    <span>الملف الشخصي</span>
+                </li>
+                <li class="mdl-menu__item" ng-click="logout()">
+                    <span>تسجيل الخروج</span>
+                </li>
+            </ul>
+            <div class="mdl-layout-spacer"></div>
+            <span class="mdl-layout__title">{{pageTitle}}</span>
+        </div>
+        <div class="mdl-layout__header-row" style="height: auto!important;padding: 0px !important;">
+            <div class="panel panel-body" style="width: 100%; margin-bottom: 0px !important;">
+                <div class="col-md-2 full-width-menu pull-right">
+                    <button id="team-menu-lower-right" style="width: 100%;" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                        <span>العمليات</span>
+                    </button>
+                    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="team-menu-lower-right">
+                        <li class="mdl-menu__item" ng-click="reload()">
+                            <span>تحديث</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="fetchTableData()">
+                            <span>عرض</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="openCreateModel()" ng-if="contains(authorities, ['ROLE_TEAM_CREATE'])">
+                            <span>اضافة</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="openUpdateModel()" ng-if="contains(authorities, ['ROLE_TEAM_UPDATE']) && toggleList===1" ng-hide="!teams || teams.length==0">
+                            <span>تعديل</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="remove()" ng-if="contains(authorities, ['ROLE_TEAM_DELETE']) && toggleList===1" ng-hide="!teams || teams.length==0">
+                            <span>حذف</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pull-left" ng-init="toggleList=1">
+                    <div class="btn-toolbar">
+                        <div class="btn-group" data-toggle="buttons">
+                            <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                                    type="button" ng-click="toggleList=1"
+                                    ng-class="{'active':toggleList===1}">
+                                <input type="radio" name="options"/>
+                                <i class="material-icons">reorder</i>
+                            </button>
+                            <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                                    type="button" ng-click="toggleList=2"
+                                    ng-class="{'active':toggleList===2}">
+                                <input type="radio" name="options"/>
+                                <i class="material-icons">view_column</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="mdl-layout__content">
+
+        <div dir="rtl" style="margin-top: 10px">
+
+            <div class="col-md-12" ng-show="toggleList===1">
+                <div class="panel panel-body">
+                    <div class="table-responsive">
+                        <table st-table="collection" st-safe-src="teams" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+
+                            <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <span>م</span>
+                                </th>
+
+                                <th class="text-right">
+                                    <span> اسم المجموعة</span>
+                                </th>
+
+                                <th class="text-right">
+                                    <span>عدد المستخدمين</span>
+                                </th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="text-right"
+                                ng-repeat="team in collection"
+                                context-menu="rowMenu"
+                                ng-click="setSelected(team)"
+                                ng-right-click="setSelected(team)"
+                                st-select-mode="single"
+                                ng-class="{'mdl-color--light-blue-100':team.isSelected}">
+                                <td st-select-row-custom="team">{{$index+1}}</td>
+                                <td st-select-row-custom="team">{{team.name}}</td>
+                                <td st-select-row-custom="team">{{team.persons.length}}</td>
+                            </tr>
+                            <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                ng-show="!collection || collection.length ==0">
+                                <td colspan="4">لا توجد بيانات</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12" ng-show="toggleList===2">
+                <div st-table="collection" st-safe-src="teams">
+                    <div class="form-group col-md-3" ng-repeat="team in collection">
+                        <div class="card-square mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title mdl-card--expand title-card">
+                                <h2 class="mdl-card__title-text">{{team.name}}</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <strong>عدد المستخدمين / {{team.persons.length}}</strong>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <button ng-click="openUpdateModel(team)" ng-if="contains(authorities, ['ROLE_TEAM_UPDATE'])" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>تعديل</span>
+                                </button>
+                                <button ng-click="delete(team)" ng-if="contains(authorities, ['ROLE_TEAM_DELETE'])" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>حذف</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+</div>

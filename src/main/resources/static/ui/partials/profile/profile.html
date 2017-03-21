@@ -1,0 +1,169 @@
+<!-- Always shows a header, even in smaller screens. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+
+    <header class="mdl-layout__header">
+        <div class="mdl-layout-icon">
+            <a class="mdl-button mdl-js-button mdl-button--icon" ui-sref="menu">
+                <i class="material-icons">{{MDLIcon}}</i>
+            </a>
+        </div>
+        <div class="mdl-layout__header-row">
+            <button id="menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">more_vert</i>
+            </button>
+            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu-lower-left">
+                <li class="mdl-menu__item">
+                    <span>المساعدة</span>
+                </li>
+                <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">
+                    <span>الملف الشخصي</span>
+                </li>
+                <li class="mdl-menu__item" ng-click="logout()">
+                    <span>تسجيل الخروج</span>
+                </li>
+            </ul>
+            <div class="mdl-layout-spacer"></div>
+            <span class="mdl-layout__title">{{pageTitle}}</span>
+        </div>
+        <!-- Tabs -->
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+            <a href="#fixed-tab-2" class="mdl-layout__tab">بيانات الحساب</a>
+            <a href="#fixed-tab-3" class="mdl-layout__tab">البيانات الشخصية</a>
+        </div>
+    </header>
+
+    <main class="mdl-layout__content">
+
+        <form name="from" ng-submit="submit()" novalidate="novalidate" focus-group="">
+            <div dir="rtl" class="panel panel-body">
+                <div class="form-group col-md-12">
+                    <section class="mdl-layout__tab-panel" id="fixed-tab-2">
+                        <div class="page-content">
+
+                            <div class="form-group text-right col-md-4">
+                                <label for="password" class="control-label">كلمة المرور </label>
+                                <input id="password"
+                                       dir="ltr"
+                                       type="password"
+                                       required="required"
+                                       disable-validation-message=""
+                                       class="form-control"
+                                       focus-index="14"
+                                       ng-model="me.password">
+                            </div>
+
+                            <div class="form-group text-right col-md-4">
+                                <label for="email" class="control-label">البريد الإلكتروني </label>
+                                <input id="email"
+                                       dir="ltr"
+                                       type="email"
+                                       required="required"
+                                       disable-validation-message=""
+                                       class="form-control"
+                                       focus-index="13"
+                                       ng-model="me.email">
+                            </div>
+
+                            <div class="form-group text-right col-md-4">
+                                <label for="team" class="control-label">المجموعة</label>
+                                <input id="team"
+                                       type="text"
+                                       disabled="disabled"
+                                       class="form-control text-right"
+                                       ng-model="me.team.name">
+                            </div>
+
+                        </div>
+                    </section>
+                    <section class="mdl-layout__tab-panel is-active" id="fixed-tab-3">
+                        <div class="page-content">
+
+                            <div class="col-md-3">
+                                <input type="file" nv-file-select="" uploader="uploader"/>
+                                <img ng-src="{{logoLink}}" style="width: 100%;"/>
+                            </div>
+
+                            <div class="col-md-9">
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="firstName" class="control-label">الاسم
+                                        كاملاً </label>
+                                    <input id="firstName"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control text-right"
+                                           focus-index="1"
+                                           ng-model="me.name">
+                                </div>
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="identityNumber" class="control-label">رقم
+                                        البطاقة</label>
+                                    <input id="identityNumber"
+                                           type="text"
+                                           class="form-control text-right"
+                                           focus-index="2"
+                                           ng-model="me.identityNumber">
+                                </div>
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="nationality" class="control-label">الجنسية </label>
+                                    <input id="nationality"
+                                           type="text"
+                                           class="form-control text-right"
+                                           focus-index="3"
+                                           ng-model="me.nationality">
+                                </div>
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="address" class="control-label">العنوان
+                                        الحالي </label>
+                                    <input id="address"
+                                           type="text"
+                                           class="form-control text-right"
+                                           focus-index="4"
+                                           ng-model="me.address">
+                                </div>
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="qualification" class="control-label">المؤهل </label>
+                                    <input id="qualification"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control text-right"
+                                           focus-index="5"
+                                           ng-model="me.qualification">
+                                </div>
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="mobile" class="control-label">الجوال </label>
+                                    <input id="mobile"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control text-right"
+                                           focus-index="6"
+                                           ng-model="me.mobile">
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button type="submit"
+                        focus-index="15"
+                        class="btn btn-primary pull-left">
+                    <span>حفظ</span>
+                    <span class="fa fa-floppy-o fa-right"></span>
+                </button>
+            </div>
+        </form>
+
+    </main>
+
+</div>

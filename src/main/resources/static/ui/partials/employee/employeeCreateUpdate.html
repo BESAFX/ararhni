@@ -1,0 +1,131 @@
+<form dir="rtl" name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <h3 class="modal-title text-center" id="modal-title">{{title}}</h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group text-right col-md-12" ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong>فضلاً اكمل الحقول المطلوبة</strong>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">البيانات الأساسية</div>
+                    <div class="panel-body">
+
+                        <div class="form-group text-right col-md-12">
+                            <label for="department" class="control-label">القسم</label>
+                            <div dir="ltr" class="input-group" id="department">
+                                <div class="input-group-btn">
+                                    <button type="button"
+                                            class="btn btn-primary dropdown-toggle"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span>العمليات</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="" ng-click="ModalProvider.openDepartmentCreateModel()"><span class="fa fa-plus-square-o"></span>اضافة </a></li>
+                                        <li><a href=""><span class="fa fa-edit"></span>تعديل </a></li>
+                                        <li><a href=""><span class="fa fa-minus-square"></span>حذف </a></li>
+                                        <li><a href="" ng-click="fetchDepartmentData()"><span class="fa fa-repeat"></span>تحديث </a></li>
+                                    </ul>
+                                </div>
+                                <select data-placeholder="ابحث عن القسم من خلال اسمه"
+                                        no-results-text="'لا توجد بيانات توافق بحثك'"
+                                        placeholder-text-single="'اختر القسم'"
+                                        class="form-control text-right"
+                                        chosen=""
+                                        ng-model="employee.department"
+                                        focus-index="1"
+                                        required="required"
+                                        disable-validation-message=""
+                                        ng-options="department.name group by department.branch.name for department in departments track by department.id">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-right col-md-12">
+                            <label for="person" class="control-label"> الموظف</label>
+                            <div dir="ltr" class="input-group" id="person">
+                                <div class="input-group-btn">
+                                    <button type="button"
+                                            class="btn btn-primary dropdown-toggle"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span>العمليات</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="" ng-click="ModalProvider.openPersonCreateModel()"><span class="fa fa-plus-square-o"></span>اضافة </a></li>
+                                        <li><a href=""><span class="fa fa-edit"></span>تعديل </a></li>
+                                        <li><a href=""><span class="fa fa-minus-square"></span>حذف </a></li>
+                                        <li><a href="" ng-click="fetchPersonData()"><span class="fa fa-repeat"></span>تحديث </a></li>
+                                    </ul>
+                                </div>
+                                <select dir="rtl"
+                                        data-placeholder="ابحث عن حساب المستخدم من خلال الاسم"
+                                        no-results-text="'لا توجد بيانات'"
+                                        placeholder-text-single="'اختر حساب المستخدم'"
+                                        class="form-control text-right"
+                                        chosen=""
+                                        ng-model="employee.person"
+                                        required="required"
+                                        disable-validation-message=""
+                                        ng-options="person.name for person in persons track by person.id">
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="form-group col-md-12" role="group">
+            <button type="button"
+                    focus-index="5"
+                    ng-click="cancel()"
+                    class="btn btn-danger pull-left">
+                <span>خروج</span>
+                <i class="fa fa-power-off  fa-lg"></i>
+            </button>
+            <button type="reset"
+                    focus-index="4"
+                    class="btn btn-info pull-left">
+                <span>مسح الحقول</span>
+                <i class="fa fa-recycle  fa-lg"></i>
+            </button>
+            <button ng-show="action=='update'"
+                    type="submit"
+                    focus-index="3"
+                    class="btn btn-warning pull-right">
+                <span>تعديل</span>
+                <i class="fa fa-edit fa-lg"></i>
+            </button>
+            <button ng-show="action=='create'"
+                    type="submit"
+                    focus-index="2"
+                    class="btn btn-success pull-right">
+                <span>اضافة</span>
+                <i class="fa fa-plus-square fa-lg"></i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

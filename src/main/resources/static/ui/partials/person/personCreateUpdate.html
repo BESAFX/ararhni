@@ -1,0 +1,197 @@
+<form dir="rtl" name="from" ng-submit="submit()" novalidate="novalidate" focus-group="">
+
+    <div class="modal-header">
+        <h3 class="modal-title text-center" id="modal-title">{{title}}</h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group text-right col-md-12" ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong>فضلاً اكمل الحقول المطلوبة</strong>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">البيانات الأساسية</div>
+                    <div class="panel-body">
+
+                        <div class="col-md-4">
+                            <input type="file" nv-file-select="" uploader="uploader"/>
+                            <img ng-src="{{logoLink}}" style="width: 100%; height: 100%"/>
+                        </div>
+
+                        <div class="col-md-8">
+
+                            <div class="row">
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="name" class="control-label">الاسم كاملاً </label>
+                                    <input id="name"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control text-right"
+                                           focus-index="1"
+                                           ng-model="person.name">
+                                </div>
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="nationality" class="control-label">الجنسية </label>
+                                    <input id="nationality"
+                                           type="text"
+                                           class="form-control text-right"
+                                           focus-index="2"
+                                           required="required"
+                                           disable-validation-message=""
+                                           ng-model="person.nationality">
+                                </div>
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="identityNumber" class="control-label">رقم الهوية / رخصة الإقامة </label>
+                                    <input id="identityNumber"
+                                           type="text"
+                                           class="form-control text-right"
+                                           focus-index="3"
+                                           ng-model="person.identityNumber">
+                                </div>
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="mobile" class="control-label">الجوال </label>
+                                    <input id="mobile"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control text-right"
+                                           focus-index="4"
+                                           ng-model="person.mobile">
+                                </div>
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="address" class="control-label">العنوان الحالي </label>
+                                    <input id="address"
+                                           type="text"
+                                           class="form-control text-right"
+                                           focus-index="5"
+                                           ng-model="person.address">
+                                </div>
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="qualification" class="control-label">المؤهل </label>
+                                    <input id="qualification"
+                                           type="text"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control text-right"
+                                           focus-index="6"
+                                           ng-model="person.qualification">
+                                </div>
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="team" class="control-label">مجموعة الصلاحيات</label>
+                                    <div dir="ltr" class="input-group" id="team">
+                                        <div class="input-group-btn">
+                                            <button type="button"
+                                                    class="btn btn-primary dropdown-toggle"
+                                                    data-toggle="dropdown"
+                                                    aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                <span class="caret"></span>
+                                                <span>العمليات</span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="" ng-click="ModalProvider.openTeamCreateModel()"><span class="fa fa-plus-square-o"></span>اضافة </a></li>
+                                                <li><a href=""><span class="fa fa-edit"></span>تعديل </a></li>
+                                                <li><a href=""><span class="fa fa-minus-square"></span>حذف </a></li>
+                                                <li><a href="" ng-click="fetchTeamData()"><span class="fa fa-repeat"></span>تحديث </a></li>
+                                            </ul>
+                                        </div>
+                                        <select data-placeholder="ابحث عن المجموعة"
+                                                no-results-text="'لا توجد مجموعات توافق بحثك'"
+                                                placeholder-text-single="'اختر المجموعة'"
+                                                class="form-control text-right"
+                                                chosen=""
+                                                ng-model="person.team"
+                                                focus-index="7"
+                                                required="required"
+                                                disable-validation-message=""
+                                                ng-options="team.name for team in teams track by team.id">
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="email" class="control-label">البريد الإلكتروني</label>
+                                    <input id="email"
+                                           dir="ltr"
+                                           type="text"
+                                           focus-index="8"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control text-left"
+                                           ng-model="person.email">
+                                </div>
+
+                                <div class="form-group text-right col-md-12">
+                                    <label for="password" class="control-label">الرقم السري</label>
+                                    <input id="password"
+                                           dir="ltr"
+                                           type="password"
+                                           focus-index="9"
+                                           required="required"
+                                           disable-validation-message=""
+                                           class="form-control text-left"
+                                           ng-model="person.password">
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="form-group col-md-12" role="group">
+            <button type="button"
+                    focus-index="13"
+                    ng-click="cancel()"
+                    class="btn btn-danger pull-left">
+                <span>خروج</span>
+                <i class="fa fa-power-off  fa-lg"></i>
+            </button>
+            <button type="reset"
+                    focus-index="12"
+                    class="btn btn-info pull-left">
+                <span>مسح الحقول</span>
+                <i class="fa fa-recycle  fa-lg"></i>
+            </button>
+            <button ng-show="action=='update'"
+                    type="submit"
+                    focus-index="11"
+                    class="btn btn-warning pull-right">
+                <span>تعديل</span>
+                <i class="fa fa-edit fa-lg"></i>
+            </button>
+            <button ng-show="action=='create'"
+                    type="submit"
+                    focus-index="10"
+                    class="btn btn-success pull-right">
+                <span>اضافة</span>
+                <i class="fa fa-plus-square fa-lg"></i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

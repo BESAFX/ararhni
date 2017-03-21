@@ -1,0 +1,288 @@
+<form dir="rtl" name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <h3 class="modal-title text-center" id="modal-title">{{title}}</h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group text-right col-md-12" ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong>فضلاً اكمل الحقول المطلوبة</strong>
+                </div>
+            </div>
+
+            <div class="form-group text-right col-sm-12">
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title pull-right">
+                            <span class="fa fa-cube"></span>
+                            <span>خصائص النموذج</span>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group text-right col-sm-12">
+                            <label for="name" class="control-label">اسم النموذج</label>
+                            <input id="name"
+                                   type="text"
+                                   focus-index="1"
+                                   class="form-control text-right"
+                                   placeholder="ادخل اسم النموذج"
+                                   ng-model="reportModel.name">
+                        </div>
+
+                        <div class="form-group text-right col-sm-12">
+                            <label for="description" class="control-label">وصف النموذج</label>
+                            <textarea id="description"
+                                      type="text"
+                                      focus-index="2"
+                                      msd-elastic="\n"
+                                      required="required"
+                                      class="form-control text-right"
+                                      disable-validation-message=""
+                                      placeholder="ادخل وصفاً مختصراً لشرح النموذج"
+                                      ng-model="reportModel.description">
+                            </textarea>
+                        </div>
+
+                        <div class="form-group text-right col-md-6">
+                            <label for="orientation" class="control-label">إتجاة الطباعة</label>
+                            <select id="orientation"
+                                    style="height: 40px"
+                                    class="form-control text-right"
+                                    ng-model="reportProp.orientation"
+                                    focus-index="2">
+                                <option value="Landscape">
+                                    <span>افقي Landscape</span>
+                                </option>
+                                <option value="Portrait">
+                                    <span>عمودي Portrait</span>
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group text-right col-md-6">
+                            <label for="exportType" class="control-label">نوع الملف المستخرج</label>
+                            <select id="exportType"
+                                    style="height: 40px"
+                                    class="form-control text-right"
+                                    ng-model="reportProp.exportType"
+                                    focus-index="2">
+                                <option value="pdf">
+                                    <span>ملف من نوع PDF</span>
+                                </option>
+                                <option value="html">
+                                    <span>ملف من نوع HTML</span>
+                                </option>
+                                <option value="rtf">
+                                    <span>ملف من نوع RTF</span>
+                                </option>
+                                <option value="xhtml">
+                                    <span>ملف من نوع XHTML</span>
+                                </option>
+                                <option value="xlsx">
+                                    <span>ملف من نوع XLSX</span>
+                                </option>
+                                <option value="csv">
+                                    <span>ملف من نوع CSV</span>
+                                </option>
+                                <option value="pptx">
+                                    <span>ملف من نوع PPTX</span>
+                                </option>
+                                <option value="docx">
+                                    <span>ملف من نوع DOCX</span>
+                                </option>
+                                <option value="ods">
+                                    <span>ملف من نوع ODS</span>
+                                </option>
+                                <option value="odt">
+                                    <span>ملف من نوع ODT</span>
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group text-right col-sm-12">
+                            <label for="reportTitle" class="control-label">عنوان التقرير</label>
+                            <input id="reportTitle"
+                                   type="text"
+                                   focus-index="2"
+                                   class="form-control text-right"
+                                   placeholder="ادخل عنوان التقرير"
+                                   ng-model="reportProp.title">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group text-right col-sm-12">
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title pull-right">
+                            <span class="fa fa-paint-brush"></span>
+                            <span>خصائص جدول التقرير</span>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody ui-sortable="{ 'ui-floating': true, handle: '> .myHandle' }"
+                                       ng-model="reportProp.columns">
+                                <tr class="text-right" style="background-color: white"
+                                    ng-repeat="column in reportProp.columns">
+                                    <td ng-if="!column.viewProp" class="myHandle fit" style="cursor: move;">
+                                        <table style="width: 100%;">
+                                            <tbody>
+                                            <tr>
+                                                <td class="text-right">
+                                                    <span>{{column.name}}</span>
+                                                </td>
+                                                <td class="text-left">
+                                                    <toggle-switch
+                                                            dir="ltr"
+                                                            ng-model="column.view"
+                                                            class="switch-success"
+                                                            on-label="إظهار"
+                                                            off-label="إخفاء">
+                                                    </toggle-switch>
+                                                </td>
+                                            </tr>
+                                            <tr class="text-right">
+                                                <td><a href=""
+                                                       ng-click="column.viewProp=true">خصائص...</a></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td ng-if="column.viewProp">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <a class="pull-left" href="" ng-click="column.viewProp=false"><span
+                                                        class="fa fa-close fa-2x"></span></a>
+                                                <p class="panel-title pull-right">
+                                                    <span>خصائص العمود </span>
+                                                    {{column.name}}
+                                                </p>
+                                            </div>
+                                            <div class="panel-body">
+                                                <table>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <label class="help-block">
+                                                                <input style="height: 10px !important;"
+                                                                       type="checkbox" ng-model="column.view"/>
+                                                                <span>إظهار هذا العمود</span>
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <label class="help-block">
+                                                                <input style="height: 10px !important;"
+                                                                       type="checkbox" ng-model="column.groupBy"/>
+                                                                <span>تجميع البيانات وعرضها فى مجموعات بناءاً على هذا العمود</span>
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <label class="help-block">
+                                                                <input style="height: 10px !important;"
+                                                                       type="checkbox" ng-model="column.sortBy"/>
+                                                                <span>ترتيب البيانات حسب هذا العمود</span>
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="fit">محاذاة النص</td>
+                                                        <td>
+                                                            <div class="btn-group" data-toggle="buttons">
+                                                                <a class="btn btn-default"
+                                                                   type="button"
+                                                                   uib-tooltip="ناحية اليسار"
+                                                                   tooltip-append-to-body="true"
+                                                                   ng-click="column.dataTextAlign='Left'"
+                                                                   ng-class="{'active':column.dataTextAlign==='Left'}">
+                                                                    <input type="radio" name="options">
+                                                                    <i class="fa fa-align-left"></i>
+                                                                </a>
+                                                                <a class="btn btn-default"
+                                                                   type="button"
+                                                                   uib-tooltip="توسيط"
+                                                                   tooltip-append-to-body="true"
+                                                                   ng-click="column.dataTextAlign='Center'"
+                                                                   ng-class="{'active':column.dataTextAlign==='Center'}">
+                                                                    <input type="radio" name="options">
+                                                                    <i class="fa fa-align-center"></i>
+                                                                </a>
+                                                                <a class="btn btn-default"
+                                                                   type="button"
+                                                                   uib-tooltip="ناحية اليمين"
+                                                                   tooltip-append-to-body="true"
+                                                                   ng-click="column.dataTextAlign='Right'"
+                                                                   ng-class="{'active':column.dataTextAlign==='Right'}">
+                                                                    <input type="radio" name="options">
+                                                                    <i class="fa fa-align-right"></i>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="form-group col-md-12" role="group">
+            <button type="button"
+                    focus-index="5"
+                    ng-click="cancel()"
+                    class="btn btn-danger pull-left">
+                <span>خروج</span>
+                <i class="fa fa-power-off  fa-lg"></i>
+            </button>
+            <button type="reset"
+                    focus-index="4"
+                    class="btn btn-info pull-left">
+                <span>مسح الحقول</span>
+                <i class="fa fa-recycle  fa-lg"></i>
+            </button>
+            <button ng-show="action=='update'"
+                    type="submit"
+                    focus-index="3"
+                    class="btn btn-warning pull-right">
+                <span>تعديل</span>
+                <i class="fa fa-edit fa-lg"></i>
+            </button>
+            <button ng-show="action=='create'"
+                    type="submit"
+                    focus-index="2"
+                    class="btn btn-success pull-right">
+                <span>اضافة</span>
+                <i class="fa fa-plus-square fa-lg"></i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

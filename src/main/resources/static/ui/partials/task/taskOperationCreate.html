@@ -1,0 +1,214 @@
+<form dir="rtl" name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <h3 class="modal-title text-center" id="modal-title">اضافة حركة / تعليق لمهمة</h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group text-right col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="pull-left">
+                            <toggle-switch
+                                    dir="ltr"
+                                    style="width: 100%"
+                                    ng-model="showAttach"
+                                    class="switch-success"
+                                    on-label="مرفقات"
+                                    off-label="مرفقات">
+                            </toggle-switch>
+                        </div>
+                        <div class="panel-title-box pull-right">
+                            <h3>البيانات الاساسية</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group text-right col-md-12" ng-show="form.$invalid && form.$submitted">
+                            <div class="alert alert-danger" role="alert">
+                                <strong>فضلاً اكمل الحقول المطلوبة</strong>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-right col-md-6">
+                            <label for="toPerson" class="control-label">الموظفين</label>
+                            <input id="toPerson"
+                                   class="form-control text-right"
+                                   ng-model="taskOperation.task.tos"
+                                   disabled="disabled">
+                            </input>
+                        </div>
+
+                        <div class="form-group text-right col-md-6">
+                            <label for="person" class="control-label">جهة التكليف</label>
+                            <input id="person"
+                                   class="form-control text-right"
+                                   ng-model="taskOperation.task.person.name"
+                                   disabled="disabled">
+                            </input>
+                        </div>
+
+                        <div class="form-group text-right col-md-12">
+                            <label for="title" class="control-label">عنوان المهمة</label>
+                            <input id="title"
+                                   class="form-control text-right"
+                                   ng-model="taskOperation.task.title"
+                                   disabled="disabled">
+                            </input>
+                        </div>
+
+                        <div class="form-group text-right col-md-12">
+                            <label for="content" class="control-label">تفاصيل المهمة</label>
+                            <textarea id="content"
+                                      type="text"
+                                      class="form-control text-right"
+                                      ng-model="taskOperation.task.content"
+                                      disabled="disabled">
+                             </textarea>
+                        </div>
+
+                        <div class="form-group text-right col-md-12">
+                            <label for="note" class="control-label">الحركة / التعليق</label>
+                            <textarea id="note"
+                                      type="text"
+                                      focus-index="1"
+                                      required="required"
+                                      class="form-control text-right"
+                                      disable-validation-message=""
+                                      placeholder="اذكر باختصار الحركة / التعليق"
+                                      ng-model="taskOperation.content">
+                             </textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-right col-md-12" ng-show="showAttach">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="pull-left">
+                            <input type="file" nv-file-select="" accept=".pdf" uploader="uploader" multiple/>
+                        </div>
+                        <div class="panel-title-box pull-right">
+                            <h3>المرفقات</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th class="text-right">اسم الملف</th>
+                                    <th class="text-right">رابط الملف</th>
+                                    <th class="text-right" ng-show="uploader.isHTML5">الحجم</th>
+                                    <th class="text-right" ng-show="uploader.isHTML5">معدل التحميل</th>
+                                    <th class="text-right">الحالة</th>
+                                    <th class="text-right">العمليات</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="item in uploader.queue">
+                                    <td><strong>{{ item.file.name }}</strong></td>
+                                    <td><a ng-href="{{item.file.url}}" target="_blank" href="">اضغط هنا</a></td>
+                                    <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} ميجا
+                                    </td>
+                                    <td ng-show="uploader.isHTML5">
+                                        <div class="progress" style="margin-bottom: 0;">
+                                            <div class="progress-bar" role="progressbar"
+                                                 ng-style="{ 'width': item.progress + '%' }"></div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                        <span ng-show="item.isCancel"><i
+                                                class="glyphicon glyphicon-ban-circle"></i></span>
+                                        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                    </td>
+                                    <td class="fit">
+                                        <button type="button"
+                                                class="btn btn-success btn-xs"
+                                                ng-click="item.upload()"
+                                                ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                            <span>رفع</span>
+                                            <span class="glyphicon glyphicon-upload"></span>
+                                        </button>
+                                        <button type="button"
+                                                class="btn btn-warning btn-xs"
+                                                ng-click="item.cancel()"
+                                                ng-disabled="!item.isUploading">
+                                            <span>إلغاء</span>
+                                            <span class="glyphicon glyphicon-ban-circle"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                            <span>حذف</span>
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="btn-group btn-group-justified">
+                            <a ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length"
+                               uib-tooltip="رفع الكل"
+                               tooltip-append-to-body="true"
+                               type="button"
+                               class="btn btn-primary">
+                                <i class="fa fa-upload fa-lg"></i>
+                            </a>
+                            <a ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading"
+                               uib-tooltip="إلغاء الكل"
+                               tooltip-append-to-body="true"
+                               type="button"
+                               class="btn btn-primary">
+                                <i class="fa fa-close fa-lg"></i>
+                            </a>
+                            <a ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length"
+                               uib-tooltip="حذف الكل"
+                               tooltip-append-to-body="true"
+                               type="button"
+                               class="btn btn-primary">
+                                <i class="fa fa-trash fa-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="form-group col-md-12" role="group">
+            <button type="button"
+                    focus-index="5"
+                    ng-click="cancel()"
+                    class="btn btn-danger pull-left">
+                <span>خروج</span>
+                <i class="fa fa-power-off  fa-lg"></i>
+            </button>
+            <button type="button"
+                    focus-index="4"
+                    ng-click="clear()"
+                    class="btn btn-info pull-left">
+                <span>مسح الحقول</span>
+                <i class="fa fa-recycle  fa-lg"></i>
+            </button>
+            <button type="submit"
+                    focus-index="2"
+                    class="btn btn-success pull-right">
+                <span>اضافة</span>
+                <i class="fa fa-plus-square fa-lg"></i>
+            </button>
+        </div>
+
+    </div>
+
+</form>
