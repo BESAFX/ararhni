@@ -101,7 +101,9 @@ public class TaskOperationRest {
 
         final String emailTemp = taskOperation.getSender().getEmail();
         List<String> emails = new ArrayList<>();
-        emails.add(taskOperation.getTask().getPerson().getEmail());
+        if(taskOperation.getSender().getId().longValue() != taskOperation.getTask().getPerson().getId().longValue()){
+            emails.add(taskOperation.getTask().getPerson().getEmail());
+        }
         emails.addAll(taskOperation
                 .getTask()
                 .getTaskTos()
