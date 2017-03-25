@@ -51,6 +51,58 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             }
         });
     };
+
+    /**************************************************************
+     *                                                            *
+     * Region Model                                               *
+     *                                                            *
+     *************************************************************/
+    this.openRegionCreateModel = function () {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/region/regionCreateUpdate.html',
+            controller: 'regionCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return 'اضافة منطقة جديدة';
+                },
+                action: function () {
+                    return 'create';
+                },
+                region: function () {
+                    return undefined;
+                }
+            }
+        });
+    };
+
+    this.openRegionUpdateModel = function (region) {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/region/regionCreateUpdate.html',
+            controller: 'regionCreateUpdateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                title: function () {
+                    return 'تعديل بيانات منطقة';
+                },
+                action: function () {
+                    return 'update';
+                },
+                region: function () {
+                    return region;
+                }
+            }
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * Branch Model                                               *

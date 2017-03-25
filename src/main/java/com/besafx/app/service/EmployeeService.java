@@ -16,13 +16,5 @@ public interface EmployeeService extends PagingAndSortingRepository<Employee, Lo
     @Query("select max(code) from Employee")
     Integer findMaxCode();
 
-    List<Employee> findByPerson(Person person);
-
-    List<Employee> findByDepartment(Department department);
-
     Employee findByPersonAndDepartment(Person person, Department department);
-
-    List<Employee> findByDepartmentBranch(Branch branch);
-
-    List<Employee> findByDepartmentBranchCompany(Company company);
 }

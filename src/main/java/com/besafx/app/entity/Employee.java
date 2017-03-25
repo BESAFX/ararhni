@@ -23,7 +23,7 @@ public class Employee implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "Person")
-    @JsonIgnoreProperties(value = {"companies", "branches", "departments", "employees"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees"}, allowSetters = true)
     private Person person;
 
     @ManyToOne

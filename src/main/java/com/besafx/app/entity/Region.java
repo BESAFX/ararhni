@@ -13,7 +13,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class Department implements Serializable {
+public class Region implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,23 +25,25 @@ public class Department implements Serializable {
 
     private String name;
 
+    private String address;
+
     @ManyToOne
     @JoinColumn(name = "Manager")
     @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees"}, allowSetters = true)
     private Person manager;
 
     @ManyToOne
-    @JoinColumn(name = "Branch")
-    @JsonIgnoreProperties(value = {"departments"}, allowSetters = true)
-    private Branch branch;
+    @JoinColumn(name = "Company")
+    @JsonIgnoreProperties(value = {"regions"}, allowSetters = true)
+    private Company company;
 
-    @OneToMany(mappedBy = "department")
-    private List<Employee> employees = new ArrayList<>();
+    @OneToMany(mappedBy = "region")
+    private List<Branch> branches = new ArrayList<>();
 
     @JsonCreator
-    public static Department Create(String jsonString) throws IOException {
+    public static Region Create(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        Department department = mapper.readValue(jsonString, Department.class);
-        return department;
+        Region branch = mapper.readValue(jsonString, Region.class);
+        return branch;
     }
 }

@@ -57,6 +57,9 @@ public class Person implements Serializable {
     private List<Company> companies = new ArrayList<>();
 
     @OneToMany(mappedBy = "manager")
+    private List<Region> regions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "manager")
     private List<Branch> branches = new ArrayList<>();
 
     @OneToMany(mappedBy = "manager")

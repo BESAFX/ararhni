@@ -119,9 +119,10 @@ public class CompanyRest {
         List<Company> list = new ArrayList<>();
         Person person = personService.findByEmail(principal.getName());
         person.getCompanies().stream().forEach(company -> list.add(company));
-        person.getBranches().stream().forEach(branch -> list.add(branch.getCompany()));
-        person.getDepartments().stream().forEach(department -> list.add(department.getBranch().getCompany()));
-        person.getEmployees().stream().forEach(employee -> list.add(employee.getDepartment().getBranch().getCompany()));
+        person.getRegions().stream().forEach(region -> list.add(region.getCompany()));
+        person.getBranches().stream().forEach(branch -> list.add(branch.getRegion().getCompany()));
+        person.getDepartments().stream().forEach(department -> list.add(department.getBranch().getRegion().getCompany()));
+        person.getEmployees().stream().forEach(employee -> list.add(employee.getDepartment().getBranch().getRegion().getCompany()));
         return list.stream().distinct().collect(Collectors.toList());
     }
 

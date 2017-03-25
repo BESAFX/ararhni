@@ -26,6 +26,12 @@ app.run(['$http', '$location', '$state', '$window', 'notifyCode', 'PersonService
                     $rootScope.MDLIcon = 'account_balance';
                     break;
                 }
+                case 'region': {
+                    $rootScope.pageTitle = 'المناطق';
+                    $rootScope.pageTitleIcon = 'fa fa-map-marker';
+                    $rootScope.MDLIcon = 'place';
+                    break;
+                }
                 case 'branch': {
                     $rootScope.pageTitle = 'الفروع';
                     $rootScope.pageTitleIcon = 'fa fa-cubes';

@@ -161,6 +161,17 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
 
         /**************************************************************
          *                                                            *
+         * Region State                                               *
+         *                                                            *
+         *************************************************************/
+        $stateProvider.state("region", {
+            url: "/region",
+            templateUrl: "/ui/partials/region/region.html",
+            controller: "regionCtrl"
+        });
+
+        /**************************************************************
+         *                                                            *
          * Branch State                                               *
          *                                                            *
          *************************************************************/

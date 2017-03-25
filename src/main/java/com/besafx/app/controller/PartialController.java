@@ -51,6 +51,7 @@ public class PartialController {
             "/home",
             "/menu",
             "/company",
+            "/region",
             "/branch",
             "/department",
             "/employee",

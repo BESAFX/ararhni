@@ -3,6 +3,9 @@ app.controller("menuCtrl", ['$scope', '$rootScope', '$state', '$timeout', functi
     $scope.goToCompany = function () {
         $state.go('company');
     };
+    $scope.goToRegion = function () {
+        $state.go('region');
+    };
     $scope.goToBranch = function () {
         $state.go('branch');
     };

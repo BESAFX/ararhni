@@ -43,11 +43,11 @@ public class Company implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "Manager")
-    @JsonIgnoreProperties(value = {"companies", "branches", "departments", "employees"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees"}, allowSetters = true)
     private Person manager;
 
     @OneToMany(mappedBy = "company")
-    private List<Branch> branches = new ArrayList<>();
+    private List<Region> regions = new ArrayList<>();
 
     @JsonCreator
     public static Company Create(String jsonString) throws IOException {

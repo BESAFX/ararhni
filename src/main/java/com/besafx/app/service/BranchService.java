@@ -22,8 +22,4 @@ public interface BranchService extends PagingAndSortingRepository<Branch, Long>,
 
     Branch findByName(String name);
 
-    List<Branch> findByManager(Person manager);
-
-    List<Branch> findByCompany(Company company);
-
 }

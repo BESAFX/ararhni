@@ -1,6 +1,12 @@
 <style>
+    .card-square{
+        margin: 10px;
+    }
     .card-square > .company-card {
         background: url('/ui/img/company.png') bottom right 15% no-repeat #46B6AC;
+    }
+    .card-square > .region-card {
+        background: url('/ui/img/region.png') bottom right 15% no-repeat #46B6AC;
     }
     .card-square > .branch-card {
         background: url('/ui/img/branch.png') bottom right 15% no-repeat #46B6AC;
@@ -81,6 +87,22 @@
                         </div>
                     </div>
 
+                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_REGION_CREATE', 'ROLE_REGION_UPDATE', 'ROLE_REGION_DELETE', 'ROLE_REGION_REPORT'])">
+                        <div class="card-square mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title mdl-card--expand region-card">
+                                <h2 class="mdl-card__title-text">المناطق</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <strong>عدد المناطق 1</strong>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <button ng-click="goToRegion()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>الدخول</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-md-3" ng-if="contains(authorities, ['ROLE_BRANCH_CREATE', 'ROLE_BRANCH_UPDATE', 'ROLE_BRANCH_DELETE', 'ROLE_BRANCH_REPORT'])">
                         <div class="card-square mdl-card mdl-shadow--2dp">
                             <div class="mdl-card__title mdl-card--expand branch-card">
@@ -128,10 +150,6 @@
                             </div>
                         </div>
                     </div>
-
-                </div>
-
-                <div class="form-group row">
 
                     <div class="col-md-3" ng-if="contains(authorities, ['ROLE_TEAM_CREATE', 'ROLE_TEAM_UPDATE', 'ROLE_TEAM_DELETE', 'ROLE_TEAM_REPORT'])">
                         <div class="card-square mdl-card mdl-shadow--2dp">

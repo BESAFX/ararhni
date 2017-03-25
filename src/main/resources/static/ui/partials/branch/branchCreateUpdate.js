@@ -1,5 +1,5 @@
-app.controller('branchCreateUpdateCtrl', ['BranchService', 'PersonService', 'CompanyService', 'FileUploader', 'FileService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'branch',
-    function (BranchService, PersonService, CompanyService, FileUploader, FileService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, branch) {
+app.controller('branchCreateUpdateCtrl', ['BranchService', 'PersonService', 'RegionService', 'FileUploader', 'FileService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'branch',
+    function (BranchService, PersonService, RegionService, FileUploader, FileService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, branch) {
 
         $scope.fetchPersonData = function () {
             PersonService.findAll().then(function (data) {
@@ -8,16 +8,16 @@ app.controller('branchCreateUpdateCtrl', ['BranchService', 'PersonService', 'Com
             });
         };
 
-        $scope.fetchCompaniesData = function () {
-            CompanyService.fetchTableData().then(function (data) {
-                $scope.companies = data;
-                $rootScope.showToast("تم تحميل بيانات الشركات بنجاح");
+        $scope.fetchRegionsData = function () {
+            RegionService.fetchTableData().then(function (data) {
+                $scope.regions = data;
+                $rootScope.showToast("تم تحميل بيانات المناطق بنجاح");
             });
         };
 
         $timeout(function () {
-            $rootScope.showToast("جاري تحميل بيانات الشركات والمستخدمين، فضلاَ انتظر قليلاً");
-            $scope.fetchCompaniesData();
+            $rootScope.showToast("جاري تحميل بيانات المناطق والمستخدمين، فضلاَ انتظر قليلاً");
+            $scope.fetchRegionsData();
             $scope.fetchPersonData();
         }, 1500);
 

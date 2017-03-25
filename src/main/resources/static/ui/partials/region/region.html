@@ -8,10 +8,10 @@
             </a>
         </div>
         <div class="mdl-layout__header-row">
-            <button id="demo-menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
+            <button id="menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
                 <i class="material-icons">more_vert</i>
             </button>
-            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="demo-menu-lower-left">
+            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu-lower-left">
                 <li class="mdl-menu__item">
                     <span>المساعدة</span>
                 </li>
@@ -28,12 +28,12 @@
         <div class="mdl-layout__header-row" style="height: auto!important;padding: 0px !important;">
             <div class="panel panel-body" style="width: 100%; margin-bottom: 0px !important;">
                 <div class="col-md-2 full-width-menu pull-right">
-                    <button id="demo-menu-lower-right" style="width: 100%;"
+                    <button id="region-menu-lower-right" style="width: 100%;"
                             class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
                         <span>العمليات</span>
                     </button>
                     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-                        for="demo-menu-lower-right">
+                        for="region-menu-lower-right">
                         <li class="mdl-menu__item" ng-click="reload()">
                             <span>تحديث</span>
                         </li>
@@ -41,17 +41,17 @@
                             <span>عرض</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="openCreateModel()"
-                            ng-if="contains(authorities, ['ROLE_EMPLOYEE_CREATE'])">
+                            ng-if="contains(authorities, ['ROLE_REGION_CREATE'])">
                             <span>اضافة</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="openUpdateModel()"
-                            ng-if="contains(authorities, ['ROLE_EMPLOYEE_UPDATE']) && toggleList===1"
-                            ng-hide="!employees || employees.length==0">
+                            ng-if="contains(authorities, ['ROLE_REGION_UPDATE']) && toggleList===1"
+                            ng-hide="!regions || regions.length==0">
                             <span>تعديل</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="remove()"
-                            ng-if="contains(authorities, ['ROLE_EMPLOYEE_DELETE']) && toggleList===1"
-                            ng-hide="!employees || employees.length==0">
+                            ng-if="contains(authorities, ['ROLE_REGION_DELETE']) && toggleList===1"
+                            ng-hide="!regions || regions.length==0">
                             <span>حذف</span>
                         </li>
                     </ul>
@@ -86,9 +86,8 @@
             <div class="col-md-12" ng-show="toggleList===1">
                 <div class="panel panel-body">
                     <div class="table-responsive">
-                        <table st-table="collection" st-default-value="1" st-safe-src="employees"
+                        <table st-table="collection" st-default-value="1" st-safe-src="regions"
                                class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-
                             <thead>
                             <tr>
 
@@ -96,62 +95,42 @@
                                     <span>م</span>
                                 </th>
 
-                                <th st-sort="person.name" class="text-right">
-                                    <span>اسم الموظف</span>
+                                <th st-sort="code" class="text-right">
+                                    <span> رقم المنطقة</span>
                                 </th>
 
-                                <th st-sort="person.email" class="text-right">
-                                    <span>البريد الإلكتروني</span>
+                                <th st-sort="name" class="text-right">
+                                    <span> اسم المنطقة</span>
                                 </th>
 
-                                <th st-sort="person.mobile" class="text-right">
-                                    <span>الجوال</span>
+                                <th st-sort="company.name" class="text-right">
+                                    <span> اسم الشركة</span>
                                 </th>
 
-                                <th st-sort="person.qualification" class="text-right">
-                                    <span>المؤهل</span>
-                                </th>
-
-                                <th st-sort="department.name" class="text-right">
-                                    <span>القسم</span>
-                                </th>
-
-                                <th st-sort="department.branch.name" class="text-right">
-                                    <span>الفرع</span>
-                                </th>
-
-                                <th st-sort="department.branch.region.name" class="text-right">
-                                    <span>المنطقة</span>
-                                </th>
-
-                                <th st-sort="department.branch.region.company.name" class="text-right">
-                                    <span>الشركة</span>
+                                <th st-sort="manager.name" class="text-right">
+                                    <span> مدير المنطقة</span>
                                 </th>
 
                             </tr>
                             </thead>
                             <tbody>
                             <tr class="text-right"
-                                ng-repeat="employee in collection"
+                                ng-repeat="region in collection"
                                 st-select-mode="single"
                                 context-menu="rowMenu"
-                                ng-click="setSelected(employee)"
-                                ng-right-click="setSelected(employee)"
-                                ng-class="{'mdl-color--light-blue-100':employee.isSelected}">
-                                <td st-select-row-custom="employee">{{$index+1}}</td>
-                                <td st-select-row-custom="employee">{{employee.person.name}}</td>
-                                <td st-select-row-custom="employee">{{employee.person.email}}</td>
-                                <td st-select-row-custom="employee">{{employee.person.mobile}}</td>
-                                <td st-select-row-custom="employee">{{employee.person.qualification}}</td>
-                                <td st-select-row-custom="employee">{{employee.department.name}}</td>
-                                <td st-select-row-custom="employee">{{employee.department.branch.name}}</td>
-                                <td st-select-row-custom="employee">{{employee.department.branch.region.name}}</td>
-                                <td st-select-row-custom="employee">{{employee.department.branch.region.company.name}}</td>
+                                ng-click="setSelected(region)"
+                                ng-right-click="setSelected(region)"
+                                ng-class="{'mdl-color--light-blue-100':region.isSelected}">
+                                <td st-select-row-custom="region">{{$index+1}}</td>
+                                <td st-select-row-custom="region">{{region.code}}</td>
+                                <td st-select-row-custom="region">{{region.name}}</td>
+                                <td st-select-row-custom="region">{{region.company.name}}</td>
+                                <td st-select-row-custom="region">{{region.manager.name}}</td>
                             </tr>
                             <tr class="blank_row"
                                 style="height: 10px !important; background-color: #FFFFFF;"
                                 ng-show="!collection || collection.length ==0">
-                                <td colspan="9">لا توجد بيانات</td>
+                                <td colspan="5">لا توجد بيانات</td>
                             </tr>
                             </tbody>
                         </table>
@@ -160,22 +139,20 @@
             </div>
 
             <div class="col-md-12" ng-show="toggleList===2">
-                <div st-table="collection" st-default-value="1" st-safe-src="employees">
-                    <div class="form-group col-md-3" ng-repeat="employee in collection">
+                <div st-table="collection" st-default-value="1" st-safe-src="regions">
+                    <div class="form-group col-md-3" ng-repeat="region in collection">
                         <div class="card-square mdl-card mdl-shadow--2dp">
                             <div class="mdl-card__title mdl-card--expand title-card">
-                                <h2 class="mdl-card__title-text">{{employee.person.name}}</h2>
+                                <h2 class="mdl-card__title-text">{{region.name}}</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                <strong>الشركة / {{employee.department.branch.company.name}}</strong><br/>
-                                <strong>الفرع / {{employee.department.branch.name}}</strong><br/>
-                                <strong>القسم / {{employee.department.name}}</strong>
+                                <strong>المدير / {{region.manager.name}}</strong>
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="openUpdateModel(employee)" ng-if="contains(authorities, ['ROLE_EMPLOYEE_UPDATE'])" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                <button ng-click="openUpdateModel(region)" ng-if="contains(authorities, ['ROLE_REGION_UPDATE'])" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                                     <span>تعديل</span>
                                 </button>
-                                <button ng-click="delete(employee)" ng-if="contains(authorities, ['ROLE_EMPLOYEE_DELETE'])" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                <button ng-click="delete(region)" ng-if="contains(authorities, ['ROLE_REGION_DELETE'])" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                                     <span>حذف</span>
                                 </button>
                             </div>
@@ -189,16 +166,6 @@
     </main>
 
 </div>
-
-
-
-
-
-
-
-
-
-
 
 
 

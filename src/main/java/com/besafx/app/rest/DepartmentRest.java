@@ -121,10 +121,12 @@ public class DepartmentRest {
     public List<Department> fetchTableData(Principal principal) {
         List<Department> list = new ArrayList<>();
         Person person = personService.findByEmail(principal.getName());
-        person.getCompanies().stream().forEach(company -> company.getBranches().stream().forEach(branch -> list.addAll(branch.getDepartments())));
+        person.getCompanies().stream().forEach(company -> company.getRegions().stream().forEach(region -> region.getBranches().stream().forEach(branch -> list.addAll(branch.getDepartments()))));
+        person.getRegions().stream().forEach(region -> region.getBranches().stream().forEach(branch -> list.addAll(branch.getDepartments())));
         person.getBranches().stream().forEach(branch -> list.addAll(branch.getDepartments()));
         person.getDepartments().stream().forEach(department -> list.add(department));
         person.getEmployees().stream().forEach(employee -> list.add(employee.getDepartment()));
+        list.addAll(person.getDepartments());
         return list.stream().distinct().collect(Collectors.toList());
     }
 

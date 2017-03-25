@@ -151,7 +151,20 @@ public class PersonRest {
         List<Person> list = new ArrayList<>();
         me.getCompanies().stream().forEach(company -> {
             list.add(company.getManager());
-            company.getBranches().stream().forEach(branch -> {
+            company.getRegions().stream().forEach(region -> {
+                list.add(region.getManager());
+                region.getBranches().stream().forEach(branch -> {
+                    list.add(branch.getManager());
+                    branch.getDepartments().stream().forEach(department -> {
+                        list.add(department.getManager());
+                        department.getEmployees().stream().forEach(employee -> list.add(employee.getPerson()));
+                    });
+                });
+            });
+        });
+        me.getRegions().stream().forEach(region -> {
+            list.add(region.getManager());
+            region.getBranches().stream().forEach(branch -> {
                 list.add(branch.getManager());
                 branch.getDepartments().stream().forEach(department -> {
                     list.add(department.getManager());

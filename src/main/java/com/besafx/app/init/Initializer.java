@@ -61,6 +61,11 @@ public class Initializer implements CommandLineRunner {
         screenService.save(screen);
 
         screen = new Screen();
+        screen.setCode("REGION");
+        screen.setName("المناطق");
+        screenService.save(screen);
+
+        screen = new Screen();
         screen.setCode("BRANCH");
         screen.setName("الفروع");
         screenService.save(screen);

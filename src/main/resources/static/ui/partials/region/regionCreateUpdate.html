@@ -15,23 +15,13 @@
                 </div>
             </div>
 
-            <div class="col-sm-6">
-                <div class="panel panel-info">
-                    <div class="panel-heading">الشعار الرسمي</div>
-                    <div class="panel-body">
-                        <input type="file" nv-file-select="" uploader="uploader"/>
-                        <img ng-src="{{logoLink}}" style="width: 100%; height: 400px"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div class="panel panel-info">
                     <div class="panel-heading">البيانات الاساسية</div>
                     <div class="panel-body">
 
                         <div class="form-group text-right col-md-12">
-                            <label for="name" class="control-label">اسم الفرع</label>
+                            <label for="name" class="control-label">اسم المنطقة</label>
                             <input id="name"
                                    type="text"
                                    focus-index="1"
@@ -39,7 +29,7 @@
                                    disable-validation-message=""
                                    class="form-control text-right"
                                    placeholder="اسم الفرع"
-                                   ng-model="branch.name">
+                                   ng-model="region.name">
                         </div>
 
                         <div class="form-group text-right col-md-12">
@@ -51,84 +41,12 @@
                                    disable-validation-message=""
                                    class="form-control text-right"
                                    placeholder="العنوان"
-                                   ng-model="branch.address">
+                                   ng-model="region.address">
                         </div>
 
                         <div class="form-group text-right col-md-12">
-                            <label for="phone" class="control-label">الهاتف</label>
-                            <input id="phone"
-                                   type="text"
-                                   focus-index="1"
-                                   required="required"
-                                   disable-validation-message=""
-                                   class="form-control text-right"
-                                   placeholder="الهاتف"
-                                   ng-model="branch.phone">
-                        </div>
-
-                        <div class="form-group text-right col-md-12">
-                            <label for="mobile" class="control-label">الجوال</label>
-                            <input id="mobile"
-                                   type="text"
-                                   focus-index="1"
-                                   required="required"
-                                   disable-validation-message=""
-                                   class="form-control text-right"
-                                   placeholder="الجوال"
-                                   ng-model="branch.mobile">
-                        </div>
-
-                        <div class="form-group text-right col-md-12">
-                            <label for="fax" class="control-label">الفاكس</label>
-                            <input id="fax"
-                                   type="text"
-                                   focus-index="1"
-                                   required="required"
-                                   disable-validation-message=""
-                                   class="form-control text-right"
-                                   placeholder="الفاكس"
-                                   ng-model="branch.fax">
-                        </div>
-
-                        <div class="form-group text-right col-md-12">
-                            <label for="email" class="control-label">البريد الإلكتروني</label>
-                            <input id="email"
-                                   type="email"
-                                   focus-index="1"
-                                   required="required"
-                                   disable-validation-message=""
-                                   class="form-control text-right"
-                                   placeholder="البريد الإلكتروني"
-                                   ng-model="branch.email">
-                        </div>
-
-                        <div class="form-group text-right col-md-12">
-                            <label for="website" class="control-label">الموقع الرسمي</label>
-                            <input id="website"
-                                   type="text"
-                                   focus-index="1"
-                                   required="required"
-                                   disable-validation-message=""
-                                   class="form-control text-right"
-                                   placeholder="الموقع الرسمي"
-                                   ng-model="branch.website">
-                        </div>
-
-                        <div class="form-group text-right col-md-12">
-                            <label for="commericalRegisteration" class="control-label">السجل التجاري</label>
-                            <input id="commericalRegisteration"
-                                   type="text"
-                                   focus-index="1"
-                                   required="required"
-                                   disable-validation-message=""
-                                   class="form-control text-right"
-                                   placeholder="السجل التجاري"
-                                   ng-model="branch.commericalRegisteration">
-                        </div>
-
-                        <div class="form-group text-right col-md-12">
-                            <label for="region" class="control-label">المنطقة</label>
-                            <div dir="ltr" class="input-group" id="region">
+                            <label for="company" class="control-label">الشركة</label>
+                            <div dir="ltr" class="input-group" id="company">
                                 <div class="input-group-btn">
                                     <button type="button"
                                             class="btn btn-primary dropdown-toggle"
@@ -139,22 +57,22 @@
                                         <span>العمليات</span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="" ng-click="ModalProvider.openRegionCreateModel()"><span class="fa fa-plus-square-o"></span>اضافة </a></li>
+                                        <li><a href="" ng-click="ModalProvider.openCompanyCreateModel()"><span class="fa fa-plus-square-o"></span>اضافة </a></li>
                                         <li><a href=""><span class="fa fa-edit"></span>تعديل </a></li>
                                         <li><a href=""><span class="fa fa-minus-square"></span>حذف </a></li>
-                                        <li><a href="" ng-click="fetchRegionsData()"><span class="fa fa-repeat"></span>تحديث </a></li>
+                                        <li><a href="" ng-click="fetchCompaniesData()"><span class="fa fa-repeat"></span>تحديث </a></li>
                                     </ul>
                                 </div>
-                                <select data-placeholder="ابحث عن المنطقة"
+                                <select data-placeholder="ابحث عن الشركة"
                                         no-results-text="'لا توجد شركات توافق بحثك'"
-                                        placeholder-text-single="'اختر المنطقة'"
+                                        placeholder-text-single="'اختر الشركة'"
                                         class="form-control text-right"
                                         chosen=""
-                                        ng-model="branch.region"
+                                        ng-model="region.company"
                                         focus-index="1"
                                         required="required"
                                         disable-validation-message=""
-                                        ng-options="region.name for region in regions track by region.id">
+                                        ng-options="company.name for company in companies track by company.id">
                                 </select>
                             </div>
                         </div>
@@ -183,7 +101,7 @@
                                         placeholder-text-single="'اختر حساب المستخدم'"
                                         class="form-control text-right"
                                         chosen=""
-                                        ng-model="branch.manager"
+                                        ng-model="region.manager"
                                         required="required"
                                         disable-validation-message=""
                                         ng-options="person.name for person in persons track by person.id">

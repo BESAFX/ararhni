@@ -103,8 +103,8 @@
                                     <span> اسم الفرع</span>
                                 </th>
 
-                                <th st-sort="company.name" class="text-right">
-                                    <span> اسم الشركة</span>
+                                <th st-sort="region.name" class="text-right">
+                                    <span> اسم المنطقة</span>
                                 </th>
 
                                 <th st-sort="manager.name" class="text-right">
@@ -124,7 +124,7 @@
                                 <td st-select-row-custom="branch">{{$index+1}}</td>
                                 <td st-select-row-custom="branch">{{branch.code}}</td>
                                 <td st-select-row-custom="branch">{{branch.name}}</td>
-                                <td st-select-row-custom="branch">{{branch.company.name}}</td>
+                                <td st-select-row-custom="branch">{{branch.region.name}}</td>
                                 <td st-select-row-custom="branch">{{branch.manager.name}}</td>
                             </tr>
                             <tr class="blank_row"
