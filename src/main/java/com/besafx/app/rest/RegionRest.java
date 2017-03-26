@@ -1,9 +1,9 @@
 package com.besafx.app.rest;
 
-import com.besafx.app.entity.Region;
 import com.besafx.app.entity.Person;
-import com.besafx.app.service.RegionService;
+import com.besafx.app.entity.Region;
 import com.besafx.app.service.PersonService;
+import com.besafx.app.service.RegionService;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
@@ -46,14 +46,14 @@ public class RegionRest {
                 .title("العمليات على المناطق")
                 .message("تم اضافة فرع جديدة بنجاح")
                 .type("success")
-                .icon("fa-cubes")
+                .icon("fa-map-marker")
                 .build(), principal.getName());
         notificationService.notifyAllExceptMe(Notification
                 .builder()
                 .title("العمليات على المناطق")
                 .message("تم اضافة منطقة جديدة بواسطة " + personService.findByEmail(principal.getName()).getName())
                 .type("warning")
-                .icon("fa-cubes")
+                .icon("fa-map-marker")
                 .build());
         return region;
     }
@@ -70,14 +70,14 @@ public class RegionRest {
                     .title("العمليات على المناطق")
                     .message("تم تعديل بيانات المنطقة بنجاح")
                     .type("success")
-                    .icon("fa-cubes")
+                    .icon("fa-map-marker")
                     .build(), principal.getName());
             notificationService.notifyAllExceptMe(Notification
                     .builder()
                     .title("العمليات على المناطق")
                     .message("تم تعديل بيانات المنطقة رقم " + region.getCode() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
                     .type("warning")
-                    .icon("fa-cubes")
+                    .icon("fa-map-marker")
                     .build());
             return region;
         } else {

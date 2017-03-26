@@ -3,20 +3,20 @@ app.controller('employeeCreateUpdateCtrl', ['EmployeeService', 'DepartmentServic
 
         $scope.fetchDepartmentData = function () {
             DepartmentService.fetchTableData().then(function (data) {
-                $scope.departments = data
-                $rootScope.showToast("تم تحميل بيانات الأقسام بنجاح");
+                $scope.departments = data;
+                $rootScope.showNotify("الموظفين", "تم تحميل بيانات الأقسام بنجاح", "success", "fa-user-circle");
             });
         };
 
         $scope.fetchPersonData = function () {
             PersonService.findAll().then(function (data) {
                 $scope.persons = data;
-                $rootScope.showToast("تم تحميل بيانات المستخدمين بنجاح");
+                $rootScope.showNotify("الموظفين", "تم تحميل بيانات المستخدمين بنجاح", "success", "fa-user-circle");
             });
         };
 
         $timeout(function () {
-            $rootScope.showToast("جاري تحميل بيانات الأقسام والمستخدمين، فضلاَ انتظر قليلاً");
+            $rootScope.showNotify("الموظفين", "جاري تحميل بيانات الأقسام والمستخدمين، فضلاَ انتظر قليلاً", "warning", "fa-user-circle");
             $scope.fetchDepartmentData();
             $scope.fetchPersonData();
         }, 1500);
@@ -32,19 +32,19 @@ app.controller('employeeCreateUpdateCtrl', ['EmployeeService', 'DepartmentServic
         $scope.action = action;
 
         $scope.submit = function () {
-            $rootScope.showToast("جاري القيام بالعملية، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("الموظفين", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-user-circle");
             switch ($scope.action) {
                 case 'create' :
                     EmployeeService.create($scope.employee).then(function (data) {
                         $scope.employee = {};
                         $scope.form.$setPristine();
-                        $rootScope.showToast("تم القيام بالعملية بنجاح، يمكنك اضافة موظف آخر الآن");
+                        $rootScope.showNotify("الموظفين", "تم القيام بالعملية بنجاح، يمكنك اضافة موظف آخر الآن", "success", "fa-user-circle");
                     });
                     break;
                 case 'update' :
                     EmployeeService.update($scope.employee).then(function (data) {
                         $scope.employee = data;
-                        $rootScope.showToast("تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن");
+                        $rootScope.showNotify("الموظفين", "تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن", "success", "fa-user-circle");
                     });
                     break;
             }

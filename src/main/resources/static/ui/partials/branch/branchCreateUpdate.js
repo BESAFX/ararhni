@@ -4,19 +4,19 @@ app.controller('branchCreateUpdateCtrl', ['BranchService', 'PersonService', 'Reg
         $scope.fetchPersonData = function () {
             PersonService.findAll().then(function (data) {
                 $scope.persons = data;
-                $rootScope.showToast("تم تحميل بيانات المستخدمين بنجاح");
+                $rootScope.showNotify("الفروع", "تم تحميل بيانات المستخدمين بنجاح", "success", "fa-cubes");
             });
         };
 
         $scope.fetchRegionsData = function () {
             RegionService.fetchTableData().then(function (data) {
                 $scope.regions = data;
-                $rootScope.showToast("تم تحميل بيانات المناطق بنجاح");
+                $rootScope.showNotify("الفروع", "تم تحميل بيانات المناطق بنجاح", "success", "fa-cubes");
             });
         };
 
         $timeout(function () {
-            $rootScope.showToast("جاري تحميل بيانات المناطق والمستخدمين، فضلاَ انتظر قليلاً");
+            $rootScope.showNotify("الفروع", "جاري تحميل بيانات المناطق والمستخدمين، فضلاَ انتظر قليلاً", "warning", "fa-cubes");
             $scope.fetchRegionsData();
             $scope.fetchPersonData();
         }, 1500);
@@ -37,19 +37,19 @@ app.controller('branchCreateUpdateCtrl', ['BranchService', 'PersonService', 'Reg
         $scope.action = action;
 
         $scope.submit = function () {
-            $rootScope.showToast("جاري القيام بالعملية، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("الفروع", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-cubes");
             switch ($scope.action) {
                 case 'create' :
                     BranchService.create($scope.branch).then(function (data) {
                         $scope.branch = {};
                         $scope.form.$setPristine();
-                        $rootScope.showToast("تم القيام بالعملية بنجاح، يمكنك اضافة فرع آخر الآن");
+                        $rootScope.showNotify("الفروع", "تم القيام بالعملية بنجاح، يمكنك اضافة فرع آخر الآن", "success", "fa-cubes");
                     });
                     break;
                 case 'update' :
                     BranchService.update($scope.branch).then(function (data) {
                         $scope.branch = data;
-                        $rootScope.showToast("تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن");
+                        $rootScope.showNotify("الفروع", "تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن", "success", "fa-cubes");
                     });
                     break;
             }

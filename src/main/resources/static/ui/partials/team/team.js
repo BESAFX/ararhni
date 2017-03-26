@@ -4,11 +4,12 @@ app.controller("teamCtrl", ['TeamService', 'ModalProvider', '$rootScope', '$scop
         $scope.selected = {};
 
         $scope.fetchTableData = function () {
-            $rootScope.showToast("فضلاً انتظر قليلاً حتى الانتهاء من تحميل المجموعات");
+            $rootScope.showToast("");
+            $rootScope.showNotify("المجموعات", "فضلاً انتظر قليلاً حتى الانتهاء من تحميل المجموعات", "warning", "fa-shield");
             TeamService.findAll().then(function (data) {
                 $scope.teams = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن");
+                $rootScope.showNotify("المجموعات", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-shield");
             });
         };
 
@@ -44,22 +45,10 @@ app.controller("teamCtrl", ['TeamService', 'ModalProvider', '$rootScope', '$scop
         $scope.delete = function (team) {
             if (team.persons.length == 0) {
                 TeamService.remove(team.id).then(function () {
-                    $rootScope.showSuccessMessageBox(
-                        'العمليات على قاعدة البيانات',
-                        'تم الحذف بنجاح',
-                        'alert',
-                        function () {
-                            $scope.reload();
-                        });
+                    $rootScope.showNotify("المجموعات", "تم الحذف بنجاح، يمكنك متابعة عملك الآن", "success", "fa-shield");
                 });
             } else {
-                $rootScope.showDangerMessageBox(
-                    'العمليات على قاعدة البيانات',
-                    'لا يمكنك الحذف نظراً لاستخدامها من قبل بعض المستخدمين',
-                    'alert',
-                    function () {
-
-                    });
+                $rootScope.showNotify("المجموعات", "لا يمكنك الحذف نظراً لاستخدامها من قبل بعض المستخدمين", "error", "fa-shield");
             }
         };
 

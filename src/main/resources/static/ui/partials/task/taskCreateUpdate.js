@@ -12,10 +12,10 @@ app.controller('taskCreateUpdateCtrl', ['TaskService', 'PersonService', '$scope'
         $scope.toPersonList = [];
 
         $scope.fetchPersonData = function () {
-            $rootScope.showToast("جاري تحميل حسابات الموظفين، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("المهام", "جاري تحميل حسابات الموظفين، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
             PersonService.findPersonUnderMe().then(function (data) {
                 $scope.persons = data;
-                $rootScope.showToast("تم التحميل بنجاح، يمكنك متابعة عملك الآن");
+                $rootScope.showNotify("المهام", "تم التحميل بنجاح، يمكنك متابعة عملك الآن", "success", "fa-black-tie");
             })
         };
 
@@ -26,7 +26,7 @@ app.controller('taskCreateUpdateCtrl', ['TaskService', 'PersonService', '$scope'
         }
 
         $scope.submit = function () {
-            $rootScope.showToast("جاري القيام بالعملية، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("المهام", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
             switch ($scope.action) {
                 case 'create' :
                     var taskTos = [];
@@ -39,13 +39,13 @@ app.controller('taskCreateUpdateCtrl', ['TaskService', 'PersonService', '$scope'
                     TaskService.create($scope.task).then(function (data) {
                         $scope.task = {};
                         $scope.form.$setPristine();
-                        $rootScope.showToast("تم إنجاز العمل بنجاح، يمكنك القيام بعملية آخرى الآن");
+                        $rootScope.showNotify("المهام", "تم اضافة المهمة بنجاح، يمكنك القيام بعملية آخرى الآن", "success", "fa-black-tie");
                     });
                     break;
                 case 'update' :
                     TaskService.update($scope.task).then(function (data) {
                         $scope.task = data;
-                        $rootScope.showToast("تم إنجاز العمل بنجاح، يمكنك القيام بعملية آخرى الآن");
+                        $rootScope.showNotify("المهام", "تم تعديل بيانات المهمة بنجاح، يمكنك القيام بعملية آخرى الآن", "success", "fa-black-tie");
                     });
                     break;
             }

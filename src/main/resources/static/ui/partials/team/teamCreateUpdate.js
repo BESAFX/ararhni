@@ -29,14 +29,15 @@ app.controller('teamCreateUpdateCtrl',
             $scope.roles = [];
             if (team) {
                 $scope.team = team;
-                $rootScope.showToast("جاري تحميل بيانات خاصة بالشاشة، فضلاَ انتظر قليلاً");
+                $rootScope.showNotify("المجموعات", "جاري تحميل بيانات خاصة بالشاشة، فضلاَ انتظر قليلاً", "warning", "fa-shield");
                 RoleService.findByTeam(team.id).then(function (data) {
                     $scope.roles = data;
-                    $rootScope.showToast("تم تحميل البيانات بنجاح");
+                    $rootScope.showNotify("المجموعات", "تم تحميل البيانات بنجاح", "success", "fa-shield");
+                    $rootScope.showToast("");
                 });
             } else {
                 $scope.team = {};
-                $rootScope.showToast("جاري تحميل بيانات خاصة بالشاشة، فضلاَ انتظر قليلاً");
+                $rootScope.showNotify("المجموعات", "جاري تحميل بيانات خاصة بالشاشة، فضلاَ انتظر قليلاً", "warning", "fa-shield");
                 ScreenService.findAll().then(function (data) {
                     for (var i = 0; i < data.length; i++) {
                         var role = {};
@@ -48,7 +49,7 @@ app.controller('teamCreateUpdateCtrl',
                         role.permission.screen = data[i];
                         $scope.roles.push(role);
                     }
-                    $rootScope.showToast("تم تحميل البيانات بنجاح");
+                    $rootScope.showNotify("المجموعات", "تم تحميل البيانات بنجاح", "success", "fa-shield");
                 });
             }
 
@@ -68,7 +69,7 @@ app.controller('teamCreateUpdateCtrl',
             }, 500);
 
             $scope.submit = function () {
-                $rootScope.showToast("جاري القيام بالعملية، فضلاً انتظر قليلاً");
+                $rootScope.showNotify("المجموعات", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-shield");
                 for (var i = 0; i < $scope.roles.length; i++) {
                     $scope.roles[i].team = $scope.team;
                 }
@@ -91,14 +92,14 @@ app.controller('teamCreateUpdateCtrl',
                                 }
                             });
                             $scope.from.$setPristine();
-                            $rootScope.showToast("تم القيام بالعملية بنجاح، يمكنك اضافة مجموعة اخرى الآن");
+                            $rootScope.showNotify("المجموعات", "تم القيام بالعملية بنجاح، يمكنك اضافة مجموعة اخرى الآن", "success", "fa-shield");
                         });
                         break;
                     case 'update' :
                         RoleService.setUpRoles($scope.roles).then(function (data) {
                             $scope.team = data[0].team;
                             $scope.roles = data;
-                            $rootScope.showToast("تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن");
+                            $rootScope.showNotify("المجموعات", "تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن", "success", "fa-shield");
                         });
                         break;
                 }

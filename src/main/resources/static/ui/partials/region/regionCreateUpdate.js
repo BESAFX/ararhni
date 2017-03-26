@@ -4,19 +4,19 @@ app.controller('regionCreateUpdateCtrl', ['RegionService', 'PersonService', 'Com
         $scope.fetchPersonData = function () {
             PersonService.findAll().then(function (data) {
                 $scope.persons = data;
-                $rootScope.showToast("تم تحميل بيانات المستخدمين بنجاح");
+                $rootScope.showNotify("المناطق", "تم تحميل بيانات المستخدمين بنجاح", "success", "fa-map-marker");
             });
         };
 
         $scope.fetchCompaniesData = function () {
             CompanyService.fetchTableData().then(function (data) {
                 $scope.companies = data;
-                $rootScope.showToast("تم تحميل بيانات الشركات بنجاح");
+                $rootScope.showNotify("المناطق", "تم تحميل بيانات الشركات بنجاح", "success", "fa-map-marker");
             });
         };
 
         $timeout(function () {
-            $rootScope.showToast("جاري تحميل بيانات الشركات والمستخدمين، فضلاَ انتظر قليلاً");
+            $rootScope.showNotify("المناطق", "جاري تحميل بيانات الشركات والمستخدمين، فضلاَ انتظر قليلاً", "warning", "fa-map-marker");
             $scope.fetchCompaniesData();
             $scope.fetchPersonData();
         }, 1500);
@@ -32,19 +32,19 @@ app.controller('regionCreateUpdateCtrl', ['RegionService', 'PersonService', 'Com
         $scope.action = action;
 
         $scope.submit = function () {
-            $rootScope.showToast("جاري القيام بالعملية، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("المناطق", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-map-marker");
             switch ($scope.action) {
                 case 'create' :
                     RegionService.create($scope.region).then(function (data) {
                         $scope.region = {};
                         $scope.form.$setPristine();
-                        $rootScope.showToast("تم القيام بالعملية بنجاح، يمكنك اضافة فرع آخر الآن");
+                        $rootScope.showNotify("المناطق", "تم القيام بالعملية بنجاح، يمكنك اضافة فرع آخر الآن", "success", "fa-map-marker");
                     });
                     break;
                 case 'update' :
                     RegionService.update($scope.region).then(function (data) {
                         $scope.region = data;
-                        $rootScope.showToast("تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن");
+                        $rootScope.showNotify("المناطق", "تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن", "success", "fa-map-marker");
                     });
                     break;
             }

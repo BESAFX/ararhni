@@ -4,7 +4,7 @@ app.controller('reportModelCreateUpdateCtrl', ['ReportModelService', 'ScreenServ
         $scope.fetchScreenData = function () {
             ScreenService.findAll().then(function (data) {
                 $scope.screens = data;
-                $rootScope.showToast("تعليمات", "تم تحميل بيانات الشاشات بنجاح");
+                $rootScope.showNotify("نماذج الطباعة", "تم تحميل بيانات الشاشات بنجاح", "success", "fa-print");
             });
         };
 
@@ -110,20 +110,20 @@ app.controller('reportModelCreateUpdateCtrl', ['ReportModelService', 'ScreenServ
         $scope.action = action;
 
         $scope.submit = function () {
-            $rootScope.showToast("تعليمات", "جاري القيام بالعملية، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("نماذج الطباعة", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-print");
             $scope.reportModel.template = JSON.stringify($scope.reportProp);
             switch ($scope.action) {
                 case 'create' :
                     ReportModelService.create($scope.reportModel).then(function (data) {
                         $scope.reportModel = {};
                         $scope.form.$setPristine();
-                        $rootScope.showToast("تعليمات", "تم القيام بالعملية بنجاح، يمكنك اضافة نموذج آخر الآن");
+                        $rootScope.showNotify("نماذج الطباعة", "تم القيام بالعملية بنجاح، يمكنك اضافة نموذج آخر الآن", "success", "fa-print");
                     });
                     break;
                 case 'update' :
                     ReportModelService.update($scope.reportModel).then(function (data) {
                         $scope.reportModel = data;
-                        $rootScope.showToast("تعليمات", "تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن");
+                        $rootScope.showNotify("نماذج الطباعة", "تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن", "success", "fa-print");
                     });
                     break;
             }

@@ -4,11 +4,11 @@ app.controller("branchCtrl", ['BranchService', 'PersonService', 'ModalProvider',
         $scope.selected = {};
 
         $scope.fetchTableData = function () {
-            $rootScope.showToast("فضلاً انتظر قليلاً حتى الانتهاء من تحميل الفروع");
+            $rootScope.showNotify("الفروع", "فضلاً انتظر قليلاً حتى الانتهاء من تحميل الفروع", "warning", "fa-cubes");
             BranchService.fetchTableData().then(function (data) {
                 $scope.branches = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن");
+                $rootScope.showNotify("الفروع", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-cubes");
                 angular.forEach(data, function (branch) {
                     if(branch.logo){
                         FileService.getSharedLink(branch.logo).then(function (data) {

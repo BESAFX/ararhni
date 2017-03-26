@@ -102,7 +102,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 }
             ];
 
-            $rootScope.showToast("جاري تحميل كل المهام الواردة والسارية الآن، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("المهام", "جاري تحميل كل المهام الواردة والسارية الآن، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
 
             $scope.selected = {};
 
@@ -110,14 +110,14 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
 
             ReportModelService.findAll().then(function (data) {
                 $scope.reportModels = data;
-                $rootScope.showToast("تم تحميل نماذج الطباعة بنجاح");
+                $rootScope.showNotify("المهام", "تم تحميل نماذج الطباعة بنجاح", "success", "fa-black-tie");
             });
 
             PersonService.findPersonUnderMe().then(function (data) {
                 $scope.persons = data;
                 $scope.buffer.person = data[0];
                 $scope.filter();
-                $rootScope.showToast("تم تحميل كل المهام الواردة والسارية بنجاح");
+                $rootScope.showNotify("المهام", "تم تحميل كل المهام الواردة والسارية بنجاح", "success", "fa-black-tie");
             });
 
         }, 2000);
@@ -127,7 +127,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
         };
 
         $scope.filter = function () {
-            $rootScope.showToast("جاري تصفية المهام، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("المهام", "جاري تصفية المهام، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
             var search = [];
 
             if ($scope.buffer.title) {
@@ -190,12 +190,12 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                     });
                 });
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("تم التحميل بنجاح، يمكنك متابعة عملك الآن");
+                $rootScope.showNotify("المهام", "تم التحميل بنجاح، يمكنك متابعة عملك الآن", "success", "fa-black-tie");
             });
         };
 
         $scope.printFilteredTasks = function () {
-            $rootScope.showToast("جاري إعداد التقرير، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("المهام", "جاري إعداد التقرير، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
             var search = [];
 
             if ($scope.buffer.codeFrom) {
@@ -347,14 +347,14 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
         };
 
         $scope.findTaskCloseRequests = function () {
-            $rootScope.showToast("جاري تحميل طلبات الإغلاق، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("المهام", "جاري تحميل طلبات الإغلاق، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
             var search = [];
             search.push('taskId=');
             search.push($scope.selected.id);
             search.push('&');
             TaskCloseRequestService.filter(search.join("")).then(function (data) {
                 $scope.selected.taskCloseRequests = data;
-                $rootScope.showToast("تم تحميل طلبات الإغلاق بنجاح");
+                $rootScope.showNotify("المهام", "تم تحميل طلبات الإغلاق بنجاح", "success", "fa-black-tie");
             })
         };
 
@@ -364,7 +364,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 return;
             }
             ModalProvider.openTaskOperationCreateModel($scope.selected);
-        }
+        };
 
         $scope.rowMenu = [];
 

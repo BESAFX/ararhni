@@ -4,11 +4,12 @@ app.controller("reportModelCtrl", ['ReportModelService', 'PersonService', 'Modal
         $scope.selected = {};
 
         $scope.fetchTableData = function () {
-            $rootScope.showToast("فضلاً انتظر قليلاً حتى الانتهاء من تحميل النماذج");
+            $rootScope.showToast("");
+            $rootScope.showNotify("نماذج الطباعة", "فضلاً انتظر قليلاً حتى الانتهاء من تحميل النماذج", "warning", "fa-print");
             ReportModelService.findAll().then(function (data) {
                 $scope.reportModels = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن");
+                $rootScope.showNotify("نماذج الطباعة", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-print");
             });
         };
 

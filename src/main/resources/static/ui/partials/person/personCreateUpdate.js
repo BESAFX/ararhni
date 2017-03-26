@@ -4,12 +4,12 @@ app.controller('personCreateUpdateCtrl', ['TeamService', 'PersonService', 'FileU
         $scope.fetchTeamData = function () {
             TeamService.findAll().then(function (data) {
                 $scope.teams = data;
-                $rootScope.showToast("تم تحميل بيانات المجموعات بنجاح");
+                $rootScope.showNotify("حسابات المستخدمين", "تم تحميل بيانات المجموعات بنجاح", "success", "fa-user");
             });
         };
 
         $timeout(function () {
-            $rootScope.showToast("جاري تحميل بيانات المجموعات، فضلاَ انتظر قليلاً");
+            $rootScope.showNotify("حسابات المستخدمين", "جاري تحميل بيانات المجموعات، فضلاَ انتظر قليلاً", "warning", "fa-user");
             $scope.fetchTeamData();
         }, 2000);
 
@@ -29,19 +29,19 @@ app.controller('personCreateUpdateCtrl', ['TeamService', 'PersonService', 'FileU
         $scope.action = action;
 
         $scope.submit = function () {
-            $rootScope.showToast("جاري القيام بالعملية، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("حسابات المستخدمين", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-user");
             switch ($scope.action) {
                 case 'create' :
                     PersonService.create($scope.person).then(function (data) {
                         $scope.person = {};
                         $scope.from.$setPristine();
-                        $rootScope.showToast("تم القيام بالعملية بنجاح، يمكنك اضافة حساب مستخدم آخر الآن");
+                        $rootScope.showNotify("حسابات المستخدمين", "تم القيام بالعملية بنجاح، يمكنك اضافة حساب مستخدم آخر الآن", "success", "fa-user");
                     });
                     break;
                 case 'update' :
                     PersonService.update($scope.person).then(function (data) {
                         $scope.person = data;
-                        $rootScope.showToast("تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن");
+                        $rootScope.showNotify("حسابات المستخدمين", "تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن", "success", "fa-user");
                     });
                     break;
             }

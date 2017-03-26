@@ -4,11 +4,11 @@ app.controller("employeeCtrl", ['EmployeeService', 'ModalProvider', 'FileService
         $scope.selected = {};
 
         $scope.fetchTableData = function () {
-            $rootScope.showToast("فضلاً انتظر قليلاً حتى الانتهاء من تحميل الموظفين");
+            $rootScope.showNotify("الموظفين", "فضلاً انتظر قليلاً حتى الانتهاء من تحميل الموظفين", "warning", "fa-user-circle");
             EmployeeService.fetchTableData().then(function (data) {
                 $scope.employees = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن");
+                $rootScope.showNotify("الموظفين", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-user-circle");
                 angular.forEach(data, function (employee) {
                     if(employee.person.photo){
                         FileService.getSharedLink(employee.person.photo).then(function (data) {

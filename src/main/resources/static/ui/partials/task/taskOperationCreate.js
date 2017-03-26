@@ -14,7 +14,7 @@ app.controller('taskOperationCreateCtrl', ['TaskService', 'TaskOperationService'
         });
 
         $scope.submit = function () {
-            $rootScope.showToast("جاري القيام بالعملية، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("المهام", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
             var taskOperationAttaches = [];
             for (var i = 0; i < $scope.uploader.queue.length; i++) {
                 var taskOperationAttach = {};
@@ -29,7 +29,7 @@ app.controller('taskOperationCreateCtrl', ['TaskService', 'TaskOperationService'
                 if($scope.form){
                     $scope.form.$setPristine();
                 }
-                $rootScope.showToast("تم إنجاز العمل بنجاح، يمكنك القيام بعملية آخرى الآن");
+                $rootScope.showNotify("المهام", "تم إنجاز العمل بنجاح، يمكنك القيام بعملية آخرى الآن", "success", "fa-black-tie");
             });
         };
 

@@ -34,7 +34,7 @@ app.controller('companyCreateUpdateCtrl', ['CompanyService', 'PersonService', 'F
                 case 'update' :
                     CompanyService.update($scope.company).then(function (data) {
                         $scope.company = data;
-                        $rootScope.showNotify("الشركات", "تم القيام بالعملية بنجاح", "success", "fa-bank");
+                        $rootScope.showNotify("الشركات", "تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن", "success", "fa-bank");
                     });
                     break;
             }

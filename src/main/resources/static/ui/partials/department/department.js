@@ -4,11 +4,11 @@ app.controller("departmentCtrl", ['DepartmentService', 'ModalProvider', '$scope'
         $scope.selected = {};
 
         $scope.fetchTableData = function () {
-            $rootScope.showToast("فضلاً انتظر قليلاً حتى الانتهاء من تحميل الأقسام");
+            $rootScope.showNotify("الاقسام", "فضلاً انتظر قليلاً حتى الانتهاء من تحميل الأقسام", "warning", "fa-sitemap");
             DepartmentService.fetchTableData().then(function (data) {
                 $scope.departments = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن");
+                $rootScope.showNotify("الاقسام", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-sitemap");
             });
         };
 

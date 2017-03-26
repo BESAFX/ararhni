@@ -4,11 +4,11 @@ app.controller("regionCtrl", ['RegionService', 'PersonService', 'ModalProvider',
         $scope.selected = {};
 
         $scope.fetchTableData = function () {
-            $rootScope.showToast("فضلاً انتظر قليلاً حتى الانتهاء من تحميل المناطق");
+            $rootScope.showNotify("المناطق", "فضلاً انتظر قليلاً حتى الانتهاء من تحميل المناطق", "warning", "fa-map-marker");
             RegionService.fetchTableData().then(function (data) {
                 $scope.regions = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن");
+                $rootScope.showNotify("المناطق", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-map-marker");
             });
         };
 
