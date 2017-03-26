@@ -29,9 +29,6 @@
     .card-square > .report-model-card {
         background: url('/ui/img/report-model.png') bottom right 15% no-repeat #46B6AC;
     }
-    .card-square > .mdl-card__actions > .mdl-button{
-        width: 100%;
-    }
 </style>
 
 <!-- Always shows a header, even in smaller screens. -->
@@ -77,11 +74,17 @@
                                 <h2 class="mdl-card__title-text">الشركات</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                <strong>عدد الشركات 2</strong>
+                                <strong>---</strong>
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToCompany()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>الدخول</span>
+                                <button ng-click="goToCompany()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    <span>الرئيسية</span>
+                                </button>
+                                <button ng-if="contains(authorities, ['ROLE_COMPANY_CREATE'])"
+                                        ng-click="ModalProvider.openCompanyCreateModel()"
+                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>اضافة</span>
                                 </button>
                             </div>
                         </div>
@@ -93,11 +96,17 @@
                                 <h2 class="mdl-card__title-text">المناطق</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                <strong>عدد المناطق 1</strong>
+                                <strong>---</strong>
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToRegion()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>الدخول</span>
+                                <button ng-click="goToRegion()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    <span>الرئيسية</span>
+                                </button>
+                                <button ng-if="contains(authorities, ['ROLE_REGION_CREATE'])"
+                                        ng-click="ModalProvider.openRegionCreateModel()"
+                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>اضافة</span>
                                 </button>
                             </div>
                         </div>
@@ -109,11 +118,17 @@
                                 <h2 class="mdl-card__title-text">الفروع</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                <strong>عدد الفروع 4</strong>
+                                <strong>---</strong>
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToBranch()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>الدخول</span>
+                                <button ng-click="goToBranch()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    <span>الرئيسية</span>
+                                </button>
+                                <button ng-if="contains(authorities, ['ROLE_BRANCH_CREATE'])"
+                                        ng-click="ModalProvider.openBranchCreateModel()"
+                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>اضافة</span>
                                 </button>
                             </div>
                         </div>
@@ -125,11 +140,17 @@
                                 <h2 class="mdl-card__title-text">الأقسام</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                <strong>عدد الأقسام 4</strong>
+                                <strong>---</strong>
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToDepartment()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>الدخول</span>
+                                <button ng-click="goToDepartment()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    <span>الرئيسية</span>
+                                </button>
+                                <button ng-if="contains(authorities, ['ROLE_DEPARTMENT_CREATE'])"
+                                        ng-click="ModalProvider.openDepartmentCreateModel()"
+                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>اضافة</span>
                                 </button>
                             </div>
                         </div>
@@ -141,11 +162,17 @@
                                 <h2 class="mdl-card__title-text">الموظفون</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                <strong>عدد الموظفون 5</strong>
+                                <strong>---</strong>
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToEmployee()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>الدخول</span>
+                                <button ng-click="goToEmployee()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    <span>الرئيسية</span>
+                                </button>
+                                <button ng-if="contains(authorities, ['ROLE_EMPLOYEE_CREATE'])"
+                                        ng-click="ModalProvider.openEmployeeCreateModel()"
+                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>اضافة</span>
                                 </button>
                             </div>
                         </div>
@@ -160,8 +187,14 @@
                                 <strong>---</strong>
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToTeam()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>الدخول</span>
+                                <button ng-click="goToTeam()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    <span>الرئيسية</span>
+                                </button>
+                                <button ng-if="contains(authorities, ['ROLE_TEAM_CREATE'])"
+                                        ng-click="ModalProvider.openTeamCreateModel()"
+                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>اضافة</span>
                                 </button>
                             </div>
                         </div>
@@ -173,11 +206,17 @@
                                 <h2 class="mdl-card__title-text">المستخدمون</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                <strong>عدد المستخدمون 15</strong>
+                                <strong>---</strong>
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToPerson()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>الدخول</span>
+                                <button ng-click="goToPerson()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    <span>الرئيسية</span>
+                                </button>
+                                <button ng-if="contains(authorities, ['ROLE_PERSON_CREATE'])"
+                                        ng-click="ModalProvider.openPersonCreateModel()"
+                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>اضافة</span>
                                 </button>
                             </div>
                         </div>
@@ -189,11 +228,17 @@
                                 <h2 class="mdl-card__title-text">المهام</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                <strong>عدد المهام 15</strong>
+                                <strong>---</strong>
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToTask()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>الدخول</span>
+                                <button ng-click="goToTask()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    <span>الرئيسية</span>
+                                </button>
+                                <button ng-if="contains(authorities, ['ROLE_TASK_CREATE'])"
+                                        ng-click="ModalProvider.openTaskCreateModel()"
+                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>اضافة</span>
                                 </button>
                             </div>
                         </div>
@@ -205,11 +250,16 @@
                                 <h2 class="mdl-card__title-text">نماذج الطباعة</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                <strong>عدد النماذج 15</strong>
+                                <strong>---</strong>
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToReportModel()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>الدخول</span>
+                                <button ng-click="goToReportModel()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    <span>الرئيسية</span>
+                                </button>
+                                <button ng-click="ModalProvider.openReportModelCreateModel()"
+                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                                    <span>اضافة</span>
                                 </button>
                             </div>
                         </div>

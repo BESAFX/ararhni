@@ -18,7 +18,7 @@ app.controller("closedSoonOutgoingCtrl", ['$scope', '$rootScope', '$timeout', 'T
 
         $scope.fetchThisDay = function () {
             $scope.viewType = 'المهام الصادرة المغلقة هذا اليوم';
-            $rootScope.showToast("جاري تحميل المهام المغلقة لهذا اليوم، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("الرئيسية", "جاري تحميل المهام المغلقة لهذا اليوم، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('isTaskOpen=');
             search.push(true);
@@ -35,7 +35,7 @@ app.controller("closedSoonOutgoingCtrl", ['$scope', '$rootScope', '$timeout', 'T
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("تم تحميل المهام المغلقة لهذا اليوم بنجاح");
+                $rootScope.showNotify("الرئيسية", "تم تحميل المهام المغلقة لهذا اليوم بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
@@ -44,7 +44,7 @@ app.controller("closedSoonOutgoingCtrl", ['$scope', '$rootScope', '$timeout', 'T
 
         $scope.fetchThisWeek = function () {
             $scope.viewType = 'المهام الصادرة المغلقة هذا الاسبوع';
-            $rootScope.showToast("جاري تحميل المهام المغلقة لهذا الأسبوع، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("الرئيسية", "جاري تحميل المهام المغلقة لهذا الأسبوع، فضلاً انتظر قليلاً", "success", "fa-dashboard");
             var search = [];
             search.push('isTaskOpen=');
             search.push(true);
@@ -61,7 +61,7 @@ app.controller("closedSoonOutgoingCtrl", ['$scope', '$rootScope', '$timeout', 'T
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("تم تحميل المهام المغلقة لهذا الأسبوع بنجاح");
+                $rootScope.showNotify("الرئيسية", "تم تحميل المهام المغلقة لهذا الأسبوع بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
@@ -70,7 +70,7 @@ app.controller("closedSoonOutgoingCtrl", ['$scope', '$rootScope', '$timeout', 'T
 
         $scope.fetchThisMonth = function () {
             $scope.viewType = 'المهام الصادرة المغلقة هذا الشهر';
-            $rootScope.showToast("جاري تحميل المهام المغلقة لهذا الشهر، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("الرئيسية", "جاري تحميل المهام المغلقة لهذا الشهر، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('isTaskOpen=');
             search.push(true);
@@ -87,7 +87,7 @@ app.controller("closedSoonOutgoingCtrl", ['$scope', '$rootScope', '$timeout', 'T
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("تم تحميل المهام المغلقة لهذا الشهر بنجاح");
+                $rootScope.showNotify("الرئيسية", "تم تحميل المهام المغلقة لهذا الشهر بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
@@ -96,7 +96,7 @@ app.controller("closedSoonOutgoingCtrl", ['$scope', '$rootScope', '$timeout', 'T
 
         $scope.fetchThisYear = function () {
             $scope.viewType = 'المهام الصادرة المغلقة هذا العام';
-            $rootScope.showToast("جاري تحميل المهام المغلقة لهذا العام، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("الرئيسية", "جاري تحميل المهام المغلقة لهذا العام، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('isTaskOpen=');
             search.push(true);
@@ -113,7 +113,7 @@ app.controller("closedSoonOutgoingCtrl", ['$scope', '$rootScope', '$timeout', 'T
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("تم تحميل المهام المغلقة لهذا العام بنجاح");
+                $rootScope.showNotify("الرئيسية", "تم تحميل المهام المغلقة لهذا العام بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);

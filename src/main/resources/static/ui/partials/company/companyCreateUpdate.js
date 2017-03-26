@@ -2,7 +2,7 @@ app.controller('companyCreateUpdateCtrl', ['CompanyService', 'PersonService', 'F
     function (CompanyService, PersonService, FileUploader, FileService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, company) {
 
         $timeout(function () {
-            $rootScope.showToast("جاري تحميل بيانات المستخدمين، فضلاَ انتظر قليلاً");
+            $rootScope.showNotify("الشركات", "جاري تحميل بيانات المستخدمين، فضلاَ انتظر قليلاً", "warning", "fa-bank");
             $scope.fetchPersonData();
         }, 1500);
 
@@ -22,19 +22,19 @@ app.controller('companyCreateUpdateCtrl', ['CompanyService', 'PersonService', 'F
         $scope.action = action;
 
         $scope.submit = function () {
-            $rootScope.showToast("جاري القيام بالعملية، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("الشركات", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-bank");
             switch ($scope.action) {
                 case 'create' :
                     CompanyService.create($scope.company).then(function (data) {
                         $scope.company = {};
                         $scope.form.$setPristine();
-                        $rootScope.showToast("تم القيام بالعملية بنجاح، يمكنك اضافة شركة آخر الآن");
+                        $rootScope.showNotify("الشركات", "تم القيام بالعملية بنجاح، يمكنك اضافة شركة آخرى الآن", "success", "fa-bank");
                     });
                     break;
                 case 'update' :
                     CompanyService.update($scope.company).then(function (data) {
                         $scope.company = data;
-                        $rootScope.showToast("تم القيام بالعملية بنجاح، يمكنك اضافة شركة آخر الآن");
+                        $rootScope.showNotify("الشركات", "تم القيام بالعملية بنجاح", "success", "fa-bank");
                     });
                     break;
             }
@@ -47,7 +47,7 @@ app.controller('companyCreateUpdateCtrl', ['CompanyService', 'PersonService', 'F
         $scope.fetchPersonData = function () {
             PersonService.findAll().then(function (data) {
                 $scope.persons = data;
-                $rootScope.showToast("تم تحميل بيانات المستخدمين بنجاح");
+                $rootScope.showNotify("الشركات", "تم تحميل بيانات المستخدمين بنجاح", "success", "fa-bank");
             })
         };
 

@@ -18,7 +18,7 @@ app.controller("outgoingTasksCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
 
         $scope.fetchOpened = function () {
             $scope.viewType = 'جميع المهام الصادرة السارية';
-            $rootScope.showToast("جاري تحميل جميع المهام الصادرة السارية، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("الرئيسية", "جاري تحميل جميع المهام الصادرة السارية، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('isTaskOpen=');
             search.push(true);
@@ -35,7 +35,7 @@ app.controller("outgoingTasksCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("تم تحميل جميع المهام الصادرة السارية بنجاح");
+                $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الصادرة السارية بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
@@ -44,7 +44,7 @@ app.controller("outgoingTasksCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
 
         $scope.fetchClosed = function () {
             $scope.viewType = 'جميع المهام الصادرة المغلقة';
-            $rootScope.showToast("جاري تحميل جميع المهام الصادرة المغلقة، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("الرئيسية", "جاري تحميل جميع المهام الصادرة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('isTaskOpen=');
             search.push(false);
@@ -61,7 +61,7 @@ app.controller("outgoingTasksCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("تم تحميل جميع المهام الصادرة المغلقة بنجاح");
+                $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الصادرة المغلقة بنجاح", "success", "fa-dashboard");
                 v$timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);

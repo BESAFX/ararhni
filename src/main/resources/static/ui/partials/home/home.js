@@ -7,7 +7,7 @@ app.controller("homeCtrl", ['$scope', '$rootScope', '$timeout', 'TaskService', '
 
         ReportModelService.findAll().then(function (data) {
             $scope.reportModels = data;
-            $rootScope.showToast("تم تحميل نماذج الطباعة بنجاح");
+            $rootScope.showNotify("الرئيسية", "تم تحميل نماذج الطباعة بنجاح", "success", "fa-dashboard");
         });
 
         $scope.delete = function (task) {
@@ -93,7 +93,7 @@ app.controller("homeCtrl", ['$scope', '$rootScope', '$timeout', 'TaskService', '
         }
 
         $scope.printTask = function (id, reportModel) {
-            $rootScope.showToast("جاري إعداد التقرير، فضلاً انتظر قليلاً");
+            $rootScope.showNotify("الرئيسية", "جاري إعداد التقرير، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             TaskService.reportTask(id, JSON.parse(reportModel.template));
         };
 

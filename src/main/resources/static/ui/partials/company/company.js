@@ -4,11 +4,11 @@ app.controller("companyCtrl", ['CompanyService', 'ModalProvider', 'FileService',
         $scope.selected = {};
 
         $scope.fetchTableData = function () {
-            $rootScope.showToast("فضلاً انتظر قليلاً حتى الانتهاء من تحميل البيانات");
+            $rootScope.showNotify("الشركات", "فضلاً انتظر قليلاً حتى الانتهاء من تحميل البيانات", "warning", "fa-bank");
             CompanyService.fetchTableData().then(function (data) {
                 $scope.companies = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن");
+                $rootScope.showNotify("الشركات", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-bank");
                 angular.forEach(data, function (company) {
                     if(company.logo){
                         FileService.getSharedLink(company.logo).then(function (data) {
