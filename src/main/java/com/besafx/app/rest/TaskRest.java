@@ -2,29 +2,29 @@ package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
 import com.besafx.app.config.EmailSender;
-import com.besafx.app.entity.*;
+import com.besafx.app.entity.Person;
+import com.besafx.app.entity.Task;
+import com.besafx.app.entity.TaskCloseRequest;
+import com.besafx.app.entity.TaskTo;
 import com.besafx.app.search.TaskSearch;
 import com.besafx.app.service.*;
 import com.besafx.app.util.DateConverter;
-import com.besafx.app.util.NotifyCode;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.support.incrementer.SybaseAnywhereMaxValueIncrementer;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.Principal;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 @RestController
@@ -140,9 +140,24 @@ public class TaskRest {
             throw new CustomException("عفواً ، لا توجد هذة المهمة");
         } else {
             taskToService.delete(object.getTaskTos());
+            taskCloseRequestService.delete(object.getTaskCloseRequests());
             object.getTaskOperations().stream().forEach(taskOperation -> taskOperationAttachService.delete(taskOperation.getTaskOperationAttaches()));
             taskOperationService.delete(object.getTaskOperations());
             taskService.delete(object);
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title("العمليات على المهام")
+                    .message("تم حذف المهمة رقم " + object.getCode() + " بنجاح")
+                    .type("success")
+                    .icon("fa-black-tie")
+                    .build(), principal.getName());
+            notificationService.notifyAllExceptMe(Notification
+                    .builder()
+                    .title("العمليات على المهام")
+                    .message("تم حذف المهمة رقم " + object.getCode() + " بواسطة " + personService.findByEmail(principal.getName()).getName())
+                    .type("warning")
+                    .icon("fa-black-tie")
+                    .build());
         }
     }
 
