@@ -464,8 +464,15 @@
                                                         <tr>
                                                             <td colspan="1" class="text-right">
                                                     <span class="label label-primary">
-                                                        <span> باقي </span>
-                                                        <timer interval="60000" end-time="task.endDate">{{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
+                                                        <timer interval="60000" end-time="task.endDate">
+                                                            <span> {{(minutes < 1 && hours < 1 && days < 1 )? 'تم إغلاق المهمة' : 'باقي من الزمن'}} </span>
+                                                            {{days > 0 ? days : ''}}
+                                                            {{days > 0 ? 'يوم' : ''}}
+                                                            {{hours > 0 ? hours : ''}}
+                                                            {{hours > 0 ? 'ساعة' : ''}}
+                                                            {{minutes > 0 ? minutes : ''}}
+                                                            {{minutes > 0 ? 'دقيقة' : ''}}
+                                                        </timer>
                                                     </span>
                                                             </td>
                                                             <td colspan="1" class="text-left"><a href="">المزيد...</a>
