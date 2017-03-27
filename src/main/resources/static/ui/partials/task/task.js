@@ -102,8 +102,6 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 }
             ];
 
-            $rootScope.showNotify("المهام", "جاري تحميل كل المهام الواردة والسارية الآن، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
-
             $scope.selected = {};
 
             $scope.selectedOperation = {};
@@ -116,8 +114,6 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             PersonService.findPersonUnderMe().then(function (data) {
                 $scope.persons = data;
                 $scope.buffer.person = data[0];
-                $scope.filter();
-                $rootScope.showNotify("المهام", "تم تحميل كل المهام الواردة والسارية بنجاح", "success", "fa-black-tie");
             });
 
         }, 2000);
@@ -184,11 +180,6 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
 
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
-                angular.forEach(data, function (task) {
-                    return task.tos = task.taskTos.map(function (a) {
-                        return a.person.name
-                    });
-                });
                 $scope.setSelected(data[0]);
                 $rootScope.showNotify("المهام", "تم التحميل بنجاح، يمكنك متابعة عملك الآن", "success", "fa-black-tie");
             });
@@ -465,5 +456,98 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
         $timeout(function () {
             window.componentHandler.upgradeAllRegistered();
         }, 1500);
+
+
+        $scope.fetchIncomingOpened = function () {
+            $scope.viewType = 'جميع المهام الواردة السارية';
+            $rootScope.showNotify("الرئيسية", "جاري تحميل جميع المهام الواردة السارية، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            var search = [];
+            search.push('isTaskOpen=');
+            search.push(true);
+            search.push('&');
+            search.push('taskType=');
+            search.push(true);
+            search.push('&');
+            search.push('person=');
+            search.push($scope.me.id);
+            search.push('&');
+            search.push('timeType=');
+            search.push('All');
+            search.push('&');
+            TaskService.filter(search.join("")).then(function (data) {
+                $scope.tasks = data;
+                $scope.setSelected(data[0]);
+                $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الواردة السارية بنجاح", "success", "fa-dashboard");
+            });
+        };
+
+        $scope.fetchIncomingClosed = function () {
+            $scope.viewType = 'جميع المهام الواردة المغلقة';
+            $rootScope.showNotify("الرئيسية", "جاري تحميل جميع المهام الواردة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            var search = [];
+            search.push('isTaskOpen=');
+            search.push(false);
+            search.push('&');
+            search.push('taskType=');
+            search.push(true);
+            search.push('&');
+            search.push('person=');
+            search.push($scope.me.id);
+            search.push('&');
+            search.push('timeType=');
+            search.push('All');
+            search.push('&');
+            TaskService.filter(search.join("")).then(function (data) {
+                $scope.tasks = data;
+                $scope.setSelected(data[0]);
+                $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الواردة المغلقة بنجاح", "success", "fa-dashboard");
+            });
+
+            $scope.fetchOutgoingOpened = function () {
+                $scope.viewType = 'جميع المهام الصادرة السارية';
+                $rootScope.showNotify("الرئيسية", "جاري تحميل جميع المهام الصادرة السارية، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+                var search = [];
+                search.push('isTaskOpen=');
+                search.push(true);
+                search.push('&');
+                search.push('taskType=');
+                search.push(false);
+                search.push('&');
+                search.push('person=');
+                search.push($scope.me.id);
+                search.push('&');
+                search.push('timeType=');
+                search.push('All');
+                search.push('&');
+                TaskService.filter(search.join("")).then(function (data) {
+                    $scope.tasks = data;
+                    $scope.setSelected(data[0]);
+                    $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الصادرة السارية بنجاح", "success", "fa-dashboard");
+                });
+            };
+
+            $scope.fetchOutgoingClosed = function () {
+                $scope.viewType = 'جميع المهام الصادرة المغلقة';
+                $rootScope.showNotify("الرئيسية", "جاري تحميل جميع المهام الصادرة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+                var search = [];
+                search.push('isTaskOpen=');
+                search.push(false);
+                search.push('&');
+                search.push('taskType=');
+                search.push(false);
+                search.push('&');
+                search.push('person=');
+                search.push($scope.me.id);
+                search.push('&');
+                search.push('timeType=');
+                search.push('All');
+                search.push('&');
+                TaskService.filter(search.join("")).then(function (data) {
+                    $scope.tasks = data;
+                    $scope.setSelected(data[0]);
+                    $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الصادرة المغلقة بنجاح", "success", "fa-dashboard");
+                });
+            };
+        };
 
     }]);

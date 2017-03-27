@@ -62,7 +62,7 @@ app.controller("outgoingTasksCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
                 $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الصادرة المغلقة بنجاح", "success", "fa-dashboard");
-                v$timeout(function () {
+                $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
             });
