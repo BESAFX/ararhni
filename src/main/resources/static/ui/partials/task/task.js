@@ -312,6 +312,14 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             ModalProvider.openTaskUpdateModel($scope.selected);
         };
 
+        $scope.openDetailsModel = function (task) {
+            if (task) {
+                ModalProvider.openTaskDetailsModel(task);
+                return;
+            }
+            ModalProvider.openTaskDetailsModel($scope.selected);
+        };
+
         $scope.openOperationModel = function (task) {
             if (task) {
                 ModalProvider.openTaskOperationModel(task);
@@ -440,6 +448,17 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 click: function ($itemScope, $event, value) {
                     $scope.showSlideOperation();
                     $scope.setSelected($itemScope.task);
+                }
+            });
+
+        $scope.rowMenu.push(
+            {
+                html: '<div style="cursor: pointer;padding: 10px"><span class="fa fa-info fa-lg"></span> التفاصيل</div>',
+                enabled: function () {
+                    return true
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.openDetailsModel($itemScope.task);
                 }
             });
 

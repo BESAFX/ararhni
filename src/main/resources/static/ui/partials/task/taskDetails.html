@@ -1,0 +1,123 @@
+<form dir="rtl" name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <h3 class="modal-title text-center" id="modal-title">تفاصيل المهمة / {{task.title}}</h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group text-right col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="panel-title-box pull-right">
+                            <h3>البيانات الاساسية</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td>رقم المهمة</td>
+                                <td>{{task.code}}</td>
+                            </tr>
+                            <tr>
+                                <td>عنوان المهمة</td>
+                                <td>{{task.title}}</td>
+                            </tr>
+                            <tr>
+                                <td>تفاصيل المهمة</td>
+                                <td>{{task.content}}</td>
+                            </tr>
+                            <tr>
+                                <td>تاريخ الإنشاء</td>
+                                <td>{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' :
+                                    'ummalqura'}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>تاريخ التسليم</td>
+                                <td>{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' :
+                                    'ummalqura'}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>جهة التكليف</td>
+                                <td>{{task.person.name}}</td>
+                            </tr>
+                            <tr>
+                                <td>الموظفون</td>
+                                <td>
+                                    <span class="label label-info"
+                                          ng-repeat="to in task.taskTos"
+                                          style="margin: 2px">{{to.person.name}}</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-right col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="panel-title-box pull-right">
+                            <h3>الحركات / المرفقات</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collectionOperation" st-safe-src="task.taskOperations"
+                                   class="table table-bordered table-striped">
+                                <tbody>
+                                <tr ng-repeat="taskOperation in collectionOperation | orderBy:date:true">
+                                    <td width="15%">{{taskOperation.sender.name}}</td>
+                                    <td>
+                                        {{taskOperation.content}}
+                                        <span ng-repeat="taskOperationAttach in taskOperation.taskOperationAttaches"><a
+                                                uib-tooltip="{{taskOperationAttach.name}}" tooltip-append-to-body="true"
+                                                href="" ng-href="{{taskOperationAttach.link}}" target="_blank"><i
+                                                class="fa fa-link fa-lg"></i></a></span>
+                                    </td>
+                                    <td width="20%">
+                                        <timer interval="60000" start-time="taskOperation.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span>
+                                            {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours :
+                                            ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes >
+                                            0 ? 'دقيقة' : ''}}
+                                        </timer>
+                                    </td>
+                                </tr>
+                                <tr class="blank_row"
+                                    style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collectionOperation || collectionOperation.length ==0">
+                                    <td colspan="3">لا توجد حركات</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="form-group col-md-12" role="group">
+            <button type="button"
+                    focus-index="1"
+                    ng-click="cancel()"
+                    class="btn btn-danger pull-left">
+                <span>خروج</span>
+                <i class="fa fa-power-off  fa-lg"></i>
+            </button>
+        </div>
+
+    </div>
+
+</form>
