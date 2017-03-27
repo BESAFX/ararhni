@@ -460,7 +460,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
 
         $scope.fetchIncomingOpened = function () {
             $scope.viewType = 'جميع المهام الواردة السارية';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل جميع المهام الواردة السارية، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الواردة السارية، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
             var search = [];
             search.push('isTaskOpen=');
             search.push(true);
@@ -477,13 +477,13 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الواردة السارية بنجاح", "success", "fa-dashboard");
+                $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الواردة السارية بنجاح", "success", "fa-black-tie");
             });
         };
 
         $scope.fetchIncomingClosed = function () {
             $scope.viewType = 'جميع المهام الواردة المغلقة';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل جميع المهام الواردة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الواردة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
             var search = [];
             search.push('isTaskOpen=');
             search.push(false);
@@ -500,13 +500,13 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الواردة المغلقة بنجاح", "success", "fa-dashboard");
+                $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الواردة المغلقة بنجاح", "success", "fa-black-tie");
             });
         };
 
         $scope.fetchOutgoingOpened = function () {
             $scope.viewType = 'جميع المهام الصادرة السارية';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل جميع المهام الصادرة السارية، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الصادرة السارية، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
             var search = [];
             search.push('isTaskOpen=');
             search.push(true);
@@ -523,13 +523,13 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الصادرة السارية بنجاح", "success", "fa-dashboard");
+                $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الصادرة السارية بنجاح", "success", "fa-black-tie");
             });
         };
 
         $scope.fetchOutgoingClosed = function () {
             $scope.viewType = 'جميع المهام الصادرة المغلقة';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل جميع المهام الصادرة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الصادرة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
             var search = [];
             search.push('isTaskOpen=');
             search.push(false);
@@ -546,7 +546,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الصادرة المغلقة بنجاح", "success", "fa-dashboard");
+                $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الصادرة المغلقة بنجاح", "success", "fa-black-tie");
             });
         };
 
