@@ -311,6 +311,14 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             ModalProvider.openTaskDetailsModel($scope.selected);
         };
 
+        $scope.openTaskOperationsReportModel = function (task) {
+            if (task) {
+                ModalProvider.openTaskOperationsReportModel([task]);
+                return;
+            }
+            ModalProvider.openTaskOperationsReportModel([$scope.selected]);
+        };
+
         $scope.openOperationModel = function (task) {
             if (task) {
                 ModalProvider.openTaskOperationModel(task);
@@ -450,6 +458,17 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.openDetailsModel($itemScope.task);
+                }
+            });
+
+        $scope.rowMenu.push(
+            {
+                html: '<div style="cursor: pointer;padding: 10px"><span class="fa fa-print fa-lg"></span> طباعة الحركات</div>',
+                enabled: function () {
+                    return true
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.openTaskOperationsReportModel($itemScope.task);
                 }
             });
 

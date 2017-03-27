@@ -1,10 +1,5 @@
 package com.besafx.app.util;
 
-import org.joda.time.Chronology;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.chrono.IslamicChronology;
-import org.joda.time.format.DateTimeFormat;
-
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -65,14 +60,6 @@ public class DateConverter {
                 .date(LocalDate.of(cl.get(Calendar.YEAR), cl.get(Calendar.MONTH) + 1, cl.get(Calendar.DATE)));
     }
 
-    public static String getHijriStringFromDateLTR(Date date) {
-        Calendar cl = Calendar.getInstance();
-        cl.setTime(date);
-        HijrahDate islamicDate = HijrahChronology.INSTANCE
-                .date(LocalDate.of(cl.get(Calendar.YEAR), cl.get(Calendar.MONTH) + 1, cl.get(Calendar.DATE)));
-        return islamicDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-    }
-
     public static String getHijriTodayString() {
         Calendar cl = Calendar.getInstance();
         cl.setTime(new Date());
@@ -87,6 +74,22 @@ public class DateConverter {
         HijrahDate islamicDate = HijrahChronology.INSTANCE
                 .date(LocalDate.of(cl.get(Calendar.YEAR), cl.get(Calendar.MONTH) + 1, cl.get(Calendar.DATE)));
         return islamicDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.forLanguageTag("ar")));
+    }
+
+    public static String getHijriStringFromDateLTR(long date) {
+        return getHijriStringFromDateLTR(new Date(date));
+    }
+
+    public static String getHijriStringFromDateLTR(Date date) {
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+        HijrahDate islamicDate = HijrahChronology.INSTANCE
+                .date(LocalDate.of(cl.get(Calendar.YEAR), cl.get(Calendar.MONTH) + 1, cl.get(Calendar.DATE)));
+        return islamicDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    }
+
+    public static String getHijriStringFromDateRTL(long date) {
+        return getHijriStringFromDateRTL(new Date(date));
     }
 
     public static String getHijriStringFromDateRTL(Date date) {
