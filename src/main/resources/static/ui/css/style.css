@@ -230,7 +230,9 @@ input[type=checkbox] {
 }
 
 .full-width-menu{
-    padding-left: 0px!important;; padding-right: 0px!important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    margin: 2px;
 }
 .full-width-menu .mdl-menu__container,
 .full-width-menu .mdl-menu__container .mdl-menu__outline,

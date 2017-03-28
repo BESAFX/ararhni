@@ -1,5 +1,5 @@
-app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseRequestService', 'PersonService', 'ReportModelService', 'ModalProvider', '$scope', '$rootScope', '$log', '$timeout', '$state',
-    function (TaskService, TaskOperationService, TaskCloseRequestService, PersonService, ReportModelService, ModalProvider, $scope, $rootScope, $log, $timeout, $state) {
+app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseRequestService', 'PersonService', 'ReportModelService', 'ModalProvider', '$scope', '$rootScope', '$log', '$timeout', '$state', '$uibModal',
+    function (TaskService, TaskOperationService, TaskCloseRequestService, PersonService, ReportModelService, ModalProvider, $scope, $rootScope, $log, $timeout, $state, $uibModal) {
 
         $timeout(function () {
 
@@ -311,12 +311,8 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             ModalProvider.openTaskDetailsModel($scope.selected);
         };
 
-        $scope.openTaskOperationsReportModel = function (task) {
-            if (task) {
-                ModalProvider.openTaskOperationsReportModel([task]);
-                return;
-            }
-            ModalProvider.openTaskOperationsReportModel([$scope.selected]);
+        $scope.openTaskOperationsReportModel = function () {
+            ModalProvider.openTaskOperationsReportModel($scope.tasks);
         };
 
         $scope.openOperationModel = function (task) {
@@ -468,7 +464,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                     return true
                 },
                 click: function ($itemScope, $event, value) {
-                    $scope.openTaskOperationsReportModel($itemScope.task);
+                    $scope.openTaskOperationsReportModel();
                 }
             });
 
@@ -477,95 +473,183 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
         }, 1500);
 
 
-        $scope.fetchIncomingOpened = function () {
-            $scope.viewType = 'جميع المهام الواردة السارية';
-            $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الواردة السارية، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
-            var search = [];
-            search.push('isTaskOpen=');
-            search.push(true);
-            search.push('&');
-            search.push('taskType=');
-            search.push(true);
-            search.push('&');
-            search.push('person=');
-            search.push($scope.me.id);
-            search.push('&');
-            search.push('timeType=');
-            search.push('All');
-            search.push('&');
-            TaskService.filter(search.join("")).then(function (data) {
-                $scope.tasks = data;
-                $scope.setSelected(data[0]);
-                $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الواردة السارية بنجاح", "success", "fa-black-tie");
+        $scope.openFetchIncomingOpened = function () {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: '/ui/partials/task/taskFilter.html',
+                controller: 'taskFilterCtrl',
+                scope: $scope,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    title: function () {
+                        return 'المهام الواردة السارية';
+                    },
+                    taskType: function () {
+                        return true;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (buffer) {
+                $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الواردة السارية، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
+                var search = [];
+                search.push('isTaskOpen=');
+                search.push(true);
+                search.push('&');
+                search.push('taskType=');
+                search.push(true);
+                search.push('&');
+                search.push('person=');
+                search.push(buffer.person.id);
+                search.push('&');
+                search.push('timeType=');
+                search.push('All');
+                search.push('&');
+                TaskService.filter(search.join("")).then(function (data) {
+                    $scope.tasks = data;
+                    $scope.setSelected(data[0]);
+                    $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الواردة السارية بنجاح", "success", "fa-black-tie");
+                });
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
             });
         };
 
-        $scope.fetchIncomingClosed = function () {
-            $scope.viewType = 'جميع المهام الواردة المغلقة';
-            $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الواردة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
-            var search = [];
-            search.push('isTaskOpen=');
-            search.push(false);
-            search.push('&');
-            search.push('taskType=');
-            search.push(true);
-            search.push('&');
-            search.push('person=');
-            search.push($scope.me.id);
-            search.push('&');
-            search.push('timeType=');
-            search.push('All');
-            search.push('&');
-            TaskService.filter(search.join("")).then(function (data) {
-                $scope.tasks = data;
-                $scope.setSelected(data[0]);
-                $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الواردة المغلقة بنجاح", "success", "fa-black-tie");
+        $scope.openFetchIncomingClosed = function () {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: '/ui/partials/task/taskFilter.html',
+                controller: 'taskFilterCtrl',
+                scope: $scope,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    title: function () {
+                        return 'المهام الواردة المغلقة';
+                    },
+                    taskType: function () {
+                        return true;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (buffer) {
+                $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الواردة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
+                var search = [];
+                search.push('isTaskOpen=');
+                search.push(false);
+                search.push('&');
+                search.push('taskType=');
+                search.push(true);
+                search.push('&');
+                search.push('person=');
+                search.push(buffer.person.id);
+                search.push('&');
+                search.push('timeType=');
+                search.push('All');
+                search.push('&');
+                TaskService.filter(search.join("")).then(function (data) {
+                    $scope.tasks = data;
+                    $scope.setSelected(data[0]);
+                    $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الواردة المغلقة بنجاح", "success", "fa-black-tie");
+                });
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
             });
         };
 
-        $scope.fetchOutgoingOpened = function () {
-            $scope.viewType = 'جميع المهام الصادرة السارية';
-            $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الصادرة السارية، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
-            var search = [];
-            search.push('isTaskOpen=');
-            search.push(true);
-            search.push('&');
-            search.push('taskType=');
-            search.push(false);
-            search.push('&');
-            search.push('person=');
-            search.push($scope.me.id);
-            search.push('&');
-            search.push('timeType=');
-            search.push('All');
-            search.push('&');
-            TaskService.filter(search.join("")).then(function (data) {
-                $scope.tasks = data;
-                $scope.setSelected(data[0]);
-                $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الصادرة السارية بنجاح", "success", "fa-black-tie");
+        $scope.openFetchOutgoingOpened = function () {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: '/ui/partials/task/taskFilter.html',
+                controller: 'taskFilterCtrl',
+                scope: $scope,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    title: function () {
+                        return 'المهام الصادرة السارية';
+                    },
+                    taskType: function () {
+                        return false;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (buffer) {
+                $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الصادرة السارية، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
+                var search = [];
+                search.push('isTaskOpen=');
+                search.push(true);
+                search.push('&');
+                search.push('taskType=');
+                search.push(false);
+                search.push('&');
+                search.push('person=');
+                search.push(buffer.person.id);
+                search.push('&');
+                search.push('timeType=');
+                search.push('All');
+                search.push('&');
+                TaskService.filter(search.join("")).then(function (data) {
+                    $scope.tasks = data;
+                    $scope.setSelected(data[0]);
+                    $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الصادرة السارية بنجاح", "success", "fa-black-tie");
+                });
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
             });
         };
 
-        $scope.fetchOutgoingClosed = function () {
-            $scope.viewType = 'جميع المهام الصادرة المغلقة';
-            $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الصادرة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
-            var search = [];
-            search.push('isTaskOpen=');
-            search.push(false);
-            search.push('&');
-            search.push('taskType=');
-            search.push(false);
-            search.push('&');
-            search.push('person=');
-            search.push($scope.me.id);
-            search.push('&');
-            search.push('timeType=');
-            search.push('All');
-            search.push('&');
-            TaskService.filter(search.join("")).then(function (data) {
-                $scope.tasks = data;
-                $scope.setSelected(data[0]);
-                $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الصادرة المغلقة بنجاح", "success", "fa-black-tie");
+        $scope.openFetchOutgoingClosed = function () {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: '/ui/partials/task/taskFilter.html',
+                controller: 'taskFilterCtrl',
+                scope: $scope,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    title: function () {
+                        return 'المهام الصادرة المغلقة';
+                    },
+                    taskType: function () {
+                        return false;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (buffer) {
+                $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الصادرة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
+                var search = [];
+                search.push('isTaskOpen=');
+                search.push(false);
+                search.push('&');
+                search.push('taskType=');
+                search.push(false);
+                search.push('&');
+                search.push('person=');
+                search.push(buffer.person.id);
+                search.push('&');
+                search.push('timeType=');
+                search.push('All');
+                search.push('&');
+                TaskService.filter(search.join("")).then(function (data) {
+                    $scope.tasks = data;
+                    $scope.setSelected(data[0]);
+                    $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الصادرة المغلقة بنجاح", "success", "fa-black-tie");
+                });
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
             });
         };
 

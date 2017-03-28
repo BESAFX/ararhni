@@ -42,11 +42,6 @@
 
 <div ui-view=""></div>
 
-<div dir="rtl" id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
-    <div class="mdl-snackbar__text"></div>
-    <button class="mdl-snackbar__action" type="button"></button>
-</div>
-
 <!-- MDL -->
 <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
@@ -165,6 +160,7 @@
 <script type="text/javascript" th:src="@{~/ui/partials/task/taskCreateUpdate.js}"></script>
 <script type="text/javascript" th:src="@{~/ui/partials/task/taskOperationCreate.js}"></script>
 <script type="text/javascript" th:src="@{~/ui/partials/task/taskDetails.js}"></script>
+<script type="text/javascript" th:src="@{~/ui/partials/task/taskFilter.js}"></script>
 <script type="text/javascript" th:src="@{~/ui/partials/task/taskRequestClose.js}"></script>
 <script type="text/javascript" th:src="@{~/ui/partials/team/team.js}"></script>
 <script type="text/javascript" th:src="@{~/ui/partials/team/teamCreateUpdate.js}"></script>
@@ -176,18 +172,11 @@
 <script type="text/javascript" th:src="@{~/ui/partials/help/help.js}"></script>
 <script type="text/javascript" th:src="@{~/ui/partials/profile/profile.js}"></script>
 <script>
-    app.controller('globalCtrl', function (PersonService, FileService, Fullscreen, $scope, $rootScope, $css, $state, $log, $timeout) {
+    app.controller('globalCtrl', function (PersonService, FileService, $scope, $rootScope, $state, $log, $timeout) {
 
         $scope.$state = $state;
 
         $scope.me = {};
-
-        $scope.fullScreen = function () {
-            if (Fullscreen.isEnabled())
-                Fullscreen.cancel();
-            else
-                Fullscreen.all();
-        };
 
         $timeout(function () {
             PersonService.findActivePerson().then(function (data) {
@@ -196,40 +185,8 @@
                     $scope.logoLink = data;
                 });
             });
-            $rootScope.snackbarContainer = document.querySelector('#demo-toast-example');
         }, 2000);
 
-
-        $rootScope.showDangerMessageBox = function (title, content, sound, onClose) {
-
-        };
-
-        $rootScope.showSuccessMessageBox = function (title, content, sound, onClose) {
-
-        };
-
-        $rootScope.showWarningMessageBox = function (title, content, sound, onClose) {
-
-        };
-
-        $rootScope.showInfoMessageBox = function (title, content, sound, onClose) {
-
-        };
-
-        $scope.hideMessageBox = function () {
-
-        };
-
-        $scope.setTheme = function (themeName) {
-
-        };
-
-        $rootScope.showToast = function (message) {
-            if($rootScope.snackbarContainer){
-                var data = {message: message};
-                $rootScope.snackbarContainer.MaterialSnackbar.showSnackbar(data);
-            }
-        };
     });
 </script>
 </body>

@@ -27,7 +27,31 @@
         </div>
         <div class="mdl-layout__header-row" style="height: auto!important;padding: 0px !important;">
             <div class="panel panel-body" style="width: 100%; margin-bottom: 0px !important;">
-                <div class="col-md-2 full-width-menu pull-right">
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 full-width-menu pull-right">
+                    <button id="view-menu-lower-right" style="width: 100%;"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                        <span>عرض</span>
+                    </button>
+                    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                        for="view-menu-lower-right">
+                        <li class="mdl-menu__item" ng-click="openFetchOutgoingOpened()">
+                            <span>المهام الصادرة السارية</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="openFetchOutgoingClosed()">
+                            <span>المهام الصادرة المغلقة</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="openFetchIncomingOpened()">
+                            <span>المهام الواردة السارية</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="openFetchIncomingClosed()">
+                            <span>المهام الواردة المغلقة</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="showSlideFilter()">
+                            <span>بحث تفصيلي</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 full-width-menu pull-right">
                     <button id="menu-lower-right" style="width: 100%;"
                             class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
                         <span>العمليات</span>
@@ -35,21 +59,6 @@
                     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="menu-lower-right">
                         <li class="mdl-menu__item" ng-click="reload()">
                             <span>تحديث</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="fetchOutgoingOpened()">
-                            <span>عرض المهام الصادرة السارية</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="fetchOutgoingClosed()">
-                            <span>عرض المهام الصادرة المغلقة</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="fetchIncomingOpened()">
-                            <span>عرض المهام الواردة السارية</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="fetchIncomingClosed()">
-                            <span>عرض المهام الواردة المغلقة</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="showSlideFilter()">
-                            <span>بحث تفصيلي</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="openCreateModel()"
                             ng-if="contains(authorities, ['ROLE_TASK_CREATE'])">
@@ -76,10 +85,13 @@
                             ng-hide="!tasks || tasks.length==0">
                             <span>الحركات / المرفقات</span>
                         </li>
+                        <li class="mdl-menu__item" ng-click="openTaskOperationsReportModel()" ng-if="toggleList===1"
+                            ng-hide="!tasks || tasks.length==0">
+                            <span>طباعة الحركات</span>
+                        </li>
                     </ul>
                 </div>
-
-                <div class="pull-left" ng-init="toggleList=3">
+                <div class="pull-left" ng-init="toggleList=1">
                     <div class="btn-toolbar">
                         <div class="btn-group" data-toggle="buttons">
                             <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
@@ -733,7 +745,7 @@
 
                                             <uib-accordion-heading>
                                                 <i class="fa fa-print fa-lg"></i>
-                                                <span>الطباعة</span>
+                                                <span>طباعة التقارير الديناميكية</span>
                                                 <span class="fa fa-info-circle"
                                                       uib-tooltip="سيتم طباعة التقرير بناءاً على خيارات البحث"
                                                       tooltip-append-to-body="true"></span>
