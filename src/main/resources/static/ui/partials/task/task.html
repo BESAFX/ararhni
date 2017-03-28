@@ -124,85 +124,84 @@
         <div dir="rtl" style="margin-top: 10px">
 
             <div class="col-md-12" ng-show="toggleList===1">
-                <div class="col-md-12">
-                    <div class="panel panel-body">
-                        <div class="table-responsive">
-                            <table st-table="collection" st-safe-src="tasks" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                                <thead>
-                                <tr>
-                                    <th class="text-right">
-                                        <span>م</span>
-                                        <a href="" ng-click="showSlideFilter()">
-                                            <span style="font-size: 25px" class="fa fa-filter fa-lg"></span></a>
-                                    </th>
-                                    <th st-sort="code" class="text-right">
-                                        <span> الرقم</span>
-                                    </th>
-                                    <th st-sort="title" class="text-right">
-                                        <span>العنوان</span>
-                                    </th>
-                                    <th st-sort="startDate" class="text-right">
-                                        <span>تاريخ الإنشاء</span>
-                                    </th>
-                                    <th st-sort="person.name" class="text-right">
-                                        <span>جهة التكليف</span>
-                                    </th>
-                                    <th st-sort="taskTos[0].person.name" class="text-right">
-                                        <span>الموظفون</span>
-                                        <span class="fa fa-info-circle"
-                                              uib-tooltip="سيتم الترتيب حسب أول موظف فى الموظفون"></span>
-                                    </th>
-                                    <th st-sort="endDate" class="text-right">
-                                        <span>تاريخ التسليم</span>
-                                    </th>
-                                    <th st-sort="endDate" class="text-right">
-                                        <span>الحالة</span>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="text-right"
-                                    ng-repeat="task in collection"
-                                    context-menu="rowMenu"
-                                    ng-click="setSelected(task)"
-                                    ng-dblclick="openDetailsModel(task)"
-                                    ng-right-click="setSelected(task)"
-                                    st-select-mode="single"
-                                    ng-class="{'mdl-color--light-blue-100':task.isSelected}">
-                                    <td st-select-row-custom="task">{{$index+1}}</td>
-                                    <td st-select-row-custom="task">{{task.code}}</td>
-                                    <td st-select-row-custom="task">
-                                        {{task.title}}
-                                        <span class="fa fa-info-circle"
-                                              uib-tooltip="{{task.content}}"></span>
-                                    </td>
-                                    <td st-select-row-custom="task">
-                                        {{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
-                                        <span class="label label-success">{{task.startDate | date:'h:m a'}}</span>
-                                    </td>
-                                    <td st-select-row-custom="task">
-                                        <span class="label label-danger">{{task.person.name}}</span>
-                                    </td>
-                                    <td st-select-row-custom="task">
+                <div class="panel panel-body">
+                    <div class="table-responsive">
+                        <table st-table="collection" st-safe-src="tasks"
+                               class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                            <thead>
+                            <tr>
+                                <th class="text-right">
+                                    <span>م</span>
+                                    <a href="" ng-click="showSlideFilter()">
+                                        <span style="font-size: 25px" class="fa fa-filter fa-lg"></span></a>
+                                </th>
+                                <th st-sort="code" class="text-right">
+                                    <span> الرقم</span>
+                                </th>
+                                <th st-sort="title" class="text-right">
+                                    <span>العنوان</span>
+                                </th>
+                                <th st-sort="startDate" class="text-right">
+                                    <span>تاريخ الإنشاء</span>
+                                </th>
+                                <th st-sort="person.name" class="text-right">
+                                    <span>جهة التكليف</span>
+                                </th>
+                                <th st-sort="taskTos[0].person.name" class="text-right">
+                                    <span>الموظفون</span>
+                                    <span class="fa fa-info-circle"
+                                          uib-tooltip="سيتم الترتيب حسب أول موظف فى الموظفون"></span>
+                                </th>
+                                <th st-sort="endDate" class="text-right">
+                                    <span>تاريخ التسليم</span>
+                                </th>
+                                <th st-sort="endDate" class="text-right">
+                                    <span>الحالة</span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="text-right"
+                                ng-repeat="task in collection"
+                                context-menu="rowMenu"
+                                ng-click="setSelected(task)"
+                                ng-dblclick="openDetailsModel(task)"
+                                ng-right-click="setSelected(task)"
+                                st-select-mode="single"
+                                ng-class="{'mdl-color--light-blue-100':task.isSelected}">
+                                <td st-select-row-custom="task">{{$index+1}}</td>
+                                <td st-select-row-custom="task">{{task.code}}</td>
+                                <td st-select-row-custom="task">
+                                    {{task.title}}
+                                    <span class="fa fa-info-circle"
+                                          uib-tooltip="{{task.content}}"></span>
+                                </td>
+                                <td st-select-row-custom="task">
+                                    {{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                    <span class="label label-success">{{task.startDate | date:'h:m a'}}</span>
+                                </td>
+                                <td st-select-row-custom="task">
+                                    <span class="label label-danger">{{task.person.name}}</span>
+                                </td>
+                                <td st-select-row-custom="task">
                                     <span class="label label-info" ng-repeat="to in task.taskTos"
                                           style="margin: 2px">{{to.person.name}}</span>
-                                    </td>
-                                    <td st-select-row-custom="task">{{task.endDate | kdate: 'yyyy-mm-dd' :
-                                        'ar' :
-                                        'ummalqura'}}
-                                    </td>
-                                    <td>
-                                        <span ng-class="task.endDate < today ? 'label label-danger' : 'label label-success'">{{task.endDate < today ? 'مغلقة' : 'سارية'}}</span>
-                                    </td>
-                                </tr>
-                                <tr class="blank_row"
-                                    style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!collection || collection.length ==0">
-                                    <td colspan="8">لا توجد بيانات</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                </td>
+                                <td st-select-row-custom="task">{{task.endDate | kdate: 'yyyy-mm-dd' :
+                                    'ar' :
+                                    'ummalqura'}}
+                                </td>
+                                <td>
+                                    <span ng-class="task.endDate < today ? 'label label-danger' : 'label label-success'">{{task.endDate < today ? 'مغلقة' : 'سارية'}}</span>
+                                </td>
+                            </tr>
+                            <tr class="blank_row"
+                                style="height: 10px !important; background-color: #FFFFFF;"
+                                ng-show="!collection || collection.length ==0">
+                                <td colspan="8">لا توجد بيانات</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

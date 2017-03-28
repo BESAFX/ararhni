@@ -1,0 +1,52 @@
+<form dir="rtl" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack="" focus-group-head="loop"
+      focus-group-tail="loop">
+
+    <div class="modal-header">
+        <h3 class="modal-title text-center">تقرير مختصر عن المهام</h3>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row">
+
+            <div class="form-group text-right col-md-12">
+                <label for="master" class="control-label">[رقم المهمة][عنوان المهمة]</label>
+                <select id="master"
+                        data-placeholder="ابحث عن المهمة"
+                        no-results-text="'لا توجد مهام توافق بحثك'"
+                        placeholder-text-multiple="'اختر المهمة'"
+                        class="form-control text-right"
+                        chosen=""
+                        multiple=""
+                        ng-model="buffer.tasksList"
+                        focus-index="1"
+                        ng-options="(' [ ' + task.code + ' ] ' + ' ' + ' [ ' + task.title  +  ' ] ') for task in tasks track by task.id">
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="form-group col-md-12" role="group">
+            <button type="button"
+                    focus-index="6"
+                    ng-click="cancel()"
+                    class="btn btn-danger pull-left">
+                <span>خروج</span>
+                <i class="fa fa-power-off  fa-lg"></i>
+            </button>
+
+            <button type="submit"
+                    focus-index="4"
+                    class="btn btn-success pull-right">
+                <span>طباعة</span>
+                <i class="fa fa-print fa-lg"></i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2017-03-28T12:11:23 -->
+<!-- 2017-03-28T16:41:19 -->
 <jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
@@ -314,7 +314,7 @@
                                                uuid="9d1c47ca-b66c-49dc-a10a-8061e84514f0"/>
                                 <box padding="5"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="7" isBold="true"/>
+                                    <font fontName="Arial" size="8" isBold="false"/>
                                     <paragraph rightIndent="0"/>
                                 </textElement>
                                 <textFieldExpression>
@@ -341,7 +341,7 @@
                                                uuid="cc78e1b5-21fc-404e-8fae-9f44e87137e3"/>
                                 <box padding="5"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="7" isBold="true"/>
+                                    <font fontName="Arial" size="8" isBold="false"/>
                                     <paragraph rightIndent="0"/>
                                 </textElement>
                                 <textFieldExpression>
@@ -368,7 +368,7 @@
                                                uuid="78efbda1-817d-474f-a894-ec24e5b14dbc"/>
                                 <box padding="5"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="7" isBold="true"/>
+                                    <font fontName="Arial" size="8" isBold="false"/>
                                     <paragraph rightIndent="0"/>
                                 </textElement>
                                 <textFieldExpression>
@@ -395,7 +395,7 @@
                                                uuid="64a94381-7259-4b4b-b928-78dcfd423184"/>
                                 <box padding="5"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="7" isBold="true"/>
+                                    <font fontName="Arial" size="8" isBold="false"/>
                                     <paragraph rightIndent="0"/>
                                 </textElement>
                                 <textFieldExpression><![CDATA[$F{person}.getName()]]></textFieldExpression>
@@ -421,7 +421,7 @@
                                                uuid="cb0c9a54-36a6-45e0-aa97-e737ccddcc3f"/>
                                 <box padding="5"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="7" isBold="true"/>
+                                    <font fontName="Arial" size="8" isBold="false"/>
                                     <paragraph rightIndent="0"/>
                                 </textElement>
                                 <textFieldExpression>
@@ -448,7 +448,7 @@
                                                uuid="56336c3f-ddf9-4fec-839f-c8d621d8cfa7"/>
                                 <box padding="5"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="7" isBold="true"/>
+                                    <font fontName="Arial" size="8" isBold="false"/>
                                     <paragraph rightIndent="0"/>
                                 </textElement>
                                 <textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
@@ -474,7 +474,7 @@
                                                uuid="05a0ca4e-18bd-44b1-967d-6fa4e6a9ad63"/>
                                 <box padding="5"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="7" isBold="true"/>
+                                    <font fontName="Arial" size="8" isBold="false"/>
                                     <paragraph rightIndent="0"/>
                                 </textElement>
                                 <textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>

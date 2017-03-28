@@ -315,6 +315,10 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             ModalProvider.openTaskOperationsReportModel($scope.tasks);
         };
 
+        $scope.openReportTasksModel = function () {
+            ModalProvider.openTasksReportModel($scope.tasks);
+        };
+
         $scope.openOperationModel = function (task) {
             if (task) {
                 ModalProvider.openTaskOperationModel(task);
@@ -465,6 +469,17 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.openTaskOperationsReportModel();
+                }
+            });
+
+        $scope.rowMenu.push(
+            {
+                html: '<div style="cursor: pointer;padding: 10px"><span class="fa fa-print fa-lg"></span> طباعة تقرير مختصر </div>',
+                enabled: function () {
+                    return true
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.openReportTasksModel();
                 }
             });
 

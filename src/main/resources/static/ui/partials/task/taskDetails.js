@@ -7,8 +7,12 @@ app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskOperationService', '$sc
             ModalProvider.openTaskOperationCreateModel($scope.task);
         };
 
+        $scope.openReportTaskOperationsModel = function () {
+            ModalProvider.openTaskOperationsReportModel([$scope.task]);
+        };
+
         $scope.findTaskOperations = function () {
-            TaskOperationService.findByTask($scope.selected).then(function (data) {
+            TaskOperationService.findByTask($scope.task).then(function (data) {
                 $scope.task.taskOperations = data;
             })
         };

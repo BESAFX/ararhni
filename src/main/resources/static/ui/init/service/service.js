@@ -450,6 +450,23 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
         });
     };
 
+    this.openTasksReportModel = function (tasks) {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/report/task/tasksIn.html',
+            controller: 'tasksInCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                tasks: function () {
+                    return tasks;
+                }
+            }
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * Task Operation Model                                       *
