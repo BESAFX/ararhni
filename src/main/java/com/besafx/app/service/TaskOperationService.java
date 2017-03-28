@@ -1,5 +1,6 @@
 package com.besafx.app.service;
 
+import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskOperation;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -27,5 +28,5 @@ public interface TaskOperationService extends PagingAndSortingRepository<TaskOpe
 
     List<TaskOperation> findByTaskAndDateAfterAndDateBefore(Task task, @Temporal(TemporalType.DATE) Date startDate, @Temporal(TemporalType.DATE) Date endDate);
 
-    long countByTaskAndDateBetween(Task task, @Temporal(TemporalType.DATE) Date startDate, @Temporal(TemporalType.DATE) Date endDate);
+    long countByTaskAndSenderAndDateBetween(Task task, Person person, @Temporal(TemporalType.DATE) Date startDate, @Temporal(TemporalType.DATE) Date endDate);
 }

@@ -51,7 +51,7 @@ public class ScheduledTasks {
             //Get all opened incoming tasks for this person
             List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, true, true, "All", person.getId());
             tasks.stream().forEach(task -> {
-                long operationsCountToday = taskOperationService.countByTaskAndDateBetween(task, today.toDate(), tomorrow.toDate());
+                long operationsCountToday = taskOperationService.countByTaskAndSenderAndDateBetween(task, person, today.toDate(), tomorrow.toDate());
                 if (operationsCountToday == 0) {
                     try {
                         message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
