@@ -178,14 +178,9 @@
 
         $scope.me = {};
 
-        $timeout(function () {
-            PersonService.findActivePerson().then(function (data) {
-                $scope.me = data;
-                FileService.getSharedLink(data.photo).then(function (data) {
-                    $scope.logoLink = data;
-                });
-            });
-        }, 2000);
+        PersonService.findActivePerson().then(function (data) {
+            $scope.me = data;
+        });
 
     });
 </script>
