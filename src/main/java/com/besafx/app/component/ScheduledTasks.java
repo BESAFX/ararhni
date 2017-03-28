@@ -38,7 +38,7 @@ public class ScheduledTasks {
     @Autowired
     private EmailSender emailSender;
 
-    @Scheduled(cron = "0 0/45 23 * * *")
+    @Scheduled(cron = "0 0/55 23 * * *")
     public void test() {
         System.out.println("ALL");
     }
