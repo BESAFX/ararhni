@@ -10,11 +10,11 @@
         <div class="row">
 
             <div class="form-group text-right col-md-12">
-                <label for="fromPerson" class="control-label">{{buffer.taskType?'الموظفون':'جهة التكليف'}}</label>
+                <label for="fromPerson" class="control-label">{{buffer.taskType?'الموظف':'جهة التكليف'}}</label>
                 <select id="fromPerson"
                         data-placeholder="ابحث عن الاسم"
                         no-results-text="'لا توجد بيانات توافق بحثك'"
-                        placeholder-text-single="'اختر {{buffer.taskType?'الموظفون':'جهة التكليف'}}'"
+                        placeholder-text-single="'اختر {{buffer.taskType?'الموظف':'جهة التكليف'}}'"
                         class="form-control text-right"
                         chosen=""
                         ng-model="buffer.person"

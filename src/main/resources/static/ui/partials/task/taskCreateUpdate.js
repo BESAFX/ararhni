@@ -38,7 +38,9 @@ app.controller('taskCreateUpdateCtrl', ['TaskService', 'PersonService', '$scope'
                     $scope.task.taskTos = taskTos;
                     TaskService.create($scope.task).then(function (data) {
                         $scope.task = {};
-                        $scope.form.$setPristine();
+                        if ($scope.form) {
+                            $scope.form.$setPristine();
+                        }
                         $rootScope.showNotify("المهام", "تم اضافة المهمة بنجاح، يمكنك القيام بعملية آخرى الآن", "success", "fa-black-tie");
                     });
                     break;
