@@ -89,6 +89,10 @@
                             ng-hide="!tasks || tasks.length==0">
                             <span>طباعة الحركات</span>
                         </li>
+                        <li class="mdl-menu__item" ng-click="openReportTasksModel()" ng-if="toggleList===1"
+                            ng-hide="!tasks || tasks.length==0">
+                            <span>طباعة تقرير مختصر</span>
+                        </li>
                     </ul>
                 </div>
                 <div class="pull-left" ng-init="toggleList=1">
