@@ -38,11 +38,6 @@ public class ScheduledTasks {
     @Autowired
     private EmailSender emailSender;
 
-    @Scheduled(fixedRate = 5000)
-    public void reportCurrentTime() {
-        System.out.println("TEST");
-    }
-
     @Scheduled(cron = "0 0 21 * * *")
     public void rememberAllAboutUnCommentedTasks() {
 
