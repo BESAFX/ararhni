@@ -1,7 +1,7 @@
 app.controller('taskFilterCtrl', ['$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'taskType',
     function ($scope, $rootScope, $timeout, $log, $uibModalInstance, title, taskType) {
 
-        $scope.buffer.modalTitle = title;
+        $scope.modalTitle = title;
         $scope.buffer.taskType = taskType;
 
         $scope.submit = function () {
