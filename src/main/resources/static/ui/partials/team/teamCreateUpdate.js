@@ -33,7 +33,6 @@ app.controller('teamCreateUpdateCtrl',
                 RoleService.findByTeam(team.id).then(function (data) {
                     $scope.roles = data;
                     $rootScope.showNotify("المجموعات", "تم تحميل البيانات بنجاح", "success", "fa-shield");
-                    $rootScope.showToast("");
                 });
             } else {
                 $scope.team = {};

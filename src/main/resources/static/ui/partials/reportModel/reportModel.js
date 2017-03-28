@@ -4,7 +4,6 @@ app.controller("reportModelCtrl", ['ReportModelService', 'PersonService', 'Modal
         $scope.selected = {};
 
         $scope.fetchTableData = function () {
-            $rootScope.showToast("");
             $rootScope.showNotify("نماذج الطباعة", "فضلاً انتظر قليلاً حتى الانتهاء من تحميل النماذج", "warning", "fa-print");
             ReportModelService.findAll().then(function (data) {
                 $scope.reportModels = data;

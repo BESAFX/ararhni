@@ -8,7 +8,6 @@ app.controller("personCtrl", ['PersonService', 'ModalProvider', 'FileService', '
             PersonService.findAll().then(function (data) {
                 $scope.persons = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showToast("");
                 $rootScope.showNotify("حسابات المستخدمين", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-user");
                 angular.forEach(data, function (person) {
                     if(person.photo){

@@ -77,4 +77,37 @@ public class ReportTaskController {
         JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
     }
 
+
+    @RequestMapping(value = "/report/Tasks", method = RequestMethod.GET, produces = "application/pdf")
+    @ResponseBody
+    public void ReportTasks(@RequestParam("tasksList") List<Long> tasksList, HttpServletResponse response) throws JRException, IOException {
+
+        if (tasksList.isEmpty()) {
+            throw new CustomException("عفواً، فضلاً اختر على الأقل مهمة واحدة للطباعة");
+        }
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=Report.pdf");
+        final OutputStream outStream = response.getOutputStream();
+
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        StringBuilder param1 = new StringBuilder();
+        param1.append("المعهد الأهلي العالي للتدريب");
+        param1.append("\n");
+        param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
+        param1.append("\n");
+        param1.append("تقرير مختصر عن المهام");
+        map.put("title", param1.toString());
+        map.put("tasks", tasksList.stream().map(value -> taskService.findOne(value)).collect(Collectors.toList()));
+
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/task/Tasks.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+    }
+
 }
