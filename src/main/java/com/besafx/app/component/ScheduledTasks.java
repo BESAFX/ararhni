@@ -38,6 +38,12 @@ public class ScheduledTasks {
     @Autowired
     private EmailSender emailSender;
 
+    @Scheduled(cron = "0 0/45 23 * * *")
+    public void test() {
+        System.out.println("ALL");
+    }
+
+
     @Scheduled(cron = "0 0 21 * * *")
     public void rememberAllAboutUnCommentedTasks() {
 
