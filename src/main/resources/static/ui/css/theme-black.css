@@ -25,7 +25,7 @@ html * {
     width: 80%;
 }
 
-.chosen-container-multi .chosen-choices,
+/*.chosen-container-multi .chosen-choices,*/
 .chosen-container-single .chosen-single {
     height: 40px !important;
 }
