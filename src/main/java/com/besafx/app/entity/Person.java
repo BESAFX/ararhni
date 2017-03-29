@@ -24,6 +24,8 @@ public class Person implements Serializable {
 
     private String name;
 
+    private String nickname;
+
     private String address;
 
     private String mobile;

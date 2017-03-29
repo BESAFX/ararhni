@@ -185,7 +185,7 @@
                                     <span class="label label-success">{{task.startDate | date:'h:m a'}}</span>
                                 </td>
                                 <td st-select-row-custom="task">
-                                    <span class="label label-danger">{{task.person.name}}</span>
+                                    <span class="label label-danger">{{task.person.nickname}} / {{task.person.name}}</span>
                                 </td>
                                 <td st-select-row-custom="task">
                                     <span class="label label-info" ng-repeat="to in task.taskTos"
@@ -232,7 +232,7 @@
                                 <div class="contact-info">
                                     <p>
                                         <small>جهة التكليف</small>
-                                        <br/>{{task.person.name}}
+                                        <br/>{{task.person.nickname}} / {{task.person.name}}
                                     </p>
                                     <p>
                                         <small>تاريخ التسليم</small>
@@ -464,7 +464,7 @@
                                                         <tbody>
                                                         <tr>
                                                             <td colspan="1" class="text-right"><span
-                                                                    class="label label-danger">{{task.person.name}}</span>
+                                                                    class="label label-danger">{{task.person.nickname}} / {{task.person.name}}</span>
                                                             </td>
                                                             <td colspan="1" class="text-left">
                                                     <span class="label label-success">

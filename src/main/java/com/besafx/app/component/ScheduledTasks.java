@@ -1,7 +1,8 @@
 package com.besafx.app.component;
 
-import com.besafx.app.config.EmailSender;
 import com.besafx.app.entity.Task;
+import com.besafx.app.entity.TaskOperation;
+import com.besafx.app.rest.TaskOperationRest;
 import com.besafx.app.search.TaskSearch;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.TaskOperationService;
@@ -9,12 +10,10 @@ import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.List;
 
 @Component
@@ -23,8 +22,6 @@ public class ScheduledTasks {
     private LocalDate today = new DateTime().withTimeAtStartOfDay().toLocalDate();
 
     private LocalDate tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay().toLocalDate();
-
-    private String message = "";
 
     @Autowired
     private PersonService personService;
@@ -36,13 +33,7 @@ public class ScheduledTasks {
     private TaskOperationService taskOperationService;
 
     @Autowired
-    private EmailSender emailSender;
-
-    @Scheduled(cron = "0 0/55 23 * * *")
-    public void test() {
-        System.out.println("ALL");
-    }
-
+    private TaskOperationRest taskOperationRest;
 
     @Scheduled(cron = "0 0 21 * * *")
     public void rememberAllAboutUnCommentedTasks() {
@@ -51,8 +42,6 @@ public class ScheduledTasks {
 
         tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay().toLocalDate();
 
-        ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
-
         Lists.newArrayList(personService.findAll()).stream().forEach(person -> {
             //Get all opened incoming tasks for this person
             List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, true, true, "All", person.getId());
@@ -60,12 +49,13 @@ public class ScheduledTasks {
                 long operationsCountToday = taskOperationService.countByTaskAndSenderAndDateBetween(task, person, today.toDate(), tomorrow.toDate());
                 if (operationsCountToday == 0) {
                     try {
-                        message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+                        TaskOperation taskOperation = new TaskOperation();
+                        taskOperation.setContent("تم وقوع خصومات بمقدار 50 ريال سعودي على " + person.getName() + " وذلك لعدم التفاعل مع المهمة رقم " + task.getCode() + " اليوم، نرجو منه مراجعة جهة التكليف.");
+                        taskOperation.setTask(task);
+                        taskOperationRest.create(taskOperation, task.getPerson());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    message = message.replaceAll("TASK_CODE", task.getCode().toString());
-                    emailSender.send("تحذير بشأن عدم ارسال حركات على المهمة رقم: " + "(" + task.getCode().toString() + ")", message, person.getEmail());
                 }
             });
         });

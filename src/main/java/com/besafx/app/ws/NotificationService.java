@@ -11,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.Optional;
 
 @Service
@@ -28,7 +27,7 @@ public class NotificationService {
     //Send to one destination
     public void notifyOne(Notification notification, String username) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        notification.setSender(auth.getName());
+        Optional.ofNullable(auth).ifPresent(value -> notification.setSender(value.getName()));
         notification.setReceiver(username);
         messagingTemplate.convertAndSendToUser(username, "/queue/notify", notification);
         logger.info("Send notification to " + notification.getReceiver() + ": " + notification);

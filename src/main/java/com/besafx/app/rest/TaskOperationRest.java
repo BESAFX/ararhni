@@ -6,17 +6,11 @@ import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskOperation;
 import com.besafx.app.entity.TaskOperationAttach;
-import com.besafx.app.service.PersonService;
-import com.besafx.app.service.TaskOperationAttachService;
-import com.besafx.app.service.TaskOperationService;
-import com.besafx.app.service.TaskService;
+import com.besafx.app.service.*;
 import com.besafx.app.util.DateConverter;
-import com.besafx.app.util.IOUtils;
-import com.besafx.app.util.NotifyCode;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -42,6 +36,9 @@ public class TaskOperationRest {
     private TaskService taskService;
 
     @Autowired
+    private TaskToService taskToService;
+
+    @Autowired
     private TaskOperationService taskOperationService;
 
     @Autowired
@@ -56,10 +53,13 @@ public class TaskOperationRest {
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public TaskOperation create(@RequestBody TaskOperation taskOperation, Principal principal) throws IOException {
-        if(taskOperation.getTask().getEndDate().before(new Date())){
+        return create(taskOperation, personService.findByEmail(principal.getName()));
+    }
+
+    public TaskOperation create(TaskOperation taskOperation, Person person) throws IOException {
+        if (taskOperation.getTask().getEndDate().before(new Date())) {
             throw new CustomException("لا يمكن اضافة حركات إلى مهمة مغلقة");
         }
-        Person person = personService.findByEmail(principal.getName());
         Integer maxCode = taskOperationService.findLastCodeByTask(taskOperation.getTask().getId());
         if (maxCode == null) {
             taskOperation.setCode(1);
@@ -81,11 +81,11 @@ public class TaskOperationRest {
                 .message("تم اضافة حركة جديدة بنجاح")
                 .type("success")
                 .icon("fa-black-tie")
-                .build(), principal.getName());
+                .build(), person.getName());
         notificationService.notifyAllExceptMe(Notification
                 .builder()
                 .title("العمليات على المهام")
-                .message("تم اضافة حركة جديدة بواسطة " +  personService.findByEmail(principal.getName()).getName() + " على المهمة رقم " + taskOperation.getTask().getCode())
+                .message("تم اضافة حركة جديدة بواسطة " + person.getName() + " على المهمة رقم " + taskOperation.getTask().getCode())
                 .type("warning")
                 .icon("fa-black-tie")
                 .build());
@@ -101,12 +101,12 @@ public class TaskOperationRest {
 
         final String emailTemp = taskOperation.getSender().getEmail();
         List<String> emails = new ArrayList<>();
-        if(taskOperation.getSender().getId().longValue() != taskOperation.getTask().getPerson().getId().longValue()){
+        if (taskOperation.getSender().getId().longValue() != taskOperation.getTask().getPerson().getId().longValue()) {
             emails.add(taskOperation.getTask().getPerson().getEmail());
         }
-        emails.addAll(taskOperation
-                .getTask()
-                .getTaskTos()
+
+        emails.addAll(taskToService
+                .findByTask(taskOperation.getTask())
                 .stream()
                 .filter(to -> !to.getPerson().getEmail().equals(emailTemp))
                 .map(to -> to.getPerson().getEmail())
