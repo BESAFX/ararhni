@@ -32,14 +32,12 @@
                             </tr>
                             <tr>
                                 <td>تاريخ الإنشاء</td>
-                                <td>{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' :
-                                    'ummalqura'}}
+                                <td>{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>تاريخ التسليم</td>
-                                <td>{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' :
-                                    'ummalqura'}}
+                                <td>{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
                                 </td>
                             </tr>
                             <tr>
@@ -77,7 +75,7 @@
                     <div class="panel-body panel-body-table">
                         <div class="table-responsive">
                             <table st-table="collectionOperation" st-safe-src="task.taskOperations"
-                                   class="table table-bordered table-striped">
+                                   class="table table-bordered">
                                 <thead>
                                 <tr>
                                     <th st-sort="sender.name" class="text-center">المرسل</th>
@@ -86,7 +84,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="taskOperation in collectionOperation | orderBy:date:false">
+                                <tr ng-repeat="taskOperation in collectionOperation"
+                                    ng-class="{'danger':taskOperation.sender.id===me.manager.id}">
                                     <td width="20%">{{taskOperation.sender.nickname}} / {{taskOperation.sender.name}}
                                     </td>
                                     <td>
