@@ -39,6 +39,7 @@ public class TaskOperation implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "sender")
+    @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees"}, allowSetters = true)
     private Person sender;
 
     @OneToMany(mappedBy = "taskOperation")

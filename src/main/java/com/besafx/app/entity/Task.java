@@ -1,17 +1,17 @@
 package com.besafx.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.OrderBy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -41,15 +41,16 @@ public class Task implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "person")
+    @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees"}, allowSetters = true)
     private Person person;
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
     private List<TaskTo> taskTos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
     private List<TaskCloseRequest> taskCloseRequests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
     private List<TaskOperation> taskOperations = new ArrayList<>();
 
     @JsonCreator
