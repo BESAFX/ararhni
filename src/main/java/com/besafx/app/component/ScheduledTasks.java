@@ -35,13 +35,33 @@ public class ScheduledTasks {
     @Autowired
     private TaskOperationRest taskOperationRest;
 
-    @Scheduled(cron = "0 0 21 * * *")
-    public void rememberAllAboutUnCommentedTasks() {
-
+    @Scheduled(cron = "0 0 24 * * *")
+    public void warnAllAboutUnCommentedTasksAtMidNight() {
         today = new DateTime().withTimeAtStartOfDay().toLocalDate();
-
         tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay().toLocalDate();
+        Lists.newArrayList(personService.findAll()).stream().forEach(person -> {
+            //Get all opened incoming tasks for this person
+            List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, true, true, "All", person.getId());
+            tasks.stream().forEach(task -> {
+                long operationsCountToday = taskOperationService.countByTaskAndSenderAndDateBetween(task, person, today.toDate(), tomorrow.toDate());
+                if (operationsCountToday == 0) {
+                    try {
+                        TaskOperation taskOperation = new TaskOperation();
+                        taskOperation.setContent("تحذير بالخصم للموظف / " + person.getName() + " وذلك لعدم التفاعل مع المهمة رقم " + task.getCode() + " اليوم، نرجو منه مراجعة جهة التكليف.");
+                        taskOperation.setTask(task);
+                        taskOperationRest.create(taskOperation, task.getPerson());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        });
+    }
 
+    @Scheduled(cron = "0 0 12 * * *")
+    public void warnAllAboutUnCommentedTasksAtAfternoon() {
+        today = new DateTime().withTimeAtStartOfDay().toLocalDate();
+        tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay().toLocalDate();
         Lists.newArrayList(personService.findAll()).stream().forEach(person -> {
             //Get all opened incoming tasks for this person
             List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, true, true, "All", person.getId());
