@@ -1102,7 +1102,7 @@
                                             <ul class="panel-controls pull-left" style="margin-top: 2px;">
                                                 <li>
                                                     <a href="" ng-click="findTaskOperations()" uib-tooltip="تحديث">
-                                                        <span class="fa fa-refresh fa-spin fa-fw"></span>
+                                                        <span class="fa fa-refresh"></span>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -1118,6 +1118,9 @@
                                                     <tr>
                                                         <th class="text-right">
                                                             <span>رقم الحركة</span>
+                                                        </th>
+                                                        <th st-sort="sender.name" class="text-right">
+                                                            <span>المرسل</span>
                                                         </th>
                                                         <th class="text-right" st-sort="date" st-sort-default="reverse">
                                                             <span>التاريخ والوقت</span>
@@ -1136,6 +1139,10 @@
                                                         ng-repeat="taskOperation in collection2">
                                                         <td st-select-row-custom="taskOperation" class="fit">
                                                             {{taskOperation.code}}
+                                                        </td>
+                                                        <td st-select-row-custom="taskOperation" class="fit">
+                                                            {{taskOperation.sender.nickname}} /
+                                                            {{taskOperation.sender.name}}
                                                         </td>
                                                         <td st-select-row-custom="taskOperation" class="fit">
                                                             {{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' :
