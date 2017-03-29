@@ -35,7 +35,7 @@ public class ScheduledTasks {
     @Autowired
     private TaskOperationRest taskOperationRest;
 
-    @Scheduled(cron = "0 0 24 * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void warnAllAboutUnCommentedTasksAtMidNight() {
         today = new DateTime().withTimeAtStartOfDay().toLocalDate();
         tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay().toLocalDate();
