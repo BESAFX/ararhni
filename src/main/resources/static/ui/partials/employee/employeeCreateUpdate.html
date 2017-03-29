@@ -22,68 +22,33 @@
 
                         <div class="form-group text-right col-md-12">
                             <label for="department" class="control-label">القسم</label>
-                            <div dir="ltr" class="input-group" id="department">
-                                <div class="input-group-btn">
-                                    <button type="button"
-                                            class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false">
-                                        <span class="caret"></span>
-                                        <span>العمليات</span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="" ng-click="ModalProvider.openDepartmentCreateModel()"><span class="fa fa-plus-square-o"></span>اضافة </a></li>
-                                        <li><a href=""><span class="fa fa-edit"></span>تعديل </a></li>
-                                        <li><a href=""><span class="fa fa-minus-square"></span>حذف </a></li>
-                                        <li><a href="" ng-click="fetchDepartmentData()"><span class="fa fa-repeat"></span>تحديث </a></li>
-                                    </ul>
-                                </div>
-                                <select data-placeholder="ابحث عن القسم من خلال اسمه"
-                                        no-results-text="'لا توجد بيانات توافق بحثك'"
-                                        placeholder-text-single="'اختر القسم'"
-                                        class="form-control text-right"
-                                        chosen=""
-                                        ng-model="employee.department"
-                                        focus-index="1"
-                                        required="required"
-                                        disable-validation-message=""
-                                        ng-options="department.name group by department.branch.name for department in departments track by department.id">
-                                </select>
-                            </div>
+                            <select id="department"
+                                    data-placeholder="ابحث عن القسم من خلال اسمه"
+                                    no-results-text="'لا توجد بيانات توافق بحثك'"
+                                    placeholder-text-single="'اختر القسم'"
+                                    class="form-control text-right"
+                                    chosen=""
+                                    ng-model="employee.department"
+                                    focus-index="1"
+                                    required="required"
+                                    disable-validation-message=""
+                                    ng-options="department.name group by department.branch.name for department in departments track by department.id">
+                            </select>
                         </div>
 
                         <div class="form-group text-right col-md-12">
                             <label for="person" class="control-label"> الموظف</label>
-                            <div dir="ltr" class="input-group" id="person">
-                                <div class="input-group-btn">
-                                    <button type="button"
-                                            class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false">
-                                        <span class="caret"></span>
-                                        <span>العمليات</span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="" ng-click="ModalProvider.openPersonCreateModel()"><span class="fa fa-plus-square-o"></span>اضافة </a></li>
-                                        <li><a href=""><span class="fa fa-edit"></span>تعديل </a></li>
-                                        <li><a href=""><span class="fa fa-minus-square"></span>حذف </a></li>
-                                        <li><a href="" ng-click="fetchPersonData()"><span class="fa fa-repeat"></span>تحديث </a></li>
-                                    </ul>
-                                </div>
-                                <select dir="rtl"
-                                        data-placeholder="ابحث عن حساب المستخدم من خلال الاسم"
-                                        no-results-text="'لا توجد بيانات'"
-                                        placeholder-text-single="'اختر حساب المستخدم'"
-                                        class="form-control text-right"
-                                        chosen=""
-                                        ng-model="employee.person"
-                                        required="required"
-                                        disable-validation-message=""
-                                        ng-options="person.name for person in persons track by person.id">
-                                </select>
-                            </div>
+                            <select id="person"
+                                    data-placeholder="ابحث عن حساب المستخدم من خلال الاسم"
+                                    no-results-text="'لا توجد بيانات'"
+                                    placeholder-text-single="'اختر حساب المستخدم'"
+                                    class="form-control text-right"
+                                    chosen=""
+                                    ng-model="employee.person"
+                                    required="required"
+                                    disable-validation-message=""
+                                    ng-options="person.name for person in persons track by person.id">
+                            </select>
                         </div>
 
                     </div>

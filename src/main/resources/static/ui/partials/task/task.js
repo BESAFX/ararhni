@@ -378,7 +378,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
         if ($rootScope.contains($rootScope.authorities, ['ROLE_TASK_CREATE'])) {
             $scope.rowMenu.push(
                 {
-                    html: '<div style="cursor: pointer;padding: 10px"><span class="fa fa-plus fa-lg"></span> اضافة مهمة</div>',
+                    html: '<div style="cursor: pointer;padding: 10px;text-align: right"> اضافة مهمة <span class="fa fa-plus fa-lg"></span></div>',
                     enabled: function () {
                         return true
                     },
@@ -391,7 +391,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
         if ($rootScope.contains($rootScope.authorities, ['ROLE_TASK_UPDATE'])) {
             $scope.rowMenu.push(
                 {
-                    html: '<div style="cursor: pointer;padding: 10px"><span class="fa fa-edit fa-lg"></span> تعديل بيانات مهمة</div>',
+                    html: '<div style="cursor: pointer;padding: 10px;text-align: right"> تعديل بيانات مهمة <span class="fa fa-edit fa-lg"></span></div>',
                     enabled: function () {
                         return true
                     },
@@ -404,7 +404,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
         if ($rootScope.contains($rootScope.authorities, ['ROLE_TASK_DELETE'])) {
             $scope.rowMenu.push(
                 {
-                    html: '<div style="cursor: pointer;padding: 10px"><span class="fa fa-minus-square-o fa-lg"></span> حذف مهمة</div>',
+                    html: '<div style="cursor: pointer;padding: 10px;text-align: right"> حذف مهمة <span class="fa fa-minus-square-o fa-lg"></span></div>',
                     enabled: function () {
                         return true
                     },
@@ -417,7 +417,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
         if ($rootScope.contains($rootScope.authorities, ['ROLE_TASK_OPERATION_CREATE'])) {
             $scope.rowMenu.push(
                 {
-                    html: '<div style="cursor: pointer;padding: 10px"><span class="fa fa-plus fa-lg"></span> اضافة حركة</div>',
+                    html: '<div style="cursor: pointer;padding: 10px;text-align: right"> اضافة حركة <span class="fa fa-plus fa-lg"></span></div>',
                     enabled: function () {
                         return true
                     },
@@ -429,7 +429,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
 
         $scope.rowMenu.push(
             {
-                html: '<div style="cursor: pointer;padding: 10px"><span class="fa fa-power-off fa-lg"></span> طلب إغلاق</div>',
+                html: '<div style="cursor: pointer;padding: 10px;text-align: right"> طلب إغلاق <span class="fa fa-power-off fa-lg"></span></div>',
                 enabled: function () {
                     return true
                 },
@@ -440,7 +440,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
 
         $scope.rowMenu.push(
             {
-                html: '<div style="cursor: pointer;padding: 10px"><span class="fa fa-gg fa-lg"></span> الحركات / المرفقات</div>',
+                html: '<div style="cursor: pointer;padding: 10px;text-align: right"> الحركات / المرفقات <span class="fa fa-gg fa-lg"></span></div>',
                 enabled: function () {
                     return true
                 },
@@ -452,7 +452,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
 
         $scope.rowMenu.push(
             {
-                html: '<div style="cursor: pointer;padding: 10px"><span class="fa fa-info fa-lg"></span> التفاصيل</div>',
+                html: '<div style="cursor: pointer;padding: 10px;text-align: right"> التفاصيل <span class="fa fa-info fa-lg"></span></div>',
                 enabled: function () {
                     return true
                 },
@@ -463,7 +463,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
 
         $scope.rowMenu.push(
             {
-                html: '<div style="cursor: pointer;padding: 10px"><span class="fa fa-print fa-lg"></span> طباعة الحركات</div>',
+                html: '<div style="cursor: pointer;padding: 10px;text-align: right"> طباعة الحركات <span class="fa fa-print fa-lg"></span></div>',
                 enabled: function () {
                     return true
                 },
@@ -474,7 +474,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
 
         $scope.rowMenu.push(
             {
-                html: '<div style="cursor: pointer;padding: 10px"><span class="fa fa-print fa-lg"></span> طباعة تقرير مختصر </div>',
+                html: '<div style="cursor: pointer;padding: 10px;text-align: right"> طباعة تقرير مختصر <span class="fa fa-print fa-lg"></span></div>',
                 enabled: function () {
                     return true
                 },
