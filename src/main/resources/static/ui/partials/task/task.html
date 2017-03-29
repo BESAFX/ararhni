@@ -317,10 +317,10 @@
                                                                     class="label label-info">{{taskCloseRequest.person.name}}</span>
                                                             </td>
                                                             <td colspan="1" class="text-left">
-                                                    <span class="label label-success">
-                                                        <timer interval="60000"
-                                                               start-time="taskCloseRequest.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span> {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
-                                                    </span>
+                                                                <span class="label label-success">
+                                                                    <timer interval="60000"
+                                                                           start-time="taskCloseRequest.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span> {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
+                                                                </span>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -386,13 +386,14 @@
                                                     <table width="100%">
                                                         <tbody>
                                                         <tr>
-                                                            <td colspan="1" class="text-right"><span
-                                                                    class="label label-info">{{taskOperation.sender.name}}</span>
+                                                            <td colspan="1" class="text-right">
+                                                                <span ng-class="(taskOperation.sender.id===me.manager.id) ? 'label label-danger' : 'label label-info'">{{taskOperation.sender.nickname}} / {{taskOperation.sender.name}}</span>
                                                             </td>
                                                             <td colspan="1" class="text-left">
-                                                    <span class="label label-success">
-                                                        <timer interval="60000" start-time="taskOperation.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span> {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
-                                                    </span>
+                                                                <span class="label label-success">
+                                                                    <timer interval="60000"
+                                                                           start-time="taskOperation.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span> {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
+                                                                </span>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -1041,28 +1042,18 @@
                             <div class="row">
 
                                 <div class="form-group text-right col-md-12">
-                                    <label for="task" class="control-label">عنوان المهمة</label>
-                                    <div dir="ltr" class="input-group" id="task">
-                                        <div class="input-group-btn">
-                                            <button type="button"
-                                                    ng-click="findTaskOperations()"
-                                                    class="btn btn-primary">
-                                                <span>تحميل الحركات / المرفقات</span>
-                                                <i class="fa fa-download"></i>
-                                            </button>
-                                        </div>
-                                        <select dir="rtl"
-                                                data-placeholder="ابحث عن اسم المهمة"
-                                                no-results-text="'لا توجد بيانات توافق بحثك'"
-                                                placeholder-text-single="'اختر المهمة'"
-                                                class="form-control text-right"
-                                                chosen=""
-                                                ng-model="selected"
-                                                ng-change="setSelected(selected)"
-                                                focus-index="1"
-                                                ng-options="task.title for task in tasks track by task.id">
-                                        </select>
-                                    </div>
+                                    <label for="task" class="control-label">[رقم المهمة][عنوان المهمة]</label>
+                                    <select id="task"
+                                            data-placeholder="ابحث عن اسم المهمة"
+                                            no-results-text="'لا توجد بيانات توافق بحثك'"
+                                            placeholder-text-single="'اختر المهمة'"
+                                            class="form-control text-right"
+                                            chosen=""
+                                            ng-model="selected"
+                                            ng-change="setSelected(selected)"
+                                            focus-index="1"
+                                            ng-options="( ' [ ' + task.code + ' ] ' + ' ' + ' [ ' + task.title + ' ] ') for task in tasks track by task.id">
+                                    </select>
                                 </div>
 
                                 <div class="form-group text-right col-md-4">
@@ -1135,8 +1126,8 @@
                                                         ng-click="setSelectedOperation(taskOperation)"
                                                         ng-right-click="setSelectedOperation(taskOperation)"
                                                         st-select-mode="single"
-                                                        ng-class="{'animated flash':taskOperation.isSelected}"
-                                                        ng-repeat="taskOperation in collection2">
+                                                        ng-repeat="taskOperation in collection2"
+                                                        ng-class="{'danger':taskOperation.sender.id===me.manager.id}">
                                                         <td st-select-row-custom="taskOperation" class="fit">
                                                             {{taskOperation.code}}
                                                         </td>
@@ -1171,18 +1162,25 @@
 
                         <div class="panel-footer">
 
-                            <div class="row">
-
-                                <div class="form-group col-md-2 pull-left">
-                                    <button type="button"
-                                            style="width: 100%"
-                                            ng-click="openCreateOperationModel()"
-                                            class="btn btn-success">
-                                        <i class="fa fa-clock-o fa-lg"></i>
-                                        <span>اضافة حركة جديدة</span>
-                                    </button>
-                                </div>
-
+                            <div class="form-group col-md-12" role="group">
+                                <button type="button"
+                                        ng-click="openTaskOperationsReportModel()"
+                                        class="btn btn-success">
+                                    <i class="fa fa-print fa-lg"></i>
+                                    <span>طباعة تقرير الحركات</span>
+                                </button>
+                                <button type="button"
+                                        ng-click="openReportTasksModel()"
+                                        class="btn btn-success">
+                                    <i class="fa fa-print fa-lg"></i>
+                                    <span>طباعة تقرير مختصر</span>
+                                </button>
+                                <button type="button"
+                                        ng-click="openCreateOperationModel()"
+                                        class="btn btn-success">
+                                    <i class="fa fa-clock-o fa-lg"></i>
+                                    <span>اضافة حركة جديدة</span>
+                                </button>
                             </div>
 
                         </div>

@@ -178,7 +178,7 @@
 
         $scope.$state = $state;
 
-        $scope.me = {};
+        $rootScope.me = {};
 
         PersonService.findActivePerson().then(function (data) {
             $rootScope.me = data;
