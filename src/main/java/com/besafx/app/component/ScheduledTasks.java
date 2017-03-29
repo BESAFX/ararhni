@@ -19,9 +19,11 @@ import java.util.List;
 @Component
 public class ScheduledTasks {
 
-    private LocalDate today = new DateTime().withTimeAtStartOfDay().toLocalDate();
+    private LocalDate yesterday;
 
-    private LocalDate tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay().toLocalDate();
+    private LocalDate today;
+
+    private LocalDate tomorrow;
 
     @Autowired
     private PersonService personService;
@@ -37,13 +39,13 @@ public class ScheduledTasks {
 
     @Scheduled(cron = "0 0 0 * * *")
     public void warnAllAboutUnCommentedTasksAtMidNight() {
+        yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay().toLocalDate();
         today = new DateTime().withTimeAtStartOfDay().toLocalDate();
-        tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay().toLocalDate();
         Lists.newArrayList(personService.findAll()).stream().forEach(person -> {
             //Get all opened incoming tasks for this person
             List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, true, true, "All", person.getId());
             tasks.stream().forEach(task -> {
-                long operationsCountToday = taskOperationService.countByTaskAndSenderAndDateBetween(task, person, today.toDate(), tomorrow.toDate());
+                long operationsCountToday = taskOperationService.countByTaskAndSenderAndDateBetween(task, person, yesterday.toDate(), today.toDate());
                 if (operationsCountToday == 0) {
                     try {
                         TaskOperation taskOperation = new TaskOperation();
