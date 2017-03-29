@@ -467,6 +467,23 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
         });
     };
 
+    this.openPersonsReportModel = function (persons) {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/report/person/personsIn.html',
+            controller: 'personsInCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            resolve: {
+                persons: function () {
+                    return persons;
+                }
+            }
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * Task Operation Model                                       *

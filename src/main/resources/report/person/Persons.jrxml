@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2017-03-29T12:16:59 -->
+<!-- 2017-03-29T12:55:00 -->
 <jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
-              name="Tasks" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail"
-              columnWidth="822" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10"
-              isSummaryWithPageHeaderAndFooter="true" uuid="d667083a-5ee3-46f8-b604-36494df2d410">
+              name="Persons" pageWidth="842" pageHeight="595" orientation="Landscape"
+              whenNoDataType="AllSectionsNoDetail" columnWidth="822" leftMargin="10" rightMargin="10" topMargin="10"
+              bottomMargin="10" isSummaryWithPageHeaderAndFooter="true" uuid="d667083a-5ee3-46f8-b604-36494df2d410">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
     <property name="com.jaspersoft.studio.unit." value="pixel"/>
     <property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -68,17 +68,18 @@
         <queryString>
             <![CDATA[]]>
         </queryString>
-        <field name="code" class="java.lang.Integer"/>
-        <field name="content" class="java.lang.String"/>
-        <field name="endDate" class="java.util.Date"/>
-        <field name="title" class="java.lang.String"/>
-        <field name="startDate" class="java.util.Date"/>
-        <field name="person" class="com.besafx.app.entity.Person"/>
-        <field name="taskTos" class="java.util.List"/>
-        <sortField name="code"/>
+        <field name="nickname" class="java.lang.String"/>
+        <field name="name" class="java.lang.String"/>
+        <field name="email" class="java.lang.String"/>
+        <field name="mobile" class="java.lang.String"/>
+        <field name="qualification" class="java.lang.String"/>
+        <field name="identityNumber" class="java.lang.String"/>
+        <field name="team" class="com.besafx.app.entity.Team"/>
+        <field name="nationality" class="java.lang.String"/>
+        <sortField name="nickname"/>
     </subDataset>
     <parameter name="title" class="java.lang.String"/>
-    <parameter name="tasks" class="java.util.List"/>
+    <parameter name="persons" class="java.util.List"/>
     <background>
         <band height="575">
             <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -294,184 +295,205 @@
                           whenNoDataType="AllSectionsNoDetail">
                     <datasetRun subDataset="ItemDataset" uuid="65ffe2d1-f8a8-4733-910b-4395c740ac81">
                         <dataSourceExpression>
-                            <![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{tasks})]]></dataSourceExpression>
+                            <![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{persons})]]></dataSourceExpression>
                     </datasetRun>
-                    <jr:column width="118" uuid="af9ad1de-dc98-4d6c-b3ed-8fa1cbd47024">
+                    <jr:column width="106" uuid="af9ad1de-dc98-4d6c-b3ed-8fa1cbd47024">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
                         <jr:columnHeader height="20" rowSpan="1">
                             <staticText>
-                                <reportElement style="Table_TH" x="0" y="0" width="118" height="20"
+                                <reportElement style="Table_TH" x="0" y="0" width="106" height="20"
                                                uuid="988c8e62-5e04-4450-a097-43111744471a"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font fontName="Arial" size="9"/>
                                 </textElement>
-                                <text><![CDATA[الحالة]]></text>
+                                <text><![CDATA[الجنسية]]></text>
                             </staticText>
                         </jr:columnHeader>
                         <jr:detailCell height="20">
                             <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
                                 <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                               width="118" height="20" uuid="9d1c47ca-b66c-49dc-a10a-8061e84514f0"/>
+                                               width="106" height="20" uuid="9d1c47ca-b66c-49dc-a10a-8061e84514f0"/>
                                 <box padding="5"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font fontName="Arial" size="8" isBold="false"/>
                                     <paragraph rightIndent="0"/>
                                 </textElement>
-                                <textFieldExpression>
-                                    <![CDATA[$F{endDate}.getTime() > new java.util.Date().getTime() ? "سارية" : "مغلقة"]]></textFieldExpression>
+                                <textFieldExpression><![CDATA[$F{nationality}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="119" uuid="1c7759b2-a5b5-4f1b-84b8-83f95c402b86">
+                    <jr:column width="105" uuid="1c7759b2-a5b5-4f1b-84b8-83f95c402b86">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
                         <jr:columnHeader height="20" rowSpan="1">
                             <staticText>
-                                <reportElement style="Table_TH" x="0" y="0" width="119" height="20"
+                                <reportElement style="Table_TH" x="0" y="0" width="105" height="20"
                                                uuid="8ab0516d-0ecb-423f-bebd-63bd01636169"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font fontName="Arial" size="9"/>
                                 </textElement>
-                                <text><![CDATA[تاريخ التسليم]]></text>
+                                <text><![CDATA[مجموعة الصلاحيات]]></text>
                             </staticText>
                         </jr:columnHeader>
                         <jr:detailCell height="20">
                             <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
                                 <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                               width="119" height="20" uuid="cc78e1b5-21fc-404e-8fae-9f44e87137e3"/>
+                                               width="105" height="20" uuid="cc78e1b5-21fc-404e-8fae-9f44e87137e3"/>
                                 <box padding="5"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font fontName="Arial" size="8" isBold="false"/>
                                     <paragraph rightIndent="0"/>
                                 </textElement>
-                                <textFieldExpression>
-                                    <![CDATA[com.besafx.app.util.DateConverter.getHijriStringFromDateRTL($F{endDate})]]></textFieldExpression>
+                                <textFieldExpression><![CDATA[$F{team}.getName()]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="116" uuid="064ea24d-be3b-483e-bb8d-7119d40d5850">
+                    <jr:column width="104" uuid="064ea24d-be3b-483e-bb8d-7119d40d5850">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
                         <jr:columnHeader height="20" rowSpan="1">
                             <staticText>
-                                <reportElement style="Table_TH" x="0" y="0" width="116" height="20"
+                                <reportElement style="Table_TH" x="0" y="0" width="104" height="20"
                                                uuid="91b9a59f-1ef6-4658-aa6d-cb8d00bbf0cc"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font fontName="Arial" size="9"/>
                                 </textElement>
-                                <text><![CDATA[الموظفون]]></text>
+                                <text><![CDATA[رقم البطاقة]]></text>
                             </staticText>
                         </jr:columnHeader>
                         <jr:detailCell height="20">
                             <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
                                 <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                               width="116" height="20" uuid="78efbda1-817d-474f-a894-ec24e5b14dbc"/>
+                                               width="104" height="20" uuid="78efbda1-817d-474f-a894-ec24e5b14dbc"/>
                                 <box padding="5"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font fontName="Arial" size="8" isBold="false"/>
                                     <paragraph rightIndent="0"/>
                                 </textElement>
-                                <textFieldExpression>
-                                    <![CDATA[com.besafx.app.util.UtilsFX.getPersonNamesFromTaskTos($F{taskTos})]]></textFieldExpression>
+                                <textFieldExpression><![CDATA[$F{identityNumber}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="123" uuid="fe329fd2-b8fe-43dc-a5ea-4cb6ee80e8ae">
+                    <jr:column width="101" uuid="fe329fd2-b8fe-43dc-a5ea-4cb6ee80e8ae">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
                         <jr:columnHeader height="20" rowSpan="1">
                             <staticText>
-                                <reportElement style="Table_TH" x="0" y="0" width="123" height="20"
+                                <reportElement style="Table_TH" x="0" y="0" width="101" height="20"
                                                uuid="3a6fdf5f-3d95-4d30-94ef-82ba871bb9a3"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font fontName="Arial" size="9"/>
                                 </textElement>
-                                <text><![CDATA[جهة التكليف]]></text>
+                                <text><![CDATA[المؤهل]]></text>
                             </staticText>
                         </jr:columnHeader>
                         <jr:detailCell height="20">
                             <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
                                 <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                               width="123" height="20" uuid="64a94381-7259-4b4b-b928-78dcfd423184"/>
+                                               width="101" height="20" uuid="64a94381-7259-4b4b-b928-78dcfd423184"/>
                                 <box padding="5"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font fontName="Arial" size="8" isBold="false"/>
                                     <paragraph rightIndent="0"/>
                                 </textElement>
-                                <textFieldExpression><![CDATA[$F{person}.getName()]]></textFieldExpression>
+                                <textFieldExpression><![CDATA[$F{qualification}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="109" uuid="9322bec1-a517-4f0a-932d-055c27ec934d">
+                    <jr:column width="100" uuid="9322bec1-a517-4f0a-932d-055c27ec934d">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
                         <jr:columnHeader height="20" rowSpan="1">
                             <staticText>
-                                <reportElement style="Table_TH" x="0" y="0" width="109" height="20"
+                                <reportElement style="Table_TH" x="0" y="0" width="100" height="20"
                                                uuid="9fd8499c-8457-40fe-8ed7-eae1a71ea278"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font fontName="Arial" size="9"/>
                                 </textElement>
-                                <text><![CDATA[تاريخ الإنشاء]]></text>
+                                <text><![CDATA[الجوال]]></text>
                             </staticText>
                         </jr:columnHeader>
                         <jr:detailCell height="20">
                             <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
                                 <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                               width="109" height="20" uuid="cb0c9a54-36a6-45e0-aa97-e737ccddcc3f"/>
+                                               width="100" height="20" uuid="cb0c9a54-36a6-45e0-aa97-e737ccddcc3f"/>
                                 <box padding="5"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font fontName="Arial" size="8" isBold="false"/>
                                     <paragraph rightIndent="0"/>
                                 </textElement>
-                                <textFieldExpression>
-                                    <![CDATA[com.besafx.app.util.DateConverter.getHijriStringFromDateRTL($F{startDate})]]></textFieldExpression>
+                                <textFieldExpression><![CDATA[$F{mobile}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="119" uuid="c8d07d47-0a06-469c-b699-0cca9ba58669">
+                    <jr:column width="99" uuid="c8d07d47-0a06-469c-b699-0cca9ba58669">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
                         <jr:columnHeader height="20" rowSpan="1">
                             <staticText>
-                                <reportElement style="Table_TH" x="0" y="0" width="119" height="20"
+                                <reportElement style="Table_TH" x="0" y="0" width="99" height="20"
                                                uuid="8bd505af-6a70-4940-9215-1502b54fb6af"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font fontName="Arial" size="9"/>
                                 </textElement>
-                                <text><![CDATA[العنوان]]></text>
+                                <text><![CDATA[البريد الإلكتروني]]></text>
                             </staticText>
                         </jr:columnHeader>
                         <jr:detailCell height="20">
                             <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
                                 <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                               width="119" height="20" uuid="56336c3f-ddf9-4fec-839f-c8d621d8cfa7"/>
+                                               width="99" height="20" uuid="56336c3f-ddf9-4fec-839f-c8d621d8cfa7"/>
                                 <box padding="5"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font fontName="Arial" size="8" isBold="false"/>
                                     <paragraph rightIndent="0"/>
                                 </textElement>
-                                <textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+                                <textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
-                    <jr:column width="118" uuid="f1cfc996-12c3-4622-a2d7-94a11ff8489b">
+                    <jr:column width="108" uuid="f1cfc996-12c3-4622-a2d7-94a11ff8489b">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
                         <jr:columnHeader height="20" rowSpan="1">
                             <staticText>
-                                <reportElement style="Table_TH" x="0" y="0" width="118" height="20"
+                                <reportElement style="Table_TH" x="0" y="0" width="108" height="20"
                                                uuid="adac0e26-672d-4ca0-a802-a478d7396686"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font fontName="Arial" size="9"/>
                                 </textElement>
-                                <text><![CDATA[رقم المهمة]]></text>
+                                <text><![CDATA[اسم الموظف]]></text>
                             </staticText>
                         </jr:columnHeader>
                         <jr:detailCell height="20">
                             <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
                                 <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                               width="118" height="20" uuid="05a0ca4e-18bd-44b1-967d-6fa4e6a9ad63"/>
+                                               width="108" height="20" uuid="05a0ca4e-18bd-44b1-967d-6fa4e6a9ad63"/>
                                 <box padding="5"/>
                                 <textElement textAlignment="Center" verticalAlignment="Middle">
                                     <font fontName="Arial" size="8" isBold="false"/>
                                     <paragraph rightIndent="0"/>
                                 </textElement>
-                                <textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+                                <textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+                            </textField>
+                        </jr:detailCell>
+                    </jr:column>
+                    <jr:column width="99" uuid="b963d5a7-e95d-4e7b-a0ff-9199dab0cdd2">
+                        <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
+                        <jr:columnHeader height="20" rowSpan="1">
+                            <staticText>
+                                <reportElement style="Table_TH" x="0" y="0" width="99" height="20"
+                                               uuid="65d20b43-f4d6-47b9-96dd-d3b81a0ab5b9"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="9"/>
+                                </textElement>
+                                <text><![CDATA[اللقب الوظيفي]]></text>
+                            </staticText>
+                        </jr:columnHeader>
+                        <jr:detailCell height="20">
+                            <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                                <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
+                                               width="99" height="20" uuid="931772e8-14cd-4ff4-8172-9eb93998a5c4"/>
+                                <box padding="5"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="8" isBold="false"/>
+                                    <paragraph rightIndent="0"/>
+                                </textElement>
+                                <textFieldExpression><![CDATA[$F{nickname}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>

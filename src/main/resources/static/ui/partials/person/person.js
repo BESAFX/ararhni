@@ -48,6 +48,10 @@ app.controller("personCtrl", ['PersonService', 'ModalProvider', 'FileService', '
             ModalProvider.openPersonUpdateModel($scope.selected);
         };
 
+        $scope.openReportPersonsModel = function () {
+            ModalProvider.openPersonsReportModel($scope.persons);
+        };
+
         $scope.delete = function (person) {
             if (person) {
                 PersonService.remove(person);
@@ -82,6 +86,15 @@ app.controller("personCtrl", ['PersonService', 'ModalProvider', 'FileService', '
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.delete($itemScope.person);
+                }
+            },
+            {
+                html: '<div style="cursor: pointer;padding: 10px"><span class="fa fa-print fa-lg"></span> طباعة تقرير مختصر </div>',
+                enabled: function () {
+                    return true
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.openReportPersonsModel();
                 }
             }
         ];

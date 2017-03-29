@@ -36,7 +36,7 @@ public class ReportTaskController {
         }
 
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "inline; filename=Report.pdf");
+        response.setHeader("Content-Disposition", "inline; filename=TaskOperationsByTask.pdf");
         final OutputStream outStream = response.getOutputStream();
 
         /**
@@ -87,7 +87,7 @@ public class ReportTaskController {
         }
 
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "inline; filename=Report.pdf");
+        response.setHeader("Content-Disposition", "inline; filename=Tasks.pdf");
         final OutputStream outStream = response.getOutputStream();
 
         /**

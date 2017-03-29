@@ -45,7 +45,16 @@ app.controller('taskCreateUpdateCtrl', ['TaskService', 'PersonService', '$scope'
                     });
                     break;
                 case 'update' :
-                    TaskService.update($scope.task).then(function (data) {
+                    var tempTask = {};
+                    tempTask.id = $scope.task.id;
+                    tempTask.code = $scope.task.code;
+                    tempTask.title = $scope.task.title;
+                    tempTask.content = $scope.task.content;
+                    tempTask.startDate = $scope.task.startDate;
+                    tempTask.endDate = $scope.task.endDate;
+                    tempTask.progress = $scope.task.progress;
+                    tempTask.person = $scope.task.person;
+                    TaskService.update(tempTask).then(function (data) {
                         $scope.task = data;
                         $rootScope.showNotify("المهام", "تم تعديل بيانات المهمة بنجاح، يمكنك القيام بعملية آخرى الآن", "success", "fa-black-tie");
                     });
