@@ -112,6 +112,9 @@ public class TaskRest {
         if (object == null) {
             throw new CustomException("عفواً ، لا توجد هذة المهمة");
         } else {
+            if (!object.getPerson().getEmail().equalsIgnoreCase(principal.getName())) {
+                throw new CustomException("عفواً، لا يمكنك التعديل على بيانات مهمة لم تضيفها");
+            }
             task = taskService.save(task);
             notificationService.notifyOne(Notification
                     .builder()
@@ -139,6 +142,9 @@ public class TaskRest {
         if (object == null) {
             throw new CustomException("عفواً ، لا توجد هذة المهمة");
         } else {
+            if (!object.getPerson().getEmail().equalsIgnoreCase(principal.getName())) {
+                throw new CustomException("عفواً، لا يمكنك حذف مهمة لم تضيفها");
+            }
             taskToService.delete(object.getTaskTos());
             taskCloseRequestService.delete(object.getTaskCloseRequests());
             object.getTaskOperations().stream().forEach(taskOperation -> taskOperationAttachService.delete(taskOperation.getTaskOperationAttaches()));

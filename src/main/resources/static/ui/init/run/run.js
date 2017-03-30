@@ -102,6 +102,24 @@ app.run(['$http', '$location', '$state', '$window', 'notifyCode', 'PersonService
 
         PersonService.findAuthorities().then(function (data) {
             $rootScope.authorities = data;
+
+            $rootScope.me = {};
+
+            PersonService.findActivePerson().then(function (data) {
+                $rootScope.me = data;
+                if (data.employees.length > 0) {
+                    $rootScope.me.manager = data.employees[0].department.branch.region.company.manager;
+                } else if (data.departments.length > 0) {
+                    $rootScope.me.manager = data.departments[0].branch.region.company.manager;
+                } else if (data.branches.length > 0) {
+                    $rootScope.me.manager = data.branches[0].region.company.manager;
+                } else if (data.regions.length > 0) {
+                    $rootScope.me.manager = data.regions[0].company.manager;
+                } else if (data.companies.length > 0) {
+                    $rootScope.me.manager = data.companies[0].manager;
+                }
+            });
+
         });
 
         $rootScope.showNotify = function (title, message, type, icon) {

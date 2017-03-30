@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -20,6 +21,7 @@ public class EmailSender {
     @Autowired
     private JavaMailSender sender;
 
+    @Async
     public void send(String title, String content, List<String> toEmailList) {
         try {
             MimeMessage message = sender.createMimeMessage();
@@ -33,9 +35,13 @@ public class EmailSender {
             helper.setText(content, true);
             sender.send(message);
             logger.info("Sent Successfully to: " + Arrays.toString(emails));
+            // Artificial delay of 1s for demonstration purposes
+            Thread.sleep(1000 * 10);
         } catch (MessagingException e) {
             logger.error("Sent Failed", e);
             throw new CustomException(e.getMessage());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

@@ -291,7 +291,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 return;
             }
             $rootScope.showConfirmNotify("المهام", "هل تود حذف المهمة فعلاً؟", "error", "fa-black-tie", function () {
-                TaskService.remove($scope.selected);
+                TaskService.remove($scope.selected.id);
             });
         };
 

@@ -25,6 +25,8 @@ public class TaskOperation implements Serializable {
 
     private Integer code;
 
+    private Integer type;
+
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String content;
