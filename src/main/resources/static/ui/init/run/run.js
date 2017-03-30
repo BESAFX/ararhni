@@ -117,12 +117,12 @@ app.run(['$http', '$location', '$state', '$window', 'notifyCode', 'PersonService
                 timeout: 5000, // [integer|boolean] delay for closing event in milliseconds. Set false for sticky notifications
                 progressBar: true, // [boolean] - displays a progress bar
                 animation: {
-                    open: 'animated fadeInUp',
-                    close: 'animated fadeOutDown',
+                    open: 'animated bounce',
+                    close: 'animated bounceOutLeft',
                     easing: 'swing',
                     speed: 500 // opening & closing animation speed
                 },
-                closeWith: ['backdrop'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
+                closeWith: ['hover'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
                 modal: false, // [boolean] if true adds an overlay
                 killer: false, // [boolean] if true closes all notifications and shows itself
                 callback: {
