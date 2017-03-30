@@ -285,10 +285,14 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
 
         $scope.delete = function (task) {
             if (task) {
-                TaskService.remove(task.id);
+                $rootScope.showConfirmNotify("المهام", "هل تود حذف المهمة فعلاً؟", "error", "fa-black-tie", function () {
+                    TaskService.remove(task.id);
+                });
                 return;
             }
-            TaskService.remove($scope.selected);
+            $rootScope.showConfirmNotify("المهام", "هل تود حذف المهمة فعلاً؟", "error", "fa-black-tie", function () {
+                TaskService.remove($scope.selected);
+            });
         };
 
         $scope.openCreateModel = function () {
