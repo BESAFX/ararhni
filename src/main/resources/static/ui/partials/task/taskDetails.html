@@ -79,6 +79,7 @@
                                 <thead>
                                 <tr>
                                     <th st-sort="sender.name" class="text-center">المرسل</th>
+                                    <th st-sort="date" st-sort-default="reverse" class="text-center">التاريخ والوقت</th>
                                     <th st-sort="content" class="text-center">التعليق</th>
                                     <th st-sort="date" class="text-center">الوقت المنقضي</th>
                                 </tr>
@@ -87,6 +88,10 @@
                                 <tr ng-repeat="taskOperation in collectionOperation"
                                     ng-class="{'danger':taskOperation.sender.id===me.manager.id}">
                                     <td width="20%">{{taskOperation.sender.nickname}} / {{taskOperation.sender.name}}
+                                    </td>
+                                    <td st-select-row-custom="taskOperation">
+                                        {{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                        <span class="label label-success">{{taskOperation.date | date:'h:m a'}}</span>
                                     </td>
                                     <td>
                                         {{taskOperation.content}}
