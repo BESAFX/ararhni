@@ -49,7 +49,7 @@ public class ScheduledTasks {
                 if (operationsCountToday == 0) {
                     try {
                         TaskOperation taskOperation = new TaskOperation();
-                        taskOperation.setContent("تحذير بالخصم للموظف / " + person.getName() + " وذلك لعدم التفاعل مع المهمة رقم " + task.getCode() + " اليوم، نرجو منه مراجعة جهة التكليف.");
+                        taskOperation.setContent("تحذير بالخصم للموظف / " + person.getName() + " وذلك لعدم التفاعل مع المهمة رقم " + task.getCode() + " اليوم، نرجو منه الالتزام باضافة المنجزات يومياً وإلا سيتم خصم 50 ريال سعودي عن كل يوم بدون تفاعل.");
                         taskOperation.setTask(task);
                         taskOperationRest.create(taskOperation, task.getPerson());
                     } catch (IOException e) {
@@ -72,7 +72,7 @@ public class ScheduledTasks {
                 if (operationsCountToday == 0) {
                     try {
                         TaskOperation taskOperation = new TaskOperation();
-                        taskOperation.setContent("تم وقوع خصومات بمقدار 50 ريال سعودي على " + person.getName() + " وذلك لعدم التفاعل مع المهمة رقم " + task.getCode() + " اليوم، نرجو منه مراجعة جهة التكليف.");
+                        taskOperation.setContent("تم وقوع خصومات بمقدار 50 ريال سعودي على " + person.getNickname() + " / " + person.getName() + " وذلك لعدم التفاعل مع المهمة رقم " + task.getCode() + " اليوم، نرجو منه مراجعة جهة التكليف.");
                         taskOperation.setTask(task);
                         taskOperationRest.create(taskOperation, task.getPerson());
                     } catch (IOException e) {
