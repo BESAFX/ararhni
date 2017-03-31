@@ -29,4 +29,8 @@ public interface TaskOperationService extends PagingAndSortingRepository<TaskOpe
     List<TaskOperation> findByTaskAndDateAfterAndDateBefore(Task task, @Temporal(TemporalType.DATE) Date startDate, @Temporal(TemporalType.DATE) Date endDate);
 
     long countByTaskAndSenderAndDateBetween(Task task, Person person, @Temporal(TemporalType.DATE) Date startDate, @Temporal(TemporalType.DATE) Date endDate);
+
+    long countByTaskAndSenderAndDateAfterAndDateBefore(Task task, Person person, @Temporal(TemporalType.DATE) Date startDate, @Temporal(TemporalType.DATE) Date endDate);
+
+    long countByTaskAndSenderAndTypeAndDateAfterAndDateBefore(Task task, Person person, Integer type, @Temporal(TemporalType.DATE) Date startDate, @Temporal(TemporalType.DATE) Date endDate);
 }
