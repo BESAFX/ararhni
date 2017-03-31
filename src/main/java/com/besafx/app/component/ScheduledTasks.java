@@ -7,6 +7,7 @@ import com.besafx.app.rest.TaskOperationRest;
 import com.besafx.app.search.TaskSearch;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.TaskOperationService;
+import com.besafx.app.service.TaskToService;
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -32,6 +33,9 @@ public class ScheduledTasks {
 
     @Autowired
     private TaskSearch taskSearch;
+
+    @Autowired
+    private TaskToService taskToService;
 
     @Autowired
     private TaskOperationService taskOperationService;
@@ -68,7 +72,7 @@ public class ScheduledTasks {
         });
     }
 
-    @Scheduled(cron = "0 0 14 * * *")
+    @Scheduled(cron = "0 0/10 14 * * *")
     public void warnAllAboutUnCommentedTasksAtAfternoon() {
 
 //        if (new DateTime().dayOfWeek().getAsText().equalsIgnoreCase("Friday")) {
@@ -84,7 +88,7 @@ public class ScheduledTasks {
         //Get all opened tasks
         List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, true, true, "All", null);
         tasks.stream().forEach(task -> {
-            task.getTaskTos().stream().map(TaskTo::getPerson).forEach(person -> {
+            taskToService.findByTask(task).stream().map(TaskTo::getPerson).forEach(person -> {
                 //Count operations for this person on this task
                 long numberOfOperations = taskOperationService.countByTaskAndSenderAndTypeAndDateAfterAndDateBefore(task, person, 1, startLast12Hour.toDate(), endLast12Hour.toDate());
                 if (numberOfOperations == 0) {
