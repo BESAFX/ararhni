@@ -86,7 +86,7 @@
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="taskOperation in collectionOperation"
-                                    ng-class="{'danger':taskOperation.sender.id===me.manager.id}">
+                                    ng-class="{'info':(taskOperation.sender.id===me.manager.id && taskOperation.type===1), 'warn':taskOperation.type===2, 'danger':taskOperation.type===3}">
                                     <td width="20%">{{taskOperation.sender.nickname}} / {{taskOperation.sender.name}}
                                     </td>
                                     <td st-select-row-custom="taskOperation">

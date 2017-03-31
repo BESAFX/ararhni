@@ -1096,7 +1096,7 @@
                                                         ng-right-click="setSelectedOperation(taskOperation)"
                                                         st-select-mode="single"
                                                         ng-repeat="taskOperation in collection2"
-                                                        ng-class="{'danger':taskOperation.sender.id===me.manager.id}">
+                                                        ng-class="{'info':(taskOperation.sender.id===me.manager.id && taskOperation.type===1), 'warn':taskOperation.type===2, 'danger':taskOperation.type===3}">
                                                         <td st-select-row-custom="taskOperation" class="fit">
                                                             {{taskOperation.code}}
                                                         </td>

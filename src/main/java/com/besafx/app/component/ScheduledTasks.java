@@ -71,9 +71,9 @@ public class ScheduledTasks {
     @Scheduled(cron = "0 0 14 * * *")
     public void warnAllAboutUnCommentedTasksAtAfternoon() {
 
-        if (new DateTime().dayOfWeek().getAsText().equalsIgnoreCase("Friday")) {
-            return;
-        }
+//        if (new DateTime().dayOfWeek().getAsText().equalsIgnoreCase("Friday")) {
+//            return;
+//        }
 
         //Run evening task (Time of execution = 14)
         //Round(Morning)

@@ -23,10 +23,11 @@ app.controller('taskOperationCreateCtrl', ['TaskService', 'TaskOperationService'
                 taskOperationAttaches.push(taskOperationAttach);
             }
             $scope.taskOperation.taskOperationAttaches = taskOperationAttaches;
+            $scope.taskOperation.type = 1;
             TaskOperationService.create($scope.taskOperation).then(function (data) {
                 $scope.taskOperation = {};
                 $scope.taskOperation.task = task;
-                if($scope.form){
+                if ($scope.form) {
                     $scope.form.$setPristine();
                 }
                 $rootScope.showNotify("المهام", "تم إنجاز العمل بنجاح، يمكنك القيام بعملية آخرى الآن", "success", "fa-black-tie");
