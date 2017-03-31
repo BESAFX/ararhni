@@ -44,7 +44,7 @@ public class RegionRest {
         notificationService.notifyOne(Notification
                 .builder()
                 .title("العمليات على المناطق")
-                .message("تم اضافة فرع جديدة بنجاح")
+                .message("تم اضافة منطقة جديدة بنجاح")
                 .type("success")
                 .icon("fa-map-marker")
                 .build(), principal.getName());

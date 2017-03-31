@@ -1,6 +1,7 @@
 package com.besafx.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
@@ -23,6 +24,7 @@ public class Team implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "team")
+    @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees"}, allowSetters = true)
     private List<Person> persons = new ArrayList<>();
 
     @JsonCreator
