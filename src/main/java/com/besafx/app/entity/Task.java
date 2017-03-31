@@ -45,12 +45,15 @@ public class Task implements Serializable {
     private Person person;
 
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"task"}, allowSetters = true)
     private List<TaskTo> taskTos = new ArrayList<>();
 
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"task"}, allowSetters = true)
     private List<TaskCloseRequest> taskCloseRequests = new ArrayList<>();
 
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"task"}, allowSetters = true)
     private List<TaskOperation> taskOperations = new ArrayList<>();
 
     @JsonCreator

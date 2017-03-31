@@ -1,83 +1,67 @@
 package com.besafx.app.component;
 
+import com.besafx.app.config.EmailSender;
+import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskOperation;
-import com.besafx.app.entity.TaskTo;
-import com.besafx.app.rest.TaskOperationRest;
 import com.besafx.app.search.TaskSearch;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.TaskOperationService;
-import com.besafx.app.service.TaskToService;
-import com.google.common.collect.Lists;
+import com.besafx.app.service.TaskService;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Component
 public class ScheduledTasks {
 
-    private LocalDate yesterday;
-
-    private LocalDate today;
-
-    private LocalDate tomorrow;
+    private final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
 
     @Autowired
     private PersonService personService;
 
     @Autowired
-    private TaskSearch taskSearch;
+    private TaskService taskService;
 
     @Autowired
-    private TaskToService taskToService;
+    private TaskSearch taskSearch;
 
     @Autowired
     private TaskOperationService taskOperationService;
 
     @Autowired
-    private TaskOperationRest taskOperationRest;
+    private EmailSender emailSender;
 
-    @Scheduled(cron = "0 0 2 * * *")
+    @Scheduled(cron = "0 0 2 * * SAT,SUN,MON,TUE,WED,THU")
     public void warnAllAboutUnCommentedTasksAtMidNight() {
 
-        if (new DateTime().dayOfWeek().getAsText().equalsIgnoreCase("Friday")) {
-            return;
-        }
+        //Run Morning task (Time of execution = 2)
+        //Round(Evening)
+        DateTime startLast24Hour = new DateTime().minusDays(1).withTime(2, 0, 0, 0);
+        DateTime startLast12Hour = new DateTime().minusDays(1).withTime(14, 0, 0, 0);
+        DateTime endLast12Hour = new DateTime().withTime(2, 0, 0, 0);
 
-        yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay().toLocalDate();
-        today = new DateTime().withTimeAtStartOfDay().toLocalDate();
+        log.info("عدد المهام = " + taskService.count());
 
-        Lists.newArrayList(personService.findAll()).stream().forEach(person -> {
-            //Get all opened incoming tasks for this person
-            List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, true, true, "All", person.getId());
-            tasks.stream().forEach(task -> {
-                long operationsCountToday = taskOperationService.countByTaskAndSenderAndDateBetween(task, person, yesterday.toDate(), today.toDate());
-                if (operationsCountToday == 0) {
-                    try {
-                        TaskOperation taskOperation = new TaskOperation();
-                        taskOperation.setContent("تحذير بالخصم للموظف / " + person.getName() + " وذلك لعدم التفاعل مع المهمة رقم " + task.getCode() + " اليوم، نرجو منه الالتزام باضافة المنجزات يومياً وإلا سيتم خصم 50 ريال سعودي عن كل يوم بدون تفاعل.");
-                        taskOperation.setTask(task);
-                        taskOperationRest.create(taskOperation, task.getPerson());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        });
+        log.info("عدد الافراد = " + personService.count());
+
+        log.info("فحص كل فرد على حدا");
+
+        chech(startLast24Hour, startLast12Hour, endLast12Hour);
     }
 
-    @Scheduled(cron = "0 0/10 14 * * *")
+    @Scheduled(cron = "0 0 14 * * SAT,SUN,MON,TUE,WED,THU")
     public void warnAllAboutUnCommentedTasksAtAfternoon() {
-
-//        if (new DateTime().dayOfWeek().getAsText().equalsIgnoreCase("Friday")) {
-//            return;
-//        }
 
         //Run evening task (Time of execution = 14)
         //Round(Morning)
@@ -85,20 +69,47 @@ public class ScheduledTasks {
         DateTime startLast12Hour = new DateTime().withTime(2, 0, 0, 0);
         DateTime endLast12Hour = new DateTime().withTime(14, 0, 0, 0);
 
-        //Get all opened tasks
-        List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, true, true, "All", null);
-        tasks.stream().forEach(task -> {
-            taskToService.findByTask(task).stream().map(TaskTo::getPerson).forEach(person -> {
-                //Count operations for this person on this task
+        log.info("عدد المهام = " + taskService.count());
+
+        log.info("عدد الافراد = " + personService.count());
+
+        log.info("فحص كل فرد على حدا");
+
+        chech(startLast24Hour, startLast12Hour, endLast12Hour);
+
+    }
+
+    private void chech(DateTime startLast24Hour, DateTime startLast12Hour, DateTime endLast12Hour) {
+        personService.findAll().forEach(person -> {
+
+            log.info("////////////////////////////////" + person.getName() + "////////////////////////////////////////");
+
+            log.info("فحص المهام الواردة السارية للموظف / " + person.getName());
+
+            List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, true, true, "All", person.getId());
+
+            log.info("عدد المهام المكلف بها = " + tasks.size());
+
+            log.info("فحص كل مهمة على حدا");
+
+            tasks.stream().forEach(task -> {
+
+                log.info("البحث عن عدد حركات الموظف " + person.getName() + " على المهمة رقم " + task.getCode());
+
                 long numberOfOperations = taskOperationService.countByTaskAndSenderAndTypeAndDateAfterAndDateBefore(task, person, 1, startLast12Hour.toDate(), endLast12Hour.toDate());
+
+                log.info("عدد الحركات فى الفترة = " + numberOfOperations);
+
                 if (numberOfOperations == 0) {
                     long numberOfWarns = taskOperationService.countByTaskAndSenderAndTypeAndDateAfterAndDateBefore(task, person, 2, startLast24Hour.toDate(), startLast12Hour.toDate());
+
+                    log.info("عدد التحذيرات فى الفترة = " + numberOfWarns);
+
                     if (numberOfWarns == 0) {
                         //Send Warn
                         try {
-                            TaskOperation taskOperation = new TaskOperation();
                             StringBuilder builder = new StringBuilder();
-                            builder.append("تحذير بالخصم بشأن عدم التعامل مع المهمة رقم / " + task.getCode());
+                            builder.append("تحذير بالخصم بشأن عدم التعامل مع المهمة رقم " + "(" + task.getCode() + ")");
                             builder.append(" ");
                             builder.append("للموظف / " + person.getName());
                             builder.append(" ");
@@ -107,19 +118,16 @@ public class ScheduledTasks {
                             builder.append("إلى الفترة / " + new SimpleDateFormat("yyyy-MM-dd hh:mm a").format(endLast12Hour.toDate()));
                             builder.append(" ");
                             builder.append("نأمل الإلتزام بالتعليق فى خلال مدة لا تزيد عن 12 ساعة.");
-                            taskOperation.setContent(builder.toString());
-                            taskOperation.setType(2);
-                            taskOperation.setTask(task);
-                            taskOperationRest.create(taskOperation, task.getPerson());
-                        } catch (IOException e) {
+                            log.info("جاري إرسال التحذير...");
+                            createEmail(task, builder.toString(), 2, task.getPerson(), person);
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     } else {
                         //Send Discount
                         try {
-                            TaskOperation taskOperation = new TaskOperation();
                             StringBuilder builder = new StringBuilder();
-                            builder.append("خصم بمقدار 50 ريال سعودي بشأن عدم التعامل مع المهمة رقم / " + task.getCode());
+                            builder.append("خصم بمقدار 50 ريال سعودي بشأن عدم التعامل مع المهمة رقم " + "(" + task.getCode() + ")");
                             builder.append(" ");
                             builder.append("للموظف / " + person.getName());
                             builder.append(" ");
@@ -130,16 +138,44 @@ public class ScheduledTasks {
                             builder.append("إلى الفترة / " + new SimpleDateFormat("yyyy-MM-dd hh:mm a").format(startLast12Hour.toDate()));
                             builder.append(" ");
                             builder.append("نأمل منه مراجعة جهة التكليف.");
-                            taskOperation.setContent(builder.toString());
-                            taskOperation.setType(3);
-                            taskOperation.setTask(task);
-                            taskOperationRest.create(taskOperation, task.getPerson());
-                        } catch (IOException e) {
+                            createEmail(task, builder.toString(), 3, task.getPerson(), person);
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }
+
             });
+
+            log.info("////////////////////////////////" + person.getName() + "////////////////////////////////////////");
+
         });
+    }
+
+
+    public void createEmail(Task task, String content, Integer type, Person from, Person to) throws IOException {
+        log.info("جاري إعداد الحركة وإدراجها...");
+        TaskOperation taskOperation = new TaskOperation();
+        Integer maxCode = taskOperationService.findLastCodeByTask(task.getId());
+        if (maxCode == null) {
+            taskOperation.setCode(1);
+        } else {
+            taskOperation.setCode(maxCode + 1);
+        }
+        taskOperation.setDate(new Date());
+        taskOperation.setTask(task);
+        taskOperation.setSender(from);
+        taskOperation.setContent(content);
+        taskOperation.setType(type);
+        taskOperationService.save(taskOperation);
+        log.info("تم حفظ الحركة الآلية باسم جهة التكليف");
+
+        ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
+        String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+        message = message.replaceAll("MESSAGE", content);
+
+        String title = type.intValue() == 2 ? "تحذير بالخصم لعدم التعامل مع المهمة رقم " + "(" + task.getCode() + ")" : "خصم لعدم التعامل مع المهمة رقم " + "(" + task.getCode() + ")";
+
+        emailSender.send(title, message, to.getEmail());
     }
 }

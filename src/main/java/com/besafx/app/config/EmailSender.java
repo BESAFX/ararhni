@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class EmailSender {
 
-    private final Logger logger = LoggerFactory.getLogger(EmailSender.class);
+    private final Logger log = LoggerFactory.getLogger(EmailSender.class);
 
     @Autowired
     private JavaMailSender sender;
@@ -29,24 +29,25 @@ public class EmailSender {
             helper.setFrom("anni4ksa@gmail.com");
             String[] emails = new String[toEmailList.size()];
             emails = toEmailList.toArray(emails);
-            logger.info("Trying Sending to this emails: " + Arrays.toString(emails));
+            log.info("Trying Sending to this emails: " + Arrays.toString(emails));
             helper.setTo(emails);
             helper.setSubject(title);
             helper.setText(content, true);
             sender.send(message);
-            logger.info("Sent Successfully to: " + Arrays.toString(emails));
-            // Artificial delay of 1s for demonstration purposes
+            log.info("Sent Successfully to: " + Arrays.toString(emails));
             Thread.sleep(1000 * 10);
         } catch (MessagingException e) {
-            logger.error("Sent Failed", e);
+            log.error("Sent Failed", e);
             throw new CustomException(e.getMessage());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
+    @Async
     public void send(String title, String content, String email) {
         try {
+            log.info("تهيئة الرسالة...");
             MimeMessage message = sender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom("anni4ksa@gmail.com");
@@ -54,9 +55,9 @@ public class EmailSender {
             helper.setSubject(title);
             helper.setText(content, true);
             sender.send(message);
-            logger.info("Sent Successfully to: " + email);
+            log.info("Sent Successfully to: " + email);
         } catch (MessagingException e) {
-            logger.error("Sent Failed", e);
+            log.error("Sent Failed", e);
             throw new CustomException(e.getMessage());
         }
     }

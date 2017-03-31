@@ -14,9 +14,10 @@ public class AsyncConfig extends AsyncConfigurerSupport {
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
-        executor.setMaxPoolSize(3);
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(10);
         executor.setQueueCapacity(500);
+        executor.setWaitForTasksToCompleteOnShutdown(true);
         executor.setThreadNamePrefix("EmailSender-");
         executor.initialize();
         return executor;
