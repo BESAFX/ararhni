@@ -118,6 +118,7 @@ public class ScheduledTasks {
                             builder.append("إلى الفترة / " + DateConverter.getHijriStringFromDateRTLWithTime(endLast12Hour.toDate()));
                             builder.append(" ");
                             builder.append("نأمل الإلتزام بالتعليق فى خلال مدة لا تزيد عن 12 ساعة.");
+                            builder.append("-تجريبي-");
                             log.info("جاري إرسال التحذير...");
                             createEmail(task, builder.toString(), 2, task.getPerson(), person);
                         } catch (Exception e) {
@@ -138,6 +139,7 @@ public class ScheduledTasks {
                             builder.append("إلى الفترة / " + DateConverter.getHijriStringFromDateRTLWithTime(startLast12Hour.toDate()));
                             builder.append(" ");
                             builder.append("نأمل منه مراجعة جهة التكليف.");
+                            builder.append("-تجريبي-");
                             createEmail(task, builder.toString(), 3, task.getPerson(), person);
                         } catch (Exception e) {
                             e.printStackTrace();
