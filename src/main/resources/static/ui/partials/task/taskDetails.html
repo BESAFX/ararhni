@@ -88,7 +88,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="taskOperation in collectionOperation | filter:{type:1}"
+                                <tr ng-repeat="taskOperation in filteredCollection = (collectionOperation | filter:{type:1})"
                                     ng-class="{'info':(taskOperation.sender.id===me.manager.id && taskOperation.type===1), 'warning':taskOperation.type===2, 'danger':taskOperation.type===3}">
                                     <td>{{taskOperation.code}}</td>
                                     <td width="20%">{{taskOperation.sender.nickname}} / {{taskOperation.sender.name}}
@@ -114,7 +114,7 @@
                                 </tr>
                                 <tr class="blank_row"
                                     style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!collectionOperation || collectionOperation.length ==0">
+                                    ng-show="!filteredCollection || filteredCollection.length ==0">
                                     <td colspan="5">لا توجد حركات</td>
                                 </tr>
                                 </tbody>
@@ -154,7 +154,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="taskOperation in collectionOperation | filter:{type:2}"
+                                <tr ng-repeat="taskOperation in filteredCollection = (collectionOperation | filter:{type:2})"
                                     ng-class="{'info':(taskOperation.sender.id===me.manager.id && taskOperation.type===1), 'warning':taskOperation.type===2, 'danger':taskOperation.type===3}">
                                     <td>{{taskOperation.code}}</td>
                                     <td st-select-row-custom="taskOperation">
@@ -178,7 +178,7 @@
                                 </tr>
                                 <tr class="blank_row"
                                     style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!collectionOperation || collectionOperation.length ==0">
+                                    ng-show="!filteredCollection || filteredCollection.length ==0">
                                     <td colspan="4">لا توجد تحذيرات</td>
                                 </tr>
                                 </tbody>
@@ -218,7 +218,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="taskOperation in collectionOperation | filter:{type:3}"
+                                <tr ng-repeat="taskOperation in filteredCollection = (collectionOperation | filter:{type:3})"
                                     ng-class="{'info':(taskOperation.sender.id===me.manager.id && taskOperation.type===1), 'warning':taskOperation.type===2, 'danger':taskOperation.type===3}">
                                     <td>{{taskOperation.code}}</td>
                                     <td st-select-row-custom="taskOperation">
@@ -242,7 +242,7 @@
                                 </tr>
                                 <tr class="blank_row"
                                     style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!collectionOperation || collectionOperation.length ==0">
+                                    ng-show="!filteredCollection || filteredCollection.length ==0">
                                     <td colspan="5">لا توجد حسومات</td>
                                 </tr>
                                 </tbody>

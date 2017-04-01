@@ -6,9 +6,11 @@ app.run(['$http', '$location', '$state', '$window', 'notifyCode', 'PersonService
         });
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {
+            $.noty.clearQueue(); // Clears the notification queue
+            $.noty.closeAll(); // Close all notifications
             switch (toState.name) {
                 case 'home': {
-                    $rootScope.pageTitle = 'الرئيسية';
+                    $rootScope.pageTitle = 'لوحة التحكم';
                     $rootScope.pageTitleIcon = 'fa fa-desktop';
                     $rootScope.MDLIcon = 'widgets';
                     $rootScope.helpUrl = '/ui/partials/help/realTimeData.html';

@@ -1,5 +1,5 @@
-app.controller("closedSoonIncomingCtrl", ['$scope', '$rootScope', '$timeout', 'TaskService',
-    function ($scope, $rootScope, $timeout, TaskService) {
+app.controller("closedSoonIncomingCtrl", ['$scope', '$rootScope', '$timeout', 'TaskService', 'ModalProvider',
+    function ($scope, $rootScope, $timeout, TaskService, ModalProvider) {
 
         $scope.selected = {};
 
@@ -135,6 +135,14 @@ app.controller("closedSoonIncomingCtrl", ['$scope', '$rootScope', '$timeout', 'T
                     $scope.fetchThisYear();
                     break;
             }
+        };
+
+        $scope.openTaskOperationsReportModel = function () {
+            ModalProvider.openTaskOperationsReportModel($scope.tasks);
+        };
+
+        $scope.openReportTasksModel = function () {
+            ModalProvider.openTasksReportModel($scope.tasks);
         };
 
         $timeout(function () {

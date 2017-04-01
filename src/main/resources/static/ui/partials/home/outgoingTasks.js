@@ -1,5 +1,5 @@
-app.controller("outgoingTasksCtrl", ['$scope', '$rootScope', '$timeout', 'TaskService', 'TaskOperationService',
-    function ($scope, $rootScope, $timeout, TaskService, TaskOperationService) {
+app.controller("outgoingTasksCtrl", ['ModalProvider', '$scope', '$rootScope', '$timeout', 'TaskService', 'TaskOperationService',
+    function (ModalProvider, $scope, $rootScope, $timeout, TaskService, TaskOperationService) {
 
         $scope.selected = {};
 
@@ -83,6 +83,14 @@ app.controller("outgoingTasksCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
                     $scope.fetchClosed();
                     break;
             }
+        };
+
+        $scope.openTaskOperationsReportModel = function () {
+            ModalProvider.openTaskOperationsReportModel($scope.tasks);
+        };
+
+        $scope.openReportTasksModel = function () {
+            ModalProvider.openTasksReportModel($scope.tasks);
         };
 
         $timeout(function () {

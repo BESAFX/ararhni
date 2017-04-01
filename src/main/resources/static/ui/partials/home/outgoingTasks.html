@@ -19,6 +19,12 @@
                         <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="fetchClosed()">
                             <span>جميع الصادرة المغلقة</span>
                         </li>
+                        <li class="mdl-menu__item" ng-click="openTaskOperationsReportModel()">
+                            <span>تقرير عن الحركات</span>
+                        </li>
+                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="openReportTasksModel()">
+                            <span>تقرير مختصر عن المهام</span>
+                        </li>
                         <li class="mdl-menu__item" ng-click="refresh()">
                             <span>تحديث البيانات</span>
                         </li>
@@ -42,7 +48,7 @@
                                             <td colspan="1" class="text-right">
                                                 <span>جهة التكليف / </span>
                                                 <span><a href=""
-                                                         ng-click="viewInfo===1?viewInfo=false:viewInfo=1"><strong>{{task.person.name}}</strong></a></span>
+                                                         ng-click="viewInfo===1?viewInfo=false:viewInfo=1"><strong>{{task.person.nickname}} {{task.person.name}}</strong></a></span>
                                                 <span> العنوان / </span>
                                                 <span><a href=""
                                                          ng-click="viewInfo===2?viewInfo=false:viewInfo=2"><strong>{{task.title}}</strong></a></span>
@@ -56,21 +62,41 @@
                                         <tr>
                                             <td colspan="1" class="text-right" style="padding: 5px;">
                                                 <strong>{{task.content}}</strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="1" class="text-right" style="padding: 5px;">
                                                 <a href="" ng-click="viewInfo===3?viewInfo=false:viewInfo=3">
-                                                    <span class="label label-danger">
+                                                    <span class="label label-success">
                                                         <span>عدد الحركات</span>
-                                                        <span>{{task.taskOperations.length}}</span>
+                                                        <span>{{(task.taskOperations | filter:{type:1}).length}}</span>
                                                     </span>
                                                 </a>
                                                 <span style="padding: 0px 5px 0px 10px"></span>
-                                                <a ng-show="task.taskOperations.length > 0" href="" ng-click="viewInfo===4?viewInfo=false:viewInfo=4">
-                                                    <span class="label label-danger">
+                                                <a href="" ng-click="viewInfo===5?viewInfo=false:viewInfo=5">
+                                                        <span class="label label-warning">
+                                                            <span>عدد التحذيرات</span>
+                                                            <span>{{(task.taskOperations | filter:{type:2}).length}}</span>
+                                                        </span>
+                                                </a>
+                                                <span style="padding: 0px 5px 0px 10px"></span>
+                                                <a href="" ng-click="viewInfo===6?viewInfo=false:viewInfo=6">
+                                                        <span class="label label-danger">
+                                                            <span>عدد الحسومات</span>
+                                                            <span>{{(task.taskOperations | filter:{type:3}).length}}</span>
+                                                        </span>
+                                                </a>
+                                                <span style="padding: 0px 5px 0px 10px"></span>
+                                                <a ng-show="task.taskOperations.length > 0" href=""
+                                                   ng-click="viewInfo===4?viewInfo=false:viewInfo=4">
+                                                    <span class="label label-default">
                                                         <span>عدد نماذج الطباعة</span>
                                                         <span>{{reportModels.length}}</span>
                                                     </span>
                                                 </a>
                                             </td>
-                                            <td colspan="1" class="text-left" style="padding: 10px 0px 10px 0px;">
+                                            <td colspan="1" class="text-left" width="10%"
+                                                style="padding: 10px 0px 10px 0px;">
                                                 <ul class="panel-controls pull-left">
                                                     <li>
                                                         <a href=""
@@ -115,8 +141,12 @@
                                                 <table class="table table-bordered">
                                                     <tbody>
                                                     <tr>
-                                                        <td colspan="2" class="success"><strong>بيانات جهة
+                                                        <td colspan="3" class="success"><strong>بيانات جهة
                                                             التكليف</strong></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>اللقب</td>
+                                                        <td>{{task.person.nickname}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>الاسم</td>
@@ -164,7 +194,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td>جهة التكليف</td>
-                                                        <td>{{task.person.name}}</td>
+                                                        <td>{{task.person.nickname}} / {{task.person.name}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td>الحالة</td>
@@ -192,11 +222,14 @@
                                                            class="table table-bordered">
                                                         <tbody>
                                                         <tr>
-                                                            <td colspan="3" class="success"><strong>الحركات</strong>
+                                                            <td colspan="3" class="success"><strong>الحركات /
+                                                                المرفقات</strong>
                                                             </td>
                                                         </tr>
-                                                        <tr ng-repeat="taskOperation in collectionOperation | orderBy:date:true">
-                                                            <td width="15%">{{taskOperation.sender.name}}</td>
+                                                        <tr ng-repeat="taskOperation in collectionOperation | filter:{type:1} | orderBy:date:true">
+                                                            <td width="15%">{{taskOperation.sender.nickname}} /
+                                                                {{taskOperation.sender.name}}
+                                                            </td>
                                                             <td>
                                                                 {{taskOperation.content}}
                                                                 <span ng-repeat="taskOperationAttach in taskOperation.taskOperationAttaches"><a
@@ -234,7 +267,8 @@
                                                            class="table table-bordered">
                                                         <tbody>
                                                         <tr>
-                                                            <td colspan="3" class="success"><strong>نماذج الطباعة</strong>
+                                                            <td colspan="3" class="active"><strong>نماذج
+                                                                الطباعة</strong>
                                                             </td>
                                                         </tr>
                                                         <tr ng-repeat="reportModel in collectionReportModel">
@@ -244,6 +278,88 @@
                                                             style="height: 10px !important; background-color: #FFFFFF;"
                                                             ng-show="!collectionReportModel || collectionReportModel.length ==0">
                                                             <td colspan="1">لا توجد نماذج حتى الآن</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="viewInfo===5">
+                                            <td colspan="2">
+                                                <div class="table-responsive">
+                                                    <table st-table="collectionOperation"
+                                                           st-safe-src="task.taskOperations"
+                                                           class="table table-bordered">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td colspan="2" class="warning"><strong>التحذيرات من جهة
+                                                                التكليف</strong></td>
+                                                        </tr>
+                                                        <tr ng-repeat="taskOperation in filteredCollection =  (collectionOperation | filter:{type:2} | orderBy:date:true)">
+                                                            <td>
+                                                                {{taskOperation.content}}
+                                                                <span ng-repeat="taskOperationAttach in taskOperation.taskOperationAttaches"><a
+                                                                        uib-tooltip="{{taskOperationAttach.name}}"
+                                                                        tooltip-append-to-body="true" href=""
+                                                                        ng-href="{{taskOperationAttach.link}}"
+                                                                        target="_blank"><i
+                                                                        class="fa fa-link fa-lg"></i></a></span>
+                                                            </td>
+                                                            <td width="20%">
+                                                                <timer interval="60000"
+                                                                       start-time="taskOperation.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span>
+                                                                    {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' :
+                                                                    ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ?
+                                                                    'ساعة' : ''}} {{minutes > 0 ? minutes : ''}}
+                                                                    {{minutes > 0 ? 'دقيقة' : ''}}
+                                                                </timer>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="blank_row"
+                                                            style="height: 10px !important; background-color: #FFFFFF;"
+                                                            ng-show="!filteredCollection || filteredCollection.length ==0">
+                                                            <td colspan="3">لا توجد تحذيرات</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="viewInfo===6">
+                                            <td colspan="2">
+                                                <div class="table-responsive">
+                                                    <table st-table="collectionOperation"
+                                                           st-safe-src="task.taskOperations"
+                                                           class="table table-bordered">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td colspan="2" class="danger"><strong>الحسومات من جهة
+                                                                التكليف</strong></td>
+                                                        </tr>
+                                                        <tr ng-repeat="taskOperation in filteredCollection =  (collectionOperation | filter:{type:3} | orderBy:date:true)">
+                                                            <td>
+                                                                {{taskOperation.content}}
+                                                                <span ng-repeat="taskOperationAttach in taskOperation.taskOperationAttaches"><a
+                                                                        uib-tooltip="{{taskOperationAttach.name}}"
+                                                                        tooltip-append-to-body="true" href=""
+                                                                        ng-href="{{taskOperationAttach.link}}"
+                                                                        target="_blank"><i
+                                                                        class="fa fa-link fa-lg"></i></a></span>
+                                                            </td>
+                                                            <td width="20%">
+                                                                <timer interval="60000"
+                                                                       start-time="taskOperation.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span>
+                                                                    {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' :
+                                                                    ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ?
+                                                                    'ساعة' : ''}} {{minutes > 0 ? minutes : ''}}
+                                                                    {{minutes > 0 ? 'دقيقة' : ''}}
+                                                                </timer>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="blank_row"
+                                                            style="height: 10px !important; background-color: #FFFFFF;"
+                                                            ng-show="!filteredCollection || filteredCollection.length ==0">
+                                                            <td colspan="3">لا توجد حسومات</td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
