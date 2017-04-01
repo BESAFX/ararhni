@@ -45,6 +45,7 @@ public class TaskOperation implements Serializable {
     private Person sender;
 
     @OneToMany(mappedBy = "taskOperation")
+    @JsonIgnoreProperties(value = {"taskOperation"}, allowSetters = true)
     private List<TaskOperationAttach> taskOperationAttaches = new ArrayList<>();
 
     @JsonCreator

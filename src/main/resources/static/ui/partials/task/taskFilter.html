@@ -23,111 +23,109 @@
                 </select>
             </div>
 
-            <fieldset class="col-md-12" disabled="disabled">
-                <div class="form-group text-right col-md-12">
-                    <label for="title" class="control-label">عنوان المهمة يحتوي على</label>
-                    <input id="title"
+            <div class="form-group text-right col-md-12">
+                <label for="title" class="control-label">عنوان المهمة يحتوي على</label>
+                <input id="title"
+                       type="text"
+                       focus-index="2"
+                       class="form-control text-right"
+                       placeholder="ادخل نص البحث"
+                       ng-model="buffer.title">
+            </div>
+
+            <div class="form-group text-right col-md-6">
+                <label for="codeTo" class="control-label">رقم المهمة إلى </label>
+                <input id="codeTo"
+                       type="number"
+                       min="1"
+                       focus-index="4"
+                       class="form-control text-right"
+                       placeholder="ادخل رقم المهمة إلى"
+                       ng-model="buffer.codeTo">
+            </div>
+
+            <div class="form-group text-right col-md-6">
+                <label for="codeFrom" class="control-label">رقم المهمة من </label>
+                <input id="codeFrom"
+                       type="number"
+                       min="1"
+                       focus-index="3"
+                       class="form-control text-right"
+                       placeholder="ادخل رقم المهمة من"
+                       ng-model="buffer.codeFrom">
+            </div>
+
+            <div class="form-group text-right col-sm-6">
+                <label for="startDateTo" class="control-label">تاريخ إنشاء المهمة إلى</label>
+                <div dir="ltr" class="input-group">
+                    <input dir="rtl"
+                           id="startDateTo"
                            type="text"
-                           focus-index="2"
-                           class="form-control text-right"
-                           placeholder="ادخل نص البحث"
-                           ng-model="buffer.title">
+                           class="form-control text-right is-calendarPicker"
+                           ng-model="buffer.startDateTo"
+                           calendarType="ummalqura"
+                           language="en"
+                           dateFormat="yyyy/mm/dd"
+                           showOnFocus="false"
+                           placeholder="تاريخ إنشاء المهمة إلى"
+                           readonly="readonly"
+                           kdatepicker>
                 </div>
+            </div>
 
-                <div class="form-group text-right col-md-6">
-                    <label for="codeTo" class="control-label">رقم المهمة إلى </label>
-                    <input id="codeTo"
-                           type="number"
-                           min="1"
-                           focus-index="4"
-                           class="form-control text-right"
-                           placeholder="ادخل رقم المهمة إلى"
-                           ng-model="buffer.codeTo">
+            <div class="form-group text-right col-sm-6">
+                <label for="startDateFrom" class="control-label">تاريخ إنشاء المهمة من</label>
+                <div dir="ltr" class="input-group">
+                    <input dir="rtl"
+                           id="startDateFrom"
+                           type="text"
+                           class="form-control text-right is-calendarPicker"
+                           ng-model="buffer.startDateFrom"
+                           calendarType="ummalqura"
+                           language="en"
+                           dateFormat="yyyy/mm/dd"
+                           showOnFocus="false"
+                           readonly="readonly"
+                           placeholder="تاريخ إنشاء المهمة من"
+                           kdatepicker>
                 </div>
+            </div>
 
-                <div class="form-group text-right col-md-6">
-                    <label for="codeFrom" class="control-label">رقم المهمة من </label>
-                    <input id="codeFrom"
-                           type="number"
-                           min="1"
-                           focus-index="3"
-                           class="form-control text-right"
-                           placeholder="ادخل رقم المهمة من"
-                           ng-model="buffer.codeFrom">
+            <div class="form-group text-right col-sm-6">
+                <label for="endDateTo" class="control-label">تاريخ تسليم المهمة إلى</label>
+                <div dir="ltr" class="input-group">
+                    <input dir="rtl"
+                           id="endDateTo"
+                           type="text"
+                           class="form-control text-right is-calendarPicker"
+                           ng-model="buffer.endDateTo"
+                           calendarType="ummalqura"
+                           language="en"
+                           dateFormat="yyyy/mm/dd"
+                           showOnFocus="false"
+                           placeholder="تاريخ تسليم المهمة إلى"
+                           readonly="readonly"
+                           kdatepicker>
                 </div>
+            </div>
 
-                <div class="form-group text-right col-sm-6">
-                    <label for="startDateTo" class="control-label">تاريخ إنشاء المهمة إلى</label>
-                    <div dir="ltr" class="input-group">
-                        <input dir="rtl"
-                               id="startDateTo"
-                               type="text"
-                               class="form-control text-right is-calendarPicker"
-                               ng-model="buffer.startDateTo"
-                               calendarType="ummalqura"
-                               language="en"
-                               dateFormat="yyyy/mm/dd"
-                               showOnFocus="false"
-                               placeholder="تاريخ إنشاء المهمة إلى"
-                               readonly="readonly"
-                               kdatepicker>
-                    </div>
+            <div class="form-group text-right col-sm-6">
+                <label for="endDateFrom" class="control-label">تاريخ تسليم المهمة من</label>
+                <div dir="ltr" class="input-group">
+                    <input dir="rtl"
+                           id="endDateFrom"
+                           type="text"
+                           class="form-control text-right is-calendarPicker"
+                           ng-model="buffer.endDateFrom"
+                           calendarType="ummalqura"
+                           language="en"
+                           dateFormat="yyyy/mm/dd"
+                           showOnFocus="false"
+                           readonly="readonly"
+                           placeholder="تاريخ تسليم المهمة من"
+                           kdatepicker>
                 </div>
-
-                <div class="form-group text-right col-sm-6">
-                    <label for="startDateFrom" class="control-label">تاريخ إنشاء المهمة من</label>
-                    <div dir="ltr" class="input-group">
-                        <input dir="rtl"
-                               id="startDateFrom"
-                               type="text"
-                               class="form-control text-right is-calendarPicker"
-                               ng-model="buffer.startDateFrom"
-                               calendarType="ummalqura"
-                               language="en"
-                               dateFormat="yyyy/mm/dd"
-                               showOnFocus="false"
-                               readonly="readonly"
-                               placeholder="تاريخ إنشاء المهمة من"
-                               kdatepicker>
-                    </div>
-                </div>
-
-                <div class="form-group text-right col-sm-6">
-                    <label for="endDateTo" class="control-label">تاريخ تسليم المهمة إلى</label>
-                    <div dir="ltr" class="input-group">
-                        <input dir="rtl"
-                               id="endDateTo"
-                               type="text"
-                               class="form-control text-right is-calendarPicker"
-                               ng-model="buffer.endDateTo"
-                               calendarType="ummalqura"
-                               language="en"
-                               dateFormat="yyyy/mm/dd"
-                               showOnFocus="false"
-                               placeholder="تاريخ تسليم المهمة إلى"
-                               readonly="readonly"
-                               kdatepicker>
-                    </div>
-                </div>
-
-                <div class="form-group text-right col-sm-6">
-                    <label for="endDateFrom" class="control-label">تاريخ تسليم المهمة من</label>
-                    <div dir="ltr" class="input-group">
-                        <input dir="rtl"
-                               id="endDateFrom"
-                               type="text"
-                               class="form-control text-right is-calendarPicker"
-                               ng-model="buffer.endDateFrom"
-                               calendarType="ummalqura"
-                               language="en"
-                               dateFormat="yyyy/mm/dd"
-                               showOnFocus="false"
-                               readonly="readonly"
-                               placeholder="تاريخ تسليم المهمة من"
-                               kdatepicker>
-                    </div>
-                </div>
-            </fieldset>
+            </div>
 
         </div>
 

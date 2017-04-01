@@ -278,8 +278,8 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
 
         $scope.clear = function () {
             $scope.buffer = {};
-            $scope.buffer.taskType = true;
-            $scope.buffer.isTaskOpen = true;
+            // $scope.buffer.taskType = true;
+            // $scope.buffer.isTaskOpen = true;
             $scope.buffer.person = $scope.persons[0];
         };
 
@@ -515,6 +515,43 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             modalInstance.result.then(function (buffer) {
                 $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الواردة السارية، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
                 var search = [];
+
+                if (buffer.title) {
+                    search.push('title=');
+                    search.push(buffer.title);
+                    search.push('&');
+                }
+                if (buffer.codeFrom) {
+                    search.push('codeFrom=');
+                    search.push(buffer.codeFrom);
+                    search.push('&');
+                }
+                if (buffer.codeTo) {
+                    search.push('codeTo=');
+                    search.push(buffer.codeTo);
+                    search.push('&');
+                }
+                if (buffer.startDateTo) {
+                    search.push('startDateTo=');
+                    search.push(buffer.startDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.startDateFrom) {
+                    search.push('startDateFrom=');
+                    search.push(buffer.startDateFrom.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateTo) {
+                    search.push('endDateTo=');
+                    search.push(buffer.endDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateFrom) {
+                    search.push('endDateFrom=');
+                    search.push(buffer.endDateFrom.getTime());
+                    search.push('&');
+                }
+
                 search.push('isTaskOpen=');
                 search.push(true);
                 search.push('&');
@@ -560,6 +597,43 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             modalInstance.result.then(function (buffer) {
                 $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الواردة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
                 var search = [];
+
+                if (buffer.title) {
+                    search.push('title=');
+                    search.push(buffer.title);
+                    search.push('&');
+                }
+                if (buffer.codeFrom) {
+                    search.push('codeFrom=');
+                    search.push(buffer.codeFrom);
+                    search.push('&');
+                }
+                if (buffer.codeTo) {
+                    search.push('codeTo=');
+                    search.push(buffer.codeTo);
+                    search.push('&');
+                }
+                if (buffer.startDateTo) {
+                    search.push('startDateTo=');
+                    search.push(buffer.startDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.startDateFrom) {
+                    search.push('startDateFrom=');
+                    search.push(buffer.startDateFrom.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateTo) {
+                    search.push('endDateTo=');
+                    search.push(buffer.endDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateFrom) {
+                    search.push('endDateFrom=');
+                    search.push(buffer.endDateFrom.getTime());
+                    search.push('&');
+                }
+
                 search.push('isTaskOpen=');
                 search.push(false);
                 search.push('&');
@@ -605,6 +679,43 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             modalInstance.result.then(function (buffer) {
                 $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الصادرة السارية، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
                 var search = [];
+
+                if (buffer.title) {
+                    search.push('title=');
+                    search.push(buffer.title);
+                    search.push('&');
+                }
+                if (buffer.codeFrom) {
+                    search.push('codeFrom=');
+                    search.push(buffer.codeFrom);
+                    search.push('&');
+                }
+                if (buffer.codeTo) {
+                    search.push('codeTo=');
+                    search.push(buffer.codeTo);
+                    search.push('&');
+                }
+                if (buffer.startDateTo) {
+                    search.push('startDateTo=');
+                    search.push(buffer.startDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.startDateFrom) {
+                    search.push('startDateFrom=');
+                    search.push(buffer.startDateFrom.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateTo) {
+                    search.push('endDateTo=');
+                    search.push(buffer.endDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateFrom) {
+                    search.push('endDateFrom=');
+                    search.push(buffer.endDateFrom.getTime());
+                    search.push('&');
+                }
+
                 search.push('isTaskOpen=');
                 search.push(true);
                 search.push('&');
@@ -650,6 +761,43 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             modalInstance.result.then(function (buffer) {
                 $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الصادرة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
                 var search = [];
+
+                if (buffer.title) {
+                    search.push('title=');
+                    search.push(buffer.title);
+                    search.push('&');
+                }
+                if (buffer.codeFrom) {
+                    search.push('codeFrom=');
+                    search.push(buffer.codeFrom);
+                    search.push('&');
+                }
+                if (buffer.codeTo) {
+                    search.push('codeTo=');
+                    search.push(buffer.codeTo);
+                    search.push('&');
+                }
+                if (buffer.startDateTo) {
+                    search.push('startDateTo=');
+                    search.push(buffer.startDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.startDateFrom) {
+                    search.push('startDateFrom=');
+                    search.push(buffer.startDateFrom.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateTo) {
+                    search.push('endDateTo=');
+                    search.push(buffer.endDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateFrom) {
+                    search.push('endDateFrom=');
+                    search.push(buffer.endDateFrom.getTime());
+                    search.push('&');
+                }
+
                 search.push('isTaskOpen=');
                 search.push(false);
                 search.push('&');

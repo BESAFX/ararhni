@@ -25,6 +25,11 @@ app.factory("TaskOperationService",
                 return $http.get("/api/taskOperation/findByTask/" + task.id).then(function (response) {
                     return response.data;
                 });
+            },
+            findByTaskAndType: function (task, type) {
+                return $http.get("/api/taskOperation/findByTaskAndType/" + task.id + "/" + type).then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);

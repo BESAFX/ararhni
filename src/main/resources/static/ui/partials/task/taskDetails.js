@@ -17,6 +17,18 @@ app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskOperationService', '$sc
             })
         };
 
+        $scope.findTaskWarnings = function () {
+            TaskOperationService.findByTaskAndType($scope.task, 2).then(function (data) {
+                $scope.task.taskWarnings = data;
+            })
+        };
+
+        $scope.findTaskDeductions = function () {
+            TaskOperationService.findByTaskAndType($scope.task, 3).then(function (data) {
+                $scope.task.taskDeductions = data;
+            })
+        };
+
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };

@@ -8,6 +8,7 @@ import com.besafx.app.search.TaskSearch;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.TaskOperationService;
 import com.besafx.app.service.TaskService;
+import com.besafx.app.util.DateConverter;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -113,9 +113,9 @@ public class ScheduledTasks {
                             builder.append(" ");
                             builder.append("للموظف / " + person.getName());
                             builder.append(" ");
-                            builder.append("من الفترة / " + new SimpleDateFormat("yyyy-MM-dd hh:mm a").format(startLast12Hour.toDate()));
+                            builder.append("من الفترة / " + DateConverter.getHijriStringFromDateRTLWithTime(startLast12Hour.toDate()));
                             builder.append(" ");
-                            builder.append("إلى الفترة / " + new SimpleDateFormat("yyyy-MM-dd hh:mm a").format(endLast12Hour.toDate()));
+                            builder.append("إلى الفترة / " + DateConverter.getHijriStringFromDateRTLWithTime(endLast12Hour.toDate()));
                             builder.append(" ");
                             builder.append("نأمل الإلتزام بالتعليق فى خلال مدة لا تزيد عن 12 ساعة.");
                             log.info("جاري إرسال التحذير...");
@@ -133,9 +133,9 @@ public class ScheduledTasks {
                             builder.append(" ");
                             builder.append("نظراً لتحذيره سابقاً");
                             builder.append(" ");
-                            builder.append("من الفترة / " + new SimpleDateFormat("yyyy-MM-dd hh:mm a").format(startLast24Hour.toDate()));
+                            builder.append("من الفترة / " + DateConverter.getHijriStringFromDateRTLWithTime(startLast24Hour.toDate()));
                             builder.append(" ");
-                            builder.append("إلى الفترة / " + new SimpleDateFormat("yyyy-MM-dd hh:mm a").format(startLast12Hour.toDate()));
+                            builder.append("إلى الفترة / " + DateConverter.getHijriStringFromDateRTLWithTime(startLast12Hour.toDate()));
                             builder.append(" ");
                             builder.append("نأمل منه مراجعة جهة التكليف.");
                             createEmail(task, builder.toString(), 3, task.getPerson(), person);

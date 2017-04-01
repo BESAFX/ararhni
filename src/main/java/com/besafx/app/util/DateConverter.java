@@ -88,6 +88,17 @@ public class DateConverter {
         return islamicDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
+    public static String getHijriStringFromDateRTLWithTime(long date) {
+        return getHijriStringFromDateRTLWithTime(new Date(date));
+    }
+
+    public static String getHijriStringFromDateRTLWithTime(Date date) {
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+        HijrahDate islamicDate = HijrahChronology.INSTANCE.date(LocalDate.of(cl.get(Calendar.YEAR), cl.get(Calendar.MONTH) + 1, cl.get(Calendar.DATE)));
+        return islamicDate.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) + " " + new SimpleDateFormat("a mm:hh").format(date).replaceAll("PM", "م").replaceAll("AM", "ص");
+    }
+
     public static String getHijriStringFromDateRTL(long date) {
         return getHijriStringFromDateRTL(new Date(date));
     }
