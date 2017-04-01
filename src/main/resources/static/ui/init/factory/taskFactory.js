@@ -37,7 +37,7 @@ app.factory("TaskService",
             reportFilteredTasks: function (search, reportProp) {
                 $http.post('/report/dynamic/filteredTasks?' + search, reportProp, {responseType: 'arraybuffer'})
                     .success(function (data) {
-                        $rootScope.showToast("تم تهيئة التقرير بنجاح، يمكنك حفظ التقرير وإستخراجه الآن");
+                        $rootScope.showNotify("نماذج الطباعة", "تم تهيئة التقرير بنجاح، يمكنك حفظ التقرير وإستخراجه الآن", "success", "fa-black-tie");
                         var blob = new Blob([data], {type: 'application/' + reportProp.exportType});
                         saveAs(blob, 'Report.' + reportProp.exportType);
                     });
@@ -45,7 +45,7 @@ app.factory("TaskService",
             reportTask: function (id, reportProp) {
                 $http.post('/report/dynamic/task?id=' + id, reportProp, {responseType: 'arraybuffer'})
                     .success(function (data) {
-                        $rootScope.showToast("تم تهيئة التقرير بنجاح، يمكنك حفظ التقرير وإستخراجه الآن");
+                        $rootScope.showNotify("نماذج الطباعة", "تم تهيئة التقرير بنجاح، يمكنك حفظ التقرير وإستخراجه الآن", "success", "fa-black-tie");
                         var blob = new Blob([data], {type: 'application/' + reportProp.exportType});
                         saveAs(blob, 'Report.' + reportProp.exportType);
                     });
