@@ -11,11 +11,17 @@ app.controller("homeCtrl", ['$scope', '$rootScope', '$timeout', 'TaskService', '
         });
 
         $scope.delete = function (task) {
+            $.noty.clearQueue(); // Clears the notification queue
+            $.noty.closeAll(); // Close all notifications
             if (task) {
-                TaskService.remove(task.id);
+                $rootScope.showConfirmNotify("الرئيسية", "هل تود حذف المهمة فعلاً؟", "error", "fa-black-tie", function () {
+                    TaskService.remove(task.id);
+                });
                 return;
             }
-            TaskService.remove($scope.selected);
+            $rootScope.showConfirmNotify("الرئيسية", "هل تود حذف المهمة فعلاً؟", "error", "fa-black-tie", function () {
+                TaskService.remove($scope.selected.id);
+            });
         };
 
         $scope.openCreateModel = function () {
