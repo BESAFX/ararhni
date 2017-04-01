@@ -19,7 +19,7 @@
                         <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="fetchClosed()">
                             <span>جميع الصادرة المغلقة</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="openTaskOperationsReportModel()">
+                        <li class="mdl-menu__item" ng-click="openTasksOperationsReportModel()">
                             <span>تقرير عن الحركات</span>
                         </li>
                         <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="openReportTasksModel()">
@@ -95,9 +95,17 @@
                                                     </span>
                                                 </a>
                                             </td>
-                                            <td colspan="1" class="text-left" width="10%"
+                                            <td colspan="1" class="text-left" width="15%"
                                                 style="padding: 10px 0px 10px 0px;">
                                                 <ul class="panel-controls pull-left">
+                                                    <li>
+                                                        <a href=""
+                                                           ng-click="openTaskOperationsReportModel(task)"
+                                                           tooltip-append-to-body="true"
+                                                           uib-tooltip="تقرير">
+                                                            <span class="fa fa-print"></span>
+                                                        </a>
+                                                    </li>
                                                     <li>
                                                         <a href=""
                                                            ng-if="contains(authorities, ['ROLE_TASK_DELETE'])"
@@ -131,6 +139,14 @@
                                                            tooltip-append-to-body="true"
                                                            uib-tooltip="اضافة مهمة">
                                                             <span class="fa fa-plus"></span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href=""
+                                                           ng-click="openDetailsModel(task)"
+                                                           tooltip-append-to-body="true"
+                                                           uib-tooltip="التفاصيل">
+                                                            <span class="fa fa-info"></span>
                                                         </a>
                                                     </li>
                                                 </ul>

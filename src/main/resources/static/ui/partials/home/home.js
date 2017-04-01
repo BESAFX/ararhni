@@ -22,6 +22,14 @@ app.controller("homeCtrl", ['$scope', '$rootScope', '$timeout', 'TaskService', '
             ModalProvider.openTaskCreateModel();
         };
 
+        $scope.openDetailsModel = function (task) {
+            ModalProvider.openTaskDetailsModel(task);
+        };
+
+        $scope.openTaskOperationsReportModel = function (task) {
+            ModalProvider.openTaskOperationsReportModel([task]);
+        };
+
         $scope.openUpdateModel = function (task) {
             if (task) {
                 ModalProvider.openTaskUpdateModel(task);

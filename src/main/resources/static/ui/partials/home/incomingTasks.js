@@ -85,7 +85,7 @@ app.controller("incomingTasksCtrl", ['ModalProvider', '$scope', '$rootScope', '$
             }
         };
 
-        $scope.openTaskOperationsReportModel = function () {
+        $scope.openTasksOperationsReportModel = function () {
             ModalProvider.openTaskOperationsReportModel($scope.tasks);
         };
 

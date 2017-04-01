@@ -137,7 +137,7 @@ app.controller("closedSoonOutgoingCtrl", ['$scope', '$rootScope', '$timeout', 'T
             }
         };
 
-        $scope.openTaskOperationsReportModel = function () {
+        $scope.openTasksOperationsReportModel = function () {
             ModalProvider.openTaskOperationsReportModel($scope.tasks);
         };
 
