@@ -27,6 +27,9 @@ app.controller("menuCtrl", ['$scope', '$rootScope', '$state', '$timeout', functi
     $scope.goToTask = function () {
         $state.go('task');
     };
+    $scope.goToHome = function () {
+        $state.go('home');
+    };
     $timeout(function () {
         window.componentHandler.upgradeAllRegistered();
     }, 1500);

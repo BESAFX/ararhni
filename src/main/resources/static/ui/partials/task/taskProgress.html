@@ -40,6 +40,8 @@
                                     placeholder-text-single="'اختر الموظف'"
                                     class="form-control text-right"
                                     chosen=""
+                                    required="required"
+                                    disable-validation-message=""
                                     ng-model="buffer.taskTo"
                                     focus-index="1"
                                     ng-options="taskTo.person.name for taskTo in task.taskTos track by taskTo.id">

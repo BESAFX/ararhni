@@ -231,15 +231,19 @@
                                 <strong>---</strong>
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
+                                <button ng-click="goToHome()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                                    <span>لوحة التحكم</span>
+                                </button>
                                 <button ng-click="goToTask()"
                                         class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                                     <span>الرئيسية</span>
                                 </button>
-                                <button ng-if="contains(authorities, ['ROLE_TASK_CREATE'])"
-                                        ng-click="ModalProvider.openTaskCreateModel()"
-                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>اضافة</span>
-                                </button>
+                                <!--<button ng-if="contains(authorities, ['ROLE_TASK_CREATE'])"-->
+                                <!--ng-click="ModalProvider.openTaskCreateModel()"-->
+                                <!--class="mdl-button mdl-button&#45;&#45;colored mdl-js-button mdl-js-ripple-effect">-->
+                                <!--<span>اضافة</span>-->
+                                <!--</button>-->
                             </div>
                         </div>
                     </div>

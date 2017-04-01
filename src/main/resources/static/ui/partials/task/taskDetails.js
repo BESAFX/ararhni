@@ -7,6 +7,14 @@ app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskOperationService', '$sc
             ModalProvider.openTaskOperationCreateModel($scope.task);
         };
 
+        $scope.openProgressModel = function () {
+            ModalProvider.openTaskProgressModel($scope.task);
+        };
+
+        $scope.openRequestCloseModel = function () {
+            ModalProvider.openTaskRequestCloseModel($scope.task);
+        };
+
         $scope.openReportTaskOperationsModel = function () {
             ModalProvider.openTaskOperationsReportModel([$scope.task]);
         };
