@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Arrays;
@@ -18,47 +19,61 @@ public class EmailSender {
 
     private final Logger log = LoggerFactory.getLogger(EmailSender.class);
 
+    private MimeMessage message;
+
+    private MimeMessageHelper helper;
+
     @Autowired
     private JavaMailSender sender;
 
-    @Async
+    @PostConstruct
+    public void init() {
+        try {
+            log.info("تهيئة خدمة البريد الإلكتروني...");
+            message = sender.createMimeMessage();
+            helper = new MimeMessageHelper(message, true);
+            helper.setFrom("anni4ksa@gmail.com");
+            log.info("تم الدخول بنجاح");
+        } catch (MessagingException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    @Async("threadPoolTaskExecutor")
     public void send(String title, String content, List<String> toEmailList) {
         try {
-            MimeMessage message = sender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom("anni4ksa@gmail.com");
+            log.info("راحة لمدة 10 ثواني");
+            Thread.sleep(10000);
             String[] emails = new String[toEmailList.size()];
             emails = toEmailList.toArray(emails);
-            log.info("Trying Sending to this emails: " + Arrays.toString(emails));
+            log.info("جاري إرسال الرسالة إلى الإيميلات الآتية: " + Arrays.toString(emails));
             helper.setTo(emails);
             helper.setSubject(title);
             helper.setText(content, true);
             sender.send(message);
-            log.info("Sent Successfully to: " + Arrays.toString(emails));
-            Thread.sleep(1000 * 10);
+            log.info("تم الإرسال بنجاح إلى كل من: " + Arrays.toString(emails));
         } catch (MessagingException e) {
-            log.error("Sent Failed", e);
-            throw new CustomException(e.getMessage());
+            log.error(e.getMessage(), e);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
     }
 
-    @Async
+    @Async("threadPoolTaskExecutor")
     public void send(String title, String content, String email) {
         try {
-            log.info("تهيئة الرسالة...");
-            MimeMessage message = sender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom("anni4ksa@gmail.com");
+            log.info("راحة لمدة 10 ثواني");
+            Thread.sleep(10000);
+            log.info("جاري إرسال الرسالة إلى البريد الإلكتروني: " + email);
             helper.setTo(email);
             helper.setSubject(title);
             helper.setText(content, true);
             sender.send(message);
-            log.info("Sent Successfully to: " + email);
+            log.info("تم الإرسال بنجاح إلى العنوان الآتي: " + email);
         } catch (MessagingException e) {
-            log.error("Sent Failed", e);
-            throw new CustomException(e.getMessage());
+            log.error(e.getMessage(), e);
+        } catch (InterruptedException e) {
+            log.error(e.getMessage(), e);
         }
     }
 }

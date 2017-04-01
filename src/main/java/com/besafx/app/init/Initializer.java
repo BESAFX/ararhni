@@ -1,5 +1,6 @@
 package com.besafx.app.init;
 
+import com.besafx.app.config.EmailSender;
 import com.besafx.app.entity.*;
 import com.besafx.app.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,20 @@ public class Initializer implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailSender emailSender;
+
     @Override
     public void run(String... args) throws Exception {
         if (personService.count() == 0) {
             runForFirstTimeOnly();
         }
+
+        emailSender.send("1", "Message", "islamhaker@gmail.com");
+        emailSender.send("2", "Message", "islamhaker@gmail.com");
+        emailSender.send("3", "Message", "islamhaker@gmail.com");
+        emailSender.send("4", "Message", "islamhaker@gmail.com");
+        emailSender.send("5", "Message", "islamhaker@gmail.com");
     }
 
     private void runForFirstTimeOnly() {

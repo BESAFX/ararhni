@@ -42,7 +42,7 @@ public class ScheduledTasks {
     @Autowired
     private EmailSender emailSender;
 
-    @Scheduled(cron = "0 0 2 * * SAT,SUN,MON,TUE,WED,THU")
+    @Scheduled(cron = "0 0 2 * * SUN,MON,TUE,WED,THU")
     public void warnAllAboutUnCommentedTasksAtMidNight() {
 
         //Run Morning task (Time of execution = 2)
@@ -60,7 +60,7 @@ public class ScheduledTasks {
         chech(startLast24Hour, startLast12Hour, endLast12Hour);
     }
 
-    @Scheduled(cron = "0 0 14 * * SAT,SUN,MON,TUE,WED,THU")
+    @Scheduled(cron = "0 0 14 * * SUN,MON,TUE,WED,THU")
     public void warnAllAboutUnCommentedTasksAtAfternoon() {
 
         //Run evening task (Time of execution = 14)
