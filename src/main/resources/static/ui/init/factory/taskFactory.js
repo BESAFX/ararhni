@@ -54,6 +54,11 @@ app.factory("TaskService",
                 return $http.post("/api/task/requestClose", task).then(function (response) {
                     return response.data;
                 });
+            },
+            setProgress: function (task, progress) {
+                return $http.post("/api/task/setProgress/" + progress, task).then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);

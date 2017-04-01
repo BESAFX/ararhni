@@ -19,6 +19,10 @@ public class TaskTo implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    private Integer progress;
+
+    private Boolean closed;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "task")
     @JsonIgnoreProperties(value = {"taskTos", "taskOperations", "taskCloseRequests"}, allowSetters = true)

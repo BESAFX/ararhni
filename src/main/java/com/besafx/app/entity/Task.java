@@ -27,8 +27,6 @@ public class Task implements Serializable {
 
     private String title;
 
-    private Integer progress;
-
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String content;

@@ -339,6 +339,14 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             ModalProvider.openTaskRequestCloseModel($scope.selected);
         };
 
+        $scope.openProgressModel = function (task) {
+            if (task) {
+                ModalProvider.openTaskProgressModel(task);
+                return;
+            }
+            ModalProvider.openTaskProgressModel($scope.selected);
+        };
+
         $scope.showSlideFilter = function () {
             $scope.showSlide = true;
             $scope.sideSize = '50%';
@@ -439,6 +447,17 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.openRequestCloseModel($itemScope.task);
+                }
+            });
+
+        $scope.rowMenu.push(
+            {
+                html: '<div style="cursor: pointer;padding: 10px;text-align: right"> تحديد نسبة الإنجاز <span class="fa fa-hourglass-2 fa-lg"></span></div>',
+                enabled: function () {
+                    return true
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.openProgressModel($itemScope.task);
                 }
             });
 

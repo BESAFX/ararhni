@@ -71,7 +71,6 @@ public class TaskRest {
         }
         task.setStartDate(new Date());
         task.setPerson(person);
-        task.setProgress(0);
         task = taskService.save(task);
         ListIterator<TaskTo> listIterator = task.getTaskTos().listIterator();
         while (listIterator.hasNext()) {
@@ -89,7 +88,7 @@ public class TaskRest {
         notificationService.notifyAllExceptMe(Notification
                 .builder()
                 .title("العمليات على المهام")
-                .message("تم اضافة مهمة جديدة رقم " + task.getCode() + " بواسطة" +  person.getName())
+                .message("تم اضافة مهمة جديدة رقم " + task.getCode() + " بواسطة" + person.getName())
                 .type("warning")
                 .icon("fa-black-tie")
                 .build());
@@ -126,7 +125,7 @@ public class TaskRest {
             notificationService.notifyAllExceptMe(Notification
                     .builder()
                     .title("العمليات على المهام")
-                    .message("تم تعديل بيانات مهمة رقم " + task.getCode() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
+                    .message("تم تعديل بيانات مهمة رقم " + task.getCode() + " بواسطة " + personService.findByEmail(principal.getName()).getName())
                     .type("warning")
                     .icon("fa-black-tie")
                     .build());
@@ -204,7 +203,7 @@ public class TaskRest {
         notificationService.notifyAllExceptMe(Notification
                 .builder()
                 .title("العمليات على المهام")
-                .message("تم ارسال طلب إغلاق المهمة رقم " + task.getCode() + " بواسطة" +  person.getName())
+                .message("تم ارسال طلب إغلاق المهمة رقم " + task.getCode() + " بواسطة" + person.getName())
                 .type("warning")
                 .icon("fa-power-off")
                 .build());
