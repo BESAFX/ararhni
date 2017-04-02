@@ -26,13 +26,19 @@ public interface TaskOperationService extends PagingAndSortingRepository<TaskOpe
 
     List<TaskOperation> findByTaskAndType(Task task, Integer type);
 
-    List<TaskOperation> findByTaskAndDateBetween(Task task, @Temporal(TemporalType.DATE) Date startDate, @Temporal(TemporalType.DATE) Date endDate);
+    List<TaskOperation> findByTaskAndDateBetween(Task task, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    List<TaskOperation> findByTaskAndDateAfterAndDateBefore(Task task, @Temporal(TemporalType.DATE) Date startDate, @Temporal(TemporalType.DATE) Date endDate);
+    List<TaskOperation> findByTaskAndDateAfterAndDateBefore(Task task, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    long countByTaskAndSenderAndDateBetween(Task task, Person person, @Temporal(TemporalType.DATE) Date startDate, @Temporal(TemporalType.DATE) Date endDate);
+    long countByTaskAndSenderAndDateBetween(Task task, Person person, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    long countByTaskAndSenderAndDateAfterAndDateBefore(Task task, Person person, @Temporal(TemporalType.DATE) Date startDate, @Temporal(TemporalType.DATE) Date endDate);
+    long countByTaskAndSenderAndDateAfterAndDateBefore(Task task, Person person, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    long countByTaskAndSenderAndTypeAndDateAfterAndDateBefore(Task task, Person person, Integer type, @Temporal(TemporalType.DATE) Date startDate, @Temporal(TemporalType.DATE) Date endDate);
+    long countByTaskAndSenderAndTypeAndDateAfterAndDateBefore(Task task, Person person, Integer type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+
+    long countByTaskAndSenderAndTypeAndDateBetween(Task task, Person person, Integer type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+
+    long countByDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+
+    long countByTaskAndSenderAndType(Task task, Person person, Integer type);
 }

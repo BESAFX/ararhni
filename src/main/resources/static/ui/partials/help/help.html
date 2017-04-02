@@ -1,0 +1,58 @@
+<!-- Always shows a header, even in smaller screens. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+    <header class="mdl-layout__header">
+        <div class="mdl-layout-icon">
+            <a class="mdl-button mdl-js-button mdl-button--icon" ui-sref="menu">
+                <i class="material-icons">{{MDLIcon}}</i>
+            </a>
+        </div>
+        <div class="mdl-layout__header-row">
+            <button id="menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">more_vert</i>
+            </button>
+            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu-lower-left">
+                <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">
+                    <span>الملف الشخصي</span>
+                </li>
+                <li class="mdl-menu__item" ng-click="logout()">
+                    <span>تسجيل الخروج</span>
+                </li>
+            </ul>
+            <div class="mdl-layout-spacer"></div>
+            <span class="mdl-layout__title">{{pageTitle}}</span>
+        </div>
+    </header>
+
+    <main class="mdl-layout__content">
+
+        <div dir="rtl" style="margin-top: 10px">
+            <div class="col-sm-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title pull-right">
+                            <i class="fa fa-book fa-lg"></i>
+                            <span>مقدمة</span>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            <span>يعتبر</span>
+                            <strong> برنامج إدارة المهام</strong>
+                            <span> من البرامج الهامة الإدارية لأي مؤسسة ذات كيان وظيفي متعدد المستويات، حيث انه يسهل وينظم أغلب الاعمال الخاصة بافراد المؤسسة، ويمكن المدراء والرؤساء من التحكم وتنظيم العمل داخل المنظمة.</span>
+                        </p>
+                        <p>
+                            <span>وتعتمد فكرة</span>
+                            <strong> برنامج إدارة المهام</strong>
+                            <span> على مبادىء اساسية منها الهيكل الوظيفي والتدرج الوظيفي بين افراد المؤسسة، حيث انك فى بداية عملك على <strong> برنامج إدارة المهام</strong>، يجب ان تعد وتهيئ الشجرة الوظيفية لمؤسستك، وقد تم اعتماد هيكل إداري داخل هذا النظام يمكن ان يتوافق مع أغلب الأنظمة الإدارية داخل المملكة العربية السعودية.</span>
+                        </p>
+                        <p>يمكن توضيح الشجرة الوظيفية داخل النظام كما فى الصورة الأتية:</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+</div>

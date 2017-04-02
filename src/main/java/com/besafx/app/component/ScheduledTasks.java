@@ -101,13 +101,15 @@ public class ScheduledTasks {
             tasks.stream().forEach(task -> {
 
                 log.info("البحث عن عدد حركات الموظف " + person.getName() + " على المهمة رقم " + task.getCode());
+                log.info("من الفترة: " + DateConverter.getDateInFormatWithTime(startLast12Hour.toDate()));
+                log.info("إلى الفترة: " + DateConverter.getDateInFormatWithTime(endLast12Hour.toDate()));
 
-                long numberOfOperations = taskOperationService.countByTaskAndSenderAndTypeAndDateAfterAndDateBefore(task, person, 1, startLast12Hour.toDate(), endLast12Hour.toDate());
+                long numberOfOperations = taskOperationService.countByTaskAndSenderAndTypeAndDateBetween(task, person, 1, startLast12Hour.toDate(), endLast12Hour.toDate());
 
                 log.info("عدد الحركات فى الفترة = " + numberOfOperations);
 
                 if (numberOfOperations == 0) {
-                    long numberOfWarns = taskOperationService.countByTaskAndSenderAndTypeAndDateAfterAndDateBefore(task, person, 2, startLast24Hour.toDate(), startLast12Hour.toDate());
+                    long numberOfWarns = taskOperationService.countByTaskAndSenderAndTypeAndDateBetween(task, person, 2, startLast24Hour.toDate(), startLast12Hour.toDate());
 
                     log.info("عدد التحذيرات فى الفترة = " + numberOfWarns);
 

@@ -86,6 +86,7 @@ app.run(['$http', '$location', '$state', '$window', 'notifyCode', 'PersonService
                 case 'help': {
                     $rootScope.pageTitle = 'المساعدة';
                     $rootScope.pageTitleIcon = 'fa fa-info-circle';
+                    $rootScope.MDLIcon = 'help';
                     break;
                 }
             }
@@ -262,5 +263,44 @@ app.run(['$http', '$location', '$state', '$window', 'notifyCode', 'PersonService
             }, {'headers': 'notify'});
         });
         $rootScope.today = new Date();
+
+        /**************************************************************
+         *                                                            *
+         * Navigation Callers                                         *
+         *                                                            *
+         *************************************************************/
+        $rootScope.goToCompany = function () {
+            $state.go('company');
+        };
+        $rootScope.goToRegion = function () {
+            $state.go('region');
+        };
+        $rootScope.goToBranch = function () {
+            $state.go('branch');
+        };
+        $rootScope.goToDepartment = function () {
+            $state.go('department');
+        };
+        $rootScope.goToEmployee = function () {
+            $state.go('employee');
+        };
+        $rootScope.goToTeam = function () {
+            $state.go('team');
+        };
+        $rootScope.goToPerson = function () {
+            $state.go('person');
+        };
+        $rootScope.goToReportModel = function () {
+            $state.go('reportModel');
+        };
+        $rootScope.goToTask = function () {
+            $state.go('task');
+        };
+        $rootScope.goToHome = function () {
+            $state.go('home');
+        };
+        $rootScope.goToHelp = function () {
+            $state.go('help');
+        };
 
     }]);
