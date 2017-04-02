@@ -184,11 +184,12 @@ public class ScheduledTasks {
             }
             taskOperation.setDate(new Date());
             taskOperation.setTask(task);
-            taskOperation.setSender(task.getPerson());
+            log.info("تعيين الموظف المجازى او المحذر كمرسل للحركة التى تعتبر تحذير او حسم");
+            taskOperation.setSender(to);
             taskOperation.setContent(content);
             taskOperation.setType(type);
             taskOperationService.save(taskOperation);
-            log.info("تم حفظ الحركة الآلية باسم جهة التكليف");
+            log.info("تم حفظ الحركة الآلية باسم الموظف");
         });
 
         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
