@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -157,5 +156,13 @@ public class TaskSearch {
             }
         }
 
+    }
+
+    public List<Task> getIncomingTasks(String timeType, Long personId) {
+        return search(null, null, null, null, null, null, null, true, true, timeType, personId);
+    }
+
+    public List<Task> getOutgoingTasks(String timeType, Long personId) {
+        return search(null, null, null, null, null, null, null, true, true, timeType, personId);
     }
 }

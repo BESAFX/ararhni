@@ -6,11 +6,15 @@ import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskOperation;
 import com.besafx.app.entity.TaskOperationAttach;
+import com.besafx.app.search.TaskSearch;
 import com.besafx.app.service.*;
 import com.besafx.app.util.DateConverter;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -43,6 +47,9 @@ public class TaskOperationRest {
 
     @Autowired
     private TaskOperationAttachService taskOperationAttachService;
+
+    @Autowired
+    private TaskSearch taskSearch;
 
     @Autowired
     private NotificationService notificationService;
@@ -178,6 +185,36 @@ public class TaskOperationRest {
             throw new CustomException("لا توجد هذة المهمة، فضلاً تأكد من الرقم الصحيح");
         }
         return taskOperationService.findByTaskAndType(task, type);
+    }
+
+    @RequestMapping(value = "findIncomingOperationsForMe/{timeType}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public List<TaskOperation> findIncomingOperationsForMe(@PathVariable(value = "timeType") String timeType, Principal principal) {
+        List<Task> tasks = taskSearch.getIncomingTasks("All", personService.findByEmail(principal.getName()).getId());
+        List<TaskOperation> taskOperations = new ArrayList<>();
+        LocalDate today = new DateTime().withTimeAtStartOfDay().toLocalDate();
+        LocalDate tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay().toLocalDate();
+        switch (timeType) {
+            case "Day":
+                tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndTypeAndDateBetween(task, 1, today.toDate(), tomorrow.toDate())));
+                break;
+            case "Week":
+                LocalDate weekStart = today.withDayOfWeek(DateTimeConstants.SATURDAY);
+                LocalDate weekEnd = today.withDayOfWeek(DateTimeConstants.SATURDAY).plusDays(6);
+                tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndTypeAndDateBetween(task, 1, weekStart.toDate(), weekEnd.toDate())));
+                break;
+            case "Month":
+                LocalDate monthStart = today.withDayOfMonth(1);
+                LocalDate monthEnd = monthStart.plusMonths(1).minusDays(1);
+                tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndTypeAndDateBetween(task, 1, monthStart.toDate(), monthEnd.toDate())));
+                break;
+            case "Year":
+                LocalDate yearStart = today.withDayOfYear(1);
+                LocalDate yearEnd = yearStart.plusYears(1).minusDays(1);
+                tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndTypeAndDateBetween(task, 1, yearStart.toDate(), yearEnd.toDate())));
+                break;
+        }
+        return taskOperations;
     }
 
 }

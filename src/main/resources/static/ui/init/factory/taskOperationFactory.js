@@ -30,6 +30,11 @@ app.factory("TaskOperationService",
                 return $http.get("/api/taskOperation/findByTaskAndType/" + task.id + "/" + type).then(function (response) {
                     return response.data;
                 });
+            },
+            findIncomingOperationsForMe: function (timeType) {
+                return $http.get("/api/taskOperation/findIncomingOperationsForMe/" + timeType).then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);

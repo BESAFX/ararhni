@@ -107,6 +107,10 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$cssPr
                     templateUrl: "/ui/partials/home/home.html",
                     controller: "homeCtrl",
                 },
+                'incomingOperations@home': {
+                    templateUrl: "/ui/partials/home/incomingOperations.html",
+                    controller: "incomingOperationsCtrl"
+                },
                 'incomingTasks@home': {
                     templateUrl: "/ui/partials/home/incomingTasks.html",
                     controller: "incomingTasksCtrl"
