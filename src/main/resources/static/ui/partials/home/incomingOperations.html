@@ -1,0 +1,172 @@
+<div class="row" ng-init="showBody='true';hideWidget='false'"
+     ng-hide="hideWidget=='true'">
+    <div class="col-md-12">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                    <button id="close-requests-menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                    <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+                        for="close-requests-menu-lower-left">
+                        <li class="mdl-menu__item" ng-click="showBody=='true' ? showBody='false' : showBody='true'">
+                            <span>{{showBody=='true' ? 'اخفاء' : 'اظهار'}}</span>
+                        </li>
+                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="hideWidget='true'">
+                            <span>حذف</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="fetchThisDay()">
+                            <span>طلبات اليوم</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="fetchThisWeek()">
+                            <span>طلبات الاسبوع</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="fetchThisMonth()">
+                            <span>طلبات الشهر</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="fetchThisYear()">
+                            <span>طلبات العام</span>
+                        </li>
+                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="fetchAllTime()">
+                            <span>كل الطلبات</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="refresh()">
+                            <span>تحديث البيانات</span>
+                        </li>
+                    </ul>
+                </ul>
+                <div class="panel-title-box pull-right">
+                    <h3>{{!viewType? 'طلبات الإغلاق حسب الوقت' : viewType}}</h3>
+                    <span>طلبات الإغلاق من المكلفين حسب الوقت، ويمكنك التخصيص من خلال عرض</span>
+                </div>
+            </div>
+            <div class="panel-body" ng-show="showBody=='true'">
+                <div class="row">
+                    <div class="table-responsive">
+                        <table st-table="collection" st-safe-src="closeRequests"
+                               class="table table-bordered table-striped">
+                            <tbody>
+                            <tr ng-repeat="closeRequest in collection | orderBy:date:true">
+                                <td>
+                                    <table width="100%">
+                                        <tbody>
+                                        <tr>
+                                            <td colspan="1" class="text-right">
+                                                <span>المرسل /</span>
+                                                <span>
+                                                     <a href=""
+                                                        ng-click="viewInfo===1?viewInfo=false:viewInfo=1"><strong>{{closeRequest.person.name}}</strong></a>
+                                                </span>
+                                                <span> عنوان المهمة / </span>
+                                                <span>
+                                                     <a href=""
+                                                        ng-click="viewInfo===2?viewInfo=false:viewInfo=2"><strong>{{closeRequest.task.title}}</strong></a>
+                                                </span>
+                                            </td>
+                                            <td colspan="1" class="text-left">
+                                                <span class="label label-success">
+                                                    <timer interval="60000" start-time="closeRequest.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span> {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="1" class="text-right" style="padding: 5px;">
+                                                <strong>{{closeRequest.note}}</strong>
+                                            </td>
+                                            <td colspan="1" class="text-left" style="padding: 10px 0px 10px 0px;">
+                                                <ul class="panel-controls pull-left">
+                                                    <li>
+                                                        <a href="" ng-click="delete(closeRequest)"
+                                                           tooltip-append-to-body="true"
+                                                           uib-tooltip="حذف">
+                                                            <span class="fa fa-trash"></span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="viewInfo===1">
+                                            <td colspan="2">
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td colspan="2" class="success"><strong>بيانات المرسل</strong>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>الاسم</td>
+                                                        <td>{{closeRequest.person.name}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>البريد الإلكتروني</td>
+                                                        <td>{{closeRequest.person.email}}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="viewInfo===2">
+                                            <td colspan="2">
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td colspan="2" class="success"><strong>بيانات المهمة</strong>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>رقم المهمة</td>
+                                                        <td>{{closeRequest.task.code}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>عنوان المهمة</td>
+                                                        <td>{{closeRequest.task.title}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>تفاصيل المهمة</td>
+                                                        <td>{{closeRequest.task.content}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>تاريخ الإنشاء</td>
+                                                        <td>{{closeRequest.task.startDate | kdate: 'yyyy-mm-dd' : 'ar' :
+                                                            'ummalqura'}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>تاريخ التسليم</td>
+                                                        <td>{{closeRequest.task.endDate | kdate: 'yyyy-mm-dd' : 'ar' :
+                                                            'ummalqura'}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>جهة التكليف</td>
+                                                        <td>{{task.person.nickname}} {{closeRequest.task.person.name}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>الموظفون</td>
+                                                        <td>
+                                                            <span class="label label-info"
+                                                                  ng-repeat="to in closeRequest.task.taskTos"
+                                                                  style="margin: 2px">{{to.person.name}}</span>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                ng-show="!collection || collection.length ==0">
+                                <td colspan="1">لا توجد نتائج</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

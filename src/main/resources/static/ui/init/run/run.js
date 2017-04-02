@@ -238,6 +238,11 @@ app.run(['$http', '$location', '$state', '$window', 'notifyCode', 'PersonService
                         $noty.close();
                         location.reload(true);
                     }
+                    },
+                    {
+                        addClass: 'btn btn-danger', text: 'إغلاق', onClick: function ($noty) {
+                        $noty.close();
+                    }
                     }
                 ]
             });

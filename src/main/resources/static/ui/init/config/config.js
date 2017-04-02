@@ -2,7 +2,6 @@ var app = angular.module('Application',
     [
         'ui.router',
         'ngAnimate',
-        'focus-if',
         'toggle-switch',
         'jcs-autoValidate',
         'fm',
