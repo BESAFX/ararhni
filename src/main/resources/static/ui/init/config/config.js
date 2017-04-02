@@ -72,7 +72,7 @@ app.factory('errorInterceptor', ['$q', '$rootScope', '$location', '$log',
                 if (response && response.status === 404) {
                 }
                 if (response && response.status >= 500) {
-                    $rootScope.showNotify("الدعم الفني", response.data.message, "error", "fa-ban");
+                    $rootScope.showTechnicalNotify("الدعم الفني", response.data.message, "error", "fa-ban");
                 }
                 return $q.reject(response);
             }
