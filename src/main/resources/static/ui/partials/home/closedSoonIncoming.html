@@ -117,7 +117,7 @@
                                                     </span>
                                                 </a>
                                             </td>
-                                            <td colspan="1" width="10%" class="text-left"
+                                            <td colspan="1" width="15%" class="text-left"
                                                 style="padding: 10px 0px 10px 0px;">
                                                 <button id="closed-soon-incoming-menu-lower-left-{{task.id}}"
                                                         class="mdl-button mdl-js-button mdl-button--icon">
@@ -254,7 +254,7 @@
                                                                 المرفقات</strong>
                                                             </td>
                                                         </tr>
-                                                        <tr ng-repeat="taskOperation in collectionOperation | filter:{type:1} | orderBy:date:true">
+                                                        <tr ng-repeat="taskOperation in filteredCollection = (collectionOperation | filter:{type:1} | orderBy:date:true)">
                                                             <td width="15%">{{taskOperation.sender.nickname}} /
                                                                 {{taskOperation.sender.name}}
                                                             </td>
@@ -279,7 +279,7 @@
                                                         </tr>
                                                         <tr class="blank_row"
                                                             style="height: 10px !important; background-color: #FFFFFF;"
-                                                            ng-show="!collectionOperation || collectionOperation.length ==0">
+                                                            ng-show="!filteredCollection || filteredCollection.length ==0">
                                                             <td colspan="3">لا توجد حركات</td>
                                                         </tr>
                                                         </tbody>

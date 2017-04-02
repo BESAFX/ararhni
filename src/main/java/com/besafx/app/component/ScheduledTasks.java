@@ -19,8 +19,10 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ScheduledTasks {
@@ -92,6 +94,10 @@ public class ScheduledTasks {
 
             log.info("فحص كل مهمة على حدا");
 
+            List<Task> warningTasks = new ArrayList<>();
+
+            List<Task> deductionTasks = new ArrayList<>();
+
             tasks.stream().forEach(task -> {
 
                 log.info("البحث عن عدد حركات الموظف " + person.getName() + " على المهمة رقم " + task.getCode());
@@ -106,48 +112,58 @@ public class ScheduledTasks {
                     log.info("عدد التحذيرات فى الفترة = " + numberOfWarns);
 
                     if (numberOfWarns == 0) {
-                        //Send Warn
-                        try {
-                            StringBuilder builder = new StringBuilder();
-                            builder.append("تحذير بالخصم بشأن عدم التعامل مع المهمة رقم " + "(" + task.getCode() + ")");
-                            builder.append(" ");
-                            builder.append("للموظف / " + person.getName());
-                            builder.append(" ");
-                            builder.append("من الفترة / " + DateConverter.getHijriStringFromDateRTLWithTime(startLast12Hour.toDate()));
-                            builder.append(" ");
-                            builder.append("إلى الفترة / " + DateConverter.getHijriStringFromDateRTLWithTime(endLast12Hour.toDate()));
-                            builder.append(" ");
-                            builder.append("نأمل الإلتزام بالتعليق فى خلال مدة لا تزيد عن 12 ساعة.");
-                            builder.append("-تجريبي-");
-                            log.info("جاري إرسال التحذير...");
-                            createEmail(task, builder.toString(), 2, task.getPerson(), person);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        warningTasks.add(task);
                     } else {
-                        //Send Discount
-                        try {
-                            StringBuilder builder = new StringBuilder();
-                            builder.append("خصم بمقدار 50 ريال سعودي بشأن عدم التعامل مع المهمة رقم " + "(" + task.getCode() + ")");
-                            builder.append(" ");
-                            builder.append("للموظف / " + person.getName());
-                            builder.append(" ");
-                            builder.append("نظراً لتحذيره سابقاً");
-                            builder.append(" ");
-                            builder.append("من الفترة / " + DateConverter.getHijriStringFromDateRTLWithTime(startLast24Hour.toDate()));
-                            builder.append(" ");
-                            builder.append("إلى الفترة / " + DateConverter.getHijriStringFromDateRTLWithTime(startLast12Hour.toDate()));
-                            builder.append(" ");
-                            builder.append("نأمل منه مراجعة جهة التكليف.");
-                            builder.append("-تجريبي-");
-                            createEmail(task, builder.toString(), 3, task.getPerson(), person);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        deductionTasks.add(task);
                     }
                 }
 
             });
+
+            if (!warningTasks.isEmpty()) {
+                log.info("ارسال رسالة مجمعة بها كل التحذيرات");
+                //Send Warn
+                try {
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("تحذير بالخصم بشأن عدم التعامل مع المهام رقم " + "(" + warningTasks.stream().map(task -> task.getCode()).collect(Collectors.toList()) + ")");
+                    builder.append(" ");
+                    builder.append("للموظف / " + person.getName());
+                    builder.append(" ");
+                    builder.append("من الفترة " + "(" + DateConverter.getHijriStringFromDateRTLWithTime(startLast12Hour.toDate()) + ")");
+                    builder.append(" ");
+                    builder.append("إلى الفترة " + "(" + DateConverter.getHijriStringFromDateRTLWithTime(endLast12Hour.toDate()) + ")");
+                    builder.append(" ");
+                    builder.append("نأمل الإلتزام بالتعليق فى خلال مدة لا تزيد عن 12 ساعة.");
+                    builder.append("-تجريبي-");
+                    log.info("جاري إرسال التحذير...");
+                    createEmail(warningTasks, builder.toString(), 2, person);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (!deductionTasks.isEmpty()) {
+                log.info("إرسال رسالة مجمعة بها كل الحسومات والخصومات");
+                //Send Discount
+                try {
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("خصم بمقدار 50 ريال سعودي بشأن عدم التعامل مع المهام رقم " + "(" + deductionTasks.stream().map(task -> task.getCode()).collect(Collectors.toList()) + ")");
+                    builder.append(" ");
+                    builder.append("للموظف / " + person.getName());
+                    builder.append(" ");
+                    builder.append("نظراً لتحذيره سابقاً");
+                    builder.append(" ");
+                    builder.append("من الفترة " + "(" + DateConverter.getHijriStringFromDateRTLWithTime(startLast24Hour.toDate()) + ")");
+                    builder.append(" ");
+                    builder.append("إلى الفترة " + "(" + DateConverter.getHijriStringFromDateRTLWithTime(startLast12Hour.toDate()) + ")");
+                    builder.append(" ");
+                    builder.append("نأمل منه مراجعة جهة التكليف.");
+                    builder.append("-تجريبي-");
+                    createEmail(deductionTasks, builder.toString(), 3, person);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
             log.info("////////////////////////////////" + person.getName() + "////////////////////////////////////////");
 
@@ -155,28 +171,31 @@ public class ScheduledTasks {
     }
 
 
-    public void createEmail(Task task, String content, Integer type, Person from, Person to) throws IOException {
-        log.info("جاري إعداد الحركة وإدراجها...");
-        TaskOperation taskOperation = new TaskOperation();
-        Integer maxCode = taskOperationService.findLastCodeByTask(task.getId());
-        if (maxCode == null) {
-            taskOperation.setCode(1);
-        } else {
-            taskOperation.setCode(maxCode + 1);
-        }
-        taskOperation.setDate(new Date());
-        taskOperation.setTask(task);
-        taskOperation.setSender(from);
-        taskOperation.setContent(content);
-        taskOperation.setType(type);
-        taskOperationService.save(taskOperation);
-        log.info("تم حفظ الحركة الآلية باسم جهة التكليف");
+    public void createEmail(List<Task> tasks, String content, Integer type, Person to) throws IOException {
+
+        tasks.stream().forEach(task -> {
+            log.info("جاري إعداد الحركة وإدراجها...");
+            TaskOperation taskOperation = new TaskOperation();
+            Integer maxCode = taskOperationService.findLastCodeByTask(task.getId());
+            if (maxCode == null) {
+                taskOperation.setCode(1);
+            } else {
+                taskOperation.setCode(maxCode + 1);
+            }
+            taskOperation.setDate(new Date());
+            taskOperation.setTask(task);
+            taskOperation.setSender(task.getPerson());
+            taskOperation.setContent(content);
+            taskOperation.setType(type);
+            taskOperationService.save(taskOperation);
+            log.info("تم حفظ الحركة الآلية باسم جهة التكليف");
+        });
 
         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
         String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
         message = message.replaceAll("MESSAGE", content);
 
-        String title = type.intValue() == 2 ? "تحذير بالخصم لعدم التعامل مع المهمة رقم " + "(" + task.getCode() + ")" : "خصم لعدم التعامل مع المهمة رقم " + "(" + task.getCode() + ")";
+        String title = type.intValue() == 2 ? "تحذير بالخصم لعدم التعامل مع المهام رقم " + "(" + tasks.stream().map(task -> task.getCode()).collect(Collectors.toList()) + ")" : "خصم لعدم التعامل مع المهام رقم " + "(" + tasks.stream().map(task -> task.getCode()).collect(Collectors.toList()) + ")";
 
         emailSender.send(title, message, to.getEmail());
     }
