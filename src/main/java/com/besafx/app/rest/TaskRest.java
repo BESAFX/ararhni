@@ -76,6 +76,8 @@ public class TaskRest {
         while (listIterator.hasNext()) {
             TaskTo taskTo = listIterator.next();
             taskTo.setTask(task);
+            taskTo.setProgress(0);
+            taskTo.setClosed(false);
             taskToService.save(taskTo);
         }
         notificationService.notifyOne(Notification

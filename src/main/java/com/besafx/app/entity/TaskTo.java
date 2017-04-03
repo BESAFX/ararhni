@@ -8,6 +8,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Entity
@@ -22,6 +23,9 @@ public class TaskTo implements Serializable {
     private Integer progress;
 
     private Boolean closed;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date closeDate;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "task")

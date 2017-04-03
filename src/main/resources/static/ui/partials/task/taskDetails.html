@@ -133,70 +133,6 @@
             </div>
 
             <div class="form-group text-right col-md-12">
-                <div class="panel panel-warning">
-                    <div class="panel-heading">
-                        <ul class="panel-controls pull-left" style="margin-top: 2px;">
-                            <li>
-                                <a href="" ng-click="findTaskOperations()" uib-tooltip="تحديث">
-                                    <span class="fa fa-refresh"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="panel-title-box pull-right">
-                            <h3>التحذيرات اليومية المرسلة من جهة التكليف {{task.person.nickname}} /
-                                {{task.person.name}}</h3>
-                        </div>
-                    </div>
-                    <div class="panel-body panel-body-table">
-                        <div class="table-responsive">
-                            <table st-table="collectionOperation" st-safe-src="task.taskOperations"
-                                   class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th st-sort="code" class="text-center fit">رقم التحذير</th>
-                                    <th st-sort="date" st-sort-default="reverse" class="text-center fit">التاريخ
-                                        والوقت
-                                    </th>
-                                    <th st-sort="content" class="text-center">المحتوى</th>
-                                    <th st-sort="date" class="text-center">الوقت المنقضي</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="taskOperation in filteredCollection = (collectionOperation | filter:{type:2})"
-                                    ng-class="{'info':(taskOperation.sender.id===me.manager.id && taskOperation.type===1), 'warning':taskOperation.type===2, 'danger':taskOperation.type===3}">
-                                    <td>{{taskOperation.code}}</td>
-                                    <td st-select-row-custom="taskOperation">
-                                        {{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
-                                        <span class="label label-success">{{taskOperation.date | date:'h:m a'}}</span>
-                                    </td>
-                                    <td>
-                                        {{taskOperation.content}}
-                                        <span ng-repeat="taskOperationAttach in taskOperation.taskOperationAttaches"><a
-                                                uib-tooltip="{{taskOperationAttach.name}}" tooltip-append-to-body="true"
-                                                href="" ng-href="{{taskOperationAttach.link}}" target="_blank"><i
-                                                class="fa fa-link fa-lg"></i></a></span>
-                                    </td>
-                                    <td width="20%">
-                                        <timer interval="60000" start-time="taskOperation.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span>
-                                            {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours :
-                                            ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes >
-                                            0 ? 'دقيقة' : ''}}
-                                        </timer>
-                                    </td>
-                                </tr>
-                                <tr class="blank_row"
-                                    style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!filteredCollection || filteredCollection.length ==0">
-                                    <td colspan="4">لا توجد تحذيرات</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-right col-md-12">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
                         <ul class="panel-controls pull-left" style="margin-top: 2px;">
@@ -207,51 +143,41 @@
                             </li>
                         </ul>
                         <div class="panel-title-box pull-right">
-                            <h3>الحسومات اليومية المرسلة من جهة التكليف {{task.person.nickname}} /
-                                {{task.person.name}}</h3>
+                            <h3>متابعة الموظفين المكلفين</h3>
                         </div>
                     </div>
                     <div class="panel-body panel-body-table">
                         <div class="table-responsive">
-                            <table st-table="collectionOperation" st-safe-src="task.taskOperations"
+                            <table st-table="collectionTaskTos" st-safe-src="task.taskTos"
                                    class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th st-sort="code" class="text-center fit">رقم الحسم</th>
-                                    <th st-sort="date" st-sort-default="reverse" class="text-center fit">التاريخ
-                                        والوقت
-                                    </th>
-                                    <th st-sort="content" class="text-center">المحتوى</th>
-                                    <th st-sort="date" class="text-center">الوقت المنقضي</th>
+                                    <th class="text-center">م</th>
+                                    <th class="text-center" st-sort="person.name">اسم الموظف</th>
+                                    <th class="text-center">عدد التحذيرات</th>
+                                    <th class="text-center">عدد الخصومات</th>
+                                    <th class="text-center">إجمالي الخصومات</th>
+                                    <th class="text-center" st-sort="progress">معدل إنجاز العمل</th>
+                                    <th class="text-center">عدد طلبات الإغلاق</th>
+                                    <th st-sort="closeDate" class="text-center">تاريخ الإغلاق</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="taskOperation in filteredCollection = (collectionOperation | filter:{type:3})"
-                                    ng-class="{'info':(taskOperation.sender.id===me.manager.id && taskOperation.type===1), 'warning':taskOperation.type===2, 'danger':taskOperation.type===3}">
-                                    <td>{{taskOperation.code}}</td>
-                                    <td st-select-row-custom="taskOperation">
-                                        {{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
-                                        <span class="label label-success">{{taskOperation.date | date:'h:m a'}}</span>
-                                    </td>
-                                    <td>
-                                        {{taskOperation.content}}
-                                        <span ng-repeat="taskOperationAttach in taskOperation.taskOperationAttaches"><a
-                                                uib-tooltip="{{taskOperationAttach.name}}" tooltip-append-to-body="true"
-                                                href="" ng-href="{{taskOperationAttach.link}}" target="_blank"><i
-                                                class="fa fa-link fa-lg"></i></a></span>
-                                    </td>
-                                    <td width="20%">
-                                        <timer interval="60000" start-time="taskOperation.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span>
-                                            {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours :
-                                            ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes >
-                                            0 ? 'دقيقة' : ''}}
-                                        </timer>
+                                <tr ng-repeat="taskTo in collectionTaskTos">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{taskTo.person.name}}</td>
+                                    <td>{{(task.taskOperations | filter:{type:2, sender:taskTo.person}).length}}</td>
+                                    <td>{{(task.taskOperations | filter:{type:3, sender:taskTo.person}).length}}</td>
+                                    <td></td>
+                                    <td>% {{taskTo.progress}}</td>
+                                    <td>{{(task.taskCloseRequests | filter:{person:taskTo.person}).length}}</td>
+                                    <td>{{taskTo.closeDate ? (taskTo.closeDate | kdate: 'yyyy-mm-dd' : 'ar' :
+                                        'ummalqura') : '---'}}
                                     </td>
                                 </tr>
-                                <tr class="blank_row"
-                                    style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!filteredCollection || filteredCollection.length ==0">
-                                    <td colspan="5">لا توجد حسومات</td>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collectionTaskTos || collectionTaskTos.length ==0">
+                                    <td colspan="8">لا توجد بيانات</td>
                                 </tr>
                                 </tbody>
                             </table>
