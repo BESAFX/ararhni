@@ -163,6 +163,6 @@ public class TaskSearch {
     }
 
     public List<Task> getOutgoingTasks(String timeType, Long personId) {
-        return search(null, null, null, null, null, null, null, true, true, timeType, personId);
+        return search(null, null, null, null, null, null, null, false, true, timeType, personId);
     }
 }

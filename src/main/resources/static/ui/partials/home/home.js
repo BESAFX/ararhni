@@ -111,5 +111,13 @@ app.controller("homeCtrl", ['$scope', '$rootScope', '$timeout', 'TaskService', '
             TaskService.reportTask(id, JSON.parse(reportModel.template));
         };
 
+        $scope.openDetailsModel = function (task) {
+            $rootScope.showNotify("الرئيسية", "جاري تحميل بيانات المهمة، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            TaskService.findOne(task.id).then(function (data) {
+                ModalProvider.openTaskDetailsModel(data);
+                $rootScope.showNotify("الرئيسية", "تم التحميل بيانات المهمة بنجاح", "success", "fa-dashboard");
+            });
+        };
+
 
     }]);

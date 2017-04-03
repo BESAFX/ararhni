@@ -191,6 +191,17 @@ public class TaskOperationRest {
     @ResponseBody
     public List<TaskOperation> findIncomingOperationsForMe(@PathVariable(value = "timeType") String timeType, Principal principal) {
         List<Task> tasks = taskSearch.getIncomingTasks("All", personService.findByEmail(principal.getName()).getId());
+        return getTaskOperations(timeType, tasks);
+    }
+
+    @RequestMapping(value = "findOutgoingOperationsForMe/{timeType}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public List<TaskOperation> findOutgoingOperationsForMe(@PathVariable(value = "timeType") String timeType, Principal principal) {
+        List<Task> tasks = taskSearch.getOutgoingTasks("All", personService.findByEmail(principal.getName()).getId());
+        return getTaskOperations(timeType, tasks);
+    }
+
+    private List<TaskOperation> getTaskOperations(String timeType, List<Task> tasks) {
         List<TaskOperation> taskOperations = new ArrayList<>();
         LocalDate today = new DateTime().withTimeAtStartOfDay().toLocalDate();
         LocalDate tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay().toLocalDate();

@@ -4,11 +4,11 @@
         <div class="panel panel-danger">
             <div class="panel-heading">
                 <ul class="panel-controls pull-left" style="margin-top: 2px;">
-                    <button id="incoming-operations-menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
+                    <button id="outgoing-operations-menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
                         <i class="material-icons">more_vert</i>
                     </button>
                     <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
-                        for="incoming-operations-menu-lower-left">
+                        for="outgoing-operations-menu-lower-left">
                         <li class="mdl-menu__item" ng-click="showBody=='true' ? showBody='false' : showBody='true'">
                             <span>{{showBody=='true' ? 'اخفاء' : 'اظهار'}}</span>
                         </li>
@@ -16,16 +16,16 @@
                             <span>حذف</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="fetchThisDay()">
-                            <span>حركات المهام الواردة هذا اليوم</span>
+                            <span>حركات المهام الصادرة هذا اليوم</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="fetchThisWeek()">
-                            <span>حركات المهام الواردة هذا الاسبوع</span>
+                            <span>حركات المهام الصادرة هذا الاسبوع</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="fetchThisMonth()">
-                            <span>حركات المهام الواردة هذا الشهر</span>
+                            <span>حركات المهام الصادرة هذا الشهر</span>
                         </li>
                         <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="fetchThisYear()">
-                            <span>حركات المهام الواردة هذا العام</span>
+                            <span>حركات المهام الصادرة هذا العام</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="refresh()">
                             <span>تحديث البيانات</span>
@@ -33,13 +33,13 @@
                     </ul>
                 </ul>
                 <div class="panel-title-box pull-right">
-                    <h3>{{!viewType? 'حركات المهام الواردة حسب الوقت' : viewType}}</h3>
-                    <span>حركات المهام الواردة حسب الوقت، ويمكنك التخصيص من القائمة الجانبية</span>
+                    <h3>{{!viewType? 'حركات المهام الصادرة حسب الوقت' : viewType}}</h3>
+                    <span>حركات المهام الصادرة حسب الوقت، ويمكنك التخصيص من القائمة الجانبية</span>
                 </div>
             </div>
             <div class="panel-body panel-body-table" ng-show="showBody=='true'">
                 <div class="table-responsive">
-                    <table st-table="collectionOperation" st-safe-src="incomingOperations"
+                    <table st-table="collectionOperation" st-safe-src="outgoingOperations"
                            class="table table-bordered">
                         <thead>
                         <tr>
