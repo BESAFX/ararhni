@@ -49,7 +49,6 @@ public class ScheduledTasks {
 
         //Run Morning task (Time of execution = 2)
         //Round(Evening)
-        DateTime startLast24Hour = new DateTime().minusDays(1).withTime(2, 0, 0, 0);
         DateTime startLast12Hour = new DateTime().minusDays(1).withTime(14, 0, 0, 0);
         DateTime endLast12Hour = new DateTime().withTime(2, 0, 0, 0);
 
@@ -59,7 +58,7 @@ public class ScheduledTasks {
 
         log.info("فحص كل فرد على حدا");
 
-        chech(startLast24Hour, startLast12Hour, endLast12Hour);
+        check(startLast12Hour, endLast12Hour);
     }
 
     @Scheduled(cron = "0 0 14 * * SUN,MON,TUE,WED,THU")
@@ -67,7 +66,6 @@ public class ScheduledTasks {
 
         //Run evening task (Time of execution = 14)
         //Round(Morning)
-        DateTime startLast24Hour = new DateTime().minusDays(1).withTime(14, 0, 0, 0);
         DateTime startLast12Hour = new DateTime().withTime(2, 0, 0, 0);
         DateTime endLast12Hour = new DateTime().withTime(14, 0, 0, 0);
 
@@ -77,11 +75,11 @@ public class ScheduledTasks {
 
         log.info("فحص كل فرد على حدا");
 
-        chech(startLast24Hour, startLast12Hour, endLast12Hour);
+        check(startLast12Hour, endLast12Hour);
 
     }
 
-    private void chech(DateTime startLast24Hour, DateTime startLast12Hour, DateTime endLast12Hour) {
+    private void check(DateTime startLast12Hour, DateTime endLast12Hour) {
         personService.findAll().forEach(person -> {
 
             log.info("////////////////////////////////" + person.getName() + "////////////////////////////////////////");
@@ -109,11 +107,12 @@ public class ScheduledTasks {
                 log.info("عدد الحركات فى الفترة = " + numberOfOperations);
 
                 if (numberOfOperations == 0) {
-                    long numberOfWarns = taskOperationService.countByTaskAndSenderAndTypeAndDateBetween(task, person, 2, startLast24Hour.toDate(), startLast12Hour.toDate());
 
-                    log.info("عدد التحذيرات فى الفترة = " + numberOfWarns);
+                    long numberOfWarns = taskOperationService.countByTaskAndSenderAndType(task, person, 2);
 
-                    if (numberOfWarns == 0) {
+                    log.info("عدد التحذيرات على المهمة = " + numberOfWarns);
+
+                    if (numberOfWarns < 3) {
                         warningTasks.add(task);
                     } else {
                         deductionTasks.add(task);
@@ -153,11 +152,7 @@ public class ScheduledTasks {
                     builder.append(" ");
                     builder.append("للموظف / " + person.getName());
                     builder.append(" ");
-                    builder.append("نظراً لتحذيره سابقاً");
-                    builder.append(" ");
-                    builder.append("من الفترة " + "(" + DateConverter.getHijriStringFromDateRTLWithTime(startLast24Hour.toDate()) + ")");
-                    builder.append(" ");
-                    builder.append("إلى الفترة " + "(" + DateConverter.getHijriStringFromDateRTLWithTime(startLast12Hour.toDate()) + ")");
+                    builder.append("نظراً لانتهاء العدد المسموح به من التحذيرات،");
                     builder.append(" ");
                     builder.append("نأمل منه مراجعة جهة التكليف.");
                     builder.append("-تجريبي-");
