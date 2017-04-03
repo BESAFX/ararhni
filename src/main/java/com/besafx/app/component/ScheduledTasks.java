@@ -112,7 +112,7 @@ public class ScheduledTasks {
 
                     log.info("عدد التحذيرات على المهمة = " + numberOfWarns);
 
-                    if (numberOfWarns <= task.getWarn().intValue()) {
+                    if (numberOfWarns <= task.getWarn().longValue()) {
                         warningTasks.add(task);
                     } else {
                         deductionTasks.add(task);
