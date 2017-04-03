@@ -112,7 +112,7 @@ public class ScheduledTasks {
 
                     log.info("عدد التحذيرات على المهمة = " + numberOfWarns);
 
-                    if (numberOfWarns < 3) {
+                    if (numberOfWarns <= task.getWarn().intValue()) {
                         warningTasks.add(task);
                     } else {
                         deductionTasks.add(task);
@@ -148,7 +148,7 @@ public class ScheduledTasks {
                 //Send Discount
                 try {
                     StringBuilder builder = new StringBuilder();
-                    builder.append("خصم بمقدار 50 ريال سعودي بشأن عدم التعامل مع المهام رقم " + "(" + deductionTasks.stream().map(task -> task.getCode()).collect(Collectors.toList()) + ")");
+                    builder.append("خصم بشأن عدم التعامل مع المهام رقم " + "(" + deductionTasks.stream().map(task -> task.getCode()).collect(Collectors.toList()) + ")");
                     builder.append(" ");
                     builder.append("للموظف / " + person.getName());
                     builder.append(" ");

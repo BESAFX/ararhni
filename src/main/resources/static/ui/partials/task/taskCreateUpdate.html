@@ -50,7 +50,7 @@
                 <label for="note" class="control-label">تفاصيل المهمة</label>
                 <textarea id="note"
                           type="text"
-                          focus-index="2"
+                          focus-index="3"
                           msd-elastic="\n"
                           required="required"
                           class="form-control text-right"
@@ -61,12 +61,39 @@
             </div>
 
             <div class="form-group text-right col-sm-12">
+                <label for="warn" class="control-label"> الحد الأقصى للتحذيرات </label>
+                <input id="warn"
+                       focus-index="4"
+                       type="number"
+                       min="0"
+                       class="form-control text-right"
+                       required="required"
+                       disable-validation-message=""
+                       ng-model="task.warn">
+            </div>
+
+            <div class="form-group text-right col-sm-12">
+                <label for="deduction" class="control-label"> مقدار الحسم </label>
+                <div dir="ltr" class="input-group" id="deduction">
+                    <span class="input-group-addon">ريال</span>
+                    <input focus-index="5"
+                           dir="rtl"
+                           type="number"
+                           min="0"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control text-right "
+                           ng-model="task.deduction">
+                </div>
+            </div>
+
+            <div class="form-group text-right col-sm-12">
                 <label for="endDate" class="control-label">تاريخ التسليم</label>
                 <div dir="ltr" class="input-group">
                     <input dir="rtl"
                            id="endDate"
                            type="text"
-                           focus-index="3"
+                           focus-index="6"
                            class="form-control text-right is-calendarPicker"
                            ng-model="task.endDate"
                            required="required"
@@ -88,14 +115,14 @@
 
         <div class="form-group col-md-12" role="group">
             <button type="button"
-                    focus-index="9"
+                    focus-index="10"
                     ng-click="cancel()"
                     class="btn btn-danger pull-left">
                 <span>خروج</span>
                 <i class="fa fa-power-off  fa-lg"></i>
             </button>
             <button type="button"
-                    focus-index="8"
+                    focus-index="9"
                     ng-click="clear()"
                     class="btn btn-info pull-left">
                 <span>مسح الحقول</span>
@@ -103,14 +130,14 @@
             </button>
             <button ng-show="action=='update'"
                     type="submit"
-                    focus-index="7"
+                    focus-index="8"
                     class="btn btn-warning pull-right">
                 <span>تعديل</span>
                 <i class="fa fa-edit fa-lg"></i>
             </button>
             <button ng-show="action=='create'"
                     type="submit"
-                    focus-index="6"
+                    focus-index="7"
                     class="btn btn-success pull-right">
                 <span>اضافة</span>
                 <i class="fa fa-plus-square fa-lg"></i>

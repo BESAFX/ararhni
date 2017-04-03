@@ -27,6 +27,10 @@ public class Task implements Serializable {
 
     private String title;
 
+    private Integer warn;
+
+    private Double deduction;
+
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String content;
