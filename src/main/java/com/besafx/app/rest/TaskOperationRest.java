@@ -155,6 +155,20 @@ public class TaskOperationRest {
         }
     }
 
+    @RequestMapping(value = "clearCounters/{taskId}/{personId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public boolean clearCounters(@PathVariable(value = "taskId") Long taskId, @PathVariable(value = "personId") Long personId, Principal principal) {
+        taskOperationService.delete(taskOperationService.findByTaskIdAndSenderIdAndTypeIn(taskId, personId, Lists.newArrayList(2, 3)));
+        notificationService.notifyOne(Notification
+                .builder()
+                .title("العمليات على المهام")
+                .message("تم حذف كل التحذيرات والحسومات على الموظف بالنسبة لهذة المهمة")
+                .type("success")
+                .icon("fa-black-tie")
+                .build(), principal.getName());
+        return true;
+    }
+
     @RequestMapping(value = "findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<TaskOperation> findAll() {

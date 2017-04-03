@@ -15,6 +15,10 @@ app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskOperationService', '$sc
             ModalProvider.openTaskClosedModel($scope.task);
         };
 
+        $scope.openClearWarnsAndDeductionsModel = function () {
+            ModalProvider.openClearCountersModel($scope.task);
+        };
+
         $scope.openRequestCloseModel = function () {
             ModalProvider.openTaskRequestCloseModel($scope.task);
         };

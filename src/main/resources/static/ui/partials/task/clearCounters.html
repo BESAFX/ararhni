@@ -1,0 +1,93 @@
+<form dir="rtl" name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <h3 class="modal-title text-center" id="modal-title">تصفير عدادات التحذيرات والخصومات لموظف</h3>
+    </div>
+
+    <div class="modal-body" id="modal-body">
+
+        <div class="row">
+
+            <div class="form-group text-right col-md-12">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="panel-title-box pull-right">
+                            <h3>البيانات الاساسية</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="form-group text-right col-md-6">
+                            <label for="person" class="control-label">جهة التكليف</label>
+                            <input id="person"
+                                   class="form-control text-right"
+                                   ng-model="task.person.name"
+                                   disabled="disabled">
+                            </input>
+                        </div>
+
+                        <div class="form-group text-right col-md-6">
+                            <label for="taskTos" class="control-label">الموظف</label>
+                            <select id="taskTos"
+                                    data-placeholder="ابحث عن الاسم"
+                                    no-results-text="'لا توجد بيانات توافق بحثك'"
+                                    placeholder-text-single="'اختر الموظف'"
+                                    class="form-control text-right"
+                                    chosen=""
+                                    required="required"
+                                    disable-validation-message=""
+                                    ng-model="buffer.taskTo"
+                                    focus-index="1"
+                                    ng-options="taskTo.person.name for taskTo in task.taskTos track by taskTo.id">
+                            </select>
+                        </div>
+
+                        <div class="form-group text-right col-md-12">
+                            <label for="title" class="control-label">عنوان المهمة</label>
+                            <input id="title"
+                                   class="form-control text-right"
+                                   ng-model="task.title"
+                                   disabled="disabled">
+                            </input>
+                        </div>
+
+                        <div class="form-group text-right col-md-12">
+                            <label for="content" class="control-label">تفاصيل المهمة</label>
+                            <textarea id="content"
+                                      type="text"
+                                      class="form-control text-right"
+                                      ng-model="task.content"
+                                      disabled="disabled">
+                             </textarea>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="form-group col-md-12" role="group">
+            <button type="button"
+                    focus-index="3"
+                    ng-click="cancel()"
+                    class="btn btn-danger pull-left">
+                <span>خروج</span>
+                <i class="fa fa-power-off  fa-lg"></i>
+            </button>
+            <button type="submit"
+                    focus-index="2"
+                    class="btn btn-success pull-right">
+                <span>تصفير</span>
+                <i class="fa fa-eraser fa-lg"></i>
+            </button>
+        </div>
+
+    </div>
+
+</form>
