@@ -64,6 +64,12 @@ public class TaskOperationRest {
     }
 
     public TaskOperation create(TaskOperation taskOperation, Person person) throws IOException {
+        taskOperation.getTask().getTaskTos()
+                .stream()
+                .filter(taskTo -> taskTo.getPerson().getId().intValue() == person.getId() && taskTo.getClosed())
+                .findAny().ifPresent(value -> {
+            throw new CustomException("عفواً، تم إغلاق المهمة عليك ولن يمكنك اضافة حركات او تعليقات.");
+        });
         if (taskOperation.getTask().getEndDate().before(new Date())) {
             throw new CustomException("لا يمكن اضافة حركات إلى مهمة مغلقة");
         }

@@ -81,10 +81,6 @@
                             ng-hide="!tasks || tasks.length==0" ng-if="toggleList===1">
                             <span>طلب إغلاق</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="openProgressModel()"
-                            ng-hide="!tasks || tasks.length==0" ng-if="toggleList===1">
-                            <span>تحديد نسبة الإنجاز</span>
-                        </li>
                         <li class="mdl-menu__item" ng-click="showSlideOperation()" ng-if="toggleList===1"
                             ng-hide="!tasks || tasks.length==0">
                             <span>الحركات / المرفقات</span>
@@ -192,7 +188,8 @@
                                     <span class="label label-danger">{{task.person.nickname}} / {{task.person.name}}</span>
                                 </td>
                                 <td st-select-row-custom="task">
-                                    <span class="label label-info" ng-repeat="to in task.taskTos"
+                                    <span ng-repeat="to in task.taskTos"
+                                          ng-class="{'label label-default':to.closed, 'label label-success':!to.closed}"
                                           style="margin: 2px">{{to.person.name}}</span>
                                 </td>
                                 <td st-select-row-custom="task">{{task.endDate | kdate: 'yyyy-mm-dd' :

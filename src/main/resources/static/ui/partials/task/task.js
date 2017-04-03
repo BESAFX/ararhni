@@ -347,6 +347,14 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             ModalProvider.openTaskProgressModel($scope.selected);
         };
 
+        $scope.openClosedModel = function (task) {
+            if (task) {
+                ModalProvider.openTaskClosedModel(task);
+                return;
+            }
+            ModalProvider.openTaskClosedModel($scope.selected);
+        };
+
         $scope.showSlideFilter = function () {
             $scope.showSlide = true;
             $scope.sideSize = '50%';

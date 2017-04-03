@@ -11,6 +11,10 @@ app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskOperationService', '$sc
             ModalProvider.openTaskProgressModel($scope.task);
         };
 
+        $scope.openClosedModel = function () {
+            ModalProvider.openTaskClosedModel($scope.task);
+        };
+
         $scope.openRequestCloseModel = function () {
             ModalProvider.openTaskRequestCloseModel($scope.task);
         };
