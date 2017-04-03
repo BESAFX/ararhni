@@ -13,8 +13,8 @@ import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/api/taskOperation/")
 public class TaskOperationRest {
+
+    private final Logger log = LoggerFactory.getLogger(TaskOperationRest.class);
 
     @Autowired
     private PersonService personService;
@@ -223,25 +225,34 @@ public class TaskOperationRest {
 
     private List<TaskOperation> getTaskOperations(String timeType, List<Task> tasks) {
         List<TaskOperation> taskOperations = new ArrayList<>();
-        LocalDate today = new DateTime().withTimeAtStartOfDay().toLocalDate();
-        LocalDate tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay().toLocalDate();
+        DateTime today = new DateTime().withTimeAtStartOfDay();
+        DateTime tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay();
         switch (timeType) {
             case "Day":
                 tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndTypeAndDateBetween(task, 1, today.toDate(), tomorrow.toDate())));
                 break;
             case "Week":
-                LocalDate weekStart = today.withDayOfWeek(DateTimeConstants.SATURDAY);
-                LocalDate weekEnd = today.withDayOfWeek(DateTimeConstants.SATURDAY).plusDays(6);
-                tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndTypeAndDateBetween(task, 1, weekStart.toDate(), weekEnd.toDate())));
+                Date weekStart = DateConverter.getCurrentWeekStart();
+                Date weekEnd = DateConverter.getCurrentWeekEnd();
+                log.info("البحث عن حركات مهام الأسبوع");
+                log.info(DateConverter.getDateInFormatWithTime(weekStart));
+                log.info(DateConverter.getDateInFormatWithTime(weekEnd));
+                tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndTypeAndDateBetween(task, 1, weekStart, weekEnd)));
                 break;
             case "Month":
-                LocalDate monthStart = today.withDayOfMonth(1);
-                LocalDate monthEnd = monthStart.plusMonths(1).minusDays(1);
+                DateTime monthStart = today.withDayOfMonth(1);
+                DateTime monthEnd = monthStart.plusMonths(1).minusDays(1);
+                log.info("البحث عن حركات مهام الشهر");
+                log.info(DateConverter.getDateInFormatWithTime(monthEnd.toDate()));
+                log.info(DateConverter.getDateInFormatWithTime(monthEnd.toDate()));
                 tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndTypeAndDateBetween(task, 1, monthStart.toDate(), monthEnd.toDate())));
                 break;
             case "Year":
-                LocalDate yearStart = today.withDayOfYear(1);
-                LocalDate yearEnd = yearStart.plusYears(1).minusDays(1);
+                DateTime yearStart = today.withDayOfYear(1);
+                DateTime yearEnd = yearStart.plusYears(1).minusDays(1);
+                log.info("البحث عن حركات مهام العام");
+                log.info(DateConverter.getDateInFormatWithTime(yearStart.toDate()));
+                log.info(DateConverter.getDateInFormatWithTime(yearEnd.toDate()));
                 tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndTypeAndDateBetween(task, 1, yearStart.toDate(), yearEnd.toDate())));
                 break;
         }

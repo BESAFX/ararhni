@@ -2,16 +2,19 @@ package com.besafx.app.search;
 
 import com.besafx.app.entity.TaskCloseRequest;
 import com.besafx.app.service.TaskCloseRequestService;
+import com.besafx.app.util.DateConverter;
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public class TaskCloseRequestSearch {
@@ -40,10 +43,10 @@ public class TaskCloseRequestSearch {
                     predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("date"), tomorrow.toDate()));
                     break;
                 case "Week":
-                    LocalDate weekStart = today.withDayOfWeek(DateTimeConstants.SATURDAY);
-                    LocalDate weekEnd = today.withDayOfWeek(DateTimeConstants.SATURDAY).plusDays(6);
-                    predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("date"), weekStart.toDate()));
-                    predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("date"), weekEnd.toDate()));
+                    Date weekStart = DateConverter.getCurrentWeekStart();
+                    Date weekEnd = DateConverter.getCurrentWeekEnd();
+                    predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("date"), weekStart));
+                    predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("date"), weekEnd));
                     break;
                 case "Month":
                     LocalDate monthStart = today.withDayOfMonth(1);

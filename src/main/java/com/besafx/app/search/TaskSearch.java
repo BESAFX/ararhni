@@ -4,8 +4,8 @@ import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskTo;
 import com.besafx.app.service.TaskService;
 import com.besafx.app.service.TaskToService;
+import com.besafx.app.util.DateConverter;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -62,10 +62,10 @@ public class TaskSearch {
                             predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("endDate"), tomorrow.toDate()));
                             break;
                         case "Week":
-                            LocalDate weekStart = today.withDayOfWeek(DateTimeConstants.SATURDAY);
-                            LocalDate weekEnd = today.withDayOfWeek(DateTimeConstants.SATURDAY).plusDays(6);
-                            predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("endDate"), weekStart.toDate()));
-                            predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("endDate"), weekEnd.toDate()));
+                            Date weekStart = DateConverter.getCurrentWeekStart();
+                            Date weekEnd = DateConverter.getCurrentWeekEnd();
+                            predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("endDate"), weekStart));
+                            predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("endDate"), weekEnd));
                             break;
                         case "Month":
                             LocalDate monthStart = today.withDayOfMonth(1);
@@ -119,10 +119,10 @@ public class TaskSearch {
                             predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("task").get("endDate"), tomorrow.toDate()));
                             break;
                         case "Week":
-                            LocalDate weekStart = today.withDayOfWeek(DateTimeConstants.SATURDAY);
-                            LocalDate weekEnd = today.withDayOfWeek(DateTimeConstants.SATURDAY).plusDays(6);
-                            predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("task").get("endDate"), weekStart.toDate()));
-                            predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("task").get("endDate"), weekEnd.toDate()));
+                            Date weekStart = DateConverter.getCurrentWeekStart();
+                            Date weekEnd = DateConverter.getCurrentWeekEnd();
+                            predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("task").get("endDate"), weekStart));
+                            predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("task").get("endDate"), weekEnd));
                             break;
                         case "Month":
                             LocalDate monthStart = today.withDayOfMonth(1);

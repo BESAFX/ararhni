@@ -123,4 +123,22 @@ public class DateConverter {
     public static String getDateStringFromHijri(HijrahDate date) {
         return IsoChronology.INSTANCE.date(date).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
+
+    public static Date getCurrentWeekStart() {
+        Calendar cal = GregorianCalendar.getInstance(Locale.forLanguageTag("ar"));
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
+
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        return cal.getTime();
+    }
+
+    public static Date getCurrentWeekEnd() {
+        Calendar cal = GregorianCalendar.getInstance(Locale.forLanguageTag("ar"));
+        cal.setTime(getCurrentWeekStart());
+        cal.add(Calendar.DATE, 6);
+        return cal.getTime();
+    }
 }
