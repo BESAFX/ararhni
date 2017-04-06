@@ -3,15 +3,11 @@ package com.besafx.app.config;
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.RoleService;
-import com.besafx.app.util.NotifyCode;
-import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,16 +22,15 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -103,12 +98,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 String ipAddr = ((ServletRequestAttributes) RequestContextHolder
                         .currentRequestAttributes())
                         .getRequest().getRemoteAddr();
-                notificationService.notifyAllExceptMe(Notification
-                        .builder()
-                        .title("الدخول إلى الموقع")
-                        .message("جلسة تسجيل دخول جديدة من العنوان: " + ipAddr)
-                        .type("information")
-                        .build());
+//                notificationService.notifyAllExceptMe(Notification
+//                        .builder()
+//                        .title("الدخول إلى الموقع")
+//                        .message("جلسة تسجيل دخول جديدة من العنوان: " + ipAddr)
+//                        .type("information")
+//                        .build());
                 super.sessionCreated(event);
             }
 
@@ -120,12 +115,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     Person person = personService.findByEmail(userDetails.getUsername());
                     person.setActive(false);
                     personService.save(person);
-                    notificationService.notifyAllExceptMe(Notification
-                            .builder()
-                            .title("تسجيل الخروج")
-                            .message("المستخدم / " + person.getName() + " غادر النظام")
-                            .type("error")
-                            .build());
+//                    notificationService.notifyAllExceptMe(Notification
+//                            .builder()
+//                            .title("تسجيل الخروج")
+//                            .message("المستخدم / " + person.getName() + " غادر النظام")
+//                            .type("error")
+//                            .build());
                 }
                 super.sessionDestroyed(event);
             }
@@ -147,12 +142,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             throw new UsernameNotFoundException(email);
                         }
 
-                        notificationService.notifyAllExceptMe(Notification
-                                .builder()
-                                .title("تسجيل الدخول")
-                                .message("المستخدم / " + person.getName() + " متاح حالياً")
-                                .type("success")
-                                .build());
+//                        notificationService.notifyAllExceptMe(Notification
+//                                .builder()
+//                                .title("تسجيل الدخول")
+//                                .message("المستخدم / " + person.getName() + " متاح حالياً")
+//                                .type("success")
+//                                .build());
 
                         person.setLastUpdate(new Date());
 

@@ -7,7 +7,7 @@ app.controller("homeCtrl", ['$scope', '$rootScope', '$timeout', 'TaskService', '
 
         ReportModelService.findAll().then(function (data) {
             $scope.reportModels = data;
-            $rootScope.showNotify("الرئيسية", "تم تحميل نماذج الطباعة بنجاح", "success", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "تم تحميل نماذج الطباعة بنجاح", "success", "fa-dashboard");
         });
 
         $scope.delete = function (task) {
@@ -112,10 +112,10 @@ app.controller("homeCtrl", ['$scope', '$rootScope', '$timeout', 'TaskService', '
         };
 
         $scope.openDetailsModel = function (task) {
-            $rootScope.showNotify("الرئيسية", "جاري تحميل بيانات المهمة، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل بيانات المهمة، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             TaskService.findOne(task.id).then(function (data) {
                 ModalProvider.openTaskDetailsModel(data);
-                $rootScope.showNotify("الرئيسية", "تم التحميل بيانات المهمة بنجاح", "success", "fa-dashboard");
+                // $rootScope.showNotify("الرئيسية", "تم التحميل بيانات المهمة بنجاح", "success", "fa-dashboard");
             });
         };
 

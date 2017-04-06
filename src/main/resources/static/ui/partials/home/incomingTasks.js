@@ -35,7 +35,7 @@ app.controller("incomingTasksCtrl", ['ModalProvider', '$scope', '$rootScope', '$
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الواردة السارية بنجاح", "success", "fa-dashboard");
+                // $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الواردة السارية بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
@@ -61,7 +61,7 @@ app.controller("incomingTasksCtrl", ['ModalProvider', '$scope', '$rootScope', '$
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الواردة المغلقة بنجاح", "success", "fa-dashboard");
+                // $rootScope.showNotify("الرئيسية", "تم تحميل جميع المهام الواردة المغلقة بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);

@@ -35,7 +35,7 @@ app.controller("closedSoonOutgoingCtrl", ['$scope', '$rootScope', '$timeout', 'T
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showNotify("الرئيسية", "تم تحميل المهام المغلقة لهذا اليوم بنجاح", "success", "fa-dashboard");
+                // $rootScope.showNotify("الرئيسية", "تم تحميل المهام المغلقة لهذا اليوم بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
@@ -61,7 +61,7 @@ app.controller("closedSoonOutgoingCtrl", ['$scope', '$rootScope', '$timeout', 'T
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showNotify("الرئيسية", "تم تحميل المهام المغلقة لهذا الأسبوع بنجاح", "success", "fa-dashboard");
+                // $rootScope.showNotify("الرئيسية", "تم تحميل المهام المغلقة لهذا الأسبوع بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
@@ -87,7 +87,7 @@ app.controller("closedSoonOutgoingCtrl", ['$scope', '$rootScope', '$timeout', 'T
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showNotify("الرئيسية", "تم تحميل المهام المغلقة لهذا الشهر بنجاح", "success", "fa-dashboard");
+                // $rootScope.showNotify("الرئيسية", "تم تحميل المهام المغلقة لهذا الشهر بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
@@ -113,7 +113,7 @@ app.controller("closedSoonOutgoingCtrl", ['$scope', '$rootScope', '$timeout', 'T
             TaskService.filter(search.join("")).then(function (data) {
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showNotify("الرئيسية", "تم تحميل المهام المغلقة لهذا العام بنجاح", "success", "fa-dashboard");
+                // $rootScope.showNotify("الرئيسية", "تم تحميل المهام المغلقة لهذا العام بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);

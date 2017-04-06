@@ -5,7 +5,7 @@ app.controller("incomingOperationsCtrl", ['$scope', '$rootScope', '$timeout', 'T
         $rootScope.showNotify("الرئيسية", "جاري تحميل حركات المهام الواردة لهذا اليوم، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
         TaskOperationService.findIncomingOperationsForMe("Day").then(function (data) {
             $scope.incomingOperations = data;
-            $rootScope.showNotify("الرئيسية", "تم تحميل حركات المهام الواردة لهذا اليوم بنجاح", "success", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "تم تحميل حركات المهام الواردة لهذا اليوم بنجاح", "success", "fa-dashboard");
             $timeout(function () {
                 window.componentHandler.upgradeAllRegistered();
             }, 500);
@@ -17,7 +17,7 @@ app.controller("incomingOperationsCtrl", ['$scope', '$rootScope', '$timeout', 'T
         $rootScope.showNotify("الرئيسية", "جاري تحميل حركات المهام الواردة لهذا الأسبوع، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
         TaskOperationService.findIncomingOperationsForMe("Week").then(function (data) {
             $scope.incomingOperations = data;
-            $rootScope.showNotify("الرئيسية", "تم تحميل حركات المهام الواردة لهذا الأسبوع بنجاح", "success", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "تم تحميل حركات المهام الواردة لهذا الأسبوع بنجاح", "success", "fa-dashboard");
             $timeout(function () {
                 window.componentHandler.upgradeAllRegistered();
             }, 500);
@@ -29,7 +29,7 @@ app.controller("incomingOperationsCtrl", ['$scope', '$rootScope', '$timeout', 'T
         $rootScope.showNotify("الرئيسية", "جاري تحميل حركات المهام الواردة لهذا الشهر، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
         TaskOperationService.findIncomingOperationsForMe("Month").then(function (data) {
             $scope.incomingOperations = data;
-            $rootScope.showNotify("الرئيسية", "تم تحميل حركات المهام الواردة لهذا الشهر بنجاح", "success", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "تم تحميل حركات المهام الواردة لهذا الشهر بنجاح", "success", "fa-dashboard");
             $timeout(function () {
                 window.componentHandler.upgradeAllRegistered();
             }, 500);
@@ -41,7 +41,7 @@ app.controller("incomingOperationsCtrl", ['$scope', '$rootScope', '$timeout', 'T
         $rootScope.showNotify("الرئيسية", "جاري تحميل حركات المهام الواردة لهذا العام، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
         TaskOperationService.findIncomingOperationsForMe("Year").then(function (data) {
             $scope.incomingOperations = data;
-            $rootScope.showNotify("الرئيسية", "تم تحميل حركات المهام الواردة لهذا العام بنجاح", "success", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "تم تحميل حركات المهام الواردة لهذا العام بنجاح", "success", "fa-dashboard");
             $timeout(function () {
                 window.componentHandler.upgradeAllRegistered();
             }, 500);

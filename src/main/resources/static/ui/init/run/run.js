@@ -127,7 +127,7 @@ app.run(['$http', '$location', '$state', '$window', 'notifyCode', 'PersonService
 
         $rootScope.showNotify = function (title, message, type, icon) {
             noty({
-                layout: 'bottomLeft',
+                layout: 'topLeft',
                 theme: 'metroui', // or relax
                 type: type, // success, error, warning, information, notification
                 text: '<div class="activity-item text-right"><span>' + title + '</span> <i class="fa ' + icon + '"></i><div class="activity">' + message + '</div></div>',
