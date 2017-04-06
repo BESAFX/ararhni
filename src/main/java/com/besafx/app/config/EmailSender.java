@@ -29,11 +29,11 @@ public class EmailSender {
     @PostConstruct
     public void init() {
         try {
-            log.info("تهيئة خدمة البريد الإلكتروني...");
+            log.info("Preparing email service...");
             message = sender.createMimeMessage();
             helper = new MimeMessageHelper(message, true);
             helper.setFrom("anni4ksa@gmail.com");
-            log.info("تم الدخول بنجاح");
+            log.info("Login successfully");
         } catch (MessagingException e) {
             log.error(e.getMessage(), e);
         }
@@ -42,16 +42,16 @@ public class EmailSender {
     @Async("threadPoolTaskExecutor")
     public void send(String title, String content, List<String> toEmailList) {
         try {
-            log.info("راحة لمدة 10 ثواني");
+            log.info("Sleeping for 10 seconds");
             Thread.sleep(10000);
             String[] emails = new String[toEmailList.size()];
             emails = toEmailList.toArray(emails);
-            log.info("جاري إرسال الرسالة إلى الإيميلات الآتية: " + Arrays.toString(emails));
+            log.info("Trying sending email to this destinations: " + Arrays.toString(emails));
             helper.setTo(emails);
             helper.setSubject(title);
             helper.setText(content, true);
             sender.send(message);
-            log.info("تم الإرسال بنجاح إلى كل من: " + Arrays.toString(emails));
+            log.info("Sending email successfully to this destinations: " + Arrays.toString(emails));
         } catch (MessagingException e) {
             log.error(e.getMessage(), e);
         } catch (InterruptedException e) {
@@ -62,14 +62,14 @@ public class EmailSender {
     @Async("threadPoolTaskExecutor")
     public void send(String title, String content, String email) {
         try {
-            log.info("راحة لمدة 10 ثواني");
+            log.info("Sleeping for 10 seconds...");
             Thread.sleep(10000);
-            log.info("جاري إرسال الرسالة إلى البريد الإلكتروني: " + email);
+            log.info("Trying sending email to this destination: " + email);
             helper.setTo(email);
             helper.setSubject(title);
             helper.setText(content, true);
             sender.send(message);
-            log.info("تم الإرسال بنجاح إلى العنوان الآتي: " + email);
+            log.info("Sending email successfully to this destination: " + email);
         } catch (MessagingException e) {
             log.error(e.getMessage(), e);
         } catch (InterruptedException e) {
