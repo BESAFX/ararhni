@@ -49,8 +49,11 @@ public class ScheduledTasks {
 
         //Run Morning task (Time of execution = 2)
         //Round(Evening)
-        DateTime startLast12Hour = new DateTime().minusDays(1).withTime(14, 0, 0, 0);
-        DateTime endLast12Hour = new DateTime().withTime(2, 0, 0, 0);
+//        DateTime startLast12Hour = new DateTime().minusDays(1).withTime(14, 0, 0, 0);
+//        DateTime endLast12Hour = new DateTime().withTime(2, 0, 0, 0);
+
+        DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
+        DateTime today = new DateTime().withTimeAtStartOfDay();
 
         log.info("عدد المهام = " + taskService.count());
 
@@ -58,26 +61,26 @@ public class ScheduledTasks {
 
         log.info("فحص كل فرد على حدا");
 
-        check(startLast12Hour, endLast12Hour);
+        check(yesterday, today);
     }
 
-    @Scheduled(cron = "0 0 14 * * SUN,MON,TUE,WED,THU")
-    public void warnAllAboutUnCommentedTasksAtAfternoon() {
-
-        //Run evening task (Time of execution = 14)
-        //Round(Morning)
-        DateTime startLast12Hour = new DateTime().withTime(2, 0, 0, 0);
-        DateTime endLast12Hour = new DateTime().withTime(14, 0, 0, 0);
-
-        log.info("عدد المهام = " + taskService.count());
-
-        log.info("عدد الافراد = " + personService.count());
-
-        log.info("فحص كل فرد على حدا");
-
-        check(startLast12Hour, endLast12Hour);
-
-    }
+//    @Scheduled(cron = "0 0 14 * * SUN,MON,TUE,WED,THU")
+//    public void warnAllAboutUnCommentedTasksAtAfternoon() {
+//
+//        //Run evening task (Time of execution = 14)
+//        //Round(Morning)
+//        DateTime startLast12Hour = new DateTime().withTime(2, 0, 0, 0);
+//        DateTime endLast12Hour = new DateTime().withTime(14, 0, 0, 0);
+//
+//        log.info("عدد المهام = " + taskService.count());
+//
+//        log.info("عدد الافراد = " + personService.count());
+//
+//        log.info("فحص كل فرد على حدا");
+//
+//        check(startLast12Hour, endLast12Hour);
+//
+//    }
 
     private void check(DateTime startLast12Hour, DateTime endLast12Hour) {
         personService.findAll().forEach(person -> {
@@ -96,7 +99,9 @@ public class ScheduledTasks {
 
             List<Task> deductionTasks = new ArrayList<>();
 
-            tasks.stream().forEach(task -> {
+            DateTime nowCheckDate = new DateTime();
+
+            tasks.stream().filter(task -> nowCheckDate.isAfter(new DateTime(task.getStartDate()).plusHours(24))).forEach(task -> {
 
                 log.info("البحث عن عدد حركات الموظف " + person.getName() + " على المهمة رقم " + task.getCode());
                 log.info("من الفترة: " + DateConverter.getDateInFormatWithTime(startLast12Hour.toDate()));
