@@ -3,7 +3,7 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
 
         $scope.fetchThisDay = function () {
             $scope.viewType='طلبات الإغلاق يومياً';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق لهذا اليوم، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق لهذا اليوم، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('taskPersonId=');
             search.push($scope.me.id);
@@ -22,7 +22,7 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
 
         $scope.fetchThisWeek = function () {
             $scope.viewType='طلبات الإغلاق اسبوعياً';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق لهذا الأسبوع، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق لهذا الأسبوع، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('taskPersonId=');
             search.push($scope.me.id);
@@ -41,7 +41,7 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
 
         $scope.fetchThisMonth = function () {
             $scope.viewType='طلبات الإغلاق شهرياً';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق لهذا الشهر، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق لهذا الشهر، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('taskPersonId=');
             search.push($scope.me.id);
@@ -60,7 +60,7 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
 
         $scope.fetchThisYear = function () {
             $scope.viewType='طلبات الإغلاق سنوياً';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق لهذا العام، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق لهذا العام، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('taskPersonId=');
             search.push($scope.me.id);
@@ -79,7 +79,7 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
 
         $scope.fetchAllTime = function () {
             $scope.viewType='جميع طلبات الإغلاق';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل جميع طلبات الإغلاق، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل جميع طلبات الإغلاق، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('taskPersonId=');
             search.push($scope.me.id);

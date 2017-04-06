@@ -132,14 +132,14 @@ app.run(['$http', '$location', '$state', '$window', 'notifyCode', 'PersonService
                 type: type, // success, error, warning, information, notification
                 text: '<div class="activity-item text-right"><span>' + title + '</span> <i class="fa ' + icon + '"></i><div class="activity">' + message + '</div></div>',
                 dismissQueue: true, // [boolean] If you want to use queue feature set this true
-                force: false, // [boolean] adds notification to the beginning of queue when set to true
+                force: true, // [boolean] adds notification to the beginning of queue when set to true
                 maxVisible: 3, // [integer] you can set max visible notification count for dismissQueue true option,
                 template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
-                timeout: 5000, // [integer|boolean] delay for closing event in milliseconds. Set false for sticky notifications
+                timeout: 1500, // [integer|boolean] delay for closing event in milliseconds. Set false for sticky notifications
                 progressBar: true, // [boolean] - displays a progress bar
                 animation: {
-                    open: 'animated bounce',
-                    close: 'animated bounceOutLeft',
+                    open: 'animated fadeIn',
+                    close: 'animated fadeOut',
                     easing: 'swing',
                     speed: 500 // opening & closing animation speed
                 },

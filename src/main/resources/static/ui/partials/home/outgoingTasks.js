@@ -18,7 +18,7 @@ app.controller("outgoingTasksCtrl", ['ModalProvider', '$scope', '$rootScope', '$
 
         $scope.fetchOpened = function () {
             $scope.viewType = 'جميع المهام الصادرة السارية';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل جميع المهام الصادرة السارية، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل جميع المهام الصادرة السارية، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('isTaskOpen=');
             search.push(true);
@@ -44,7 +44,7 @@ app.controller("outgoingTasksCtrl", ['ModalProvider', '$scope', '$rootScope', '$
 
         $scope.fetchClosed = function () {
             $scope.viewType = 'جميع المهام الصادرة المغلقة';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل جميع المهام الصادرة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل جميع المهام الصادرة المغلقة، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('isTaskOpen=');
             search.push(false);

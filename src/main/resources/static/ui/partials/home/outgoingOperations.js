@@ -2,7 +2,7 @@ app.controller("outgoingOperationsCtrl", ['$scope', '$rootScope', '$timeout', 'T
 
     $scope.fetchThisDay = function () {
         $scope.viewType = 'حركات المهام الصادرة يومياً';
-        $rootScope.showNotify("الرئيسية", "جاري تحميل حركات المهام الصادرة لهذا اليوم، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+        // $rootScope.showNotify("الرئيسية", "جاري تحميل حركات المهام الصادرة لهذا اليوم، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
         TaskOperationService.findOutgoingOperationsForMe("Day").then(function (data) {
             $scope.outgoingOperations = data;
             // $rootScope.showNotify("الرئيسية", "تم تحميل حركات المهام الصادرة لهذا اليوم بنجاح", "success", "fa-dashboard");
@@ -14,7 +14,7 @@ app.controller("outgoingOperationsCtrl", ['$scope', '$rootScope', '$timeout', 'T
 
     $scope.fetchThisWeek = function () {
         $scope.viewType = 'حركات المهام الصادرة اسبوعياً';
-        $rootScope.showNotify("الرئيسية", "جاري تحميل حركات المهام الصادرة لهذا الأسبوع، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+        // $rootScope.showNotify("الرئيسية", "جاري تحميل حركات المهام الصادرة لهذا الأسبوع، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
         TaskOperationService.findOutgoingOperationsForMe("Week").then(function (data) {
             $scope.outgoingOperations = data;
             // $rootScope.showNotify("الرئيسية", "تم تحميل حركات المهام الصادرة لهذا الأسبوع بنجاح", "success", "fa-dashboard");
@@ -26,7 +26,7 @@ app.controller("outgoingOperationsCtrl", ['$scope', '$rootScope', '$timeout', 'T
 
     $scope.fetchThisMonth = function () {
         $scope.viewType = 'حركات المهام الصادرة شهرياً';
-        $rootScope.showNotify("الرئيسية", "جاري تحميل حركات المهام الصادرة لهذا الشهر، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+        // $rootScope.showNotify("الرئيسية", "جاري تحميل حركات المهام الصادرة لهذا الشهر، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
         TaskOperationService.findOutgoingOperationsForMe("Month").then(function (data) {
             $scope.outgoingOperations = data;
             // $rootScope.showNotify("الرئيسية", "تم تحميل حركات المهام الصادرة لهذا الشهر بنجاح", "success", "fa-dashboard");
@@ -38,7 +38,7 @@ app.controller("outgoingOperationsCtrl", ['$scope', '$rootScope', '$timeout', 'T
 
     $scope.fetchThisYear = function () {
         $scope.viewType = 'حركات المهام الصادرة سنوياً';
-        $rootScope.showNotify("الرئيسية", "جاري تحميل حركات المهام الصادرة لهذا العام، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+        // $rootScope.showNotify("الرئيسية", "جاري تحميل حركات المهام الصادرة لهذا العام، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
         TaskOperationService.findOutgoingOperationsForMe("Year").then(function (data) {
             $scope.outgoingOperations = data;
             // $rootScope.showNotify("الرئيسية", "تم تحميل حركات المهام الصادرة لهذا العام بنجاح", "success", "fa-dashboard");

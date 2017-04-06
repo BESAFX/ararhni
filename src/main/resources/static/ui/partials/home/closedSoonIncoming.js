@@ -18,7 +18,7 @@ app.controller("closedSoonIncomingCtrl", ['$scope', '$rootScope', '$timeout', 'T
 
         $scope.fetchThisDay = function () {
             $scope.viewType = 'المهام الواردة المغلقة هذا اليوم';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل المهام المغلقة لهذا اليوم، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل المهام المغلقة لهذا اليوم، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('isTaskOpen=');
             search.push(true);
@@ -44,7 +44,7 @@ app.controller("closedSoonIncomingCtrl", ['$scope', '$rootScope', '$timeout', 'T
 
         $scope.fetchThisWeek = function () {
             $scope.viewType = 'المهام الواردة المغلقة هذا الاسبوع';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل المهام المغلقة لهذا الأسبوع، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل المهام المغلقة لهذا الأسبوع، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('isTaskOpen=');
             search.push(true);
@@ -70,7 +70,7 @@ app.controller("closedSoonIncomingCtrl", ['$scope', '$rootScope', '$timeout', 'T
 
         $scope.fetchThisMonth = function () {
             $scope.viewType = 'المهام الواردة المغلقة هذا الشهر';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل المهام المغلقة لهذا الشهر، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل المهام المغلقة لهذا الشهر، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('isTaskOpen=');
             search.push(true);
@@ -96,7 +96,7 @@ app.controller("closedSoonIncomingCtrl", ['$scope', '$rootScope', '$timeout', 'T
 
         $scope.fetchThisYear = function () {
             $scope.viewType = 'المهام الواردة المغلقة هذا العام';
-            $rootScope.showNotify("الرئيسية", "جاري تحميل المهام المغلقة لهذا العام، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل المهام المغلقة لهذا العام، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('isTaskOpen=');
             search.push(true);
