@@ -10,7 +10,7 @@ app.controller('taskOperationCreateCtrl', ['TaskService', 'TaskOperationService'
         });
 
         var uploader = $scope.uploader = new FileUploader({
-            url: 'uploadFileAndGetShared'
+            url: 'uploadFileAndGetShared/' + task.id
         });
 
         $scope.submit = function () {

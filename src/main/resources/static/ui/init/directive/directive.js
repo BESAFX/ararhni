@@ -207,3 +207,33 @@ app.directive('ngRightClick', ['$parse',
     }
 ]);
 
+app.directive("fileModel", [function () {
+    return {
+        scope: {
+            fileModel: "="
+        },
+        link: function (scope, element, attributes) {
+            element.bind("change", function (changeEvent) {
+                scope.$apply(function () {
+                    scope.fileModel = changeEvent.target.files[0];
+                });
+            });
+        }
+    }
+}]);
+
+app.directive("filesModel", [function () {
+    return {
+        scope: {
+            filesModel: "="
+        },
+        link: function (scope, element, attributes) {
+            element.bind("change", function (changeEvent) {
+                scope.$apply(function () {
+                    scope.filesModel = changeEvent.target.files;
+                });
+            });
+        }
+    }
+}]);
+

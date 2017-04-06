@@ -39,7 +39,7 @@ public class EmailSender {
         }
     }
 
-    @Async("threadPoolTaskExecutor")
+    @Async("threadPoolEmailSender")
     public void send(String title, String content, List<String> toEmailList) {
         try {
             log.info("Sleeping for 10 seconds");
@@ -59,7 +59,7 @@ public class EmailSender {
         }
     }
 
-    @Async("threadPoolTaskExecutor")
+    @Async("threadPoolEmailSender")
     public void send(String title, String content, String email) {
         try {
             log.info("Sleeping for 10 seconds...");

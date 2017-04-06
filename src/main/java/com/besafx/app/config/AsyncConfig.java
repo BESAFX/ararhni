@@ -1,5 +1,7 @@
 package com.besafx.app.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -11,14 +13,33 @@ import java.util.concurrent.Executor;
 @EnableAsync
 public class AsyncConfig {
 
-    @Bean(name = "threadPoolTaskExecutor")
+    private final Logger log = LoggerFactory.getLogger(AsyncConfig.class);
+
+    @Bean(name = "threadPoolEmailSender")
     public Executor threadPoolTaskExecutor() {
+        log.info("Prepare threadPoolEmailSender...");
+        return initThreadPool(1, 1, 500, "EmailSender-");
+    }
+
+    @Bean(name = "threadPoolFileUploader")
+    public Executor threadPoolFileUploader() {
+        log.info("Prepare threadPoolFileUploader...");
+        return initThreadPool(5, 10, 500, "FileUploader-");
+    }
+
+    @Bean(name = "threadPoolFileSharing")
+    public Executor threadPoolFileSharing() {
+        log.info("Prepare threadPoolFileSharing...");
+        return initThreadPool(5, 10, 500, "FileSharing-");
+    }
+
+    private ThreadPoolTaskExecutor initThreadPool(int corePoolSize, int maxPoolSize, int queueCapacity, String prefix) {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(1);
-        executor.setMaxPoolSize(1);
-        executor.setQueueCapacity(500);
+        executor.setCorePoolSize(corePoolSize);
+        executor.setMaxPoolSize(maxPoolSize);
+        executor.setQueueCapacity(queueCapacity);
         executor.setWaitForTasksToCompleteOnShutdown(true);
-        executor.setThreadNamePrefix("EmailSender-");
+        executor.setThreadNamePrefix(prefix);
         return executor;
     }
 
