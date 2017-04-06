@@ -4,7 +4,6 @@ import com.besafx.app.entity.Team;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.RoleService;
 import com.besafx.app.service.TeamService;
-import com.besafx.app.util.NotifyCode;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
@@ -14,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -45,13 +43,13 @@ public class TeamRest {
                 .type("success")
                 .icon("fa-shield")
                 .build(), principal.getName());
-        notificationService.notifyAllExceptMe(Notification
-                .builder()
-                .title("العمليات على المجموعات")
-                .message("تم اضافة مجموعة صلاحيات جديدة بواسطة " +  personService.findByEmail(principal.getName()).getName())
-                .type("warning")
-                .icon("fa-shield")
-                .build());
+//        notificationService.notifyAllExceptMe(Notification
+//                .builder()
+//                .title("العمليات على المجموعات")
+//                .message("تم اضافة مجموعة صلاحيات جديدة بواسطة " +  personService.findByEmail(principal.getName()).getName())
+//                .type("warning")
+//                .icon("fa-shield")
+//                .build());
         return team;
     }
 
@@ -69,13 +67,13 @@ public class TeamRest {
                     .type("success")
                     .icon("fa-shield")
                     .build(), principal.getName());
-            notificationService.notifyAllExceptMe(Notification
-                    .builder()
-                    .title("العمليات على مجموعات المستخدمين")
-                    .message("تم تعديل بيانات المجموعة " + team.getName() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
-                    .type("warning")
-                    .icon("fa-shield")
-                    .build());
+//            notificationService.notifyAllExceptMe(Notification
+//                    .builder()
+//                    .title("العمليات على مجموعات المستخدمين")
+//                    .message("تم تعديل بيانات المجموعة " + team.getName() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
+//                    .type("warning")
+//                    .icon("fa-shield")
+//                    .build());
             return team;
         } else {
             return null;

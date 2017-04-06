@@ -48,13 +48,13 @@ public class RegionRest {
                 .type("success")
                 .icon("fa-map-marker")
                 .build(), principal.getName());
-        notificationService.notifyAllExceptMe(Notification
-                .builder()
-                .title("العمليات على المناطق")
-                .message("تم اضافة منطقة جديدة بواسطة " + personService.findByEmail(principal.getName()).getName())
-                .type("warning")
-                .icon("fa-map-marker")
-                .build());
+//        notificationService.notifyAllExceptMe(Notification
+//                .builder()
+//                .title("العمليات على المناطق")
+//                .message("تم اضافة منطقة جديدة بواسطة " + personService.findByEmail(principal.getName()).getName())
+//                .type("warning")
+//                .icon("fa-map-marker")
+//                .build());
         return region;
     }
 
@@ -72,13 +72,13 @@ public class RegionRest {
                     .type("success")
                     .icon("fa-map-marker")
                     .build(), principal.getName());
-            notificationService.notifyAllExceptMe(Notification
-                    .builder()
-                    .title("العمليات على المناطق")
-                    .message("تم تعديل بيانات المنطقة رقم " + region.getCode() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
-                    .type("warning")
-                    .icon("fa-map-marker")
-                    .build());
+//            notificationService.notifyAllExceptMe(Notification
+//                    .builder()
+//                    .title("العمليات على المناطق")
+//                    .message("تم تعديل بيانات المنطقة رقم " + region.getCode() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
+//                    .type("warning")
+//                    .icon("fa-map-marker")
+//                    .build());
             return region;
         } else {
             return null;

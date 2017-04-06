@@ -1,11 +1,9 @@
 package com.besafx.app.rest;
 
-import com.besafx.app.entity.Branch;
 import com.besafx.app.entity.Department;
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.DepartmentService;
 import com.besafx.app.service.PersonService;
-import com.besafx.app.util.NotifyCode;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,13 +48,13 @@ public class DepartmentRest {
                 .type("success")
                 .icon("fa-sitemap")
                 .build(), principal.getName());
-        notificationService.notifyAllExceptMe(Notification
-                .builder()
-                .title("العمليات على الأقسام")
-                .message("تم اضافة قسم جديد بواسطة " +  personService.findByEmail(principal.getName()).getName())
-                .type("warning")
-                .icon("fa-sitemap")
-                .build());
+//        notificationService.notifyAllExceptMe(Notification
+//                .builder()
+//                .title("العمليات على الأقسام")
+//                .message("تم اضافة قسم جديد بواسطة " +  personService.findByEmail(principal.getName()).getName())
+//                .type("warning")
+//                .icon("fa-sitemap")
+//                .build());
         return department;
     }
 
@@ -75,13 +72,13 @@ public class DepartmentRest {
                     .type("success")
                     .icon("fa-sitemap")
                     .build(), principal.getName());
-            notificationService.notifyAllExceptMe(Notification
-                    .builder()
-                    .title("العمليات على الأقسام")
-                    .message("تم تعديل بيانات القسم رقم " + department.getCode() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
-                    .type("warning")
-                    .icon("fa-sitemap")
-                    .build());
+//            notificationService.notifyAllExceptMe(Notification
+//                    .builder()
+//                    .title("العمليات على الأقسام")
+//                    .message("تم تعديل بيانات القسم رقم " + department.getCode() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
+//                    .type("warning")
+//                    .icon("fa-sitemap")
+//                    .build());
             return department;
         } else {
             return null;

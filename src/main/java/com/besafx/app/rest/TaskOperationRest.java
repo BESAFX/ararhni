@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/taskOperation/")
@@ -97,13 +96,13 @@ public class TaskOperationRest {
                 .type("success")
                 .icon("fa-black-tie")
                 .build(), person.getName());
-        notificationService.notifyAllExceptMe(Notification
-                .builder()
-                .title("العمليات على المهام")
-                .message("تم اضافة حركة جديدة بواسطة " + person.getName() + " على المهمة رقم " + taskOperation.getTask().getCode())
-                .type("warning")
-                .icon("fa-black-tie")
-                .build());
+//        notificationService.notifyAllExceptMe(Notification
+//                .builder()
+//                .title("العمليات على المهام")
+//                .message("تم اضافة حركة جديدة بواسطة " + person.getName() + " على المهمة رقم " + taskOperation.getTask().getCode())
+//                .type("warning")
+//                .icon("fa-black-tie")
+//                .build());
         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewOperation.html");
         String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
         message = message.replaceAll("OPERATION_SENDER", taskOperation.getSender().getName());
@@ -114,19 +113,20 @@ public class TaskOperationRest {
         message = message.replaceAll("TASK_TITLE", taskOperation.getTask().getTitle());
         message = message.replaceAll("TASK_PERSON", taskOperation.getTask().getPerson().getName());
 
-        final String emailTemp = taskOperation.getSender().getEmail();
-        List<String> emails = new ArrayList<>();
+//        final String emailTemp = taskOperation.getSender().getEmail();
+//        List<String> emails = new ArrayList<>();
         if (taskOperation.getSender().getId().longValue() != taskOperation.getTask().getPerson().getId().longValue()) {
-            emails.add(taskOperation.getTask().getPerson().getEmail());
+//            emails.add(taskOperation.getTask().getPerson().getEmail());
+            emailSender.send("حركة جديدة على المهمة رقم: " + "(" + taskOperation.getTask().getCode() + ")", message, taskOperation.getTask().getPerson().getEmail());
         }
 
-        emails.addAll(taskToService
-                .findByTask(taskOperation.getTask())
-                .stream()
-                .filter(to -> !to.getPerson().getEmail().equals(emailTemp))
-                .map(to -> to.getPerson().getEmail())
-                .collect(Collectors.toList()));
-        emailSender.send("حركة جديدة على المهمة رقم: " + "(" + taskOperation.getTask().getCode() + ")", message, emails);
+//        emails.addAll(taskToService
+//                .findByTask(taskOperation.getTask())
+//                .stream()
+//                .filter(to -> !to.getPerson().getEmail().equals(emailTemp))
+//                .map(to -> to.getPerson().getEmail())
+//                .collect(Collectors.toList()));
+//        emailSender.send("حركة جديدة على المهمة رقم: " + "(" + taskOperation.getTask().getCode() + ")", message, emails);
         return taskOperation;
     }
 

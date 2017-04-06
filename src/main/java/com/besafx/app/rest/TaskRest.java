@@ -87,13 +87,13 @@ public class TaskRest {
                 .type("success")
                 .icon("fa-black-tie")
                 .build(), principal.getName());
-        notificationService.notifyAllExceptMe(Notification
-                .builder()
-                .title("العمليات على المهام")
-                .message("تم اضافة مهمة جديدة رقم " + task.getCode() + " بواسطة" + person.getName())
-                .type("warning")
-                .icon("fa-black-tie")
-                .build());
+//        notificationService.notifyAllExceptMe(Notification
+//                .builder()
+//                .title("العمليات على المهام")
+//                .message("تم اضافة مهمة جديدة رقم " + task.getCode() + " بواسطة" + person.getName())
+//                .type("warning")
+//                .icon("fa-black-tie")
+//                .build());
         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewTask.html");
         String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
         message = message.replaceAll("TASK_CODE", task.getCode().toString());
@@ -124,13 +124,13 @@ public class TaskRest {
                     .type("success")
                     .icon("fa-black-tie")
                     .build(), principal.getName());
-            notificationService.notifyAllExceptMe(Notification
-                    .builder()
-                    .title("العمليات على المهام")
-                    .message("تم تعديل بيانات مهمة رقم " + task.getCode() + " بواسطة " + personService.findByEmail(principal.getName()).getName())
-                    .type("warning")
-                    .icon("fa-black-tie")
-                    .build());
+//            notificationService.notifyAllExceptMe(Notification
+//                    .builder()
+//                    .title("العمليات على المهام")
+//                    .message("تم تعديل بيانات مهمة رقم " + task.getCode() + " بواسطة " + personService.findByEmail(principal.getName()).getName())
+//                    .type("warning")
+//                    .icon("fa-black-tie")
+//                    .build());
             return task;
         }
     }
@@ -158,13 +158,13 @@ public class TaskRest {
                     .type("success")
                     .icon("fa-black-tie")
                     .build(), principal.getName());
-            notificationService.notifyAllExceptMe(Notification
-                    .builder()
-                    .title("العمليات على المهام")
-                    .message("تم حذف المهمة رقم " + object.getCode() + " بواسطة " + personService.findByEmail(principal.getName()).getName())
-                    .type("warning")
-                    .icon("fa-black-tie")
-                    .build());
+//            notificationService.notifyAllExceptMe(Notification
+//                    .builder()
+//                    .title("العمليات على المهام")
+//                    .message("تم حذف المهمة رقم " + object.getCode() + " بواسطة " + personService.findByEmail(principal.getName()).getName())
+//                    .type("warning")
+//                    .icon("fa-black-tie")
+//                    .build());
         }
     }
 
@@ -202,13 +202,13 @@ public class TaskRest {
                 .type("success")
                 .icon("fa-power-off")
                 .build(), principal.getName());
-        notificationService.notifyAllExceptMe(Notification
-                .builder()
-                .title("العمليات على المهام")
-                .message("تم ارسال طلب إغلاق المهمة رقم " + task.getCode() + " بواسطة" + person.getName())
-                .type("warning")
-                .icon("fa-power-off")
-                .build());
+//        notificationService.notifyAllExceptMe(Notification
+//                .builder()
+//                .title("العمليات على المهام")
+//                .message("تم ارسال طلب إغلاق المهمة رقم " + task.getCode() + " بواسطة" + person.getName())
+//                .type("warning")
+//                .icon("fa-power-off")
+//                .build());
         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/TaskCloseRequest.html");
         String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
         message = message.replaceAll("TASK_CODE", task.getCode().toString());

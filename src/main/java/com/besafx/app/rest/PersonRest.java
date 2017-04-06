@@ -1,11 +1,9 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
-import com.besafx.app.entity.Employee;
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.TeamService;
-import com.besafx.app.util.NotifyCode;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
@@ -18,10 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping(value = "/api/person/")
@@ -58,13 +54,13 @@ public class PersonRest {
                 .type("success")
                 .icon("fa-user")
                 .build(), principal.getName());
-        notificationService.notifyAllExceptMe(Notification
-                .builder()
-                .title("العمليات على حسابات المستخدمين")
-                .message("تم اضافة مستخدم جديد بواسطة " +  personService.findByEmail(principal.getName()).getName())
-                .type("warning")
-                .icon("fa-user")
-                .build());
+//        notificationService.notifyAllExceptMe(Notification
+//                .builder()
+//                .title("العمليات على حسابات المستخدمين")
+//                .message("تم اضافة مستخدم جديد بواسطة " +  personService.findByEmail(principal.getName()).getName())
+//                .type("warning")
+//                .icon("fa-user")
+//                .build());
         return person;
     }
 
@@ -85,13 +81,13 @@ public class PersonRest {
                     .type("success")
                     .icon("fa-user")
                     .build(), principal.getName());
-            notificationService.notifyAllExceptMe(Notification
-                    .builder()
-                    .title("العمليات على حسابات المستخدمين")
-                    .message("تم تعديل بيانات الحساب الشخصي للموظف " + person.getName() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
-                    .type("warning")
-                    .icon("fa-user")
-                    .build());
+//            notificationService.notifyAllExceptMe(Notification
+//                    .builder()
+//                    .title("العمليات على حسابات المستخدمين")
+//                    .message("تم تعديل بيانات الحساب الشخصي للموظف " + person.getName() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
+//                    .type("warning")
+//                    .icon("fa-user")
+//                    .build());
             return person;
         } else {
             return null;

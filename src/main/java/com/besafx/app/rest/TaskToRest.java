@@ -58,13 +58,13 @@ public class TaskToRest {
                 .type("success")
                 .icon("fa-hourglass-2")
                 .build(), principal.getName());
-        notificationService.notifyAllExceptMe(Notification
-                .builder()
-                .title("العمليات على المهام")
-                .message(person.getNickname() + " / " + person.getName() + " قام بتحديد نسبة إنجازه فى المهمة رقم " + task.getCode() + " بنجاح.")
-                .type("warning")
-                .icon("fa-hourglass-2")
-                .build());
+//        notificationService.notifyAllExceptMe(Notification
+//                .builder()
+//                .title("العمليات على المهام")
+//                .message(person.getNickname() + " / " + person.getName() + " قام بتحديد نسبة إنجازه فى المهمة رقم " + task.getCode() + " بنجاح.")
+//                .type("warning")
+//                .icon("fa-hourglass-2")
+//                .build());
         return taskTo;
     }
 
@@ -85,13 +85,13 @@ public class TaskToRest {
                 .type("success")
                 .icon("fa-power-off")
                 .build(), principal.getName());
-        notificationService.notifyAllExceptMe(Notification
-                .builder()
-                .title("العمليات على المهام")
-                .message(person.getNickname() + " / " + person.getName() + " قام بعملية إغلاق لموظف على المهمة رقم " + task.getCode() + " بنجاح.")
-                .type("warning")
-                .icon("fa-power-off")
-                .build());
+//        notificationService.notifyAllExceptMe(Notification
+//                .builder()
+//                .title("العمليات على المهام")
+//                .message(person.getNickname() + " / " + person.getName() + " قام بعملية إغلاق لموظف على المهمة رقم " + task.getCode() + " بنجاح.")
+//                .type("warning")
+//                .icon("fa-power-off")
+//                .build());
         return taskTo;
     }
 

@@ -4,7 +4,6 @@ import com.besafx.app.entity.Company;
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.CompanyService;
 import com.besafx.app.service.PersonService;
-import com.besafx.app.util.NotifyCode;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,13 +48,13 @@ public class CompanyRest {
                 .type("success")
                 .icon("fa-fort-awesome")
                 .build(), principal.getName());
-        notificationService.notifyAllExceptMe(Notification
-                .builder()
-                .title("العمليات على الشركات")
-                .message("تم اضافة شركة جديدة بواسطة " +  personService.findByEmail(principal.getName()).getName())
-                .type("warning")
-                .icon("fa-fort-awesome")
-                .build());
+//        notificationService.notifyAllExceptMe(Notification
+//                .builder()
+//                .title("العمليات على الشركات")
+//                .message("تم اضافة شركة جديدة بواسطة " +  personService.findByEmail(principal.getName()).getName())
+//                .type("warning")
+//                .icon("fa-fort-awesome")
+//                .build());
         return company;
     }
 
@@ -74,13 +72,13 @@ public class CompanyRest {
                     .type("success")
                     .icon("fa-fort-awesome")
                     .build(), principal.getName());
-            notificationService.notifyAllExceptMe(Notification
-                    .builder()
-                    .title("العمليات على الشركات")
-                    .message("تم تعديل بيانات الشركة رقم " + company.getCode() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
-                    .type("warning")
-                    .icon("fa-fort-awesome")
-                    .build());
+//            notificationService.notifyAllExceptMe(Notification
+//                    .builder()
+//                    .title("العمليات على الشركات")
+//                    .message("تم تعديل بيانات الشركة رقم " + company.getCode() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
+//                    .type("warning")
+//                    .icon("fa-fort-awesome")
+//                    .build());
             return company;
         } else {
             return null;

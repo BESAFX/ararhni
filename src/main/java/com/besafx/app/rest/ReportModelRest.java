@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -45,13 +44,13 @@ public class ReportModelRest {
                 .type("success")
                 .icon("fa-print")
                 .build(), me.getEmail());
-        notificationService.notifyAllExceptMe(Notification
-                .builder()
-                .title("العمليات على نماذج الطباعة")
-                .message("تم اضافة نموذج جديد بواسطة " +  personService.findByEmail(principal.getName()).getName())
-                .type("warning")
-                .icon("fa-print")
-                .build());
+//        notificationService.notifyAllExceptMe(Notification
+//                .builder()
+//                .title("العمليات على نماذج الطباعة")
+//                .message("تم اضافة نموذج جديد بواسطة " +  personService.findByEmail(principal.getName()).getName())
+//                .type("warning")
+//                .icon("fa-print")
+//                .build());
         return reportModel;
     }
 
@@ -70,13 +69,13 @@ public class ReportModelRest {
                     .type("success")
                     .icon("fa-print")
                     .build(), principal.getName());
-            notificationService.notifyAllExceptMe(Notification
-                    .builder()
-                    .title("العمليات على نماذج الطباعة")
-                    .message("تم تعديل بيانات نموذج"  +  " بواسطة " + me.getName())
-                    .type("warning")
-                    .icon("fa-print")
-                    .build());
+//            notificationService.notifyAllExceptMe(Notification
+//                    .builder()
+//                    .title("العمليات على نماذج الطباعة")
+//                    .message("تم تعديل بيانات نموذج"  +  " بواسطة " + me.getName())
+//                    .type("warning")
+//                    .icon("fa-print")
+//                    .build());
             return reportModel;
         } else {
             return null;

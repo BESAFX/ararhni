@@ -53,13 +53,13 @@ public class EmployeeRest {
                 .type("success")
                 .icon("fa-user-circle")
                 .build(), principal.getName());
-        notificationService.notifyAllExceptMe(Notification
-                .builder()
-                .title("العمليات على الموظفين")
-                .message("تم اضافة موظف جديد بواسطة " + personService.findByEmail(principal.getName()).getName())
-                .type("warning")
-                .icon("fa-user-circle")
-                .build());
+//        notificationService.notifyAllExceptMe(Notification
+//                .builder()
+//                .title("العمليات على الموظفين")
+//                .message("تم اضافة موظف جديد بواسطة " + personService.findByEmail(principal.getName()).getName())
+//                .type("warning")
+//                .icon("fa-user-circle")
+//                .build());
         return employee;
     }
 
@@ -82,13 +82,13 @@ public class EmployeeRest {
                     .type("success")
                     .icon("fa-user-circle")
                     .build(), principal.getName());
-            notificationService.notifyAllExceptMe(Notification
-                    .builder()
-                    .title("العمليات على الموظفين")
-                    .message("تم تعديل بيانات الموظف رقم " + employee.getCode() + " بواسطة " + personService.findByEmail(principal.getName()).getName())
-                    .type("warning")
-                    .icon("fa-user-circle")
-                    .build());
+//            notificationService.notifyAllExceptMe(Notification
+//                    .builder()
+//                    .title("العمليات على الموظفين")
+//                    .message("تم تعديل بيانات الموظف رقم " + employee.getCode() + " بواسطة " + personService.findByEmail(principal.getName()).getName())
+//                    .type("warning")
+//                    .icon("fa-user-circle")
+//                    .build());
             return employee;
         } else {
             return null;
