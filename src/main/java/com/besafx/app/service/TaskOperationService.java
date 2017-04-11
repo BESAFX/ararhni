@@ -47,4 +47,6 @@ public interface TaskOperationService extends PagingAndSortingRepository<TaskOpe
     long countByDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
     long countByTaskAndSenderAndType(Task task, Person person, Integer type);
+
+    long countByTaskAndType(Task task, Integer type);
 }

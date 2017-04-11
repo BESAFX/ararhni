@@ -118,8 +118,10 @@ public class ScheduledTasks {
                     log.info("عدد التحذيرات على المهمة = " + numberOfWarns);
 
                     if (numberOfWarns <= task.getWarn().longValue()) {
+                        log.info("إرسال تحذير");
                         warningTasks.add(task);
                     } else {
+                        log.info("إرسال خصم");
                         deductionTasks.add(task);
                     }
                 }
@@ -139,8 +141,7 @@ public class ScheduledTasks {
                     builder.append(" ");
                     builder.append("إلى الفترة " + "(" + DateConverter.getHijriStringFromDateRTLWithTime(endLast12Hour.toDate()) + ")");
                     builder.append(" ");
-                    builder.append("نأمل الإلتزام بالتعليق فى خلال مدة لا تزيد عن 12 ساعة.");
-                    builder.append("-تجريبي-");
+                    builder.append("نأمل الإلتزام بالتعليق فى خلال مدة لا تزيد عن 24 ساعة.");
                     log.info("جاري إرسال التحذير...");
                     createEmail(warningTasks, builder.toString(), 2, person);
                 } catch (Exception e) {
@@ -160,7 +161,6 @@ public class ScheduledTasks {
                     builder.append("نظراً لانتهاء العدد المسموح به من التحذيرات،");
                     builder.append(" ");
                     builder.append("نأمل منه مراجعة جهة التكليف.");
-                    builder.append("-تجريبي-");
                     createEmail(deductionTasks, builder.toString(), 3, person);
                 } catch (Exception e) {
                     e.printStackTrace();
