@@ -73,7 +73,7 @@
             </div>
 
             <div class="form-group text-right col-sm-12">
-                <label for="deduction" class="control-label"> مقدار الحسم </label>
+                <label for="deduction" class="control-label"> مقدار الحسم عند الوصول للحد الاقصي للتحذيرات </label>
                 <div dir="ltr" class="input-group" id="deduction">
                     <span class="input-group-addon">ريال</span>
                     <input focus-index="5"
@@ -88,12 +88,26 @@
             </div>
 
             <div class="form-group text-right col-sm-12">
+                <label for="deductionOnAutoClose" class="control-label"> مقدار الحسم عن إغلاق المهمة تلقائياً </label>
+                <div dir="ltr" class="input-group" id="deductionOnAutoClose">
+                    <span class="input-group-addon">ريال</span>
+                    <input focus-index="6"
+                           dir="rtl"
+                           type="number"
+                           min="0"
+                           required="required"
+                           disable-validation-message=""
+                           class="form-control text-right "
+                           ng-model="task.deductionOnAutoClose">
+                </div>
+            </div>
+
+            <div class="form-group text-right col-sm-12">
                 <label for="endDate" class="control-label">تاريخ التسليم</label>
                 <div dir="ltr" class="input-group">
                     <input dir="rtl"
                            id="endDate"
                            type="text"
-                           focus-index="6"
                            class="form-control text-right is-calendarPicker"
                            ng-model="task.endDate"
                            required="required"

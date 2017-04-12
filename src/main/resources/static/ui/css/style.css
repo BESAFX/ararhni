@@ -256,3 +256,14 @@ input[type=checkbox] {
 .activity {
     direction: rtl !important;
 }
+
+.card-square {
+    margin: 10px;
+    min-height: 150px;
+    background-color: rgb(96, 125, 139);
+}
+
+table a {
+    color: blue !important;
+    text-decoration: underline;
+}

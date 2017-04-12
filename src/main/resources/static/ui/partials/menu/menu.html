@@ -1,36 +1,3 @@
-<style>
-    .card-square{
-        margin: 10px;
-    }
-    .card-square > .company-card {
-        background: url('/ui/img/company.png') bottom right 15% no-repeat #46B6AC;
-    }
-    .card-square > .region-card {
-        background: url('/ui/img/region.png') bottom right 15% no-repeat #46B6AC;
-    }
-    .card-square > .branch-card {
-        background: url('/ui/img/branch.png') bottom right 15% no-repeat #46B6AC;
-    }
-    .card-square > .department-card {
-        background: url('/ui/img/department.png') bottom right 15% no-repeat #46B6AC;
-    }
-    .card-square > .employee-card {
-        background: url('/ui/img/employee.png') bottom right 15% no-repeat #46B6AC;
-    }
-    .card-square > .team-card {
-        background: url('/ui/img/team.png') bottom right 15% no-repeat #46B6AC;
-    }
-    .card-square > .person-card {
-        background: url('/ui/img/person.png') bottom right 15% no-repeat #46B6AC;
-    }
-    .card-square > .task-card {
-        background: url('/ui/img/task.png') bottom right 15% no-repeat #46B6AC;
-    }
-    .card-square > .report-model-card {
-        background: url('/ui/img/report-model.png') bottom right 15% no-repeat #46B6AC;
-    }
-</style>
-
 <!-- Always shows a header, even in smaller screens. -->
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
@@ -68,205 +35,82 @@
 
                 <div class="form-group row">
 
-                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
-                        <div class="card-square mdl-card mdl-shadow--2dp">
-                            <div class="mdl-card__title mdl-card--expand company-card">
-                                <h2 class="mdl-card__title-text">الشركات</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                <strong>---</strong>
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToCompany()"
-                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                                    <span>الرئيسية</span>
-                                </button>
-                                <button ng-if="contains(authorities, ['ROLE_COMPANY_CREATE'])"
-                                        ng-click="ModalProvider.openCompanyCreateModel()"
-                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>اضافة</span>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                        <a href="" ng-click="goToHome()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">dashboard</i>
+                            <p>الرئيسية</p>
+                        </a>
                     </div>
 
-                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_REGION_CREATE', 'ROLE_REGION_UPDATE', 'ROLE_REGION_DELETE', 'ROLE_REGION_REPORT'])">
-                        <div class="card-square mdl-card mdl-shadow--2dp">
-                            <div class="mdl-card__title mdl-card--expand region-card">
-                                <h2 class="mdl-card__title-text">المناطق</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                <strong>---</strong>
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToRegion()"
-                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                                    <span>الرئيسية</span>
-                                </button>
-                                <button ng-if="contains(authorities, ['ROLE_REGION_CREATE'])"
-                                        ng-click="ModalProvider.openRegionCreateModel()"
-                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>اضافة</span>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(authorities, ['ROLE_COMPANY_CREATE', 'ROLE_COMPANY_UPDATE', 'ROLE_COMPANY_DELETE', 'ROLE_COMPANY_REPORT'])">
+                        <a href="" ng-click="goToCompany()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">account_balance</i>
+                            <p>الشركات</p>
+                        </a>
                     </div>
 
-                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_BRANCH_CREATE', 'ROLE_BRANCH_UPDATE', 'ROLE_BRANCH_DELETE', 'ROLE_BRANCH_REPORT'])">
-                        <div class="card-square mdl-card mdl-shadow--2dp">
-                            <div class="mdl-card__title mdl-card--expand branch-card">
-                                <h2 class="mdl-card__title-text">الفروع</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                <strong>---</strong>
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToBranch()"
-                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                                    <span>الرئيسية</span>
-                                </button>
-                                <button ng-if="contains(authorities, ['ROLE_BRANCH_CREATE'])"
-                                        ng-click="ModalProvider.openBranchCreateModel()"
-                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>اضافة</span>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(authorities, ['ROLE_REGION_CREATE', 'ROLE_REGION_UPDATE', 'ROLE_REGION_DELETE', 'ROLE_REGION_REPORT'])">
+                        <a href="" ng-click="goToRegion()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">place</i>
+                            <p>المناطق</p>
+                        </a>
                     </div>
 
-                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_DEPARTMENT_CREATE', 'ROLE_DEPARTMENT_UPDATE', 'ROLE_DEPARTMENT_DELETE', 'ROLE_DEPARTMENT_REPORT'])">
-                        <div class="card-square mdl-card mdl-shadow--2dp">
-                            <div class="mdl-card__title mdl-card--expand department-card">
-                                <h2 class="mdl-card__title-text">الأقسام</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                <strong>---</strong>
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToDepartment()"
-                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                                    <span>الرئيسية</span>
-                                </button>
-                                <button ng-if="contains(authorities, ['ROLE_DEPARTMENT_CREATE'])"
-                                        ng-click="ModalProvider.openDepartmentCreateModel()"
-                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>اضافة</span>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(authorities, ['ROLE_BRANCH_CREATE', 'ROLE_BRANCH_UPDATE', 'ROLE_BRANCH_DELETE', 'ROLE_BRANCH_REPORT'])">
+                        <a href="" ng-click="goToBranch()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">layers</i>
+                            <p>الفروع</p>
+                        </a>
                     </div>
 
-                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_EMPLOYEE_CREATE', 'ROLE_EMPLOYEE_UPDATE', 'ROLE_EMPLOYEE_DELETE', 'ROLE_EMPLOYEE_REPORT'])">
-                        <div class="card-square mdl-card mdl-shadow--2dp">
-                            <div class="mdl-card__title mdl-card--expand employee-card">
-                                <h2 class="mdl-card__title-text">الموظفون</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                <strong>---</strong>
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToEmployee()"
-                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                                    <span>الرئيسية</span>
-                                </button>
-                                <button ng-if="contains(authorities, ['ROLE_EMPLOYEE_CREATE'])"
-                                        ng-click="ModalProvider.openEmployeeCreateModel()"
-                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>اضافة</span>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(authorities, ['ROLE_DEPARTMENT_CREATE', 'ROLE_DEPARTMENT_UPDATE', 'ROLE_DEPARTMENT_DELETE', 'ROLE_DEPARTMENT_REPORT'])">
+                        <a href="" ng-click="goToDepartment()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">store</i>
+                            <p>الأقسام</p>
+                        </a>
                     </div>
 
-                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_TEAM_CREATE', 'ROLE_TEAM_UPDATE', 'ROLE_TEAM_DELETE', 'ROLE_TEAM_REPORT'])">
-                        <div class="card-square mdl-card mdl-shadow--2dp">
-                            <div class="mdl-card__title mdl-card--expand team-card">
-                                <h2 class="mdl-card__title-text">الصلاحيات</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                <strong>---</strong>
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToTeam()"
-                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                                    <span>الرئيسية</span>
-                                </button>
-                                <button ng-if="contains(authorities, ['ROLE_TEAM_CREATE'])"
-                                        ng-click="ModalProvider.openTeamCreateModel()"
-                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>اضافة</span>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(authorities, ['ROLE_EMPLOYEE_CREATE', 'ROLE_EMPLOYEE_UPDATE', 'ROLE_EMPLOYEE_DELETE', 'ROLE_EMPLOYEE_REPORT'])">
+                        <a href="" ng-click="goToEmployee()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">group</i>
+                            <p>الموظفون</p>
+                        </a>
                     </div>
 
-                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_PERSON_CREATE', 'ROLE_PERSON_UPDATE', 'ROLE_PERSON_DELETE', 'ROLE_PERSON_REPORT'])">
-                        <div class="card-square mdl-card mdl-shadow--2dp">
-                            <div class="mdl-card__title mdl-card--expand person-card">
-                                <h2 class="mdl-card__title-text">المستخدمون</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                <strong>---</strong>
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToPerson()"
-                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                                    <span>الرئيسية</span>
-                                </button>
-                                <button ng-if="contains(authorities, ['ROLE_PERSON_CREATE'])"
-                                        ng-click="ModalProvider.openPersonCreateModel()"
-                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>اضافة</span>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(authorities, ['ROLE_TEAM_CREATE', 'ROLE_TEAM_UPDATE', 'ROLE_TEAM_DELETE', 'ROLE_TEAM_REPORT'])">
+                        <a href="" ng-click="goToTeam()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">settings_input_composite</i>
+                            <p>الصلاحيات</p>
+                        </a>
                     </div>
 
-                    <div class="col-md-3" ng-if="contains(authorities, ['ROLE_TASK_CREATE', 'ROLE_TASK_UPDATE', 'ROLE_TASK_DELETE', 'ROLE_TASK_REPORT'])">
-                        <div class="card-square mdl-card mdl-shadow--2dp">
-                            <div class="mdl-card__title mdl-card--expand task-card">
-                                <h2 class="mdl-card__title-text">المهام</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                <strong>---</strong>
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToHome()"
-                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                                    <span>لوحة التحكم</span>
-                                </button>
-                                <button ng-click="goToTask()"
-                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                                    <span>الرئيسية</span>
-                                </button>
-                                <!--<button ng-if="contains(authorities, ['ROLE_TASK_CREATE'])"-->
-                                <!--ng-click="ModalProvider.openTaskCreateModel()"-->
-                                <!--class="mdl-button mdl-button&#45;&#45;colored mdl-js-button mdl-js-ripple-effect">-->
-                                <!--<span>اضافة</span>-->
-                                <!--</button>-->
-                            </div>
-                        </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(authorities, ['ROLE_PERSON_CREATE', 'ROLE_PERSON_UPDATE', 'ROLE_PERSON_DELETE', 'ROLE_PERSON_REPORT'])">
+                        <a href="" ng-click="goToPerson()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">lock</i>
+                            <p>المستخدمون</p>
+                        </a>
                     </div>
 
-                    <div class="col-md-3">
-                        <div class="card-square mdl-card mdl-shadow--2dp">
-                            <div class="mdl-card__title mdl-card--expand report-model-card">
-                                <h2 class="mdl-card__title-text">نماذج الطباعة</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                <strong>---</strong>
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="goToReportModel()"
-                                        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                                    <span>الرئيسية</span>
-                                </button>
-                                <button ng-click="ModalProvider.openReportModelCreateModel()"
-                                        class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>اضافة</span>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center"
+                         ng-if="contains(authorities, ['ROLE_TASK_CREATE', 'ROLE_TASK_UPDATE', 'ROLE_TASK_DELETE', 'ROLE_TASK_REPORT'])">
+                        <a href="" ng-click="goToTask()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">assignment</i>
+                            <p>المهام</p>
+                        </a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 text-center">
+                        <a href="" ng-click="goToReportModel()" class="card-square mdl-card mdl-shadow--8dp">
+                            <i class="material-icons md-120">print</i>
+                            <p>نماذج الطباعة</p>
+                        </a>
                     </div>
 
                 </div>

@@ -178,7 +178,7 @@ public class ScheduledTasks {
                 FileUtils.writeByteArrayToFile(reportFile, fileBytes);
                 log.info("جاري تحويل الملف");
                 Thread.sleep(10000);
-                Future<Boolean> mail = emailSender.send("تقرير متابعة الموظفين المكلفين - " + person.getNickname() + " / " + person.getName(), "تقرير متابعة المهام اليومي", person.getEmail(), Lists.newArrayList(new FileSystemResource(reportFile)));
+                Future<Boolean> mail = emailSender.send("تقرير متابعة الموظفين المكلفين - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(new FileSystemResource(reportFile)));
                 mail.get();
                 log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
             }

@@ -31,6 +31,8 @@ public class Task implements Serializable {
 
     private Double deduction;
 
+    private Double deductionOnAutoClose;
+
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String content;
