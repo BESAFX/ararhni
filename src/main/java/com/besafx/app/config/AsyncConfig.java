@@ -18,7 +18,7 @@ public class AsyncConfig {
     @Bean(name = "threadPoolEmailSender")
     public Executor threadPoolTaskExecutor() {
         log.info("Prepare threadPoolEmailSender...");
-        return initThreadPool(1, 1, 500, "EmailSender-");
+        return initThreadPool(5, 10, 500, "EmailSender-");
     }
 
     @Bean(name = "threadPoolFileUploader")
@@ -31,6 +31,12 @@ public class AsyncConfig {
     public Executor threadPoolFileSharing() {
         log.info("Prepare threadPoolFileSharing...");
         return initThreadPool(5, 10, 500, "FileSharing-");
+    }
+
+    @Bean(name = "threadPoolReportGenerator")
+    public Executor threadPoolReportGenerator() {
+        log.info("Prepare threadPoolReportGenerator...");
+        return initThreadPool(1, 1, 500, "FilePDFGenerate-");
     }
 
     private ThreadPoolTaskExecutor initThreadPool(int corePoolSize, int maxPoolSize, int queueCapacity, String prefix) {

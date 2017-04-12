@@ -1,6 +1,7 @@
 package com.besafx.app.component;
 
 import com.besafx.app.config.EmailSender;
+import com.besafx.app.controller.ReportTaskController;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskOperation;
@@ -9,19 +10,28 @@ import com.besafx.app.service.PersonService;
 import com.besafx.app.service.TaskOperationService;
 import com.besafx.app.service.TaskService;
 import com.besafx.app.util.DateConverter;
+import com.google.common.collect.Lists;
+import net.sf.jasperreports.engine.JRException;
+import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @Component
@@ -42,15 +52,13 @@ public class ScheduledTasks {
     private TaskOperationService taskOperationService;
 
     @Autowired
+    private ReportTaskController reportTaskController;
+
+    @Autowired
     private EmailSender emailSender;
 
     @Scheduled(cron = "0 0 2 * * SUN,MON,TUE,WED,THU")
     public void warnAllAboutUnCommentedTasksAtMidNight() {
-
-        //Run Morning task (Time of execution = 2)
-        //Round(Evening)
-//        DateTime startLast12Hour = new DateTime().minusDays(1).withTime(14, 0, 0, 0);
-//        DateTime endLast12Hour = new DateTime().withTime(2, 0, 0, 0);
 
         DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
         DateTime today = new DateTime().withTimeAtStartOfDay();
@@ -63,24 +71,6 @@ public class ScheduledTasks {
 
         check(yesterday, today);
     }
-
-//    @Scheduled(cron = "0 0 14 * * SUN,MON,TUE,WED,THU")
-//    public void warnAllAboutUnCommentedTasksAtAfternoon() {
-//
-//        //Run evening task (Time of execution = 14)
-//        //Round(Morning)
-//        DateTime startLast12Hour = new DateTime().withTime(2, 0, 0, 0);
-//        DateTime endLast12Hour = new DateTime().withTime(14, 0, 0, 0);
-//
-//        log.info("عدد المهام = " + taskService.count());
-//
-//        log.info("عدد الافراد = " + personService.count());
-//
-//        log.info("فحص كل فرد على حدا");
-//
-//        check(startLast12Hour, endLast12Hour);
-//
-//    }
 
     private void check(DateTime startLast12Hour, DateTime endLast12Hour) {
         personService.findAll().forEach(person -> {
@@ -172,6 +162,28 @@ public class ScheduledTasks {
         });
     }
 
+    @Scheduled(cron = "0 0 9 * * *")
+    public void sendReportAboutTaskTosCheck() throws InterruptedException, IOException, JRException, ExecutionException {
+        Iterator<Person> iterator = personService.findAll().iterator();
+        while (iterator.hasNext()) {
+            Person person = iterator.next();
+            List<Task> tasks = taskService.findByPerson(person);
+            if (!tasks.isEmpty()) {
+                log.info("جاري العمل على مهام: " + person.getName());
+                Future<byte[]> work = reportTaskController.ReportTaskTosCheck(tasks.stream().map(task -> task.getId()).collect(Collectors.toList()));
+                byte[] fileBytes = work.get();
+                String randomFileName = "TaskTosCheck-" + ThreadLocalRandom.current().nextInt(1, 50000);
+                log.info("جاري إنشاء ملف التقرير: " + randomFileName);
+                File reportFile = new File(randomFileName + ".pdf");
+                FileUtils.writeByteArrayToFile(reportFile, fileBytes);
+                log.info("جاري تحويل الملف");
+                Thread.sleep(10000);
+                Future<Boolean> mail = emailSender.send("تقرير متابعة المهام اليومي", "تقرير متابعة المهام اليومي", "islamhaker@gmail.com", Lists.newArrayList(new FileSystemResource(reportFile)));
+                mail.get();
+                log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
+            }
+        }
+    }
 
     public void createEmail(List<Task> tasks, String content, Integer type, Person to) throws IOException {
 

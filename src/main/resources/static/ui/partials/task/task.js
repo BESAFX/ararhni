@@ -319,6 +319,10 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             ModalProvider.openTaskOperationsReportModel($scope.tasks);
         };
 
+        $scope.openTaskTosReportModel = function () {
+            ModalProvider.openTaskTosReportModel($scope.tasks);
+        };
+
         $scope.openReportTasksModel = function () {
             ModalProvider.openTasksReportModel($scope.tasks);
         };
@@ -500,6 +504,17 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.openTaskOperationsReportModel();
+                }
+            });
+
+        $scope.rowMenu.push(
+            {
+                html: '<div style="cursor: pointer;padding: 10px;text-align: right"> طباعة تقرير متابعة مهام <span class="fa fa-print fa-lg"></span></div>',
+                enabled: function () {
+                    return true
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.openTaskTosReportModel();
                 }
             });
 

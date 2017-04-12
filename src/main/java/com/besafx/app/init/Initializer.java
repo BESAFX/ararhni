@@ -2,6 +2,8 @@ package com.besafx.app.init;
 
 import com.besafx.app.entity.*;
 import com.besafx.app.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +13,8 @@ import java.util.Iterator;
 
 @Component
 public class Initializer implements CommandLineRunner {
+
+    private final static Logger log = LoggerFactory.getLogger(Initializer.class);
 
     @Autowired
     private ScreenService screenService;
