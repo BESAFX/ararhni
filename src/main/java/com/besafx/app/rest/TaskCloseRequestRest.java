@@ -1,9 +1,7 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
-import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskCloseRequest;
-import com.besafx.app.entity.TaskOperation;
 import com.besafx.app.search.TaskCloseRequestSearch;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.TaskCloseRequestService;

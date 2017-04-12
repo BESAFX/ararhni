@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -29,6 +30,9 @@ public class EmailSender {
 
     @Autowired
     private JavaMailSender sender;
+
+    @Autowired
+    private JavaMailSenderImpl sender2;
 
     @PostConstruct
     public void init() {
@@ -109,8 +113,12 @@ public class EmailSender {
     @Async("threadPoolEmailSender")
     public Future<Boolean> send(String title, String content, String email, List<FileSystemResource> files) {
         try {
+            log.info("Sleeping for 10 seconds...");
+            Thread.sleep(10000);
             log.info("Trying sending email to this destination: " + email);
-            Thread.sleep(1000 * 10);
+            message = sender.createMimeMessage();
+            helper = new MimeMessageHelper(message, true);
+            helper.setFrom("anni4ksa@gmail.com");
             helper.setTo(email);
             helper.setSubject(title);
             helper.setText(content, true);

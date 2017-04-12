@@ -1,7 +1,6 @@
 package com.besafx.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.Type;
@@ -9,8 +8,6 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity

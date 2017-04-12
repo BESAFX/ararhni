@@ -18,7 +18,7 @@ public class AsyncConfig {
     @Bean(name = "threadPoolEmailSender")
     public Executor threadPoolTaskExecutor() {
         log.info("Prepare threadPoolEmailSender...");
-        return initThreadPool(5, 10, 500, "EmailSender-");
+        return initThreadPool(1, 1, 500, "EmailSender-");
     }
 
     @Bean(name = "threadPoolFileUploader")
