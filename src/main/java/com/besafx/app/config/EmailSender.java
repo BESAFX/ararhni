@@ -52,6 +52,9 @@ public class EmailSender {
         try {
             log.info("Sleeping for 10 seconds");
             Thread.sleep(10000);
+            message = sender.createMimeMessage();
+            helper = new MimeMessageHelper(message, true);
+            helper.setFrom("anni4ksa@gmail.com");
             String[] emails = new String[toEmailList.size()];
             emails = toEmailList.toArray(emails);
             log.info("Trying sending email to this destinations: " + Arrays.toString(emails));
@@ -72,6 +75,9 @@ public class EmailSender {
         try {
             log.info("Sleeping for 10 seconds");
             Thread.sleep(10000);
+            message = sender.createMimeMessage();
+            helper = new MimeMessageHelper(message, true);
+            helper.setFrom("anni4ksa@gmail.com");
             String[] emails = new String[toEmailList.size()];
             emails = toEmailList.toArray(emails);
             log.info("Trying sending email to this destinations: " + Arrays.toString(emails));
@@ -97,6 +103,9 @@ public class EmailSender {
         try {
             log.info("Sleeping for 10 seconds...");
             Thread.sleep(10000);
+            message = sender.createMimeMessage();
+            helper = new MimeMessageHelper(message, true);
+            helper.setFrom("anni4ksa@gmail.com");
             log.info("Trying sending email to this destination: " + email);
             helper.setTo(email);
             helper.setSubject(title);
