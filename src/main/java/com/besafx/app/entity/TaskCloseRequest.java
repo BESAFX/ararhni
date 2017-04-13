@@ -21,6 +21,12 @@ public class TaskCloseRequest implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    private Integer code;
+
+    //True  --- Close Request
+    //False --- Extension Request
+    private Boolean type;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "task")
     @JsonIgnoreProperties(value = {"taskCloseRequests"}, allowSetters = true)

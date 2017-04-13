@@ -24,6 +24,11 @@ app.factory("TaskService",
                     return response.data;
                 });
             },
+            extendEndDate: function (task, days) {
+                return $http.post("/api/task/extendEndDate?days=" + days, task).then(function (response) {
+                    return response.data;
+                });
+            },
             count: function () {
                 return $http.get("/api/task/count").then(function (response) {
                     return response.data;

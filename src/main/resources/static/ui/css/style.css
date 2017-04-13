@@ -187,40 +187,55 @@ input[type=checkbox] {
     text-align: right;
 }
 
-.mdl-data-table{
+.mdl-data-table {
     width: 100%;
 }
 
-.mdl-data-table th{
+.mdl-data-table th {
     font-size: 15px;
 }
 
-.mdl-data-table tbody tr td{
+.mdl-data-table tbody tr td {
     font-size: 12px;
 }
 
-.mdl-data-table thead tr{
+.mdl-data-table thead tr {
     background-color: lightgray;
 }
 
-.mdl-data-table th, .mdl-data-table tbody tr, .mdl-data-table tbody tr td{
+.mdl-data-table th, .mdl-data-table tbody tr, .mdl-data-table tbody tr td {
     line-height: 15px;
     height: 30px;
 }
 
-.material-icons.md-18 { font-size: 18px; }
-.material-icons.md-24 { font-size: 24px; }
-.material-icons.md-36 { font-size: 36px; }
-.material-icons.md-48 { font-size: 48px; }
-.material-icons.md-120 { font-size: 120px; }
+.material-icons.md-18 {
+    font-size: 18px;
+}
 
-.panel{
+.material-icons.md-24 {
+    font-size: 24px;
+}
+
+.material-icons.md-36 {
+    font-size: 36px;
+}
+
+.material-icons.md-48 {
+    font-size: 48px;
+}
+
+.material-icons.md-120 {
+    font-size: 120px;
+}
+
+.panel {
     border-radius: 0px !important;
 }
 
 .card-square.mdl-card {
     width: 100%;
 }
+
 .card-square > .mdl-card__title {
     color: #fff;
 }
@@ -229,14 +244,15 @@ input[type=checkbox] {
     background-color: #46B6AC;
 }
 
-.full-width-menu{
+.full-width-menu {
     padding-left: 0px !important;
     padding-right: 0px !important;
     margin: 2px;
 }
+
 .full-width-menu .mdl-menu__container,
 .full-width-menu .mdl-menu__container .mdl-menu__outline,
-.full-width-menu .mdl-menu__container .mdl-menu{
+.full-width-menu .mdl-menu__container .mdl-menu {
     width: 100% !important;
 }
 
@@ -263,7 +279,8 @@ input[type=checkbox] {
     background-color: rgb(96, 125, 139);
 }
 
-table a {
-    color: blue !important;
-    text-decoration: underline;
+table a, table a:hover, table a:focus {
+    color: rgb(96, 125, 139) !important;
+    text-decoration: underline !important;
+    font-weight: bolder !important;
 }

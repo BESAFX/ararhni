@@ -167,7 +167,7 @@ app.run(['$http', '$location', '$state', '$window', 'notifyCode', 'PersonService
                     speed: 500 // opening & closing animation speed
                 },
                 closeWith: ['button'], // ['click', 'button', 'hover', 'backdrop'] // backdrop click will close all notifications
-                modal: false, // [boolean] if true adds an overlay
+                modal: true, // [boolean] if true adds an overlay
                 killer: false, // [boolean] if true closes all notifications and shows itself
                 callback: {
                     onShow: function () {

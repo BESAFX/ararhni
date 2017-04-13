@@ -542,7 +542,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
         });
     };
 
-    this.openTaskRequestCloseModel = function (task) {
+    this.openTaskRequestCloseModel = function (task, type) {
         $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
@@ -554,6 +554,12 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             resolve: {
                 task: function () {
                     return task;
+                },
+                type: function () {
+                    return type;
+                },
+                title: function () {
+                    return type ? 'طلب إغلاق مهمة' : 'طلب تمديد مهمة';
                 }
             }
         });
@@ -586,7 +592,25 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'taskClosedCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
+            resolve: {
+                task: function () {
+                    return task;
+                }
+            }
+        });
+    };
+
+    this.openTaskExtensionModel = function (task) {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/task/taskExtension.html',
+            controller: 'taskExtensionCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
             resolve: {
                 task: function () {
                     return task;

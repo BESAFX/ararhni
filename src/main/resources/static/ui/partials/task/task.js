@@ -337,10 +337,18 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
 
         $scope.openRequestCloseModel = function (task) {
             if (task) {
-                ModalProvider.openTaskRequestCloseModel(task);
+                ModalProvider.openTaskRequestCloseModel(task, true);
                 return;
             }
-            ModalProvider.openTaskRequestCloseModel($scope.selected);
+            ModalProvider.openTaskRequestCloseModel($scope.selected, true);
+        };
+
+        $scope.openRequestExtensionModel = function (task) {
+            if (task) {
+                ModalProvider.openTaskRequestCloseModel(task, false);
+                return;
+            }
+            ModalProvider.openTaskRequestCloseModel($scope.selected, false);
         };
 
         $scope.openProgressModel = function (task) {
@@ -464,6 +472,17 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
 
         $scope.rowMenu.push(
             {
+                html: '<div style="cursor: pointer;padding: 10px;text-align: right"> طلب تمديد <span class="fa fa-battery fa-lg"></span></div>',
+                enabled: function () {
+                    return true
+                },
+                click: function ($itemScope, $event, value) {
+                    $scope.openRequestExtensionModel($itemScope.task);
+                }
+            });
+
+        $scope.rowMenu.push(
+            {
                 html: '<div style="cursor: pointer;padding: 10px;text-align: right"> تحديد نسبة الإنجاز <span class="fa fa-hourglass-2 fa-lg"></span></div>',
                 enabled: function () {
                     return true
@@ -493,39 +512,6 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 },
                 click: function ($itemScope, $event, value) {
                     $scope.openDetailsModel($itemScope.task);
-                }
-            });
-
-        $scope.rowMenu.push(
-            {
-                html: '<div style="cursor: pointer;padding: 10px;text-align: right"> طباعة الحركات <span class="fa fa-print fa-lg"></span></div>',
-                enabled: function () {
-                    return true
-                },
-                click: function ($itemScope, $event, value) {
-                    $scope.openTaskOperationsReportModel();
-                }
-            });
-
-        $scope.rowMenu.push(
-            {
-                html: '<div style="cursor: pointer;padding: 10px;text-align: right"> طباعة تقرير متابعة مهام <span class="fa fa-print fa-lg"></span></div>',
-                enabled: function () {
-                    return true
-                },
-                click: function ($itemScope, $event, value) {
-                    $scope.openTaskTosReportModel();
-                }
-            });
-
-        $scope.rowMenu.push(
-            {
-                html: '<div style="cursor: pointer;padding: 10px;text-align: right"> طباعة تقرير مختصر <span class="fa fa-print fa-lg"></span></div>',
-                enabled: function () {
-                    return true
-                },
-                click: function ($itemScope, $event, value) {
-                    $scope.openReportTasksModel();
                 }
             });
 

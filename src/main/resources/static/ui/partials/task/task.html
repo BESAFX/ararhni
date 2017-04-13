@@ -81,17 +81,34 @@
                             ng-hide="!tasks || tasks.length==0" ng-if="toggleList===1">
                             <span>طلب إغلاق</span>
                         </li>
+                        <li class="mdl-menu__item" ng-click="openRequestExtensionModel()"
+                            ng-hide="!tasks || tasks.length==0" ng-if="toggleList===1">
+                            <span>طلب تمديد</span>
+                        </li>
                         <li class="mdl-menu__item" ng-click="showSlideOperation()" ng-if="toggleList===1"
                             ng-hide="!tasks || tasks.length==0">
                             <span>الحركات / المرفقات</span>
                         </li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 full-width-menu pull-right">
+                    <button id="report-menu-lower-right" style="width: 100%;"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                        <span>التقارير</span>
+                    </button>
+                    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                        for="report-menu-lower-right">
                         <li class="mdl-menu__item" ng-click="openTaskOperationsReportModel()" ng-if="toggleList===1"
                             ng-hide="!tasks || tasks.length==0">
-                            <span>طباعة الحركات</span>
+                            <span>تقرير الحركات</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="openReportTasksModel()" ng-if="toggleList===1"
                             ng-hide="!tasks || tasks.length==0">
-                            <span>طباعة تقرير مختصر</span>
+                            <span>تقرير مهام مختصر</span>
+                        </li>
+                        <li class="mdl-menu__item" ng-click="openTaskTosReportModel()" ng-if="toggleList===1"
+                            ng-hide="!tasks || tasks.length==0">
+                            <span>تقرير متابعة مكلفين</span>
                         </li>
                     </ul>
                 </div>
@@ -177,7 +194,7 @@
                                 <td st-select-row-custom="task">{{$index+1}}</td>
                                 <td st-select-row-custom="task">{{task.code}}</td>
                                 <td st-select-row-custom="task">
-                                    <a href="" ng-click="openDetailsModel(task)">{{task.title}}</a>
+                                    <strong><a href="" ng-click="openDetailsModel(task)">{{task.title}}</a></strong>
                                     <span class="fa fa-info-circle" uib-tooltip="{{task.content}}"></span>
                                 </td>
                                 <td st-select-row-custom="task">

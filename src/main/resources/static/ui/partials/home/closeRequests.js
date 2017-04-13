@@ -1,9 +1,9 @@
-app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskService', 'TaskOperationService', 'TaskCloseRequestService',
-    function ($scope, $rootScope, $timeout, TaskService, TaskOperationService, TaskCloseRequestService) {
+app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskService', 'TaskOperationService', 'TaskCloseRequestService', 'ModalProvider',
+    function ($scope, $rootScope, $timeout, TaskService, TaskOperationService, TaskCloseRequestService, ModalProvider) {
 
         $scope.fetchThisDay = function () {
-            $scope.viewType='طلبات الإغلاق يومياً';
-            // $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق لهذا اليوم، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            $scope.viewType = 'طلبات الإغلاق/التمديد يومياً';
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق/التمديد لهذا اليوم، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('taskPersonId=');
             search.push($scope.me.id);
@@ -13,7 +13,7 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
             search.push('&');
             TaskCloseRequestService.filter(search.join("")).then(function (data) {
                 $scope.closeRequests = data;
-                // $rootScope.showNotify("الرئيسية", "تم تحميل طلبات الإغلاق لهذا اليوم بنجاح", "success", "fa-dashboard");
+                // $rootScope.showNotify("الرئيسية", "تم تحميل طلبات الإغلاق/التمديد لهذا اليوم بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
@@ -21,8 +21,8 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
         };
 
         $scope.fetchThisWeek = function () {
-            $scope.viewType='طلبات الإغلاق اسبوعياً';
-            // $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق لهذا الأسبوع، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            $scope.viewType = 'طلبات الإغلاق/التمديد اسبوعياً';
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق/التمديد لهذا الأسبوع، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('taskPersonId=');
             search.push($scope.me.id);
@@ -32,7 +32,7 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
             search.push('&');
             TaskCloseRequestService.filter(search.join("")).then(function (data) {
                 $scope.closeRequests = data;
-                // $rootScope.showNotify("الرئيسية", "تم تحميل طلبات الإغلاق لهذا الأسبوع بنجاح", "success", "fa-dashboard");
+                // $rootScope.showNotify("الرئيسية", "تم تحميل طلبات الإغلاق/التمديد لهذا الأسبوع بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
@@ -40,8 +40,8 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
         };
 
         $scope.fetchThisMonth = function () {
-            $scope.viewType='طلبات الإغلاق شهرياً';
-            // $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق لهذا الشهر، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            $scope.viewType = 'طلبات الإغلاق/التمديد شهرياً';
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق/التمديد لهذا الشهر، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('taskPersonId=');
             search.push($scope.me.id);
@@ -51,7 +51,7 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
             search.push('&');
             TaskCloseRequestService.filter(search.join("")).then(function (data) {
                 $scope.closeRequests = data;
-                // $rootScope.showNotify("الرئيسية", "تم تحميل طلبات الإغلاق لهذا الشهر بنجاح", "success", "fa-dashboard");
+                // $rootScope.showNotify("الرئيسية", "تم تحميل طلبات الإغلاق/التمديد لهذا الشهر بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
@@ -59,8 +59,8 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
         };
 
         $scope.fetchThisYear = function () {
-            $scope.viewType='طلبات الإغلاق سنوياً';
-            // $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق لهذا العام، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            $scope.viewType = 'طلبات الإغلاق/التمديد سنوياً';
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل طلبات الإغلاق/التمديد لهذا العام، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('taskPersonId=');
             search.push($scope.me.id);
@@ -70,7 +70,7 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
             search.push('&');
             TaskCloseRequestService.filter(search.join("")).then(function (data) {
                 $scope.closeRequests = data;
-                // $rootScope.showNotify("الرئيسية", "تم تحميل طلبات الإغلاق لهذا العام بنجاح", "success", "fa-dashboard");
+                // $rootScope.showNotify("الرئيسية", "تم تحميل طلبات الإغلاق/التمديد لهذا العام بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
@@ -78,8 +78,8 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
         };
 
         $scope.fetchAllTime = function () {
-            $scope.viewType='جميع طلبات الإغلاق';
-            // $rootScope.showNotify("الرئيسية", "جاري تحميل جميع طلبات الإغلاق، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
+            $scope.viewType = 'جميع طلبات الإغلاق/التمديد';
+            // $rootScope.showNotify("الرئيسية", "جاري تحميل جميع طلبات الإغلاق/التمديد، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('taskPersonId=');
             search.push($scope.me.id);
@@ -89,7 +89,7 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
             search.push('&');
             TaskCloseRequestService.filter(search.join("")).then(function (data) {
                 $scope.closeRequests = data;
-                // $rootScope.showNotify("الرئيسية", "تم تحميل جميع طلبات الإغلاق بنجاح", "success", "fa-dashboard");
+                // $rootScope.showNotify("الرئيسية", "تم تحميل جميع طلبات الإغلاق/التمديد بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);
@@ -97,24 +97,30 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
         };
 
         $scope.delete = function (closeRequest) {
-            TaskCloseRequestService.remove(closeRequest.id);
+            $rootScope.showConfirmNotify("طلبات الإغلاق/التمديد", "هل تود حذف الطلب فعلاً؟", "error", "fa-power-off", function () {
+                TaskCloseRequestService.remove(closeRequest.id);
+            });
+        };
+
+        $scope.openClosedModel = function (closeRequest) {
+            ModalProvider.openTaskClosedModel(closeRequest.task);
         };
 
         $scope.refresh = function () {
             switch ($scope.viewType){
-                case 'طلبات الإغلاق يومياً':
+                case 'طلبات الإغلاق/التمديد يومياً':
                     $scope.fetchThisDay();
                     break;
-                case 'طلبات الإغلاق اسبوعياً':
+                case 'طلبات الإغلاق/التمديد اسبوعياً':
                     $scope.fetchThisWeek();
                     break;
-                case 'طلبات الإغلاق شهرياً':
+                case 'طلبات الإغلاق/التمديد شهرياً':
                     $scope.fetchThisMonth();
                     break;
-                case 'طلبات الإغلاق سنوياً':
+                case 'طلبات الإغلاق/التمديد سنوياً':
                     $scope.fetchThisYear();
                     break;
-                case 'جميع طلبات الإغلاق':
+                case 'جميع طلبات الإغلاق/التمديد':
                     $scope.fetchAllTime();
                     break;
             }

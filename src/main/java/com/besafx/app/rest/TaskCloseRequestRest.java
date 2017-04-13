@@ -40,6 +40,12 @@ public class TaskCloseRequestRest {
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public TaskCloseRequest create(@RequestBody TaskCloseRequest taskCloseRequest, Principal principal) throws IOException {
+        Integer maxCode = taskCloseRequestService.findLastCodeByTask(taskCloseRequest.getTask().getId());
+        if (maxCode == null) {
+            taskCloseRequest.setCode(1);
+        } else {
+            taskCloseRequest.setCode(maxCode + 1);
+        }
         taskCloseRequest.setDate(new Date());
         taskCloseRequest.setPerson(personService.findByEmail(principal.getName()));
         taskCloseRequest = taskCloseRequestService.save(taskCloseRequest);

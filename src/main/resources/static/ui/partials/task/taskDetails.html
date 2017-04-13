@@ -31,12 +31,16 @@
                                 <td>{{task.content}}</td>
                             </tr>
                             <tr>
-                                <td class="fit">الحد الأقصى للتحذيرات</td>
+                                <td>الحد الأقصى للتحذيرات</td>
                                 <td>{{task.warn}}</td>
                             </tr>
                             <tr>
-                                <td>مقدار الحسم</td>
+                                <td class="fit">مقدار الحسم عند الوصول للحد الاقصي للتحذيرات</td>
                                 <td>{{task.deduction}} ريال سعودي</td>
+                            </tr>
+                            <tr>
+                                <td>مقدار الحسم عند إغلاق المهمة تلقائياً</td>
+                                <td>{{task.deductionOnAutoClose}} ريال سعودي</td>
                             </tr>
                             <tr>
                                 <td>تاريخ الإنشاء</td>
@@ -71,10 +75,6 @@
                     <div class="panel-heading">
                         <ul class="panel-controls pull-left" style="margin-top: 2px;">
                             <li>
-                                <a href="" tooltip-append-to-body="true" ng-if="task.person.id===me.id"
-                                   ng-click="openClosedModel()" uib-tooltip="إغلاق المهمة لموظف">
-                                    <span class="fa fa-power-off"></span>
-                                </a>
                                 <a href="" tooltip-append-to-body="true" ng-if="task.person.id===me.id"
                                    ng-click="findTaskOperations()" uib-tooltip="حذف موظف من التكليف">
                                     <span class="fa fa-remove"></span>
@@ -120,13 +120,119 @@
                                     </td>
                                     <td>% {{taskTo.progress}}</td>
                                     <td>{{(task.taskCloseRequests | filter:{person:taskTo.person}).length}}</td>
-                                    <td>{{taskTo.closeDate ? (taskTo.closeDate | kdate: 'yyyy-mm-dd' : 'ar' :
-                                        'ummalqura') : '---'}}
+                                    <td class="fit">
+                                        {{taskTo.closeDate ? (taskTo.closeDate | kdate: 'yyyy-mm-dd' : 'ar'
+                                        :'ummalqura') : '---'}}
+                                        <span class="label label-success">{{taskTo.closeDate ? (taskTo.closeDate | date:'h:m a') : ''}}</span>
                                     </td>
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                     ng-show="!collectionTaskTos || collectionTaskTos.length ==0">
                                     <td colspan="8">لا توجد بيانات</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-right col-md-12">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                            <li>
+                                <a href="" tooltip-append-to-body="true" ng-if="task.person.id===me.id"
+                                   ng-click="openClosedModel()" uib-tooltip="إغلاق المهمة لموظف">
+                                    <span class="fa fa-power-off"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box pull-right">
+                            <h3>طلبات الإغلاق</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collectionTaskCloseRequests" st-safe-src="task.taskCloseRequests"
+                                   class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th class="text-center fit" st-sort="code">رقم الطلب</th>
+                                    <th class="text-center" st-sort="taskCloseRequest.person">المرسل</th>
+                                    <th class="text-center" st-sort="taskCloseRequest.date" st-sort-default="reverse">
+                                        التاريخ
+                                    </th>
+                                    <th class="text-center">التعليق</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="taskCloseRequest in collectionTaskCloseRequests | filter:{'type':true}">
+                                    <td class="fit">{{taskCloseRequest.code}}</td>
+                                    <td class="fit">{{taskCloseRequest.person.nickname}} /
+                                        {{taskCloseRequest.person.name}}
+                                    </td>
+                                    <td class="fit">
+                                        {{taskCloseRequest.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
+                                        <span class="label label-success">{{taskCloseRequest.date | date:'h:m a'}}</span>
+                                    </td>
+                                    <td>{{taskCloseRequest.note}}</td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collectionTaskCloseRequests || collectionTaskCloseRequests.length ==0">
+                                    <td colspan="4">لا توجد طلبات إغلاق حتى الآن</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-right col-md-12">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                            <li>
+                                <a href="" tooltip-append-to-body="true" ng-if="task.person.id===me.id"
+                                   ng-click="openExtensionModel()" uib-tooltip="تمديد المهمة لفترة">
+                                    <span class="fa fa-battery"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-title-box pull-right">
+                            <h3>طلبات التمديد</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collectionTaskCloseRequests" st-safe-src="task.taskCloseRequests"
+                                   class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th class="text-center fit" st-sort="code">رقم الطلب</th>
+                                    <th class="text-center" st-sort="taskCloseRequest.person">المرسل</th>
+                                    <th class="text-center" st-sort="taskCloseRequest.date" st-sort-default="reverse">
+                                        التاريخ
+                                    </th>
+                                    <th class="text-center">التعليق</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="taskCloseRequest in collectionTaskCloseRequests | filter:{'type':false}">
+                                    <td class="fit">{{taskCloseRequest.code}}</td>
+                                    <td class="fit">{{taskCloseRequest.person.nickname}} /
+                                        {{taskCloseRequest.person.name}}
+                                    </td>
+                                    <td class="fit">
+                                        {{taskCloseRequest.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
+                                        <span class="label label-success">{{taskCloseRequest.date | date:'h:m a'}}</span>
+                                    </td>
+                                    <td>{{taskCloseRequest.note}}</td>
+                                </tr>
+                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collectionTaskCloseRequests || collectionTaskCloseRequests.length ==0">
+                                    <td colspan="4">لا توجد طلبات تمديد حتى الآن</td>
                                 </tr>
                                 </tbody>
                             </table>

@@ -2,7 +2,7 @@
       focus-group-head="loop" focus-group-tail="loop">
 
     <div class="modal-header">
-        <h3 class="modal-title text-center" id="modal-title">طلب إغلاق مهمة</h3>
+        <h3 class="modal-title text-center" id="modal-title">{{title}}</h3>
     </div>
 
     <div class="modal-body" id="modal-body">
@@ -24,7 +24,7 @@
                           required="required"
                           class="form-control text-right"
                           disable-validation-message=""
-                          placeholder="اذكر بإختصار سبب طلبك لإغلاق المهمة"
+                          placeholder="اذكر بإختصار سبب طلبك لإغلاق/تمديد المهمة"
                           ng-model="taskCloseRequest.note">
                 </textarea>
             </div>

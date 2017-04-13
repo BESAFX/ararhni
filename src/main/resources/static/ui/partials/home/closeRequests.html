@@ -36,8 +36,8 @@
                     </ul>
                 </ul>
                 <div class="panel-title-box pull-right">
-                    <h3>{{!viewType? 'طلبات الإغلاق حسب الوقت' : viewType}}</h3>
-                    <span>طلبات الإغلاق من المكلفين حسب الوقت، ويمكنك التخصيص من خلال عرض</span>
+                    <h3>{{!viewType? 'طلبات الإغلاق/التمديد حسب الوقت' : viewType}}</h3>
+                    <span>طلبات الإغلاق/التمديد من المكلفين حسب الوقت، ويمكنك التخصيص من خلال عرض</span>
                 </div>
             </div>
             <div class="panel-body" ng-show="showBody=='true'">
@@ -46,12 +46,15 @@
                         <table st-table="collection" st-safe-src="closeRequests"
                                class="table table-bordered table-striped">
                             <tbody>
-                            <tr ng-repeat="closeRequest in collection | orderBy:date:true">
+                            <tr ng-repeat="closeRequest in collection  | orderBy:date:true">
                                 <td>
                                     <table width="100%">
                                         <tbody>
                                         <tr>
                                             <td colspan="1" class="text-right">
+                                                <span>
+                                                     <strong ng-class="{'label label-danger':closeRequest.type, 'label label-warning':!closeRequest.type}">{{closeRequest.type ? "طلب إغلاق" : "طلب تمديد"}}</strong>
+                                                </span>
                                                 <span>المرسل /</span>
                                                 <span>
                                                      <a href=""
@@ -80,6 +83,11 @@
                                                            tooltip-append-to-body="true"
                                                            uib-tooltip="حذف">
                                                             <span class="fa fa-trash"></span>
+                                                        </a>
+                                                        <a href="" ng-click="openClosedModel(closeRequest)"
+                                                           tooltip-append-to-body="true"
+                                                           uib-tooltip="إغلاق المهمة لموظف">
+                                                            <span class="fa fa-power-off"></span>
                                                         </a>
                                                     </li>
                                                 </ul>

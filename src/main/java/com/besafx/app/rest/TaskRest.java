@@ -13,6 +13,9 @@ import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -30,6 +33,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/api/task/")
 public class TaskRest {
+
+    private final static Logger log = LoggerFactory.getLogger(TaskRest.class);
 
     @Autowired
     private PersonService personService;
@@ -87,13 +92,6 @@ public class TaskRest {
                 .type("success")
                 .icon("fa-black-tie")
                 .build(), principal.getName());
-//        notificationService.notifyAllExceptMe(Notification
-//                .builder()
-//                .title("العمليات على المهام")
-//                .message("تم اضافة مهمة جديدة رقم " + task.getCode() + " بواسطة" + person.getName())
-//                .type("warning")
-//                .icon("fa-black-tie")
-//                .build());
         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewTask.html");
         String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
         message = message.replaceAll("TASK_CODE", task.getCode().toString());
@@ -124,13 +122,38 @@ public class TaskRest {
                     .type("success")
                     .icon("fa-black-tie")
                     .build(), principal.getName());
-//            notificationService.notifyAllExceptMe(Notification
-//                    .builder()
-//                    .title("العمليات على المهام")
-//                    .message("تم تعديل بيانات مهمة رقم " + task.getCode() + " بواسطة " + personService.findByEmail(principal.getName()).getName())
-//                    .type("warning")
-//                    .icon("fa-black-tie")
-//                    .build());
+            return task;
+        }
+    }
+
+    @RequestMapping(value = "extendEndDate", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_TASK_UPDATE')")
+    public Task extendEndDate(@RequestBody Task task, @RequestParam(value = "days") int days, Principal principal) throws IOException {
+        Task object = taskService.findOne(task.getId());
+        if (object == null) {
+            throw new CustomException("عفواً ، لا توجد هذة المهمة");
+        } else {
+            if (!object.getPerson().getEmail().equalsIgnoreCase(principal.getName())) {
+                throw new CustomException("عفواً، لا يمكنك التعديل على بيانات مهمة لم تضيفها");
+            }
+            task.setEndDate(new DateTime(task.getEndDate()).plusDays(days).toDate());
+            task = taskService.save(task);
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title("العمليات على المهام")
+                    .message("تم تمديد تاريخ إستلام المهمة رقم: " + task.getCode() + " بنجاح")
+                    .type("success")
+                    .icon("fa-battery")
+                    .build(), principal.getName());
+            ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewTask.html");
+            String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+            message = message.replaceAll("TASK_CODE", task.getCode().toString());
+            message = message.replaceAll("TASK_TITLE", task.getTitle());
+            message = message.replaceAll("TASK_CONTENT", task.getContent());
+            message = message.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
+            message = message.replaceAll("TASK_PERSON", task.getPerson().getName());
+            emailSender.send("تمديد تاريخ إستلام المهمة رقم: " + "(" + task.getCode() + ")", message, task.getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()));
             return task;
         }
     }
@@ -158,13 +181,6 @@ public class TaskRest {
                     .type("success")
                     .icon("fa-black-tie")
                     .build(), principal.getName());
-//            notificationService.notifyAllExceptMe(Notification
-//                    .builder()
-//                    .title("العمليات على المهام")
-//                    .message("تم حذف المهمة رقم " + object.getCode() + " بواسطة " + personService.findByEmail(principal.getName()).getName())
-//                    .type("warning")
-//                    .icon("fa-black-tie")
-//                    .build());
         }
     }
 
@@ -188,33 +204,36 @@ public class TaskRest {
 
     @RequestMapping(value = "requestClose", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public void requestClose(@RequestBody Task task, Principal principal) throws IOException {
-        Person person = personService.findByEmail(principal.getName());
-        TaskCloseRequest taskCloseRequest = task.getTaskCloseRequests().get(0);
-        taskCloseRequest.setTask(task);
-        taskCloseRequest.setDate(new Date());
-        taskCloseRequest.setPerson(person);
-        taskCloseRequestService.save(taskCloseRequest);
-        notificationService.notifyOne(Notification
-                .builder()
-                .title("العمليات على المهام")
-                .message("تم إرسال الطلب بنجاح")
-                .type("success")
-                .icon("fa-power-off")
-                .build(), principal.getName());
-//        notificationService.notifyAllExceptMe(Notification
-//                .builder()
-//                .title("العمليات على المهام")
-//                .message("تم ارسال طلب إغلاق المهمة رقم " + task.getCode() + " بواسطة" + person.getName())
-//                .type("warning")
-//                .icon("fa-power-off")
-//                .build());
-        ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/TaskCloseRequest.html");
-        String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
-        message = message.replaceAll("TASK_CODE", task.getCode().toString());
-        message = message.replaceAll("TASK_CLOSE_REQUEST_PERSON", person.getName());
-        message = message.replaceAll("TASK_CLOSE_REQUEST_NOTE", taskCloseRequest.getNote());
-        emailSender.send("طلب إغلاق إلى المهمة رقم: " + task.getCode(), message, task.getPerson().getEmail());
+    public void requestClose(@RequestBody Task task, Principal principal) {
+        try {
+            Person person = personService.findByEmail(principal.getName());
+            TaskCloseRequest taskCloseRequest = task.getTaskCloseRequests().get(0);
+            Integer maxCode = taskCloseRequestService.findLastCodeByTask(task.getId());
+            if (maxCode == null) {
+                taskCloseRequest.setCode(1);
+            } else {
+                taskCloseRequest.setCode(maxCode + 1);
+            }
+            taskCloseRequest.setTask(task);
+            taskCloseRequest.setDate(new Date());
+            taskCloseRequest.setPerson(person);
+            taskCloseRequestService.save(taskCloseRequest);
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title("العمليات على المهام")
+                    .message("تم إرسال الطلب بنجاح")
+                    .type("success")
+                    .icon(taskCloseRequest.getType() ? "fa-power-off" : "fa-battery")
+                    .build(), principal.getName());
+            ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/TaskCloseRequest.html");
+            String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+            message = message.replaceAll("TASK_CODE", task.getCode().toString());
+            message = message.replaceAll("TASK_CLOSE_REQUEST_PERSON", person.getName());
+            message = message.replaceAll("TASK_CLOSE_REQUEST_NOTE", taskCloseRequest.getNote());
+            emailSender.send((taskCloseRequest.getType() ? "طلب إغلاق إلى المهمة رقم: " : "طلب تمديد للمهمة رقم: ") + "(" + task.getCode() + ")" + " - " + person.getName(), message, task.getPerson().getEmail());
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+        }
     }
 
     @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

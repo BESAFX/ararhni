@@ -15,12 +15,20 @@ app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskOperationService', '$sc
             ModalProvider.openTaskClosedModel($scope.task);
         };
 
+        $scope.openExtensionModel = function () {
+            ModalProvider.openTaskExtensionModel($scope.task);
+        };
+
         $scope.openClearWarnsAndDeductionsModel = function () {
             ModalProvider.openClearCountersModel($scope.task);
         };
 
         $scope.openRequestCloseModel = function () {
-            ModalProvider.openTaskRequestCloseModel($scope.task);
+            ModalProvider.openTaskRequestCloseModel($scope.task, true);
+        };
+
+        $scope.openRequestExtensionModel = function () {
+            ModalProvider.openTaskRequestCloseModel($scope.task, false);
         };
 
         $scope.openReportTaskOperationsModel = function () {
