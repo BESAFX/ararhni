@@ -79,7 +79,7 @@ public class ScheduledTasks {
 
             log.info("فحص المهام الواردة السارية للموظف / " + person.getName());
 
-            List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, true, true, "All", person.getId());
+            List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, null, true, true, "All", person.getId());
 
             log.info("عدد المهام المكلف بها = " + tasks.size());
 
@@ -162,30 +162,7 @@ public class ScheduledTasks {
         });
     }
 
-    @Scheduled(cron = "0 0 9 * * *")
-    public void sendReportAboutTaskTosCheck() throws InterruptedException, IOException, JRException, ExecutionException {
-        Iterator<Person> iterator = personService.findAll().iterator();
-        while (iterator.hasNext()) {
-            Person person = iterator.next();
-            List<Task> tasks = taskService.findByPerson(person);
-            if (!tasks.isEmpty()) {
-                log.info("جاري العمل على مهام: " + person.getName());
-                Future<byte[]> work = reportTaskController.ReportTaskTosCheck(tasks.stream().map(task -> task.getId()).collect(Collectors.toList()));
-                byte[] fileBytes = work.get();
-                String randomFileName = "TaskTosCheck-" + ThreadLocalRandom.current().nextInt(1, 50000);
-                log.info("جاري إنشاء ملف التقرير: " + randomFileName);
-                File reportFile = File.createTempFile(randomFileName, ".pdf");
-                FileUtils.writeByteArrayToFile(reportFile, fileBytes);
-                log.info("جاري تحويل الملف");
-                Thread.sleep(10000);
-                Future<Boolean> mail = emailSender.send("تقرير متابعة الموظفين المكلفين - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(new FileSystemResource(reportFile)));
-                mail.get();
-                log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
-            }
-        }
-    }
-
-    public void createEmail(List<Task> tasks, String content, Integer type, Person to) throws IOException {
+    private void createEmail(List<Task> tasks, String content, Integer type, Person to) throws IOException {
 
         tasks.stream().forEach(task -> {
             log.info("جاري إعداد الحركة وإدراجها...");
@@ -213,5 +190,28 @@ public class ScheduledTasks {
         String title = type.intValue() == 2 ? "تحذير بالخصم لعدم التعامل مع المهام رقم " + "(" + tasks.stream().map(task -> task.getCode()).collect(Collectors.toList()) + ")" : "خصم لعدم التعامل مع المهام رقم " + "(" + tasks.stream().map(task -> task.getCode()).collect(Collectors.toList()) + ")";
 
         emailSender.send(title, message, to.getEmail());
+    }
+
+    @Scheduled(cron = "0 0 9 * * *")
+    public void sendReportAboutTaskTosCheck() throws InterruptedException, IOException, JRException, ExecutionException {
+        Iterator<Person> iterator = personService.findAll().iterator();
+        while (iterator.hasNext()) {
+            Person person = iterator.next();
+            List<Task> tasks = taskService.findByPerson(person);
+            if (!tasks.isEmpty()) {
+                log.info("جاري العمل على مهام: " + person.getName());
+                Future<byte[]> work = reportTaskController.ReportTaskTosCheck(tasks.stream().map(task -> task.getId()).collect(Collectors.toList()));
+                byte[] fileBytes = work.get();
+                String randomFileName = "TaskTosCheck-" + ThreadLocalRandom.current().nextInt(1, 50000);
+                log.info("جاري إنشاء ملف التقرير: " + randomFileName);
+                File reportFile = File.createTempFile(randomFileName, ".pdf");
+                FileUtils.writeByteArrayToFile(reportFile, fileBytes);
+                log.info("جاري تحويل الملف");
+                Thread.sleep(10000);
+                Future<Boolean> mail = emailSender.send("تقرير متابعة الموظفين المكلفين - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(new FileSystemResource(reportFile)));
+                mail.get();
+                log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
+            }
+        }
     }
 }

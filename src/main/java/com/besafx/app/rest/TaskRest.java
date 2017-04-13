@@ -146,7 +146,7 @@ public class TaskRest {
                     .type("success")
                     .icon("fa-battery")
                     .build(), principal.getName());
-            ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewTask.html");
+            ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/ExtendTask.html");
             String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
             message = message.replaceAll("TASK_CODE", task.getCode().toString());
             message = message.replaceAll("TASK_TITLE", task.getTitle());
@@ -240,6 +240,7 @@ public class TaskRest {
     @ResponseBody
     public List<Task> filter(
             @RequestParam(value = "title", required = false) final String title,
+            @RequestParam(value = "importance", required = false) final String importance,
             @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
             @RequestParam(value = "codeTo", required = false) final Long codeTo,
             @RequestParam(value = "startDateFrom", required = false) final Long startDateFrom,
@@ -250,7 +251,7 @@ public class TaskRest {
             @RequestParam(value = "isTaskOpen") final Boolean isTaskOpen,
             @RequestParam(value = "timeType") final String timeType,
             @RequestParam(value = "person") final Long person) {
-        return taskSearch.search(title, codeFrom, codeTo, startDateFrom, startDateTo, endDateFrom, endDateTo, taskType, isTaskOpen, timeType, person);
+        return taskSearch.search(title, importance, codeFrom, codeTo, startDateFrom, startDateTo, endDateFrom, endDateTo, taskType, isTaskOpen, timeType, person);
     }
 
 }

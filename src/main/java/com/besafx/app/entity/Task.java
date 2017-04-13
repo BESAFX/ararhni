@@ -33,6 +33,9 @@ public class Task implements Serializable {
 
     private Double deductionOnAutoClose;
 
+    @Enumerated(EnumType.STRING)
+    private Importance importance;
+
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     private String content;
@@ -65,5 +68,9 @@ public class Task implements Serializable {
         ObjectMapper mapper = new ObjectMapper();
         Task task = mapper.readValue(jsonString, Task.class);
         return task;
+    }
+
+    public enum Importance {
+        Regular, Important, Critical
     }
 }

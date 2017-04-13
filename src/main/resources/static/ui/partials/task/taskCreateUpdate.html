@@ -60,10 +60,27 @@
                 </textarea>
             </div>
 
-            <div class="form-group text-right col-sm-12" ng-if="action==='create'">
+            <div class="form-group text-right col-md-12" ng-init="action==='create' ? task.importance=">
+                <label for="importance" class="control-label">
+                    <span>درجة الأهمية</span>
+                </label>
+                <select id="importance"
+                        placeholder="اختر درجة الأهمية للمساعدة فى التصنيف"
+                        class="form-control text-right"
+                        required="required"
+                        disable-validation-message=""
+                        ng-model="task.importance"
+                        focus-index="4">
+                    <option value="Regular">عادية</option>
+                    <option value="Important">هامة</option>
+                    <option value="Critical">حرجة</option>
+                </select>
+            </div>
+
+            <div class="form-group text-right col-sm-12">
                 <label for="warn" class="control-label"> الحد الأقصى للتحذيرات </label>
                 <input id="warn"
-                       focus-index="4"
+                       focus-index="5"
                        type="number"
                        min="0"
                        class="form-control text-right"
@@ -72,11 +89,11 @@
                        ng-model="task.warn">
             </div>
 
-            <div class="form-group text-right col-sm-12" ng-if="action==='create'">
+            <div class="form-group text-right col-sm-12">
                 <label for="deduction" class="control-label"> مقدار الحسم عند الوصول للحد الاقصي للتحذيرات </label>
                 <div dir="ltr" class="input-group" id="deduction">
                     <span class="input-group-addon">ريال</span>
-                    <input focus-index="5"
+                    <input focus-index="6"
                            dir="rtl"
                            type="number"
                            min="0"
@@ -87,11 +104,11 @@
                 </div>
             </div>
 
-            <div class="form-group text-right col-sm-12" ng-if="action==='create'">
+            <div class="form-group text-right col-sm-12">
                 <label for="deductionOnAutoClose" class="control-label"> مقدار الحسم عند إغلاق المهمة تلقائياً </label>
                 <div dir="ltr" class="input-group" id="deductionOnAutoClose">
                     <span class="input-group-addon">ريال</span>
-                    <input focus-index="6"
+                    <input focus-index="7"
                            dir="rtl"
                            type="number"
                            min="0"
@@ -129,14 +146,14 @@
 
         <div class="form-group col-md-12" role="group">
             <button type="button"
-                    focus-index="10"
+                    focus-index="11"
                     ng-click="cancel()"
                     class="btn btn-danger pull-left">
                 <span>خروج</span>
                 <i class="fa fa-power-off  fa-lg"></i>
             </button>
             <button type="button"
-                    focus-index="9"
+                    focus-index="10"
                     ng-click="clear()"
                     class="btn btn-info pull-left">
                 <span>مسح الحقول</span>
@@ -144,14 +161,14 @@
             </button>
             <button ng-show="action=='update'"
                     type="submit"
-                    focus-index="8"
+                    focus-index="9"
                     class="btn btn-warning pull-right">
                 <span>تعديل</span>
                 <i class="fa fa-edit fa-lg"></i>
             </button>
             <button ng-show="action=='create'"
                     type="submit"
-                    focus-index="7"
+                    focus-index="8"
                     class="btn btn-success pull-right">
                 <span>اضافة</span>
                 <i class="fa fa-plus-square fa-lg"></i>

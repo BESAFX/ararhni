@@ -177,6 +177,9 @@
                                 <th st-sort="endDate" class="text-right">
                                     <span>تاريخ التسليم</span>
                                 </th>
+                                <th st-sort="importance" class="text-right">
+                                    <span>درجة الأهمية</span>
+                                </th>
                                 <th st-sort="endDate" class="text-right">
                                     <span>الحالة</span>
                                 </th>
@@ -212,6 +215,11 @@
                                 <td st-select-row-custom="task">{{task.endDate | kdate: 'yyyy-mm-dd' :
                                     'ar' :
                                     'ummalqura'}}
+                                </td>
+                                <td>
+                                    <span ng-class="{'label label-danger' : task.importance==='Critical', 'label label-warning': task.importance==='Important', 'label label-default': task.importance==='Regular'}">
+                                        {{task.importance==='Critical' ? 'حرجة' : (task.importance==='Important' ? 'هامة' : 'عادية')}}
+                                    </span>
                                 </td>
                                 <td>
                                     <span ng-class="task.endDate < today ? 'label label-danger' : 'label label-success'">{{task.endDate < today ? 'مغلقة' : 'سارية'}}</span>

@@ -26,35 +26,6 @@ var app = angular.module('Application',
         'timer'
     ]);
 
-app.constant('notifyCode', {
-
-    CHAT: 'CHAT',
-
-    CREATE_COMPANY: 'CREATE_COMPANY',
-    UPDATE_COMPANY: 'UPDATE_COMPANY',
-    DELETE_COMPANY: 'DELETE_COMPANY',
-
-    CREATE_BRANCH: 'CREATE_BRANCH',
-    UPDATE_BRANCH: 'UPDATE_BRANCH',
-    DELETE_BRANCH: 'DELETE_BRANCH',
-
-    CREATE_DEPARTMENT: 'CREATE_DEPARTMENT',
-    UPDATE_DEPARTMENT: 'UPDATE_DEPARTMENT',
-    DELETE_DEPARTMENT: 'DELETE_DEPARTMENT',
-
-    CREATE_EMPLOYEE: 'CREATE_EMPLOYEE',
-    UPDATE_EMPLOYEE: 'UPDATE_EMPLOYEE',
-    DELETE_EMPLOYEE: 'DELETE_EMPLOYEE',
-
-    CREATE_PERSON: 'CREATE_PERSON',
-    UPDATE_PERSON: 'UPDATE_PERSON',
-    DELETE_PERSON: 'DELETE_PERSON',
-
-    CREATE_TEAM: 'CREATE_TEAM',
-    UPDATE_TEAM: 'UPDATE_TEAM',
-    DELETE_TEAM: 'DELETE_TEAM',
-});
-
 app.factory('errorInterceptor', ['$q', '$rootScope', '$location', '$log',
     function ($q, $rootScope, $location, $log) {
         return {

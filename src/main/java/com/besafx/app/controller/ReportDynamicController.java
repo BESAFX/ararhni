@@ -585,6 +585,7 @@ public class ReportDynamicController {
     public void ReportFilteredTasks(
             @RequestBody ReportProp reportProp,
             @RequestParam(value = "title", required = false) final String title,
+            @RequestParam(value = "importance", required = false) final String importance,
             @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
             @RequestParam(value = "codeTo", required = false) final Long codeTo,
             @RequestParam(value = "startDateFrom", required = false) final Long startDateFrom,
@@ -598,7 +599,7 @@ public class ReportDynamicController {
             HttpServletResponse response
     ) throws Exception {
         List<TaskOperation> list = new ArrayList<>();
-        taskSearch.search(title, codeFrom, codeTo, startDateFrom, startDateTo, endDateFrom, endDateTo, taskType, isTaskOpen, timeType, person).stream().forEach(task -> list.addAll(task.getTaskOperations()));
+        taskSearch.search(title, importance, codeFrom, codeTo, startDateFrom, startDateTo, endDateFrom, endDateTo, taskType, isTaskOpen, timeType, person).stream().forEach(task -> list.addAll(task.getTaskOperations()));
         if(list.isEmpty()){
             throw  new CustomException("لا توجد حراكات او تعليقات على المهام المفلترة للطباعة");
         }

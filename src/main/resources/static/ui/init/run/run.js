@@ -1,5 +1,5 @@
-app.run(['$http', '$location', '$state', '$window', 'notifyCode', 'PersonService', '$rootScope', '$log', '$stomp', 'defaultErrorMessageResolver', 'ModalProvider',
-    function ($http, $location, $state, $window, notifyCode, PersonService, $rootScope, $log, $stomp, defaultErrorMessageResolver, ModalProvider) {
+app.run(['$http', '$location', '$state', '$window', 'PersonService', '$rootScope', '$log', '$stomp', 'defaultErrorMessageResolver', 'ModalProvider',
+    function ($http, $location, $state, $window, PersonService, $rootScope, $log, $stomp, defaultErrorMessageResolver, ModalProvider) {
 
         defaultErrorMessageResolver.getErrorMessages().then(function (errorMessages) {
             errorMessages['fieldRequired'] = 'هذا الحقل مطلوب';
@@ -242,15 +242,7 @@ app.run(['$http', '$location', '$state', '$window', 'notifyCode', 'PersonService
         $rootScope.chats = [];
         $stomp.connect('/ws').then(function () {
             $stomp.subscribe('/user/queue/notify', function (payload, headers, res) {
-                if (payload.code === notifyCode.CHAT) {
-                    $rootScope.chats.push(payload);
-                    if (!$rootScope.$$phase) {
-                        $rootScope.$apply();
-                    }
-                    $rootScope.showNotify(payload.title, payload.message, payload.type, payload.icon);
-                } else {
-                    $rootScope.showNotify(payload.title, payload.message, payload.type, payload.icon);
-                }
+                $rootScope.showNotify(payload.title, payload.message, payload.type, payload.icon);
             }, {'headers': 'notify'});
         });
         $rootScope.today = new Date();

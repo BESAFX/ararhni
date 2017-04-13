@@ -1,5 +1,5 @@
-app.controller('personCreateUpdateCtrl', ['TeamService', 'PersonService', 'FileUploader', 'NotificationProvider', 'FileService', 'notifyCode', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'person',
-    function (TeamService, PersonService, FileUploader, NotificationProvider, FileService, notifyCode, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, person) {
+app.controller('personCreateUpdateCtrl', ['TeamService', 'PersonService', 'FileUploader', 'FileService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'person',
+    function (TeamService, PersonService, FileUploader, FileService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, person) {
 
         $scope.fetchTeamData = function () {
             TeamService.findAll().then(function (data) {

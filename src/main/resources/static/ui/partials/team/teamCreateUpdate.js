@@ -1,6 +1,6 @@
 app.controller('teamCreateUpdateCtrl',
-    ['ScreenService', 'TeamService', 'RoleService', 'NotificationProvider', 'notifyCode', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'team',
-        function (ScreenService, TeamService, RoleService, NotificationProvider, notifyCode, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, team) {
+    ['ScreenService', 'TeamService', 'RoleService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'team',
+        function (ScreenService, TeamService, RoleService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, team) {
 
             $scope.$watch('buffer.createAll', function (newValue, oldValue) {
                 angular.forEach($scope.roles, function (role) {

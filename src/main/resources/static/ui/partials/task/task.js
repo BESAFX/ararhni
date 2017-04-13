@@ -131,6 +131,11 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 search.push($scope.buffer.title);
                 search.push('&');
             }
+            if (buffer.importance) {
+                search.push('importance=');
+                search.push(buffer.importance);
+                search.push('&');
+            }
             if ($scope.buffer.codeFrom) {
                 search.push('codeFrom=');
                 search.push($scope.buffer.codeFrom);
@@ -549,6 +554,11 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                     search.push(buffer.title);
                     search.push('&');
                 }
+                if (buffer.importance) {
+                    search.push('importance=');
+                    search.push(buffer.importance);
+                    search.push('&');
+                }
                 if (buffer.codeFrom) {
                     search.push('codeFrom=');
                     search.push(buffer.codeFrom);
@@ -629,6 +639,11 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 if (buffer.title) {
                     search.push('title=');
                     search.push(buffer.title);
+                    search.push('&');
+                }
+                if (buffer.importance) {
+                    search.push('importance=');
+                    search.push(buffer.importance);
                     search.push('&');
                 }
                 if (buffer.codeFrom) {
@@ -713,6 +728,11 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                     search.push(buffer.title);
                     search.push('&');
                 }
+                if (buffer.importance) {
+                    search.push('importance=');
+                    search.push(buffer.importance);
+                    search.push('&');
+                }
                 if (buffer.codeFrom) {
                     search.push('codeFrom=');
                     search.push(buffer.codeFrom);
@@ -793,6 +813,11 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 if (buffer.title) {
                     search.push('title=');
                     search.push(buffer.title);
+                    search.push('&');
+                }
+                if (buffer.importance) {
+                    search.push('importance=');
+                    search.push(buffer.importance);
                     search.push('&');
                 }
                 if (buffer.codeFrom) {

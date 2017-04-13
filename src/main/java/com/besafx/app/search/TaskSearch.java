@@ -29,6 +29,7 @@ public class TaskSearch {
 
     public List<Task> search(
             final String title,
+            final String importance,
             final Long codeFrom,
             final Long codeTo,
             final Long startDateFrom,
@@ -45,6 +46,7 @@ public class TaskSearch {
             //Search in Task Table (Outgoing Tasks)
             List<Specification> predicates = new ArrayList<>();
             Optional.ofNullable(title).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("title"), "%" + value + "%")));
+            Optional.ofNullable(importance).ifPresent(value -> predicates.add((root, cq, cb) -> cb.equal(root.get("importance"), value)));
             Optional.ofNullable(codeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("code"), value)));
             Optional.ofNullable(codeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("code"), value)));
             Optional.ofNullable(startDateFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("startDate"), new Date(value))));
@@ -102,6 +104,7 @@ public class TaskSearch {
             //Search in TaskTo Table (Incoming Tasks)
             List<Specification> predicates = new ArrayList<>();
             Optional.ofNullable(title).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("task").get("title"), "%" + value + "%")));
+            Optional.ofNullable(importance).ifPresent(value -> predicates.add((root, cq, cb) -> cb.equal(root.get("importance"), value)));
             Optional.ofNullable(codeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("task").get("code"), value)));
             Optional.ofNullable(codeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("task").get("code"), value)));
             Optional.ofNullable(startDateFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("task").get("startDate"), new Date(value))));
@@ -159,10 +162,10 @@ public class TaskSearch {
     }
 
     public List<Task> getIncomingTasks(String timeType, Long personId) {
-        return search(null, null, null, null, null, null, null, true, true, timeType, personId);
+        return search(null, null, null, null, null, null, null, null, true, true, timeType, personId);
     }
 
     public List<Task> getOutgoingTasks(String timeType, Long personId) {
-        return search(null, null, null, null, null, null, null, false, true, timeType, personId);
+        return search(null, null, null, null, null, null, null, null, false, true, timeType, personId);
     }
 }
