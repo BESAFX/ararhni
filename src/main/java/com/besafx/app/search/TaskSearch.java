@@ -104,7 +104,7 @@ public class TaskSearch {
             //Search in TaskTo Table (Incoming Tasks)
             List<Specification> predicates = new ArrayList<>();
             Optional.ofNullable(title).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("task").get("title"), "%" + value + "%")));
-            Optional.ofNullable(importance).ifPresent(value -> predicates.add((root, cq, cb) -> cb.equal(root.get("importance"), value)));
+            Optional.ofNullable(importance).ifPresent(value -> predicates.add((root, cq, cb) -> cb.equal(root.get("task").get("importance"), value)));
             Optional.ofNullable(codeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("task").get("code"), value)));
             Optional.ofNullable(codeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("task").get("code"), value)));
             Optional.ofNullable(startDateFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("task").get("startDate"), new Date(value))));
