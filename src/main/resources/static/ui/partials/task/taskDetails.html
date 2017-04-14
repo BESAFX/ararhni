@@ -1,6 +1,9 @@
 <div dir="rtl">
 
     <div class="modal-header">
+        <a class="pull-left" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
         <h3 class="modal-title text-center" id="modal-title">تفاصيل المهمة / {{task.title}}</h3>
     </div>
 
@@ -246,8 +249,13 @@
                     <div class="panel-heading">
                         <ul class="panel-controls pull-left" style="margin-top: 2px;">
                             <li>
-                                <a href="" ng-click="findTaskOperations()" uib-tooltip="تحديث">
+                                <a href="" ng-click="findTaskOperations()" tooltip-append-to-body="true"
+                                   uib-tooltip="تحديث">
                                     <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href="" ng-click="openCreateOperationModel()" tooltip-append-to-body="true"
+                                   uib-tooltip="اضافة حركة">
+                                    <span class="fa fa-clock-o"></span>
                                 </a>
                             </li>
                         </ul>
