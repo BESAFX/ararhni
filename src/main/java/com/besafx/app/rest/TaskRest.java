@@ -240,7 +240,7 @@ public class TaskRest {
     @ResponseBody
     public List<Task> filter(
             @RequestParam(value = "title", required = false) final String title,
-            @RequestParam(value = "importance", required = false) final String importance,
+            @RequestParam(value = "importance", required = false) final Task.Importance importance,
             @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
             @RequestParam(value = "codeTo", required = false) final Long codeTo,
             @RequestParam(value = "startDateFrom", required = false) final Long startDateFrom,

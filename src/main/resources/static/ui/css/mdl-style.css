@@ -249,9 +249,9 @@ p {
 }
 
 a, a:hover, a:focus {
-    color: rgb(96, 125, 139) !important;
-    text-decoration: underline !important;
-    font-weight: bolder !important;
+    color: rgb(96, 125, 139);
+    text-decoration: underline;
+    font-weight: bolder;
 }
 
 blockquote {

@@ -29,7 +29,7 @@ public class TaskSearch {
 
     public List<Task> search(
             final String title,
-            final String importance,
+            final Task.Importance importance,
             final Long codeFrom,
             final Long codeTo,
             final Long startDateFrom,

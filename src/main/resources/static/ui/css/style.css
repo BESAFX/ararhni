@@ -277,13 +277,10 @@ input[type=checkbox] {
     margin: 10px;
     min-height: 150px;
     background-color: rgb(96, 125, 139);
-    color: white;
-    font-weight: 500;
-    text-decoration: none !important;
 }
 
-table a, table a:hover, table a:focus {
-    color: rgb(96, 125, 139) !important;
-    text-decoration: underline !important;
-    font-weight: bolder !important;
+.card-square, .card-square:hover, .card-square:focus {
+    color: white !important;
+    font-weight: 500;
+    text-decoration: none !important;
 }

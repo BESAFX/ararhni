@@ -73,6 +73,10 @@
                             ng-if="contains(authorities, ['ROLE_TASK_UPDATE']) && toggleList===1">
                             <span>تعديل بيانات مهمة</span>
                         </li>
+                        <li class="mdl-menu__item" ng-click="openExtensionModel()" ng-hide="!tasks || tasks.length==0"
+                            ng-if="contains(authorities, ['ROLE_TASK_UPDATE']) && toggleList===1">
+                            <span>تمديد مهمة</span>
+                        </li>
                         <li class="mdl-menu__item" ng-click="delete()" ng-hide="!tasks || tasks.length==0"
                             ng-if="contains(authorities, ['ROLE_TASK_DELETE']) && toggleList===1">
                             <span>حذف مهمة</span>
@@ -228,7 +232,7 @@
                             <tr class="blank_row"
                                 style="height: 10px !important; background-color: #FFFFFF;"
                                 ng-show="!collection || collection.length ==0">
-                                <td colspan="8">لا توجد بيانات</td>
+                                <td colspan="9">لا توجد بيانات</td>
                             </tr>
                             </tbody>
                         </table>

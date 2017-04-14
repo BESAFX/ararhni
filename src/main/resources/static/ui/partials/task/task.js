@@ -372,6 +372,14 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             ModalProvider.openTaskClosedModel($scope.selected);
         };
 
+        $scope.openExtensionModel = function (task) {
+            if (task) {
+                ModalProvider.openTaskExtensionModel(task);
+                return;
+            }
+            ModalProvider.openTaskExtensionModel($scope.selected);
+        };
+
         $scope.showSlideFilter = function () {
             $scope.showSlide = true;
             $scope.sideSize = '50%';
@@ -434,6 +442,19 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                     },
                     click: function ($itemScope, $event, value) {
                         $scope.openUpdateModel($itemScope.task);
+                    }
+                });
+        }
+
+        if ($rootScope.contains($rootScope.authorities, ['ROLE_TASK_UPDATE'])) {
+            $scope.rowMenu.push(
+                {
+                    html: '<div style="cursor: pointer;padding: 10px;text-align: right"> تمديد مهمة <span class="fa fa-battery fa-lg"></span></div>',
+                    enabled: function () {
+                        return true
+                    },
+                    click: function ($itemScope, $event, value) {
+                        $scope.openExtensionModel($itemScope.task);
                     }
                 });
         }
