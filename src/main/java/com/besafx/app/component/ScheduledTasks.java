@@ -192,7 +192,7 @@ public class ScheduledTasks {
         emailSender.send(title, message, to.getEmail());
     }
 
-    @Scheduled(cron = "0 0 9 * * *")
+    @Scheduled(cron = "0 0 9 * * SUN,MON,TUE,WED,THU")
     public void sendReportAboutTaskTosCheck() throws InterruptedException, IOException, JRException, ExecutionException {
         Iterator<Person> iterator = personService.findAll().iterator();
         while (iterator.hasNext()) {
