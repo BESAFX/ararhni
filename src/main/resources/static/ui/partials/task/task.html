@@ -620,7 +620,7 @@
 
                                             <div class="row">
 
-                                                <div class="form-group text-right col-md-12">
+                                                <div class="form-group text-right col-md-6">
                                                     <label for="title" class="control-label">عنوان المهمة يحتوي
                                                         على </label>
                                                     <input id="title"
@@ -632,14 +632,18 @@
                                                 </div>
 
                                                 <div class="form-group text-right col-md-6">
-                                                    <label for="codeTo" class="control-label">رقم المهمة إلى </label>
-                                                    <input id="codeTo"
-                                                           type="number"
-                                                           min="1"
-                                                           focus-index="2"
-                                                           class="form-control text-right"
-                                                           placeholder="ادخل رقم المهمة إلى"
-                                                           ng-model="buffer.codeTo">
+                                                    <label for="importance" class="control-label">
+                                                        <span>درجة الأهمية</span>
+                                                    </label>
+                                                    <select id="importance"
+                                                            placeholder="اختر درجة الأهمية للمساعدة فى التصنيف"
+                                                            class="form-control text-right"
+                                                            ng-model="buffer.importance"
+                                                            focus-index="2">
+                                                        <option value="Regular">عادية</option>
+                                                        <option value="Important">هامة</option>
+                                                        <option value="Critical">حرجة</option>
+                                                    </select>
                                                 </div>
 
                                                 <div class="form-group text-right col-md-6">
@@ -651,6 +655,17 @@
                                                            class="form-control text-right"
                                                            placeholder="ادخل رقم المهمة من"
                                                            ng-model="buffer.codeFrom">
+                                                </div>
+
+                                                <div class="form-group text-right col-md-6">
+                                                    <label for="codeTo" class="control-label">رقم المهمة إلى </label>
+                                                    <input id="codeTo"
+                                                           type="number"
+                                                           min="1"
+                                                           focus-index="3"
+                                                           class="form-control text-right"
+                                                           placeholder="ادخل رقم المهمة إلى"
+                                                           ng-model="buffer.codeTo">
                                                 </div>
 
                                                 <div class="form-group text-right col-sm-6">

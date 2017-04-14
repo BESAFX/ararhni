@@ -131,9 +131,9 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 search.push($scope.buffer.title);
                 search.push('&');
             }
-            if (buffer.importance) {
+            if ($scope.buffer.importance) {
                 search.push('importance=');
-                search.push(buffer.importance);
+                search.push($scope.buffer.importance);
                 search.push('&');
             }
             if ($scope.buffer.codeFrom) {
