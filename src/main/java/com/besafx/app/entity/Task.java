@@ -63,6 +63,14 @@ public class Task implements Serializable {
     @JsonIgnoreProperties(value = {"task"}, allowSetters = true)
     private List<TaskOperation> taskOperations = new ArrayList<>();
 
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"task"}, allowSetters = true)
+    private List<TaskWarn> taskWarns = new ArrayList<>();
+
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"task"}, allowSetters = true)
+    private List<TaskDeduction> taskDeductions = new ArrayList<>();
+
     @JsonCreator
     public static Task Create(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();

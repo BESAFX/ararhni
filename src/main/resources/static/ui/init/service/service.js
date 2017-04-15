@@ -433,6 +433,42 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
         });
     };
 
+    this.openTaskWarnsModel = function (task) {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/task/taskWarns.html',
+            controller: 'taskWarnsCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            windowClass: 'xlg',
+            resolve: {
+                task: function () {
+                    return task;
+                }
+            }
+        });
+    };
+
+    this.openTaskDeductionsModel = function (task) {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/task/taskDeductions.html',
+            controller: 'taskDeductionsCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            windowClass: 'xlg',
+            resolve: {
+                task: function () {
+                    return task;
+                }
+            }
+        });
+    };
+
     this.openTaskOperationsReportModel = function (tasks) {
         $uibModal.open({
             animation: true,
@@ -608,6 +644,42 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             ariaDescribedBy: 'modal-body',
             templateUrl: '/ui/partials/task/taskExtension.html',
             controller: 'taskExtensionCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                task: function () {
+                    return task;
+                }
+            }
+        });
+    };
+
+    this.openTaskWarnCreateModel = function (task) {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/task/taskWarnCreate.html',
+            controller: 'taskWarnCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                task: function () {
+                    return task;
+                }
+            }
+        });
+    };
+
+    this.openTaskDeductionCreateModel = function (task) {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/task/taskDeductionCreate.html',
+            controller: 'taskDeductionCreateCtrl',
             backdrop: 'static',
             keyboard: false,
             size: 'lg',

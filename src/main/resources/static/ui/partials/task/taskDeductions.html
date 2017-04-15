@@ -1,19 +1,15 @@
-<form dir="rtl" name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
-      focus-group-head="loop" focus-group-tail="loop">
+<div dir="rtl">
 
     <div class="modal-header">
-        <h3 class="modal-title text-center" id="modal-title">تمديد الفترة الزمنية لاستلام مهمة</h3>
+        <a class="pull-left" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 class="modal-title text-center" id="modal-title">خصومات المهمة / {{task.title}}</h3>
     </div>
 
     <div class="modal-body" id="modal-body">
 
         <div class="row">
-
-            <div class="form-group text-right col-md-12" ng-show="form.$invalid && form.$submitted">
-                <div class="alert alert-danger" role="alert">
-                    <strong>فضلاً اكمل الحقول المطلوبة</strong>
-                </div>
-            </div>
 
             <div class="form-group text-right col-md-12">
                 <div class="panel panel-success">
@@ -78,33 +74,61 @@
             </div>
 
             <div class="form-group text-right col-md-12">
-                <div class="alert alert-danger" role="alert">
-                    <strong>سيتم تمديد تاريخ الاستلام للمهمة حسب عدد الأيام المدخلة، وسيتم فتح هذة المهمة عند كل
-                        المكلفين واستكمال التعقيب عليها فى حال كانت المهمة مغلقة</strong>
-                </div>
-            </div>
-
-            <div class="form-group text-right col-md-12">
-                <div class="panel panel-success">
+                <div class="panel panel-warning">
                     <div class="panel-heading">
+                        <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                            <li>
+                                <a href="" ng-click="findTaskDeductions()" tooltip-append-to-body="true"
+                                   uib-tooltip="تحديث">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href="" ng-click="openCreateDeductionModel()" tooltip-append-to-body="true"
+                                   uib-tooltip="اضافة خصم">
+                                    <span class="fa fa-bomb"></span>
+                                </a>
+                            </li>
+                        </ul>
                         <div class="panel-title-box pull-right">
-                            <h3>البيانات المطلوبة</h3>
+                            <h3>الخصومات</h3>
                         </div>
                     </div>
-                    <div class="panel-body">
-                        <div class="form-group text-right col-sm-12">
-                            <label for="deduction" class="control-label"> عدد الأيام الاضافية </label>
-                            <div dir="ltr" class="input-group" id="deduction">
-                                <span class="input-group-addon">يوم</span>
-                                <input focus-index="1"
-                                       dir="rtl"
-                                       type="number"
-                                       min="0"
-                                       required="required"
-                                       disable-validation-message=""
-                                       class="form-control text-right "
-                                       ng-model="buffer.days">
-                            </div>
+                    <div class="panel-body panel-body-table">
+                        <div class="table-responsive">
+                            <table st-table="collectionOperation" st-safe-src="task.taskDeductions"
+                                   class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th st-sort="code" class="text-center fit">رقم الخصم</th>
+                                    <th st-sort="type" class="text-center fit">نوع الخصم</th>
+                                    <th st-sort="deduction" class="text-center fit">قيمة الخصم</th>
+                                    <th st-sort="toPerson.name" class="text-center">الموظف</th>
+                                    <th st-sort="date" st-sort-default="reverse" class="text-center fit">التاريخ
+                                        والوقت
+                                    </th>
+                                    <th st-sort="content" class="text-center">المحتوى</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="taskOperation in collectionOperation">
+                                    <td>{{taskOperation.code}}</td>
+                                    <td>{{taskOperation.type}}</td>
+                                    <td>{{taskOperation.deduction | currency:'SAR':0}}</td>
+                                    <td class="fit">{{taskOperation.toPerson.nickname}} /
+                                        {{taskOperation.toPerson.name}}
+                                    </td>
+                                    <td st-select-row-custom="taskOperation">
+                                        {{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                        <span class="label label-success">{{taskOperation.date | date:'h:m a'}}</span>
+                                    </td>
+                                    <td>{{taskOperation.content}}</td>
+                                </tr>
+                                <tr class="blank_row"
+                                    style="height: 10px !important; background-color: #FFFFFF;"
+                                    ng-show="!collectionOperation || collectionOperation.length ==0">
+                                    <td colspan="6">لا توجد خصومات</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -118,20 +142,19 @@
 
         <div class="form-group col-md-12" role="group">
             <button type="button"
-                    focus-index="3"
                     ng-click="cancel()"
                     class="btn btn-danger pull-left">
                 <span>خروج</span>
                 <i class="fa fa-power-off  fa-lg"></i>
             </button>
-            <button type="submit"
-                    focus-index="2"
-                    class="btn btn-success pull-right">
-                <span>حفظ</span>
-                <i class="fa fa-save fa-lg"></i>
+            <button type="button"
+                    ng-click="openCreateDeductionModel()"
+                    class="btn btn-success">
+                <i class="fa fa-bomb fa-lg"></i>
+                <span>اضافة خصم جديد</span>
             </button>
         </div>
 
     </div>
 
-</form>
+</div>

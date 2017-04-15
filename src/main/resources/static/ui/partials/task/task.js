@@ -320,6 +320,22 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             ModalProvider.openTaskDetailsModel($scope.selected);
         };
 
+        $scope.openWarnsModel = function (task) {
+            if (task) {
+                ModalProvider.openTaskWarnsModel(task);
+                return;
+            }
+            ModalProvider.openTaskWarnsModel($scope.selected);
+        };
+
+        $scope.openDeductionsModel = function (task) {
+            if (task) {
+                ModalProvider.openTaskDeductionsModel(task);
+                return;
+            }
+            ModalProvider.openTaskDeductionsModel($scope.selected);
+        };
+
         $scope.openTaskOperationsReportModel = function () {
             ModalProvider.openTaskOperationsReportModel($scope.tasks);
         };
@@ -432,7 +448,6 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                     }
                 });
         }
-
         if ($rootScope.contains($rootScope.authorities, ['ROLE_TASK_UPDATE'])) {
             $scope.rowMenu.push(
                 {
@@ -445,7 +460,6 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                     }
                 });
         }
-
         if ($rootScope.contains($rootScope.authorities, ['ROLE_TASK_UPDATE'])) {
             $scope.rowMenu.push(
                 {
@@ -458,7 +472,6 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                     }
                 });
         }
-
         if ($rootScope.contains($rootScope.authorities, ['ROLE_TASK_DELETE'])) {
             $scope.rowMenu.push(
                 {
@@ -471,7 +484,6 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                     }
                 });
         }
-
         if ($rootScope.contains($rootScope.authorities, ['ROLE_TASK_OPERATION_CREATE'])) {
             $scope.rowMenu.push(
                 {
@@ -484,7 +496,6 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                     }
                 });
         }
-
         $scope.rowMenu.push(
             {
                 html: '<div style="cursor: pointer;padding: 10px;text-align: right"> طلب إغلاق <span class="fa fa-power-off fa-lg"></span></div>',

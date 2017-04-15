@@ -24,6 +24,8 @@ public interface TaskOperationService extends PagingAndSortingRepository<TaskOpe
 
     List<TaskOperation> findByTask(Task task);
 
+    List<TaskOperation> findByType(Integer type);
+
     List<TaskOperation> findByTaskAndType(Task task, Integer type);
 
     List<TaskOperation> findByTaskIdAndSenderIdAndType(Long task, Long person, Integer type);

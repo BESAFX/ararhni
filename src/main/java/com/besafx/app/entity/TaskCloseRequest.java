@@ -29,7 +29,7 @@ public class TaskCloseRequest implements Serializable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "task")
-    @JsonIgnoreProperties(value = {"taskCloseRequests"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"taskTos", "taskOperations", "taskWarns", "taskDeductions", "taskCloseRequests"}, allowSetters = true)
     private Task task;
 
     @ManyToOne

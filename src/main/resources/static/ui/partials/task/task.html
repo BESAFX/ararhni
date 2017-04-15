@@ -203,6 +203,8 @@
                                 <td st-select-row-custom="task">
                                     <strong><a href="" ng-click="openDetailsModel(task)">{{task.title}}</a></strong>
                                     <span class="fa fa-info-circle" uib-tooltip="{{task.content}}"></span>
+                                    <a href="" ng-click="openWarnsModel(task)"><span class="label label-warning">{{task.taskWarns.length > 0 ? task.taskWarns.length + ' تحذير' : ''}}</span></a>
+                                    <a href="" ng-click="openDeductionsModel(task)"><span class="label label-danger">{{task.taskDeductions.length > 0 ? task.taskDeductions.length + ' خصم' : ''}}</span></a>
                                 </td>
                                 <td st-select-row-custom="task">
                                     {{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
@@ -1046,6 +1048,16 @@
                                     <button type="button"
                                             focus-index="5"
                                             style="width: 100%"
+                                            ng-click="filter()"
+                                            class="btn btn-primary">
+                                        <span>بحث</span>
+                                        <i class="fa fa-filter fa-lg"></i>
+                                    </button>
+                                </div>
+                                <div class="form-group col-md-4 pull-left">
+                                    <button type="button"
+                                            focus-index="5"
+                                            style="width: 100%"
                                             ng-click="printFilteredTasks()"
                                             class="btn btn-primary">
                                         <span>إستخراج وتنزيل الملف</span>
@@ -1060,16 +1072,6 @@
                                             class="btn btn-primary">
                                         <span>مسح الحقول</span>
                                         <i class="fa fa-recycle  fa-lg"></i>
-                                    </button>
-                                </div>
-                                <div class="form-group col-md-4 pull-left">
-                                    <button type="button"
-                                            focus-index="5"
-                                            style="width: 100%"
-                                            ng-click="filter()"
-                                            class="btn btn-primary">
-                                        <span>بحث</span>
-                                        <i class="fa fa-filter fa-lg"></i>
                                     </button>
                                 </div>
 
@@ -1155,7 +1157,7 @@
                                                         ng-right-click="setSelectedOperation(taskOperation)"
                                                         st-select-mode="single"
                                                         ng-repeat="taskOperation in collection2"
-                                                        ng-class="{'info':(taskOperation.sender.id===me.manager.id && taskOperation.type===1), 'warning':taskOperation.type===2, 'danger':taskOperation.type===3}">
+                                                        ng-class="{'info':(taskOperation.sender.id===me.manager.id)}">
                                                         <td st-select-row-custom="taskOperation" class="fit">
                                                             {{taskOperation.code}}
                                                         </td>
