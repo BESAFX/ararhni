@@ -320,12 +320,28 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             ModalProvider.openTaskDetailsModel($scope.selected);
         };
 
+        $scope.openCreateWarnModel = function (task) {
+            if (task) {
+                ModalProvider.openTaskWarnCreateModel(task);
+                return;
+            }
+            ModalProvider.openTaskWarnCreateModel($scope.selected);
+        };
+
         $scope.openWarnsModel = function (task) {
             if (task) {
                 ModalProvider.openTaskWarnsModel(task);
                 return;
             }
             ModalProvider.openTaskWarnsModel($scope.selected);
+        };
+
+        $scope.openCreateDeductionModel = function (task) {
+            if (task) {
+                ModalProvider.openTaskDeductionCreateModel(task);
+                return;
+            }
+            ModalProvider.openTaskDeductionCreateModel($scope.selected);
         };
 
         $scope.openDeductionsModel = function (task) {
