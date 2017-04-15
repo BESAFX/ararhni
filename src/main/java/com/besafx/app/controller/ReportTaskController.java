@@ -72,11 +72,19 @@ public class ReportTaskController {
         map.put("title", param1.toString());
 
         List<WrapperUtil> list = new ArrayList<>();
-        tasksList.stream().forEach(id -> {
+        ListIterator<Long> listIterator = tasksList.listIterator();
+        while (listIterator.hasNext()) {
+            Long id = listIterator.next();
             Task task = taskService.findOne(id);
+            if (task == null) {
+                continue;
+            }
             WrapperUtil wrapperUtil = new WrapperUtil();
             if (startDate == null && endDate == null) {
-                task.setTaskOperations(task.getTaskOperations().stream().filter(taskOperation -> taskOperation.getType().intValue() == 1).collect(Collectors.toList()));
+                task.setTaskOperations(task.getTaskOperations()
+                        .stream()
+                        .filter(taskOperation -> taskOperation.getType().intValue() == 1)
+                        .collect(Collectors.toList()));
                 wrapperUtil.setObj1(task);
             } else {
                 task.setTaskOperations(task.getTaskOperations().stream().filter(taskOperation -> taskOperation.getType().intValue() == 1).filter(taskOperation -> taskOperation.getDate().after(new Date(startDate)) && taskOperation.getDate().before(new Date(endDate))).collect(Collectors.toList()));
@@ -84,7 +92,7 @@ public class ReportTaskController {
             }
             wrapperUtil.setObj2(task.getTaskTos().stream().map(to -> to.getPerson().getName()).collect(Collectors.toList()).toString());
             list.add(wrapperUtil);
-        });
+        }
 
         ClassPathResource jrxmlFile = new ClassPathResource("/report/task/TaskOperations.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
