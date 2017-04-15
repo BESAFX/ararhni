@@ -52,8 +52,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="taskOperation in filteredCollection = (collectionOperation | filter:{type:1})"
-                            ng-class="{'info':(taskOperation.sender.id===me.manager.id && taskOperation.type===1), 'warning':taskOperation.type===2, 'danger':taskOperation.type===3}">
+                        <tr ng-repeat="taskOperation in filteredCollection = (collectionOperation)"
+                            ng-class="{'info':(taskOperation.sender.id===me.manager.id)}">
                             <td>{{taskOperation.code}}</td>
                             <td><a href="" ng-click="openDetailsModel(taskOperation.task)">[{{taskOperation.task.code}}]
                                 {{taskOperation.task.title}}</a></td>

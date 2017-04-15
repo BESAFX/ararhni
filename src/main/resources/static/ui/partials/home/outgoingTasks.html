@@ -69,21 +69,21 @@
                                                 <a href="" ng-click="viewInfo===3?viewInfo=false:viewInfo=3">
                                                     <span class="label label-success">
                                                         <span>عدد الحركات</span>
-                                                        <span>{{(task.taskOperations | filter:{type:1}).length}}</span>
+                                                        <span>{{task.taskOperations.length}}</span>
                                                     </span>
                                                 </a>
                                                 <span style="padding: 0px 5px 0px 10px"></span>
                                                 <a href="" ng-click="viewInfo===5?viewInfo=false:viewInfo=5">
                                                         <span class="label label-warning">
                                                             <span>عدد التحذيرات</span>
-                                                            <span>{{(task.taskOperations | filter:{type:2}).length}}</span>
+                                                            <span>{{task.taskWarns.length}}</span>
                                                         </span>
                                                 </a>
                                                 <span style="padding: 0px 5px 0px 10px"></span>
                                                 <a href="" ng-click="viewInfo===6?viewInfo=false:viewInfo=6">
                                                         <span class="label label-danger">
                                                             <span>عدد الحسومات</span>
-                                                            <span>{{(task.taskOperations | filter:{type:3}).length}}</span>
+                                                            <span>{{task.taskDeductions.length}}</span>
                                                         </span>
                                                 </a>
                                                 <span style="padding: 0px 5px 0px 10px"></span>
@@ -242,7 +242,7 @@
                                                                 المرفقات</strong>
                                                             </td>
                                                         </tr>
-                                                        <tr ng-repeat="taskOperation in filteredCollection =  (collectionOperation | filter:{type:1} | orderBy:date:true)">
+                                                        <tr ng-repeat="taskOperation in filteredCollection =  (collectionOperation | orderBy:date:true)">
                                                             <td width="15%">{{taskOperation.sender.nickname}} /
                                                                 {{taskOperation.sender.name}}
                                                             </td>
@@ -304,31 +304,21 @@
                                             <td colspan="2">
                                                 <div class="table-responsive">
                                                     <table st-table="collectionOperation"
-                                                           st-safe-src="task.taskOperations"
+                                                           st-safe-src="task.taskWarns"
                                                            class="table table-bordered">
                                                         <tbody>
                                                         <tr>
                                                             <td colspan="2" class="warning"><strong>التحذيرات من جهة
                                                                 التكليف</strong></td>
                                                         </tr>
-                                                        <tr ng-repeat="taskOperation in filteredCollection =  (collectionOperation | filter:{type:2} | orderBy:date:true)">
+                                                        <tr ng-repeat="taskWarn in filteredCollection =  (collectionOperation | orderBy:date:true)">
                                                             <td>
-                                                                {{taskOperation.content}}
-                                                                <span ng-repeat="taskOperationAttach in taskOperation.taskOperationAttaches"><a
-                                                                        uib-tooltip="{{taskOperationAttach.name}}"
-                                                                        tooltip-append-to-body="true" href=""
-                                                                        ng-href="{{taskOperationAttach.link}}"
-                                                                        target="_blank"><i
-                                                                        class="fa fa-link fa-lg"></i></a></span>
+                                                                {{taskWarn.content}}
                                                             </td>
-                                                            <td width="20%">
-                                                                <timer interval="60000"
-                                                                       start-time="taskOperation.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span>
-                                                                    {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' :
-                                                                    ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ?
-                                                                    'ساعة' : ''}} {{minutes > 0 ? minutes : ''}}
-                                                                    {{minutes > 0 ? 'دقيقة' : ''}}
-                                                                </timer>
+                                                            <td class="fit">
+                                                                {{taskWarn.date ? (taskWarn.date | kdate: 'yyyy-mm-dd' :
+                                                                'ar' :'ummalqura') : '---'}}
+                                                                <span class="label label-success">{{taskWarn.date ? (taskWarn.date | date:'h:m a') : ''}}</span>
                                                             </td>
                                                         </tr>
                                                         <tr class="blank_row"
@@ -345,31 +335,21 @@
                                             <td colspan="2">
                                                 <div class="table-responsive">
                                                     <table st-table="collectionOperation"
-                                                           st-safe-src="task.taskOperations"
+                                                           st-safe-src="task.taskDeductions"
                                                            class="table table-bordered">
                                                         <tbody>
                                                         <tr>
                                                             <td colspan="2" class="danger"><strong>الحسومات من جهة
                                                                 التكليف</strong></td>
                                                         </tr>
-                                                        <tr ng-repeat="taskOperation in filteredCollection =  (collectionOperation | filter:{type:3} | orderBy:date:true)">
+                                                        <tr ng-repeat="taskDeduction in filteredCollection =  (collectionOperation | orderBy:date:true)">
                                                             <td>
-                                                                {{taskOperation.content}}
-                                                                <span ng-repeat="taskOperationAttach in taskOperation.taskOperationAttaches"><a
-                                                                        uib-tooltip="{{taskOperationAttach.name}}"
-                                                                        tooltip-append-to-body="true" href=""
-                                                                        ng-href="{{taskOperationAttach.link}}"
-                                                                        target="_blank"><i
-                                                                        class="fa fa-link fa-lg"></i></a></span>
+                                                                {{taskDeduction.content}}
                                                             </td>
-                                                            <td width="20%">
-                                                                <timer interval="60000"
-                                                                       start-time="taskOperation.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span>
-                                                                    {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' :
-                                                                    ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ?
-                                                                    'ساعة' : ''}} {{minutes > 0 ? minutes : ''}}
-                                                                    {{minutes > 0 ? 'دقيقة' : ''}}
-                                                                </timer>
+                                                            <td class="fit">
+                                                                {{taskDeduction.date ? (taskDeduction.date | kdate:
+                                                                'yyyy-mm-dd' : 'ar' :'ummalqura') : '---'}}
+                                                                <span class="label label-success">{{taskDeduction.date ? (taskDeduction.date | date:'h:m a') : ''}}</span>
                                                             </td>
                                                         </tr>
                                                         <tr class="blank_row"
