@@ -103,11 +103,27 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
         };
 
         $scope.openClosedModel = function (closeRequest) {
-            ModalProvider.openTaskClosedModel(closeRequest.task);
+            TaskService.findOne(closeRequest.task.id).then(function (data) {
+                ModalProvider.openTaskClosedModel(data);
+            });
         };
 
         $scope.openExtensionModel = function (closeRequest) {
-            ModalProvider.openTaskExtensionModel(closeRequest.task);
+            TaskService.findOne(closeRequest.task.id).then(function (data) {
+                ModalProvider.openTaskExtensionModel(data);
+            });
+        };
+
+        $scope.openCreateWarnModel = function (closeRequest) {
+            TaskService.findOne(closeRequest.task.id).then(function (data) {
+                ModalProvider.openTaskWarnCreateModel(data);
+            });
+        };
+
+        $scope.openCreateDeductionModel = function (closeRequest) {
+            TaskService.findOne(closeRequest.task.id).then(function (data) {
+                ModalProvider.openTaskDeductionCreateModel(data);
+            });
         };
 
         $scope.refresh = function () {
