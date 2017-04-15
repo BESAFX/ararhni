@@ -54,6 +54,9 @@ public class TaskDeductionRest {
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public TaskDeduction create(@RequestBody TaskDeduction taskDeduction, Principal principal) {
+        if (!taskDeduction.getTask().getPerson().getEmail().equals(principal.getName())) {
+            throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه ارسال الخصومات");
+        }
         try {
             Person person = personService.findByEmail(principal.getName());
             TaskDeduction tempTaskDeduction = taskDeductionService.findTopByTaskAndToPersonOrderByCodeDesc(taskDeduction.getTask(), taskDeduction.getToPerson());

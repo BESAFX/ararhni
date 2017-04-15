@@ -54,6 +54,9 @@ public class TaskWarnRest {
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public TaskWarn create(@RequestBody TaskWarn taskWarn, Principal principal) {
+        if (!taskWarn.getTask().getPerson().getEmail().equals(principal.getName())) {
+            throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه ارسال التحذيرات");
+        }
         try {
             Person person = personService.findByEmail(principal.getName());
             TaskWarn tempTaskWarn = taskWarnService.findTopByTaskAndToPersonOrderByCodeDesc(taskWarn.getTask(), taskWarn.getToPerson());

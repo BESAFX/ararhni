@@ -64,12 +64,13 @@
                             ng-if="contains(authorities, ['ROLE_TASK_CREATE'])">
                             <span>اضافة مهمة</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="openCreateWarnModel()"
-                            ng-if="contains(authorities, ['ROLE_TASK_CREATE'])">
+                        <li class="mdl-menu__item" ng-click="openCreateWarnModel()" ng-hide="!tasks || tasks.length==0"
+                            ng-if="contains(authorities, ['ROLE_TASK_CREATE']) && toggleList===1">
                             <span>ارسال تحذير</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="openCreateDeductionModel()"
-                            ng-if="contains(authorities, ['ROLE_TASK_CREATE'])">
+                            ng-hide="!tasks || tasks.length==0"
+                            ng-if="contains(authorities, ['ROLE_TASK_CREATE']) && toggleList===1">
                             <span>ارسال خصم</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="openCreateOperationModel()"
