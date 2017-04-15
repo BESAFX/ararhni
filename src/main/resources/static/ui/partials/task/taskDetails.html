@@ -115,8 +115,8 @@
                                 <tr ng-repeat="taskTo in collectionTaskTos">
                                     <td>{{$index+1}}</td>
                                     <td>{{taskTo.person.nickname}} / {{taskTo.person.name}}</td>
-                                    <td>{{task.taskWarns.length}}</td>
-                                    <td>{{task.taskDeductions.length}}</td>
+                                    <td>{{(task.taskWarns | filter:{toPerson:taskTo.person}).length}}</td>
+                                    <td>{{(task.taskDeductions | filter:{toPerson:taskTo.person}).length}}</td>
                                     <td>% {{taskTo.progress}}</td>
                                     <td>{{(task.taskCloseRequests | filter:{person:taskTo.person}).length}}</td>
                                     <td class="fit">
@@ -275,8 +275,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="taskOperation in filteredCollection = (collectionOperation | filter:{type:1})"
-                                    ng-class="{'info':(taskOperation.sender.id===me.manager.id && taskOperation.type===1), 'warning':taskOperation.type===2, 'danger':taskOperation.type===3}">
+                                <tr ng-repeat="taskOperation in collectionOperation"
+                                    ng-class="{'info':(taskOperation.sender.id===me.manager.id)}">
                                     <td>{{taskOperation.code}}</td>
                                     <td class="fit">{{taskOperation.sender.nickname}} / {{taskOperation.sender.name}}
                                     </td>
@@ -301,7 +301,7 @@
                                 </tr>
                                 <tr class="blank_row"
                                     style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!filteredCollection || filteredCollection.length ==0">
+                                    ng-show="!collectionOperation || collectionOperation.length ==0">
                                     <td colspan="5">لا توجد حركات</td>
                                 </tr>
                                 </tbody>

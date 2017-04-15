@@ -113,7 +113,7 @@ public class TaskWarnRest {
 
     @RequestMapping(value = "findByTaskAndType/{taskId}/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<TaskWarn> findByTaskAndType(@PathVariable(value = "taskId") Long taskId, @PathVariable(value = "type") Integer type) {
+    public List<TaskWarn> findByTaskAndType(@PathVariable(value = "taskId") Long taskId, @PathVariable(value = "type") TaskWarn.TaskWarnType type) {
         Task task = taskService.findOne(taskId);
         if (task == null) {
             throw new CustomException("لا توجد هذة المهمة، فضلاً تأكد من الرقم الصحيح");

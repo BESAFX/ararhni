@@ -25,15 +25,15 @@ public interface TaskWarnService extends PagingAndSortingRepository<TaskWarn, Lo
 
     List<TaskWarn> findByTaskInAndDateBetween(List<Task> tasks, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    List<TaskWarn> findByTaskAndType(Task task, Integer type);
+    List<TaskWarn> findByTaskAndType(Task task, TaskWarn.TaskWarnType type);
 
-    List<TaskWarn> findByTaskIdAndToPersonIdAndType(Long task, Long person, Integer type);
+    List<TaskWarn> findByTaskIdAndToPersonIdAndType(Long task, Long person, TaskWarn.TaskWarnType type);
 
     List<TaskWarn> findByTaskIdAndToPersonIdAndTypeIn(Long task, Long person, List<Integer> types);
 
     List<TaskWarn> findByTaskAndDateBetween(Task task, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    List<TaskWarn> findByTaskAndTypeAndDateBetween(Task task, Integer type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+    List<TaskWarn> findByTaskAndTypeAndDateBetween(Task task, TaskWarn.TaskWarnType type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
     List<TaskWarn> findByTaskAndDateAfterAndDateBefore(Task task, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
@@ -41,13 +41,13 @@ public interface TaskWarnService extends PagingAndSortingRepository<TaskWarn, Lo
 
     long countByTaskAndToPersonAndDateAfterAndDateBefore(Task task, Person person, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    long countByTaskAndToPersonAndTypeAndDateAfterAndDateBefore(Task task, Person person, Integer type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+    long countByTaskAndToPersonAndTypeAndDateAfterAndDateBefore(Task task, Person person, TaskWarn.TaskWarnType type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    long countByTaskAndToPersonAndTypeAndDateBetween(Task task, Person person, Integer type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+    long countByTaskAndToPersonAndTypeAndDateBetween(Task task, Person person, TaskWarn.TaskWarnType type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
     long countByDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    long countByTaskAndToPersonAndType(Task task, Person person, Integer type);
+    long countByTaskAndToPersonAndType(Task task, Person person, TaskWarn.TaskWarnType type);
 
-    long countByTaskAndType(Task task, Integer type);
+    long countByTaskAndType(Task task, TaskWarn.TaskWarnType type);
 }

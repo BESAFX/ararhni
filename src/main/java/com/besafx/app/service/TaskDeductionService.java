@@ -25,15 +25,15 @@ public interface TaskDeductionService extends PagingAndSortingRepository<TaskDed
 
     List<TaskDeduction> findByTaskInAndDateBetween(List<Task> tasks, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    List<TaskDeduction> findByTaskAndType(Task task, Integer type);
+    List<TaskDeduction> findByTaskAndType(Task task, TaskDeduction.TaskDeductionType type);
 
-    List<TaskDeduction> findByTaskIdAndToPersonIdAndType(Long task, Long person, Integer type);
+    List<TaskDeduction> findByTaskIdAndToPersonIdAndType(Long task, Long person, TaskDeduction.TaskDeductionType type);
 
     List<TaskDeduction> findByTaskIdAndToPersonIdAndTypeIn(Long task, Long person, List<Integer> types);
 
     List<TaskDeduction> findByTaskAndDateBetween(Task task, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    List<TaskDeduction> findByTaskAndTypeAndDateBetween(Task task, Integer type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+    List<TaskDeduction> findByTaskAndTypeAndDateBetween(Task task, TaskDeduction.TaskDeductionType type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
     List<TaskDeduction> findByTaskAndDateAfterAndDateBefore(Task task, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
@@ -41,13 +41,13 @@ public interface TaskDeductionService extends PagingAndSortingRepository<TaskDed
 
     long countByTaskAndToPersonAndDateAfterAndDateBefore(Task task, Person person, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    long countByTaskAndToPersonAndTypeAndDateAfterAndDateBefore(Task task, Person person, Integer type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+    long countByTaskAndToPersonAndTypeAndDateAfterAndDateBefore(Task task, Person person, TaskDeduction.TaskDeductionType type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    long countByTaskAndToPersonAndTypeAndDateBetween(Task task, Person person, Integer type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+    long countByTaskAndToPersonAndTypeAndDateBetween(Task task, Person person, TaskDeduction.TaskDeductionType type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
     long countByDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    long countByTaskAndToPersonAndType(Task task, Person person, Integer type);
+    long countByTaskAndToPersonAndType(Task task, Person person, TaskDeduction.TaskDeductionType type);
 
-    long countByTaskAndType(Task task, Integer type);
+    long countByTaskAndType(Task task, TaskDeduction.TaskDeductionType type);
 }

@@ -4,11 +4,10 @@ import com.besafx.app.config.EmailSender;
 import com.besafx.app.controller.ReportTaskController;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
-import com.besafx.app.entity.TaskOperation;
+import com.besafx.app.entity.TaskDeduction;
+import com.besafx.app.entity.TaskWarn;
 import com.besafx.app.search.TaskSearch;
-import com.besafx.app.service.PersonService;
-import com.besafx.app.service.TaskOperationService;
-import com.besafx.app.service.TaskService;
+import com.besafx.app.service.*;
 import com.besafx.app.util.DateConverter;
 import com.google.common.collect.Lists;
 import net.sf.jasperreports.engine.JRException;
@@ -25,10 +24,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
@@ -50,6 +46,12 @@ public class ScheduledTasks {
 
     @Autowired
     private TaskOperationService taskOperationService;
+
+    @Autowired
+    private TaskWarnService taskWarnService;
+
+    @Autowired
+    private TaskDeductionService taskDeductionService;
 
     @Autowired
     private ReportTaskController reportTaskController;
@@ -97,13 +99,13 @@ public class ScheduledTasks {
                 log.info("من الفترة: " + DateConverter.getDateInFormatWithTime(startLast12Hour.toDate()));
                 log.info("إلى الفترة: " + DateConverter.getDateInFormatWithTime(endLast12Hour.toDate()));
 
-                long numberOfOperations = taskOperationService.countByTaskAndSenderAndTypeAndDateBetween(task, person, 1, startLast12Hour.toDate(), endLast12Hour.toDate());
+                long numberOfOperations = taskOperationService.countByTaskAndSenderAndDateBetween(task, person, startLast12Hour.toDate(), endLast12Hour.toDate());
 
                 log.info("عدد الحركات فى الفترة = " + numberOfOperations);
 
                 if (numberOfOperations == 0) {
 
-                    long numberOfWarns = taskOperationService.countByTaskAndSenderAndType(task, person, 2);
+                    long numberOfWarns = taskWarnService.countByTaskAndToPersonAndType(task, person, TaskWarn.TaskWarnType.Auto);
 
                     log.info("عدد التحذيرات على المهمة = " + numberOfWarns);
 
@@ -133,7 +135,7 @@ public class ScheduledTasks {
                     builder.append(" ");
                     builder.append("نأمل الإلتزام بالتعليق فى خلال مدة لا تزيد عن 24 ساعة.");
                     log.info("جاري إرسال التحذير...");
-                    createEmail(warningTasks, builder.toString(), 2, person);
+                    createWarnEmail(warningTasks, builder.toString(), person);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -151,7 +153,7 @@ public class ScheduledTasks {
                     builder.append("نظراً لانتهاء العدد المسموح به من التحذيرات،");
                     builder.append(" ");
                     builder.append("نأمل منه مراجعة جهة التكليف.");
-                    createEmail(deductionTasks, builder.toString(), 3, person);
+                    createDeductionEmail(deductionTasks, builder.toString(), person);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -162,37 +164,64 @@ public class ScheduledTasks {
         });
     }
 
-    private void createEmail(List<Task> tasks, String content, Integer type, Person to) throws IOException {
-
-        tasks.stream().forEach(task -> {
-            log.info("جاري إعداد الحركة وإدراجها...");
-            TaskOperation taskOperation = new TaskOperation();
-            Integer maxCode = taskOperationService.findLastCodeByTask(task.getId());
-            if (maxCode == null) {
-                taskOperation.setCode(1);
+    private void createWarnEmail(List<Task> tasks, String content, Person to) throws IOException {
+        ListIterator<Task> listIterator = tasks.listIterator();
+        while (listIterator.hasNext()) {
+            Task task = listIterator.next();
+            log.info("جاري إعداد التحذير وإدراجه...");
+            TaskWarn taskWarn = new TaskWarn();
+            TaskWarn tempTaskWarn = taskWarnService.findTopByTaskAndToPersonOrderByCodeDesc(task, to);
+            if (tempTaskWarn == null) {
+                taskWarn.setCode(1);
             } else {
-                taskOperation.setCode(maxCode + 1);
+                taskWarn.setCode(tempTaskWarn.getCode() + 1);
             }
-            taskOperation.setDate(new Date());
-            taskOperation.setTask(task);
+            taskWarn.setDate(new Date());
+            taskWarn.setTask(task);
             log.info("تعيين الموظف المجازى او المحذر كمرسل للحركة التى تعتبر تحذير او حسم");
-            taskOperation.setSender(to);
-            taskOperation.setContent(content);
-            taskOperation.setType(type);
-            taskOperationService.save(taskOperation);
-            log.info("تم حفظ الحركة الآلية باسم الموظف");
-        });
+            taskWarn.setToPerson(to);
+            taskWarn.setContent(content);
+            taskWarnService.save(taskWarn);
+            log.info("تم حفظ التحذير الآلي باسم الموظف");
+        }
 
         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
         String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
-        message = message.replaceAll("MESSAGE", content);
-
-        String title = type.intValue() == 2 ? "تحذير بالخصم لعدم التعامل مع المهام رقم " + "(" + tasks.stream().map(task -> task.getCode()).collect(Collectors.toList()) + ")" : "خصم لعدم التعامل مع المهام رقم " + "(" + tasks.stream().map(task -> task.getCode()).collect(Collectors.toList()) + ")";
-
+        message = message.replaceAll("MESSAGE", content.toString());
+        String title = "تحذير يومي بشأن عدم التعامل مع المهام";
         emailSender.send(title, message, to.getEmail());
     }
 
-    @Scheduled(cron = "0 0 9 * * SUN,MON,TUE,WED,THU")
+    private void createDeductionEmail(List<Task> tasks, String content, Person to) throws IOException {
+        ListIterator<Task> listIterator = tasks.listIterator();
+        while (listIterator.hasNext()) {
+            Task task = listIterator.next();
+            log.info("جاري إعداد الخصم وإدراجه...");
+            TaskDeduction taskDeduction = new TaskDeduction();
+            TaskDeduction tempTaskDeduction = taskDeductionService.findTopByTaskAndToPersonOrderByCodeDesc(task, to);
+            if (tempTaskDeduction == null) {
+                taskDeduction.setCode(1);
+            } else {
+                taskDeduction.setCode(tempTaskDeduction.getCode() + 1);
+            }
+            taskDeduction.setDate(new Date());
+            taskDeduction.setTask(task);
+            taskDeduction.setDeduction(task.getDeduction());
+            log.info("تعيين الموظف المجازى او المحذر كمرسل للحركة التى تعتبر تحذير او حسم");
+            taskDeduction.setToPerson(to);
+            taskDeduction.setContent(content);
+            taskDeductionService.save(taskDeduction);
+            log.info("تم حفظ الخصم الآلي باسم الموظف");
+        }
+
+        ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
+        String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+        message = message.replaceAll("MESSAGE", content.toString());
+        String title = "خصم يومي بشأن عدم التعامل مع المهام";
+        emailSender.send(title, message, to.getEmail());
+    }
+
+    //    @Scheduled(cron = "0 0 9 * * SUN,MON,TUE,WED,THU")
     public void sendReportAboutTaskTosCheck() throws InterruptedException, IOException, JRException, ExecutionException {
         Iterator<Person> iterator = personService.findAll().iterator();
         while (iterator.hasNext()) {
