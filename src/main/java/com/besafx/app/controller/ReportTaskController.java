@@ -2,10 +2,7 @@ package com.besafx.app.controller;
 
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Task;
-import com.besafx.app.service.TaskCloseRequestService;
-import com.besafx.app.service.TaskOperationService;
-import com.besafx.app.service.TaskService;
-import com.besafx.app.service.TaskToService;
+import com.besafx.app.service.*;
 import com.besafx.app.util.DateConverter;
 import com.besafx.app.util.WrapperUtil;
 import net.sf.jasperreports.engine.*;
@@ -38,6 +35,12 @@ public class ReportTaskController {
 
     @Autowired
     private TaskOperationService taskOperationService;
+
+    @Autowired
+    private TaskWarnService taskWarnService;
+
+    @Autowired
+    private TaskDeductionService taskDeductionService;
 
     @Autowired
     private TaskCloseRequestService taskCloseRequestService;
@@ -83,11 +86,10 @@ public class ReportTaskController {
             if (startDate == null && endDate == null) {
                 task.setTaskOperations(task.getTaskOperations()
                         .stream()
-                        .filter(taskOperation -> taskOperation.getType().intValue() == 1)
                         .collect(Collectors.toList()));
                 wrapperUtil.setObj1(task);
             } else {
-                task.setTaskOperations(task.getTaskOperations().stream().filter(taskOperation -> taskOperation.getType().intValue() == 1).filter(taskOperation -> taskOperation.getDate().after(new Date(startDate)) && taskOperation.getDate().before(new Date(endDate))).collect(Collectors.toList()));
+                task.setTaskOperations(task.getTaskOperations().stream().filter(taskOperation -> taskOperation.getDate().after(new Date(startDate)) && taskOperation.getDate().before(new Date(endDate))).collect(Collectors.toList()));
                 wrapperUtil.setObj1(task);
             }
             wrapperUtil.setObj2(task.getTaskTos().stream().map(to -> to.getPerson().getName()).collect(Collectors.toList()).toString());
@@ -200,8 +202,8 @@ public class ReportTaskController {
             taskToService.findByTask(task).stream().forEach(to -> {
                 WrapperUtil tempWrapperUtil = new WrapperUtil();
                 tempWrapperUtil.setObj1(to.getPerson().getName());
-                tempWrapperUtil.setObj2(taskOperationService.countByTaskAndSenderAndType(task, to.getPerson(), 2));
-                long deductionCount = taskOperationService.countByTaskAndSenderAndType(task, to.getPerson(), 3);
+                tempWrapperUtil.setObj2(task.getTaskWarns().stream().filter(taskWarn -> taskWarn.getToPerson().getId().intValue() == to.getId()));
+                long deductionCount = task.getTaskDeductions().stream().filter(taskDeduction -> taskDeduction.getToPerson().getId().intValue() == to.getId()).count();
                 tempWrapperUtil.setObj3(deductionCount);
                 tempWrapperUtil.setObj4(deductionCount * task.getDeduction());
                 tempWrapperUtil.setObj5(to.getProgress());

@@ -113,7 +113,7 @@ public class TaskDeductionRest {
 
     @RequestMapping(value = "findByTaskAndType/{taskId}/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<TaskDeduction> findByTaskAndType(@PathVariable(value = "taskId") Long taskId, @PathVariable(value = "type") Integer type) {
+    public List<TaskDeduction> findByTaskAndType(@PathVariable(value = "taskId") Long taskId, @PathVariable(value = "type") TaskDeduction.TaskDeductionType type) {
         Task task = taskService.findOne(taskId);
         if (task == null) {
             throw new CustomException("لا توجد هذة المهمة، فضلاً تأكد من الرقم الصحيح");

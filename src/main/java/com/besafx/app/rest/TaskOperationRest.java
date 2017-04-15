@@ -96,13 +96,6 @@ public class TaskOperationRest {
                 .type("success")
                 .icon("fa-black-tie")
                 .build(), person.getName());
-//        notificationService.notifyAllExceptMe(Notification
-//                .builder()
-//                .title("العمليات على المهام")
-//                .message("تم اضافة حركة جديدة بواسطة " + person.getName() + " على المهمة رقم " + taskOperation.getTask().getCode())
-//                .type("warning")
-//                .icon("fa-black-tie")
-//                .build());
         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewOperation.html");
         String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
         message = message.replaceAll("OPERATION_SENDER", taskOperation.getSender().getName());
@@ -113,20 +106,9 @@ public class TaskOperationRest {
         message = message.replaceAll("TASK_TITLE", taskOperation.getTask().getTitle());
         message = message.replaceAll("TASK_PERSON", taskOperation.getTask().getPerson().getName());
 
-//        final String emailTemp = taskOperation.getSender().getEmail();
-//        List<String> emails = new ArrayList<>();
         if (taskOperation.getSender().getId().longValue() != taskOperation.getTask().getPerson().getId().longValue()) {
-//            emails.add(taskOperation.getTask().getPerson().getEmail());
             emailSender.send("حركة جديدة على المهمة رقم: " + "(" + taskOperation.getTask().getCode() + ")", message, taskOperation.getTask().getPerson().getEmail());
         }
-
-//        emails.addAll(taskToService
-//                .findByTask(taskOperation.getTask())
-//                .stream()
-//                .filter(to -> !to.getPerson().getEmail().equals(emailTemp))
-//                .map(to -> to.getPerson().getEmail())
-//                .collect(Collectors.toList()));
-//        emailSender.send("حركة جديدة على المهمة رقم: " + "(" + taskOperation.getTask().getCode() + ")", message, emails);
         return taskOperation;
     }
 
@@ -157,20 +139,6 @@ public class TaskOperationRest {
         }
     }
 
-    @RequestMapping(value = "clearCounters/{taskId}/{personId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public boolean clearCounters(@PathVariable(value = "taskId") Long taskId, @PathVariable(value = "personId") Long personId, Principal principal) {
-        taskOperationService.delete(taskOperationService.findByTaskIdAndSenderIdAndTypeIn(taskId, personId, Lists.newArrayList(2, 3)));
-        notificationService.notifyOne(Notification
-                .builder()
-                .title("العمليات على المهام")
-                .message("تم حذف كل التحذيرات والحسومات على الموظف بالنسبة لهذة المهمة")
-                .type("success")
-                .icon("fa-black-tie")
-                .build(), principal.getName());
-        return true;
-    }
-
     @RequestMapping(value = "findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<TaskOperation> findAll() {
@@ -199,16 +167,6 @@ public class TaskOperationRest {
         return taskOperationService.findByTask(task);
     }
 
-    @RequestMapping(value = "findByTaskAndType/{taskId}/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public List<TaskOperation> findByTaskAndType(@PathVariable(value = "taskId") Long taskId, @PathVariable(value = "type") Integer type) {
-        Task task = taskService.findOne(taskId);
-        if (task == null) {
-            throw new CustomException("لا توجد هذة المهمة، فضلاً تأكد من الرقم الصحيح");
-        }
-        return taskOperationService.findByTaskAndType(task, type);
-    }
-
     @RequestMapping(value = "findIncomingOperationsForMe/{timeType}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<TaskOperation> findIncomingOperationsForMe(@PathVariable(value = "timeType") String timeType, Principal principal) {
@@ -229,7 +187,7 @@ public class TaskOperationRest {
         DateTime tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay();
         switch (timeType) {
             case "Day":
-                tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndTypeAndDateBetween(task, 1, today.toDate(), tomorrow.toDate())));
+                tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndDateBetween(task, today.toDate(), tomorrow.toDate())));
                 break;
             case "Week":
                 Date weekStart = DateConverter.getCurrentWeekStart();
@@ -237,7 +195,7 @@ public class TaskOperationRest {
                 log.info("البحث عن حركات مهام الأسبوع");
                 log.info(DateConverter.getDateInFormatWithTime(weekStart));
                 log.info(DateConverter.getDateInFormatWithTime(weekEnd));
-                tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndTypeAndDateBetween(task, 1, weekStart, weekEnd)));
+                tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndDateBetween(task, weekStart, weekEnd)));
                 break;
             case "Month":
                 DateTime monthStart = today.withDayOfMonth(1);
@@ -245,7 +203,7 @@ public class TaskOperationRest {
                 log.info("البحث عن حركات مهام الشهر");
                 log.info(DateConverter.getDateInFormatWithTime(monthEnd.toDate()));
                 log.info(DateConverter.getDateInFormatWithTime(monthEnd.toDate()));
-                tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndTypeAndDateBetween(task, 1, monthStart.toDate(), monthEnd.toDate())));
+                tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndDateBetween(task, monthStart.toDate(), monthEnd.toDate())));
                 break;
             case "Year":
                 DateTime yearStart = today.withDayOfYear(1);
@@ -253,7 +211,7 @@ public class TaskOperationRest {
                 log.info("البحث عن حركات مهام العام");
                 log.info(DateConverter.getDateInFormatWithTime(yearStart.toDate()));
                 log.info(DateConverter.getDateInFormatWithTime(yearEnd.toDate()));
-                tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndTypeAndDateBetween(task, 1, yearStart.toDate(), yearEnd.toDate())));
+                tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndDateBetween(task, yearStart.toDate(), yearEnd.toDate())));
                 break;
         }
         return taskOperations;

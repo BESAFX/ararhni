@@ -24,31 +24,7 @@ public interface TaskOperationService extends PagingAndSortingRepository<TaskOpe
 
     List<TaskOperation> findByTask(Task task);
 
-    List<TaskOperation> findByType(Integer type);
-
-    List<TaskOperation> findByTaskAndType(Task task, Integer type);
-
-    List<TaskOperation> findByTaskIdAndSenderIdAndType(Long task, Long person, Integer type);
-
-    List<TaskOperation> findByTaskIdAndSenderIdAndTypeIn(Long task, Long person, List<Integer> types);
-
     List<TaskOperation> findByTaskAndDateBetween(Task task, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
-    List<TaskOperation> findByTaskAndTypeAndDateBetween(Task task, Integer type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
-
-    List<TaskOperation> findByTaskAndDateAfterAndDateBefore(Task task, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
-
     long countByTaskAndSenderAndDateBetween(Task task, Person person, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
-
-    long countByTaskAndSenderAndDateAfterAndDateBefore(Task task, Person person, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
-
-    long countByTaskAndSenderAndTypeAndDateAfterAndDateBefore(Task task, Person person, Integer type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
-
-    long countByTaskAndSenderAndTypeAndDateBetween(Task task, Person person, Integer type, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
-
-    long countByDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
-
-    long countByTaskAndSenderAndType(Task task, Person person, Integer type);
-
-    long countByTaskAndType(Task task, Integer type);
 }
