@@ -81,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.sessionManagement()
-                .maximumSessions(1)
+                .maximumSessions(2)
                 .sessionRegistry(sessionRegistry());
     }
 
