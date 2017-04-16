@@ -91,7 +91,7 @@ public class TaskCloseRequestRest {
             @RequestParam(value = "taskId", required = false) final Long taskId,
             @RequestParam(value = "taskPersonId", required = false) final Long taskPersonId,
             @RequestParam(value = "personId", required = false) final Long personId) {
-        return taskCloseRequestSearch.search(timeType, dateFrom, dateTo, taskId, taskPersonId, personId);
+        return taskCloseRequestSearch.getUnApprovedCloseRequests(timeType, dateFrom, dateTo, taskId, taskPersonId, personId);
     }
 
 }

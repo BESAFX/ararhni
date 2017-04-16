@@ -126,6 +126,12 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
             });
         };
 
+        $scope.openDetailsModel = function (closeRequest) {
+            TaskService.findOne(closeRequest.task.id).then(function (data) {
+                ModalProvider.openTaskDetailsModel(data);
+            });
+        };
+
         $scope.refresh = function () {
             switch ($scope.viewType){
                 case 'طلبات الإغلاق/التمديد يومياً':

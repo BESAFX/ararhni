@@ -49,6 +49,10 @@ app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskService', 'TaskOperatio
             ModalProvider.openTaskDeductionCreateModel($scope.task);
         };
 
+        $scope.openCreateTaskToModel = function () {
+            ModalProvider.openTaskToCreateModel($scope.task);
+        };
+
         $scope.findTaskOperations = function () {
             TaskOperationService.findByTask($scope.task).then(function (data) {
                 $scope.task.taskOperations = data;

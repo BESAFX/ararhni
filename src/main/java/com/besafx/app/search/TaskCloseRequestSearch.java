@@ -2,6 +2,7 @@ package com.besafx.app.search;
 
 import com.besafx.app.entity.TaskCloseRequest;
 import com.besafx.app.service.TaskCloseRequestService;
+import com.besafx.app.service.TaskToService;
 import com.besafx.app.util.DateConverter;
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
@@ -15,12 +16,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class TaskCloseRequestSearch {
 
     @Autowired
     private TaskCloseRequestService taskCloseRequestService;
+
+    @Autowired
+    private TaskToService taskToService;
 
     public List<TaskCloseRequest> search(
             final String timeType,
@@ -78,5 +83,17 @@ public class TaskCloseRequestSearch {
         } else {
             return Lists.newArrayList(taskCloseRequestService.findAll());
         }
+    }
+
+    public List<TaskCloseRequest> getUnApprovedCloseRequests(final String timeType,
+                                                             final Long dateFrom,
+                                                             final Long dateTo,
+                                                             final Long taskId,
+                                                             final Long taskPersonId,
+                                                             final Long personId) {
+        return search(timeType, dateFrom, dateTo, taskId, taskPersonId, personId)
+                .stream()
+                .filter(taskCloseRequest -> !taskToService.findByTaskAndPerson(taskCloseRequest.getTask(), taskCloseRequest.getPerson()).getClosed())
+                .collect(Collectors.toList());
     }
 }

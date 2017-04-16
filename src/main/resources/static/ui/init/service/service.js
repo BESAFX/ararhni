@@ -692,6 +692,24 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
         });
     };
 
+    this.openTaskToCreateModel = function (task) {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/task/taskToCreate.html',
+            controller: 'taskToCreateCtrl',
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                task: function () {
+                    return task;
+                }
+            }
+        });
+    };
+
     this.openClearCountersModel = function (task) {
         $uibModal.open({
             animation: true,

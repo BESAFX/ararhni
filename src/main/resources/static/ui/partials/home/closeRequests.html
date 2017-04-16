@@ -63,7 +63,7 @@
                                                 <span> عنوان المهمة / </span>
                                                 <span>
                                                      <a href=""
-                                                        ng-click="viewInfo===2?viewInfo=false:viewInfo=2"><strong>{{closeRequest.task.title}}</strong></a>
+                                                        ng-click="openDetailsModel(closeRequest)"><strong>{{closeRequest.task.title}}</strong></a>
                                                 </span>
                                             </td>
                                             <td colspan="1" class="text-left">
@@ -123,55 +123,6 @@
                                                     <tr>
                                                         <td>البريد الإلكتروني</td>
                                                         <td>{{closeRequest.person.email}}</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr ng-if="viewInfo===2">
-                                            <td colspan="2">
-                                                <table class="table table-bordered">
-                                                    <tbody>
-                                                    <tr>
-                                                        <td colspan="2" class="success"><strong>بيانات المهمة</strong>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>رقم المهمة</td>
-                                                        <td>{{closeRequest.task.code}}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>عنوان المهمة</td>
-                                                        <td>{{closeRequest.task.title}}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>تفاصيل المهمة</td>
-                                                        <td>{{closeRequest.task.content}}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>تاريخ الإنشاء</td>
-                                                        <td>{{closeRequest.task.startDate | kdate: 'yyyy-mm-dd' : 'ar' :
-                                                            'ummalqura'}}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>تاريخ التسليم</td>
-                                                        <td>{{closeRequest.task.endDate | kdate: 'yyyy-mm-dd' : 'ar' :
-                                                            'ummalqura'}}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>جهة التكليف</td>
-                                                        <td>{{task.person.nickname}} {{closeRequest.task.person.name}}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>الموظفون</td>
-                                                        <td>
-                                                            <span class="label label-info"
-                                                                  ng-repeat="to in closeRequest.task.taskTos"
-                                                                  style="margin: 2px">{{to.person.name}}</span>
-                                                        </td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
