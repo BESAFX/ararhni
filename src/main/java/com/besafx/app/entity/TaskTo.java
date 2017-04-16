@@ -24,6 +24,9 @@ public class TaskTo implements Serializable {
 
     private Boolean closed;
 
+    @Enumerated(EnumType.STRING)
+    private PersonDegree degree;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date closeDate;
 
@@ -42,5 +45,9 @@ public class TaskTo implements Serializable {
         ObjectMapper mapper = new ObjectMapper();
         TaskTo taskTo = mapper.readValue(jsonString, TaskTo.class);
         return taskTo;
+    }
+
+    public enum PersonDegree {
+        A, B, C, D, F
     }
 }

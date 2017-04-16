@@ -161,11 +161,19 @@ public class TaskSearch {
 
     }
 
-    public List<Task> getIncomingTasks(String timeType, Long personId) {
+    public List<Task> getIncomingOpenedTasks(String timeType, Long personId) {
         return search(null, null, null, null, null, null, null, null, true, true, timeType, personId);
     }
 
-    public List<Task> getOutgoingTasks(String timeType, Long personId) {
+    public List<Task> getOutgoingOpenedTasks(String timeType, Long personId) {
         return search(null, null, null, null, null, null, null, null, false, true, timeType, personId);
+    }
+
+    public List<Task> getIncomingClosedTasks(String timeType, Long personId) {
+        return search(null, null, null, null, null, null, null, null, true, false, timeType, personId);
+    }
+
+    public List<Task> getOutgoingClosedTasks(String timeType, Long personId) {
+        return search(null, null, null, null, null, null, null, null, false, false, timeType, personId);
     }
 }

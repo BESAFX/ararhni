@@ -16,6 +16,11 @@ app.factory("TaskDeductionService",
                     return response.data;
                 });
             },
+            clearCounters: function (taskId, personId) {
+                return $http.get("/api/taskDeduction/clearCounters/" + taskId + "/" + personId).then(function (response) {
+                    return response.data;
+                });
+            },
             count: function () {
                 return $http.get("/api/taskDeduction/count").then(function (response) {
                     return response.data;

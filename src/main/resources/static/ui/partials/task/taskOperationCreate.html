@@ -12,6 +12,79 @@
             <div class="form-group text-right col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
+                        <div class="panel-title-box pull-right">
+                            <h3>البيانات الاساسية</h3>
+                        </div>
+                    </div>
+                    <div class="panel-body panel-body-table">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td>رقم المهمة</td>
+                                <td>{{taskOperation.task.code}}</td>
+                            </tr>
+                            <tr>
+                                <td>عنوان المهمة</td>
+                                <td>{{taskOperation.task.title}}</td>
+                            </tr>
+                            <tr>
+                                <td>تفاصيل المهمة</td>
+                                <td>{{taskOperation.task.content}}</td>
+                            </tr>
+                            <tr>
+                                <td>الحد الأقصى للتحذيرات</td>
+                                <td>{{taskOperation.task.warn}}</td>
+                            </tr>
+                            <tr>
+                                <td class="fit">مقدار الحسم عند الوصول للحد الاقصي للتحذيرات</td>
+                                <td>{{taskOperation.task.deduction}} ريال سعودي</td>
+                            </tr>
+                            <tr>
+                                <td>مقدار الحسم عند إغلاق المهمة تلقائياً</td>
+                                <td>{{taskOperation.task.deductionOnAutoClose}} ريال سعودي</td>
+                            </tr>
+                            <tr>
+                                <td>تاريخ الإنشاء</td>
+                                <td>{{taskOperation.task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>تاريخ التسليم</td>
+                                <td>{{taskOperation.task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>جهة التكليف</td>
+                                <td>{{taskOperation.task.person.nickname}} / {{taskOperation.task.person.name}}</td>
+                            </tr>
+                            <tr>
+                                <td>الموظفون</td>
+                                <td>
+                                    <span class="label label-info"
+                                          ng-repeat="to in taskOperation.task.taskTos"
+                                          style="margin: 2px">{{to.person.name}}</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-right col-md-12">
+                <div class="alert alert-info" role="alert">
+                    <strong>ذكرك لإنجازاتك فى خلال فترة زمنية من العمل له عدة فوائد فهو:</strong>
+                    <ul>
+                        <li>يقيك من المسائلة من قبل مدرائك</li>
+                        <li>يسهل من تقييمك و تقييم الآخرين لآدائك فى العمل</li>
+                        <li>يحفظ حقوقك</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="form-group text-right col-md-12">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
                         <div class="pull-left">
                             <toggle-switch
                                     dir="ltr"
@@ -23,53 +96,10 @@
                             </toggle-switch>
                         </div>
                         <div class="panel-title-box pull-right">
-                            <h3>البيانات الاساسية</h3>
+                            <h3>البيانات المطلوبة</h3>
                         </div>
                     </div>
                     <div class="panel-body">
-                        <div class="form-group text-right col-md-12" ng-show="form.$invalid && form.$submitted">
-                            <div class="alert alert-danger" role="alert">
-                                <strong>فضلاً اكمل الحقول المطلوبة</strong>
-                            </div>
-                        </div>
-
-                        <div class="form-group text-right col-md-6">
-                            <label for="person" class="control-label">جهة التكليف</label>
-                            <input id="person"
-                                   class="form-control text-right"
-                                   ng-model="taskOperation.task.person.name"
-                                   disabled="disabled">
-                            </input>
-                        </div>
-
-                        <div class="form-group text-right col-md-6">
-                            <label for="toPerson" class="control-label">الموظفين</label>
-                            <input id="toPerson"
-                                   class="form-control text-right"
-                                   ng-model="taskOperation.task.tos"
-                                   disabled="disabled">
-                            </input>
-                        </div>
-
-                        <div class="form-group text-right col-md-12">
-                            <label for="title" class="control-label">عنوان المهمة</label>
-                            <input id="title"
-                                   class="form-control text-right"
-                                   ng-model="taskOperation.task.title"
-                                   disabled="disabled">
-                            </input>
-                        </div>
-
-                        <div class="form-group text-right col-md-12">
-                            <label for="content" class="control-label">تفاصيل المهمة</label>
-                            <textarea id="content"
-                                      type="text"
-                                      class="form-control text-right"
-                                      msd-elastic="\n"
-                                      ng-model="taskOperation.task.content"
-                                      disabled="disabled">
-                             </textarea>
-                        </div>
 
                         <div class="form-group text-right col-md-12">
                             <label for="note" class="control-label">الحركة / التعليق</label>
@@ -80,9 +110,16 @@
                                       required="required"
                                       class="form-control text-right"
                                       disable-validation-message=""
-                                      placeholder="اذكر باختصار الحركة / التعليق"
+                                      placeholder="اذكر باختصار منجزات العمل"
                                       ng-model="taskOperation.content">
                              </textarea>
+                        </div>
+
+                        <div class="form-group text-right col-md-12">
+                            <div class="alert alert-danger" role="alert">
+                                <strong>ملحوظة هامة : لا يمكن تعديل الحركات/التعليقات فيما بعد فاحرص على كتابة كل ما
+                                    أنجزته</strong>
+                            </div>
                         </div>
 
                     </div>

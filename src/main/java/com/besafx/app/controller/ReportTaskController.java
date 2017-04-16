@@ -170,7 +170,7 @@ public class ReportTaskController {
     }
 
     @Async("threadPoolReportGenerator")
-    public Future<byte[]> ReportTaskTosCheck(List<Long> tasksList) throws JRException, IOException, InterruptedException {
+    public Future<byte[]> ReportTaskTosCheck(List<Long> tasksList) {
         /**
          * Insert Parameters
          */
@@ -186,10 +186,15 @@ public class ReportTaskController {
         List<WrapperUtil> list = new ArrayList<>();
         initTaskTosCheckList(tasksList, list);
 
-        ClassPathResource jrxmlFile = new ClassPathResource("/report/task/TaskTosCheck.jrxml");
-        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(list));
-        return new AsyncResult<>(JasperExportManager.exportReportToPdf(jasperPrint));
+        try {
+            ClassPathResource jrxmlFile = new ClassPathResource("/report/task/TaskTosCheck.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(list));
+            return new AsyncResult<>(JasperExportManager.exportReportToPdf(jasperPrint));
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            return null;
+        }
     }
 
     private void initTaskTosCheckList(@RequestParam("tasksList") List<Long> tasksList, List<WrapperUtil> list) {
@@ -201,9 +206,10 @@ public class ReportTaskController {
             List<WrapperUtil> tempList = new ArrayList<>();
             taskToService.findByTask(task).stream().forEach(to -> {
                 WrapperUtil tempWrapperUtil = new WrapperUtil();
+                long warnCount = taskWarnService.countByTaskAndToPerson(task, to.getPerson());
+                long deductionCount = taskDeductionService.countByTaskAndToPerson(task, to.getPerson());
                 tempWrapperUtil.setObj1(to.getPerson().getName());
-                tempWrapperUtil.setObj2(task.getTaskWarns().stream().filter(taskWarn -> taskWarn.getToPerson().getId().intValue() == to.getId()));
-                long deductionCount = task.getTaskDeductions().stream().filter(taskDeduction -> taskDeduction.getToPerson().getId().intValue() == to.getId()).count();
+                tempWrapperUtil.setObj2(warnCount);
                 tempWrapperUtil.setObj3(deductionCount);
                 tempWrapperUtil.setObj4(deductionCount * task.getDeduction());
                 tempWrapperUtil.setObj5(to.getProgress());

@@ -49,5 +49,7 @@ public interface TaskWarnService extends PagingAndSortingRepository<TaskWarn, Lo
 
     long countByTaskAndToPersonAndType(Task task, Person person, TaskWarn.TaskWarnType type);
 
+    long countByTaskAndToPerson(Task task, Person person);
+
     long countByTaskAndType(Task task, TaskWarn.TaskWarnType type);
 }

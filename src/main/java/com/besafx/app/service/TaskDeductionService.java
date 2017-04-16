@@ -49,5 +49,7 @@ public interface TaskDeductionService extends PagingAndSortingRepository<TaskDed
 
     long countByTaskAndToPersonAndType(Task task, Person person, TaskDeduction.TaskDeductionType type);
 
+    long countByTaskAndToPerson(Task task, Person person);
+
     long countByTaskAndType(Task task, TaskDeduction.TaskDeductionType type);
 }

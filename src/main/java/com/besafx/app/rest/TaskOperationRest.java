@@ -170,14 +170,14 @@ public class TaskOperationRest {
     @RequestMapping(value = "findIncomingOperationsForMe/{timeType}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<TaskOperation> findIncomingOperationsForMe(@PathVariable(value = "timeType") String timeType, Principal principal) {
-        List<Task> tasks = taskSearch.getIncomingTasks("All", personService.findByEmail(principal.getName()).getId());
+        List<Task> tasks = taskSearch.getIncomingOpenedTasks("All", personService.findByEmail(principal.getName()).getId());
         return getTaskOperations(timeType, tasks);
     }
 
     @RequestMapping(value = "findOutgoingOperationsForMe/{timeType}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<TaskOperation> findOutgoingOperationsForMe(@PathVariable(value = "timeType") String timeType, Principal principal) {
-        List<Task> tasks = taskSearch.getOutgoingTasks("All", personService.findByEmail(principal.getName()).getId());
+        List<Task> tasks = taskSearch.getOutgoingOpenedTasks("All", personService.findByEmail(principal.getName()).getId());
         return getTaskOperations(timeType, tasks);
     }
 

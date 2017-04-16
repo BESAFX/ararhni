@@ -228,7 +228,7 @@ public class ScheduledTasks {
         Iterator<Person> iterator = personService.findAll().iterator();
         while (iterator.hasNext()) {
             Person person = iterator.next();
-            List<Task> tasks = taskService.findByPerson(person);
+            List<Task> tasks = taskSearch.getOutgoingOpenedTasks("All", person.getId());
             if (!tasks.isEmpty()) {
                 log.info("جاري العمل على مهام: " + person.getName());
                 Future<byte[]> work = reportTaskController.ReportTaskTosCheck(tasks.stream().map(task -> task.getId()).collect(Collectors.toList()));
@@ -239,7 +239,7 @@ public class ScheduledTasks {
                 FileUtils.writeByteArrayToFile(reportFile, fileBytes);
                 log.info("جاري تحويل الملف");
                 Thread.sleep(10000);
-                Future<Boolean> mail = emailSender.send("تقرير متابعة الموظفين المكلفين - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(new FileSystemResource(reportFile)));
+                Future<Boolean> mail = emailSender.send("تقرير يومي لمتابعة الموظفين المكلفين - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(new FileSystemResource(reportFile)));
                 mail.get();
                 log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
             }

@@ -86,6 +86,23 @@ public class TaskDeductionRest {
         }
     }
 
+    @RequestMapping(value = "clearCounters/{taskId}/{personId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public boolean clearCounters(@PathVariable(value = "taskId") Long taskId, @PathVariable(value = "personId") Long personId, Principal principal) {
+        if (!taskService.findOne(taskId).getPerson().getEmail().equals(principal.getName())) {
+            throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه حذف الخصومات");
+        }
+        taskDeductionService.delete(taskDeductionService.findByTaskIdAndToPersonIdAndType(taskId, personId, TaskDeduction.TaskDeductionType.Auto));
+        notificationService.notifyOne(Notification
+                .builder()
+                .title("العمليات على المهام")
+                .message("تم حذف كل الخصومات الإلكترونية على الموظف بالنسبة لهذة المهمة")
+                .type("success")
+                .icon("fa-black-tie")
+                .build(), principal.getName());
+        return true;
+    }
+
     @RequestMapping(value = "findAll", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<TaskDeduction> findAll() {
@@ -127,14 +144,14 @@ public class TaskDeductionRest {
     @RequestMapping(value = "findIncomingWarnsForMe/{timeType}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<TaskDeduction> findIncomingWarnsForMe(@PathVariable(value = "timeType") String timeType, Principal principal) {
-        List<Task> tasks = taskSearch.getIncomingTasks("All", personService.findByEmail(principal.getName()).getId());
+        List<Task> tasks = taskSearch.getIncomingOpenedTasks("All", personService.findByEmail(principal.getName()).getId());
         return getTaskDeductions(timeType, tasks);
     }
 
     @RequestMapping(value = "findOutgoingWarnsForMe/{timeType}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<TaskDeduction> findOutgoingWarnsForMe(@PathVariable(value = "timeType") String timeType, Principal principal) {
-        List<Task> tasks = taskSearch.getOutgoingTasks("All", personService.findByEmail(principal.getName()).getId());
+        List<Task> tasks = taskSearch.getOutgoingOpenedTasks("All", personService.findByEmail(principal.getName()).getId());
         return getTaskDeductions(timeType, tasks);
     }
 

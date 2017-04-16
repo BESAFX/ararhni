@@ -569,7 +569,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'taskOperationCreateCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 task: function () {
                     return task;
@@ -587,6 +587,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'taskRequestCloseCtrl',
             backdrop: 'static',
             keyboard: false,
+            size: 'lg',
             resolve: {
                 task: function () {
                     return task;
@@ -610,7 +611,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'taskProgressCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 task: function () {
                     return task;
@@ -700,7 +701,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'clearCountersCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 task: function () {
                     return task;

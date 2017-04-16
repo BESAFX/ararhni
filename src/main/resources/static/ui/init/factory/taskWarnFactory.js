@@ -16,6 +16,11 @@ app.factory("TaskWarnService",
                     return response.data;
                 });
             },
+            clearCounters: function (taskId, personId) {
+                return $http.get("/api/taskWarn/clearCounters/" + taskId + "/" + personId).then(function (response) {
+                    return response.data;
+                });
+            },
             count: function () {
                 return $http.get("/api/taskWarn/count").then(function (response) {
                     return response.data;

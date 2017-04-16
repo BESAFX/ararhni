@@ -78,7 +78,7 @@
             </div>
 
             <div class="form-group text-right col-md-12">
-                <div class="alert alert-danger" role="alert">
+                <div class="alert alert-info" role="alert">
                     <strong>عند إغلاق المهمة على موظف من المكلفين لن يكون بإمكانه اضافة حركات او تعليقات على
                         المهمة مرة اخرى، بالاضافة الى انه لن تصله رسائل تحذير او خصومات بشأن المهمة، ولكن
                         بامكانه متابعة المهمة حتى وقت إغلاقها المحدد من قبل جهة التكليف.</strong>
@@ -120,6 +120,24 @@
                                 </toggle-switch>
                             </div>
                         </div>
+
+                        <div class="form-group text-right col-md-12">
+                            <label for="importance" class="control-label">
+                                <span>تقييم الآداء</span>
+                            </label>
+                            <select id="importance"
+                                    placeholder="اختر درجة التقييم للمساعدة فى التصنيف"
+                                    class="form-control text-right"
+                                    ng-model="buffer.taskTo.degree"
+                                    focus-index="2">
+                                <option value="A">ممتاز</option>
+                                <option value="B">جيد جداً</option>
+                                <option value="C">جيد</option>
+                                <option value="D">مقبول</option>
+                                <option value="F">سيئ</option>
+                            </select>
+                        </div>
+
                     </div>
                 </div>
             </div>

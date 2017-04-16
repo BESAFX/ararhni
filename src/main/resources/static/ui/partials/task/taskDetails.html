@@ -14,6 +14,14 @@
             <div class="form-group text-right col-md-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
+                        <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                            <li>
+                                <a href="" ng-click="refreshTask()" tooltip-append-to-body="true"
+                                   uib-tooltip="تحديث المهمة">
+                                    <span class="fa fa-refresh"></span>
+                                </a>
+                            </li>
+                        </ul>
                         <div class="panel-title-box pull-right">
                             <h3>البيانات الاساسية</h3>
                         </div>
@@ -145,6 +153,16 @@
                                    ng-click="openClosedModel()" uib-tooltip="إغلاق المهمة لموظف">
                                     <span class="fa fa-power-off"></span>
                                 </a>
+                                <a href="" ng-click="openCreateWarnModel()" ng-if="task.person.id===me.id"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="ارسال تحذير">
+                                    <span class="fa fa-bell-o"></span>
+                                </a>
+                                <a href="" ng-click="openCreateDeductionModel()" ng-if="task.person.id===me.id"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="ارسال خصم">
+                                    <span class="fa fa-bomb"></span>
+                                </a>
                             </li>
                         </ul>
                         <div class="panel-title-box pull-right">
@@ -196,6 +214,16 @@
                                 <a href="" tooltip-append-to-body="true" ng-if="task.person.id===me.id"
                                    ng-click="openExtensionModel()" uib-tooltip="تمديد المهمة لفترة">
                                     <span class="fa fa-battery"></span>
+                                </a>
+                                <a href="" ng-click="openCreateWarnModel()" ng-if="task.person.id===me.id"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="ارسال تحذير">
+                                    <span class="fa fa-bell-o"></span>
+                                </a>
+                                <a href="" ng-click="openCreateDeductionModel()" ng-if="task.person.id===me.id"
+                                   tooltip-append-to-body="true"
+                                   uib-tooltip="ارسال خصم">
+                                    <span class="fa fa-bomb"></span>
                                 </a>
                             </li>
                         </ul>
