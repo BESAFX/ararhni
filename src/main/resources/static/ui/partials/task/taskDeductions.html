@@ -83,6 +83,7 @@
                                     <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href="" ng-click="openCreateDeductionModel()" tooltip-append-to-body="true"
+                                   ng-if="task.person.id===me.id"
                                    uib-tooltip="اضافة خصم">
                                     <span class="fa fa-bomb"></span>
                                 </a>
@@ -149,6 +150,7 @@
             </button>
             <button type="button"
                     ng-click="openCreateDeductionModel()"
+                    ng-if="task.person.id===me.id"
                     class="btn btn-success">
                 <i class="fa fa-bomb fa-lg"></i>
                 <span>اضافة خصم جديد</span>

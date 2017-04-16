@@ -94,10 +94,6 @@
                                    ng-click="findTaskOperations()" uib-tooltip="تكليف موظف جديد">
                                     <span class="fa fa-plus"></span>
                                 </a>
-                                <a href="" tooltip-append-to-body="true" ng-if="task.person.id===me.id"
-                                   ng-click="openClearWarnsAndDeductionsModel()" uib-tooltip="تصفير العدادات">
-                                    <span class="fa fa-eraser"></span>
-                                </a>
                             </li>
                         </ul>
                         <div class="panel-title-box pull-right">
@@ -258,8 +254,13 @@
                                     <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href="" ng-click="openCreateOperationModel()" tooltip-append-to-body="true"
+                                   ng-if="task.person.id===me.id"
                                    uib-tooltip="اضافة تحذير">
                                     <span class="fa fa-bell-o"></span>
+                                </a>
+                                <a href="" tooltip-append-to-body="true" ng-if="task.person.id===me.id"
+                                   ng-click="openClearWarnsAndDeductionsModel()" uib-tooltip="حذف التحذيرات">
+                                    <span class="fa fa-eraser"></span>
                                 </a>
                             </li>
                         </ul>
@@ -318,8 +319,13 @@
                                     <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href="" ng-click="openCreateDeductionModel()" tooltip-append-to-body="true"
+                                   ng-if="task.person.id===me.id"
                                    uib-tooltip="اضافة خصم">
                                     <span class="fa fa-bomb"></span>
+                                </a>
+                                <a href="" tooltip-append-to-body="true" ng-if="task.person.id===me.id"
+                                   ng-click="openClearWarnsAndDeductionsModel()" uib-tooltip="حذف الخصومات">
+                                    <span class="fa fa-eraser"></span>
                                 </a>
                             </li>
                         </ul>

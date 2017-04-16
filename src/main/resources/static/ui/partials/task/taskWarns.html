@@ -83,6 +83,7 @@
                                     <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href="" ng-click="openCreateOperationModel()" tooltip-append-to-body="true"
+                                   ng-if="task.person.id===me.id"
                                    uib-tooltip="اضافة تحذير">
                                     <span class="fa fa-bell-o"></span>
                                 </a>
@@ -149,6 +150,7 @@
             </button>
             <button type="button"
                     ng-click="openCreateWarnModel()"
+                    ng-if="task.person.id===me.id"
                     class="btn btn-success">
                 <i class="fa fa-bell-o fa-lg"></i>
                 <span>اضافة تحذير جديد</span>
