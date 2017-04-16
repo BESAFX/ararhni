@@ -94,7 +94,7 @@
                     </div>
                     <div class="panel-body panel-body-table">
                         <div class="table-responsive">
-                            <table st-table="collectionOperation" st-safe-src="task.taskWarns"
+                            <table st-table="collectionWarns" st-safe-src="task.taskWarns"
                                    class="table table-bordered">
                                 <thead>
                                 <tr>
@@ -108,23 +108,23 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="taskOperation in collectionOperation">
-                                    <td>{{taskOperation.code}}</td>
-                                    <td>{{taskOperation.type}}</td>
-                                    <td class="fit">{{taskOperation.toPerson.nickname}} /
-                                        {{taskOperation.toPerson.name}}
+                                <tr ng-repeat="taskWarn in collectionWarns">
+                                    <td>{{taskWarn.code}}</td>
+                                    <td>{{taskWarn.type}}</td>
+                                    <td class="fit">{{taskWarn.toPerson.nickname}} /
+                                        {{taskWarn.toPerson.name}}
                                     </td>
-                                    <td st-select-row-custom="taskOperation">
-                                        {{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
-                                        <span class="label label-success">{{taskOperation.date | date:'h:m a'}}</span>
+                                    <td st-select-row-custom="taskWarn">
+                                        {{taskWarn.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                        <span class="label label-success">{{taskWarn.date | date:'h:m a'}}</span>
                                     </td>
                                     <td>
-                                        {{taskOperation.content}}
+                                        {{taskWarn.content}}
                                     </td>
                                 </tr>
                                 <tr class="blank_row"
                                     style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!collectionOperation || collectionOperation.length ==0">
+                                    ng-show="!collectionWarns || collectionWarns.length ==0">
                                     <td colspan="5">لا توجد تحذيرات</td>
                                 </tr>
                                 </tbody>

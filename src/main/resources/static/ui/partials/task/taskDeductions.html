@@ -94,7 +94,7 @@
                     </div>
                     <div class="panel-body panel-body-table">
                         <div class="table-responsive">
-                            <table st-table="collectionOperation" st-safe-src="task.taskDeductions"
+                            <table st-table="collectionDeductions" st-safe-src="task.taskDeductions"
                                    class="table table-bordered">
                                 <thead>
                                 <tr>
@@ -109,22 +109,22 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="taskOperation in collectionOperation">
-                                    <td>{{taskOperation.code}}</td>
-                                    <td>{{taskOperation.type}}</td>
-                                    <td>{{taskOperation.deduction | currency:'SAR':0}}</td>
-                                    <td class="fit">{{taskOperation.toPerson.nickname}} /
-                                        {{taskOperation.toPerson.name}}
+                                <tr ng-repeat="taskDeduction in collectionDeductions">
+                                    <td>{{taskDeduction.code}}</td>
+                                    <td>{{taskDeduction.type}}</td>
+                                    <td>{{taskDeduction.deduction | currency:'SAR':0}}</td>
+                                    <td class="fit">{{taskDeduction.toPerson.nickname}} /
+                                        {{taskDeduction.toPerson.name}}
                                     </td>
-                                    <td st-select-row-custom="taskOperation">
-                                        {{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
-                                        <span class="label label-success">{{taskOperation.date | date:'h:m a'}}</span>
+                                    <td st-select-row-custom="taskDeduction">
+                                        {{taskDeduction.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                        <span class="label label-success">{{taskDeduction.date | date:'h:m a'}}</span>
                                     </td>
-                                    <td>{{taskOperation.content}}</td>
+                                    <td>{{taskDeduction.content}}</td>
                                 </tr>
                                 <tr class="blank_row"
                                     style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!collectionOperation || collectionOperation.length ==0">
+                                    ng-show="!collectionDeductions || collectionDeductions.length ==0">
                                     <td colspan="6">لا توجد خصومات</td>
                                 </tr>
                                 </tbody>
