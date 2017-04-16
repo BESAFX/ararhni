@@ -42,7 +42,7 @@ public class TaskDeduction implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "toPerson")
-    @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees", "team"}, allowSetters = true)
     private Person toPerson;
 
     @JsonCreator

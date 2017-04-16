@@ -178,6 +178,7 @@ public class ScheduledTasks {
             }
             taskWarn.setDate(new Date());
             taskWarn.setTask(task);
+            taskWarn.setType(TaskWarn.TaskWarnType.Auto);
             log.info("تعيين الموظف المجازى او المحذر كمرسل للحركة التى تعتبر تحذير او حسم");
             taskWarn.setToPerson(to);
             taskWarn.setContent(content);
@@ -206,6 +207,7 @@ public class ScheduledTasks {
             }
             taskDeduction.setDate(new Date());
             taskDeduction.setTask(task);
+            taskDeduction.setType(TaskDeduction.TaskDeductionType.Auto);
             taskDeduction.setDeduction(task.getDeduction());
             log.info("تعيين الموظف المجازى او المحذر كمرسل للحركة التى تعتبر تحذير او حسم");
             taskDeduction.setToPerson(to);

@@ -34,7 +34,7 @@ public class TaskCloseRequest implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "person")
-    @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees", "team"}, allowSetters = true)
     private Person person;
 
     @Temporal(TemporalType.TIMESTAMP)
