@@ -45,6 +45,9 @@ public class ScheduledTasks {
     private TaskSearch taskSearch;
 
     @Autowired
+    private TaskToService taskToService;
+
+    @Autowired
     private TaskOperationService taskOperationService;
 
     @Autowired
@@ -93,7 +96,10 @@ public class ScheduledTasks {
 
             DateTime nowCheckDate = new DateTime();
 
-            tasks.stream().filter(task -> nowCheckDate.isAfter(new DateTime(task.getStartDate()).plusHours(24))).forEach(task -> {
+            tasks.stream()
+                    .filter(task -> !taskToService.findByTaskAndPerson(task, person).getClosed())
+                    .filter(task -> nowCheckDate.isAfter(new DateTime(task.getStartDate()).plusHours(24)))
+                    .forEach(task -> {
 
                 log.info("البحث عن عدد حركات الموظف " + person.getName() + " على المهمة رقم " + task.getCode());
                 log.info("من الفترة: " + DateConverter.getDateInFormatWithTime(startLast12Hour.toDate()));
