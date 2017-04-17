@@ -1,32 +1,38 @@
 package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
+import com.besafx.app.config.EmailSender;
+import com.besafx.app.entity.Person;
 import com.besafx.app.entity.TaskCloseRequest;
 import com.besafx.app.search.TaskCloseRequestSearch;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.TaskCloseRequestService;
-import com.besafx.app.service.TaskService;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/taskCloseRequest/")
 public class TaskCloseRequestRest {
 
-    @Autowired
-    private PersonService personService;
+    private final static Logger log = LoggerFactory.getLogger(TaskCloseRequest.class);
 
     @Autowired
-    private TaskService taskService;
+    private PersonService personService;
 
     @Autowired
     private TaskCloseRequestService taskCloseRequestService;
@@ -37,26 +43,58 @@ public class TaskCloseRequestRest {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private EmailSender emailSender;
+
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public TaskCloseRequest create(@RequestBody TaskCloseRequest taskCloseRequest, Principal principal) throws IOException {
-        Integer maxCode = taskCloseRequestService.findLastCodeByTask(taskCloseRequest.getTask().getId());
-        if (maxCode == null) {
-            taskCloseRequest.setCode(1);
-        } else {
-            taskCloseRequest.setCode(maxCode + 1);
+    public TaskCloseRequest create(@RequestBody TaskCloseRequest taskCloseRequest, Principal principal) {
+
+        if (!taskCloseRequest.getTask().getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()).contains(principal.getName())) {
+            throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط الموظفين المكلفين بإمكانهم ذلك.");
         }
-        taskCloseRequest.setDate(new Date());
-        taskCloseRequest.setPerson(personService.findByEmail(principal.getName()));
-        taskCloseRequest = taskCloseRequestService.save(taskCloseRequest);
-        return taskCloseRequest;
+
+        try {
+
+            Person person = personService.findByEmail(principal.getName());
+            TaskCloseRequest tempTaskCloseRequest = taskCloseRequestService.findTopByTaskIdOrderByCodeDesc(taskCloseRequest.getTask().getId());
+            if (tempTaskCloseRequest == null) {
+                taskCloseRequest.setCode(1);
+            } else {
+                taskCloseRequest.setCode(tempTaskCloseRequest.getCode() + 1);
+            }
+
+            taskCloseRequest.setDate(new Date());
+            taskCloseRequest.setPerson(person);
+            taskCloseRequestService.save(taskCloseRequest);
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title("العمليات على المهام")
+                    .message("تم إرسال الطلب بنجاح")
+                    .type("success")
+                    .icon(taskCloseRequest.getType() ? "fa-power-off" : "fa-battery")
+                    .build(), principal.getName());
+
+            ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/TaskCloseRequest.html");
+            String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+            message = message.replaceAll("TASK_CODE", taskCloseRequest.getTask().getCode().toString());
+            message = message.replaceAll("TASK_CLOSE_REQUEST_PERSON", person.getName());
+            message = message.replaceAll("TASK_CLOSE_REQUEST_NOTE", taskCloseRequest.getNote());
+            emailSender.send((taskCloseRequest.getType() ? "طلب إغلاق إلى المهمة رقم: " : "طلب تمديد للمهمة رقم: ") + "(" + taskCloseRequest.getTask().getCode() + ")" + " - " + person.getName(), message, taskCloseRequest.getTask().getPerson().getEmail());
+
+            return taskCloseRequest;
+
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            return null;
+        }
     }
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public void delete(@PathVariable Long id, Principal principal) throws IOException {
         TaskCloseRequest object = taskCloseRequestService.findOne(id);
-        if(object != null){
+        if (object != null) {
             taskCloseRequestService.delete(object);
             notificationService.notifyOne(Notification
                     .builder()
@@ -65,7 +103,7 @@ public class TaskCloseRequestRest {
                     .type("success")
                     .icon("fa-power-off")
                     .build(), principal.getName());
-        }else{
+        } else {
             throw new CustomException("هذا الطلب لم يعد موجوداً، فضلاً قم بإعادة التحميل او التأكد من رقم الطلب المراد حذفه");
         }
     }
@@ -91,7 +129,7 @@ public class TaskCloseRequestRest {
             @RequestParam(value = "taskId", required = false) final Long taskId,
             @RequestParam(value = "taskPersonId", required = false) final Long taskPersonId,
             @RequestParam(value = "personId", required = false) final Long personId) {
-        return taskCloseRequestSearch.getUnApprovedCloseRequests(timeType, dateFrom, dateTo, taskId, taskPersonId, personId);
+        return taskCloseRequestSearch.search(timeType, dateFrom, dateTo, taskId, taskPersonId, personId);
     }
 
 }

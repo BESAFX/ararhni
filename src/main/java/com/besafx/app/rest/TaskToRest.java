@@ -3,7 +3,9 @@ package com.besafx.app.rest;
 import com.besafx.app.config.CustomException;
 import com.besafx.app.config.EmailSender;
 import com.besafx.app.entity.Task;
+import com.besafx.app.entity.TaskOperation;
 import com.besafx.app.entity.TaskTo;
+import com.besafx.app.service.TaskOperationService;
 import com.besafx.app.service.TaskService;
 import com.besafx.app.service.TaskToService;
 import com.besafx.app.util.DateConverter;
@@ -28,6 +30,9 @@ public class TaskToRest {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private TaskOperationService taskOperationService;
 
     @Autowired
     private TaskToService taskToService;
@@ -62,13 +67,27 @@ public class TaskToRest {
                 .build(), principal.getName());
 
         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewTask.html");
-        String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
-        message = message.replaceAll("TASK_CODE", taskTo.getTask().getCode().toString());
-        message = message.replaceAll("TASK_TITLE", taskTo.getTask().getTitle());
-        message = message.replaceAll("TASK_CONTENT", taskTo.getTask().getContent());
-        message = message.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(taskTo.getTask().getEndDate()));
-        message = message.replaceAll("TASK_PERSON", taskTo.getTask().getPerson().getName());
-        emailSender.send("مهمة جديدة رقم: " + "(" + taskTo.getTask().getCode() + ")", message, taskTo.getPerson().getEmail());
+        String email = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+        email = email.replaceAll("TASK_CODE", taskTo.getTask().getCode().toString());
+        email = email.replaceAll("TASK_TITLE", taskTo.getTask().getTitle());
+        email = email.replaceAll("TASK_CONTENT", taskTo.getTask().getContent());
+        email = email.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(taskTo.getTask().getEndDate()));
+        email = email.replaceAll("TASK_PERSON", taskTo.getTask().getPerson().getName());
+        emailSender.send("مهمة جديدة رقم: " + "(" + taskTo.getTask().getCode() + ")", email, taskTo.getPerson().getEmail());
+
+        TaskOperation taskOperation = new TaskOperation();
+        TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskTo.getTask().getId());
+        if (tempTaskOperation == null) {
+            taskOperation.setCode(1);
+        } else {
+            taskOperation.setCode(tempTaskOperation.getCode() + 1);
+        }
+        taskOperation.setDate(new Date());
+        taskOperation.setSender(taskTo.getTask().getPerson());
+        taskOperation.setTask(taskTo.getTask());
+        taskOperation.setType(TaskOperation.OperationType.AddPerson);
+        taskOperation.setContent("تحويل المهمة إلى " + taskTo.getPerson().getNickname() + " / " + taskTo.getPerson().getName());
+        taskOperationService.save(taskOperation);
 
         return taskTo;
     }
@@ -131,6 +150,12 @@ public class TaskToRest {
     @ResponseBody
     public TaskTo findOne(@PathVariable Long id) {
         return taskToService.findOne(id);
+    }
+
+    @RequestMapping(value = "findByTask/{taskId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public List<TaskTo> findByTask(@PathVariable Long taskId) {
+        return taskToService.findByTaskId(taskId);
     }
 
     @RequestMapping(value = "count", produces = MediaType.APPLICATION_JSON_VALUE)

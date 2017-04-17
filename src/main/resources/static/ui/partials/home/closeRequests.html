@@ -46,7 +46,7 @@
                         <table st-table="collection" st-safe-src="closeRequests"
                                class="table table-bordered table-striped">
                             <tbody>
-                            <tr ng-repeat="closeRequest in collection  | orderBy:date:true">
+                            <tr ng-repeat="closeRequest in collection | filter:{approved:null} | orderBy:date:true">
                                 <td>
                                     <table width="100%">
                                         <tbody>
@@ -79,21 +79,6 @@
                                             <td colspan="1" class="text-left" style="padding: 10px 0px 10px 0px;">
                                                 <ul class="panel-controls pull-left">
                                                     <li>
-                                                        <a href="" ng-click="delete(closeRequest)"
-                                                           tooltip-append-to-body="true"
-                                                           uib-tooltip="حذف">
-                                                            <span class="fa fa-trash"></span>
-                                                        </a>
-                                                        <a href="" ng-click="openClosedModel(closeRequest)"
-                                                           tooltip-append-to-body="true"
-                                                           uib-tooltip="إغلاق المهمة لموظف">
-                                                            <span class="fa fa-power-off"></span>
-                                                        </a>
-                                                        <a href="" ng-click="openExtensionModel(closeRequest)"
-                                                           tooltip-append-to-body="true"
-                                                           uib-tooltip="تمديد المهمة">
-                                                            <span class="fa fa-battery"></span>
-                                                        </a>
                                                         <a href="" ng-click="openCreateWarnModel(closeRequest)"
                                                            tooltip-append-to-body="true"
                                                            uib-tooltip="ارسال تحذير">
@@ -103,6 +88,16 @@
                                                            tooltip-append-to-body="true"
                                                            uib-tooltip="ارسال خصم">
                                                             <span class="fa fa-bomb"></span>
+                                                        </a>
+                                                        <a href="" ng-click="acceptRequest(closeRequest)"
+                                                           tooltip-append-to-body="true"
+                                                           uib-tooltip="موافق">
+                                                            <span class="fa fa-thumbs-o-up"></span>
+                                                        </a>
+                                                        <a href="" ng-click="declineRequest(closeRequest)"
+                                                           tooltip-append-to-body="true"
+                                                           uib-tooltip="غير موافق">
+                                                            <span class="fa fa-thumbs-o-down"></span>
                                                         </a>
                                                     </li>
                                                 </ul>

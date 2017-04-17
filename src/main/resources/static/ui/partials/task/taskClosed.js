@@ -1,23 +1,22 @@
-app.controller('taskClosedCtrl', ['TaskToService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'task',
-    function (TaskToService, $scope, $rootScope, $timeout, $log, $uibModalInstance, task) {
+app.controller('taskClosedCtrl', ['TaskService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'task',
+    function (TaskService, $scope, $rootScope, $timeout, $log, $uibModalInstance, task) {
 
         $scope.task = task;
         $scope.buffer = {};
 
         $scope.submit = function () {
-            $scope.buffer.taskTo.task = {"id": $scope.task.id};
             $rootScope.showNotify("المهام", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
-            TaskToService.setClosed($scope.buffer.taskTo).then(function (data) {
-                $scope.buffer.taskTo = data;
+            TaskService.closeTaskOnPerson($scope.task.id, $scope.buffer.taskTo.person.id, $scope.buffer.message, $scope.buffer.degree).then(function (data) {
+                $scope.task = data;
                 if ($scope.form) {
                     $scope.form.$setPristine();
                 }
-                $rootScope.showNotify("المهام", "تم إنجاز العمل بنجاح، يمكنك القيام بعملية آخرى الآن", "success", "fa-black-tie");
+                $uibModalInstance.close(true);
             });
         };
 
         $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
+            $uibModalInstance.close(false);
         };
 
     }]);

@@ -22,6 +22,10 @@ public interface TaskOperationService extends PagingAndSortingRepository<TaskOpe
     @Query("select max(code) from TaskOperation c where (c.task.id) = (:id)")
     Integer findLastCodeByTask(@Param("id") Long id);
 
+    TaskOperation findTopByTaskOrderByCodeDesc(Task task);
+
+    TaskOperation findTopByTaskIdOrderByCodeDesc(Long taskId);
+
     List<TaskOperation> findByTask(Task task);
 
     List<TaskOperation> findByTaskAndDateBetween(Task task, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);

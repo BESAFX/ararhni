@@ -621,7 +621,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
     };
 
     this.openTaskClosedModel = function (task) {
-        $uibModal.open({
+        return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
@@ -639,7 +639,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
     };
 
     this.openTaskExtensionModel = function (task) {
-        $uibModal.open({
+        return $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',

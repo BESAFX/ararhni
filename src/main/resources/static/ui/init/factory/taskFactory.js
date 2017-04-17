@@ -24,8 +24,28 @@ app.factory("TaskService",
                     return response.data;
                 });
             },
-            extendEndDate: function (task, days) {
-                return $http.post("/api/task/extendEndDate?days=" + days, task).then(function (response) {
+            increaseEndDate: function (taskId, days, message) {
+                return $http.get("/api/task/increaseEndDate?taskId=" + taskId + "&days=" + days + "&message=" + message).then(function (response) {
+                    return response.data;
+                });
+            },
+            decreaseEndDate: function (taskId, days, message) {
+                return $http.get("/api/task/decreaseEndDate?taskId=" + taskId + "&days=" + days + "&message=" + message).then(function (response) {
+                    return response.data;
+                });
+            },
+            declineRequest: function (requestId) {
+                return $http.get("/api/task/declineRequest?requestId=" + requestId).then(function (response) {
+                    return response.data;
+                });
+            },
+            acceptRequest: function (requestId) {
+                return $http.get("/api/task/acceptRequest?requestId=" + requestId).then(function (response) {
+                    return response.data;
+                });
+            },
+            closeTaskOnPerson: function (taskId, personId, message, degree) {
+                return $http.get("/api/task/closeTaskOnPerson?taskId=" + taskId + "&personId=" + personId + "&message=" + message + "&degree=" + degree).then(function (response) {
                     return response.data;
                 });
             },
@@ -54,11 +74,6 @@ app.factory("TaskService",
                         var blob = new Blob([data], {type: 'application/' + reportProp.exportType});
                         saveAs(blob, 'Report.' + reportProp.exportType);
                     });
-            },
-            requestClose: function (task) {
-                return $http.post("/api/task/requestClose", task).then(function (response) {
-                    return response.data;
-                });
             },
             setProgress: function (task, progress) {
                 return $http.post("/api/task/setProgress/" + progress, task).then(function (response) {

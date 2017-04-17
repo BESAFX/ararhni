@@ -12,6 +12,7 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
             search.push('Day');
             search.push('&');
             TaskCloseRequestService.filter(search.join("")).then(function (data) {
+                console.info(data);
                 $scope.closeRequests = data;
                 // $rootScope.showNotify("الرئيسية", "تم تحميل طلبات الإغلاق/التمديد لهذا اليوم بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
@@ -130,6 +131,46 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
             TaskService.findOne(closeRequest.task.id).then(function (data) {
                 ModalProvider.openTaskDetailsModel(data);
             });
+        };
+
+        $scope.acceptRequest = function (taskCloseRequest) {
+            if (taskCloseRequest.type) {
+                TaskService.findOne(taskCloseRequest.task.id).then(function (data) {
+                    ModalProvider.openTaskClosedModel(data).result.then(function (data) {
+                        if (data) {
+                            TaskService.acceptRequest(taskCloseRequest.id).then(function (data) {
+                                $scope.fetchThisDay();
+                            });
+                        }
+                    });
+                });
+            } else {
+                TaskService.findOne(taskCloseRequest.task.id).then(function (data) {
+                    ModalProvider.openTaskExtensionModel(data).result.then(function (data) {
+                        if (data) {
+                            TaskService.acceptRequest(taskCloseRequest.id).then(function (data) {
+                                $scope.fetchThisDay();
+                            });
+                        }
+                    });
+                });
+            }
+        };
+
+        $scope.declineRequest = function (taskCloseRequest) {
+            if (taskCloseRequest.type) {
+                $rootScope.showConfirmNotify("المهام", "هل تود رفض طلب الإغلاق فعلاً؟", "error", "fa-black-tie", function () {
+                    TaskService.declineRequest(taskCloseRequest.id).then(function (data) {
+                        $scope.fetchThisDay();
+                    });
+                });
+            } else {
+                $rootScope.showConfirmNotify("المهام", "هل تود رفض طلب التمديد فعلاً؟", "error", "fa-black-tie", function () {
+                    TaskService.declineRequest(taskCloseRequest.id).then(function (data) {
+                        $scope.fetchThisDay();
+                    });
+                });
+            }
         };
 
         $scope.refresh = function () {

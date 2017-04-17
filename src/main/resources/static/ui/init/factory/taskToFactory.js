@@ -11,6 +11,11 @@ app.factory("TaskToService",
                     return response.data;
                 });
             },
+            findByTask: function (taskId) {
+                return $http.get("/api/taskTo/findByTask/" + taskId).then(function (response) {
+                    return response.data;
+                });
+            },
             setClosed: function (taskTo) {
                 return $http.put("/api/taskTo/setClosed", taskTo).then(function (response) {
                     return response.data;

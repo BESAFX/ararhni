@@ -27,6 +27,11 @@ public class TaskCloseRequest implements Serializable {
     //False --- Extension Request
     private Boolean type;
 
+    private Boolean approved;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date approvedDate;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "task")
     @JsonIgnoreProperties(value = {"taskTos", "taskOperations", "taskWarns", "taskDeductions", "taskCloseRequests"}, allowSetters = true)

@@ -6,17 +6,17 @@ app.controller('taskExtensionCtrl', ['TaskService', '$scope', '$rootScope', '$ti
 
         $scope.submit = function () {
             $rootScope.showNotify("المهام", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-battery");
-            TaskService.extendEndDate($scope.task, $scope.buffer.days).then(function (data) {
+            TaskService.increaseEndDate($scope.task.id, $scope.buffer.days, $scope.buffer.message).then(function (data) {
                 $scope.task = data;
                 if ($scope.form) {
                     $scope.form.$setPristine();
                 }
-                $rootScope.showNotify("المهام", "تم إنجاز العمل بنجاح، يمكنك القيام بعملية آخرى الآن", "success", "fa-battery");
+                $uibModalInstance.close(true);
             });
         };
 
         $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
+            $uibModalInstance.close(false);
         };
 
     }]);

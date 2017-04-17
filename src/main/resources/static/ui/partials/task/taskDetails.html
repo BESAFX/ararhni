@@ -86,12 +86,12 @@
                     <div class="panel-heading">
                         <ul class="panel-controls pull-left" style="margin-top: 2px;">
                             <li>
-                                <a href="" tooltip-append-to-body="true" ng-if="task.person.id===me.id"
-                                   ng-click="findTaskOperations()" uib-tooltip="حذف موظف من التكليف">
-                                    <span class="fa fa-remove"></span>
+                                <a href="" ng-click="refreshTaskTo()" tooltip-append-to-body="true"
+                                   uib-tooltip="تحديث">
+                                    <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href="" tooltip-append-to-body="true" ng-if="task.person.id===me.id"
-                                   ng-click="openCreateTaskToModel()" uib-tooltip="تكليف موظف جديد">
+                                   ng-click="openCreateTaskToModel()" uib-tooltip="تحويل إلى موظف">
                                     <span class="fa fa-plus"></span>
                                 </a>
                             </li>
@@ -112,7 +112,7 @@
                                     <th class="text-center">عدد الخصومات</th>
                                     <th class="text-center" st-sort="progress">معدل إنجاز العمل</th>
                                     <th class="text-center">عدد طلبات الإغلاق</th>
-                                    <th st-sort="closeDate" class="text-center">تاريخ الإغلاق</th>
+                                    <th class="text-center" st-sort="closeDate">تاريخ الإغلاق</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -145,14 +145,14 @@
                     <div class="panel-heading">
                         <ul class="panel-controls pull-left" style="margin-top: 2px;">
                             <li>
-                                <a href="" tooltip-append-to-body="true" ng-if="task.person.id===me.id"
-                                   ng-click="openClosedModel()" uib-tooltip="إغلاق المهمة لموظف">
-                                    <span class="fa fa-power-off"></span>
+                                <a href="" tooltip-append-to-body="true"
+                                   ng-click="refreshTaskCloseRequests()" uib-tooltip="تحديث">
+                                    <span class="fa fa-refresh"></span>
                                 </a>
                             </li>
                         </ul>
                         <div class="panel-title-box pull-right">
-                            <h3>طلبات الإغلاق</h3>
+                            <h3>طلبات الإغلاق/التمديد</h3>
                         </div>
                     </div>
                     <div class="panel-body panel-body-table">
@@ -162,16 +162,20 @@
                                 <thead>
                                 <tr>
                                     <th class="text-center fit" st-sort="code">رقم الطلب</th>
+                                    <th class="text-center fit" st-sort="type">نوع الطلب</th>
                                     <th class="text-center" st-sort="taskCloseRequest.person">المرسل</th>
                                     <th class="text-center" st-sort="taskCloseRequest.date" st-sort-default="reverse">
-                                        التاريخ
+                                        التاريخ والوقت
                                     </th>
                                     <th class="text-center">التعليق</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="taskCloseRequest in collectionTaskCloseRequests | filter:{'type':true}">
+                                <tr ng-repeat="taskCloseRequest in filteredCollectionTaskCloseRequests = (collectionTaskCloseRequests | filter:{'approved':null})">
                                     <td class="fit">{{taskCloseRequest.code}}</td>
+                                    <td class="fit"><strong
+                                            ng-class="{'label label-danger':taskCloseRequest.type, 'label label-warning':!taskCloseRequest.type}">{{taskCloseRequest.type
+                                        ? "طلب إغلاق" : "طلب تمديد"}}</strong></td>
                                     <td class="fit">{{taskCloseRequest.person.nickname}} /
                                         {{taskCloseRequest.person.name}}
                                     </td>
@@ -179,63 +183,17 @@
                                         {{taskCloseRequest.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
                                         <span class="label label-success">{{taskCloseRequest.date | date:'h:m a'}}</span>
                                     </td>
-                                    <td>{{taskCloseRequest.note}}</td>
+                                    <td>
+                                        {{taskCloseRequest.note}}
+                                        <a href="" ng-click="acceptRequest(taskCloseRequest)"
+                                           ng-if="task.person.id===me.id">موافق</a>
+                                        <a href="" ng-click="declineRequest(taskCloseRequest)"
+                                           ng-if="task.person.id===me.id">غير موافق</a>
+                                    </td>
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!collectionTaskCloseRequests || collectionTaskCloseRequests.length ==0">
-                                    <td colspan="4">لا توجد طلبات إغلاق حتى الآن</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-right col-md-12">
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <ul class="panel-controls pull-left" style="margin-top: 2px;">
-                            <li>
-                                <a href="" tooltip-append-to-body="true" ng-if="task.person.id===me.id"
-                                   ng-click="openExtensionModel()" uib-tooltip="تمديد المهمة لفترة">
-                                    <span class="fa fa-battery"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="panel-title-box pull-right">
-                            <h3>طلبات التمديد</h3>
-                        </div>
-                    </div>
-                    <div class="panel-body panel-body-table">
-                        <div class="table-responsive">
-                            <table st-table="collectionTaskCloseRequests" st-safe-src="task.taskCloseRequests"
-                                   class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th class="text-center fit" st-sort="code">رقم الطلب</th>
-                                    <th class="text-center" st-sort="taskCloseRequest.person">المرسل</th>
-                                    <th class="text-center" st-sort="taskCloseRequest.date" st-sort-default="reverse">
-                                        التاريخ
-                                    </th>
-                                    <th class="text-center">التعليق</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="taskCloseRequest in collectionTaskCloseRequests | filter:{'type':false}">
-                                    <td class="fit">{{taskCloseRequest.code}}</td>
-                                    <td class="fit">{{taskCloseRequest.person.nickname}} /
-                                        {{taskCloseRequest.person.name}}
-                                    </td>
-                                    <td class="fit">
-                                        {{taskCloseRequest.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
-                                        <span class="label label-success">{{taskCloseRequest.date | date:'h:m a'}}</span>
-                                    </td>
-                                    <td>{{taskCloseRequest.note}}</td>
-                                </tr>
-                                <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!collectionTaskCloseRequests || collectionTaskCloseRequests.length ==0">
-                                    <td colspan="4">لا توجد طلبات تمديد حتى الآن</td>
+                                    ng-show="!filteredCollectionTaskCloseRequests || filteredCollectionTaskCloseRequests.length ==0">
+                                    <td colspan="5">لا توجد طلبات إغلاق/تمديد حتى الآن</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -253,7 +211,7 @@
                                    uib-tooltip="تحديث">
                                     <span class="fa fa-refresh"></span>
                                 </a>
-                                <a href="" ng-click="openCreateOperationModel()" tooltip-append-to-body="true"
+                                <a href="" ng-click="openCreateWarnModel()" tooltip-append-to-body="true"
                                    ng-if="task.person.id===me.id"
                                    uib-tooltip="اضافة تحذير">
                                     <span class="fa fa-bell-o"></span>
@@ -289,7 +247,7 @@
                                     <td class="fit">{{taskWarn.toPerson.nickname}} /
                                         {{taskWarn.toPerson.name}}
                                     </td>
-                                    <td st-select-row-custom="taskWarn">
+                                    <td>
                                         {{taskWarn.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
                                         <span class="label label-success">{{taskWarn.date | date:'h:m a'}}</span>
                                     </td>
@@ -357,7 +315,7 @@
                                     <td class="fit">{{taskDeduction.toPerson.nickname}} /
                                         {{taskDeduction.toPerson.name}}
                                     </td>
-                                    <td st-select-row-custom="taskDeduction">
+                                    <td>
                                         {{taskDeduction.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
                                         <span class="label label-success">{{taskDeduction.date | date:'h:m a'}}</span>
                                     </td>
@@ -423,13 +381,30 @@
                                 <tr ng-repeat="taskOperation in collectionOperation"
                                     ng-class="{'info':(taskOperation.sender.id===me.manager.id)}">
                                     <td>{{taskOperation.code}}</td>
-                                    <td class="fit">{{taskOperation.sender.nickname}} / {{taskOperation.sender.name}}
+                                    <td class="fit">
+                                        {{taskOperation.sender.nickname}} / {{taskOperation.sender.name}}
                                     </td>
-                                    <td st-select-row-custom="taskOperation">
+                                    <td>
                                         {{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
                                         <span class="label label-success">{{taskOperation.date | date:'h:m a'}}</span>
                                     </td>
                                     <td>
+                                        <span class="label label-default">
+                                            {{taskOperation.type==='Comment' ? 'تعليق' : ''}}
+                                            {{taskOperation.type==='IncreaseEndDate' ? 'تمديد تاريخ إستلام' : ''}}
+                                            {{taskOperation.type==='DecreaseEndDate' ? 'تعجيل تاريخ إستلام' : ''}}
+                                            {{taskOperation.type==='CloseTaskOnPerson' ? 'إغلاق المهمة لموظف' : ''}}
+                                            {{taskOperation.type==='CloseTaskCompletely' ? 'أرشفة المهمة' : ''}}
+                                            {{taskOperation.type==='CloseTaskAuto' ? 'إغلاق تلقائي' : ''}}
+                                            {{taskOperation.type==='AddPerson' ? 'تحويل' : ''}}
+                                            {{taskOperation.type==='RemovePerson' ? 'حذف موظف' : ''}}
+                                            {{taskOperation.type==='AcceptCloseRequest' ? 'قبول طلب إغلاق' : ''}}
+                                            {{taskOperation.type==='AcceptIncreaseEndDateRequest' ? 'قبول طلب تمديد' : ''}}
+                                            {{taskOperation.type==='AcceptDecreaseEndDateRequest' ? 'قبول طلب تعجيل' : ''}}
+                                            {{taskOperation.type==='DeclineCloseRequest' ? 'رفض طلب إغلاق' : ''}}
+                                            {{taskOperation.type==='DeclineIncreaseEndDateRequest' ? 'رفض طلب تمديد' : ''}}
+                                            {{taskOperation.type==='DeclineDecreaseEndDateRequest' ? 'رفض طلب تعجيل' : ''}}
+                                        </span>
                                         {{taskOperation.content}}
                                         <span ng-repeat="taskOperationAttach in taskOperation.taskOperationAttaches"><a
                                                 uib-tooltip="{{taskOperationAttach.name}}" tooltip-append-to-body="true"

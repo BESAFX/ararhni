@@ -16,6 +16,8 @@ public interface TaskToService extends PagingAndSortingRepository<TaskTo, Long>,
 
     List<TaskTo> findByTask(Task task);
 
+    List<TaskTo> findByTaskId(Long taskId);
+
     TaskTo findByTaskIdAndPersonId(Long taskId, Long personId);
 
     TaskTo findByTaskAndPerson(Task task, Person person);

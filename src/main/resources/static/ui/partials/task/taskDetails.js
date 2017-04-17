@@ -1,5 +1,5 @@
-app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskService', 'TaskOperationService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'task',
-    function (ModalProvider, TaskService, TaskOperationService, $scope, $rootScope, $timeout, $log, $uibModalInstance, task) {
+app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskToService', 'TaskService', 'TaskCloseRequestService', 'TaskOperationService', 'TaskWarnService', 'TaskDeductionService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'task',
+    function (ModalProvider, TaskToService, TaskService, TaskCloseRequestService, TaskOperationService, TaskWarnService, TaskDeductionService, $scope, $rootScope, $timeout, $log, $uibModalInstance, task) {
 
         $scope.task = task;
 
@@ -7,6 +7,21 @@ app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskService', 'TaskOperatio
             TaskService.findOne(task.id).then(function (data) {
                 $scope.task = data;
             });
+        };
+
+        $scope.refreshTaskCloseRequests = function () {
+            var search = [];
+            search.push('taskId=');
+            search.push($scope.task.id);
+            TaskCloseRequestService.filter(search.join("")).then(function (data) {
+                $scope.task.taskCloseRequests = data;
+            })
+        };
+
+        $scope.refreshTaskTo = function () {
+            TaskToService.findByTask($scope.task.id).then(function (data) {
+                $scope.task.taskTos = data;
+            })
         };
 
         $scope.openCreateOperationModel = function () {
@@ -59,16 +74,56 @@ app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskService', 'TaskOperatio
             })
         };
 
-        $scope.findTaskWarnings = function () {
-            TaskOperationService.findByTaskAndType($scope.task, 2).then(function (data) {
-                $scope.task.taskWarnings = data;
-            })
+        $scope.findTaskWarns = function () {
+            TaskWarnService.findByTask($scope.task).then(function (data) {
+                $scope.task.taskWarns = data;
+            });
         };
 
         $scope.findTaskDeductions = function () {
-            TaskOperationService.findByTaskAndType($scope.task, 3).then(function (data) {
+            TaskDeductionService.findByTask($scope.task).then(function (data) {
                 $scope.task.taskDeductions = data;
             })
+        };
+
+        $scope.acceptRequest = function (taskCloseRequest) {
+            if (taskCloseRequest.type) {
+                ModalProvider.openTaskClosedModel(task).result.then(function (data) {
+                    if (data) {
+                        TaskService.acceptRequest(taskCloseRequest.id).then(function (data) {
+                            $scope.refreshTaskCloseRequests();
+                            $scope.findTaskOperations();
+                        });
+                    }
+                });
+            } else {
+                ModalProvider.openTaskExtensionModel(task).result.then(function (data) {
+                    if (data) {
+                        TaskService.acceptRequest(taskCloseRequest.id).then(function (data) {
+                            $scope.refreshTaskCloseRequests();
+                            $scope.findTaskOperations();
+                        });
+                    }
+                });
+            }
+        };
+
+        $scope.declineRequest = function (taskCloseRequest) {
+            if (taskCloseRequest.type) {
+                $rootScope.showConfirmNotify("المهام", "هل تود رفض طلب الإغلاق فعلاً؟", "error", "fa-black-tie", function () {
+                    TaskService.declineRequest(taskCloseRequest.id).then(function (data) {
+                        $scope.refreshTaskCloseRequests();
+                        $scope.findTaskOperations();
+                    });
+                });
+            } else {
+                $rootScope.showConfirmNotify("المهام", "هل تود رفض طلب التمديد فعلاً؟", "error", "fa-black-tie", function () {
+                    TaskService.declineRequest(taskCloseRequest.id).then(function (data) {
+                        $scope.refreshTaskCloseRequests();
+                        $scope.findTaskOperations();
+                    });
+                });
+            }
         };
 
         $scope.cancel = function () {

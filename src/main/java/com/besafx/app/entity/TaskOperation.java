@@ -32,6 +32,10 @@ public class TaskOperation implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 32, columnDefinition = "varchar(32) default 'Comment'")
+    private OperationType type;
+
     @ManyToOne
     @JoinColumn(name = "task")
     @JsonIgnoreProperties(value = {"taskTos", "taskOperations", "taskWarns", "taskDeductions", "taskCloseRequests"}, allowSetters = true)
@@ -51,5 +55,22 @@ public class TaskOperation implements Serializable {
         ObjectMapper mapper = new ObjectMapper();
         TaskOperation taskOperation = mapper.readValue(jsonString, TaskOperation.class);
         return taskOperation;
+    }
+
+    public enum OperationType {
+        Comment,
+        IncreaseEndDate,
+        DecreaseEndDate,
+        CloseTaskOnPerson,
+        CloseTaskCompletely,
+        CloseTaskAuto,
+        AddPerson,
+        RemovePerson,
+        AcceptCloseRequest,
+        AcceptIncreaseEndDateRequest,
+        AcceptDecreaseEndDateRequest,
+        DeclineCloseRequest,
+        DeclineIncreaseEndDateRequest,
+        DeclineDecreaseEndDateRequest
     }
 }

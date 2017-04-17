@@ -34,6 +34,7 @@ public class Task implements Serializable {
     private Double deductionOnAutoClose;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 32, columnDefinition = "varchar(32) default 'Regular'")
     private Importance importance;
 
     @Lob
