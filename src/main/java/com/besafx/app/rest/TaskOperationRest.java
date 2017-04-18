@@ -7,7 +7,10 @@ import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskOperation;
 import com.besafx.app.entity.TaskOperationAttach;
 import com.besafx.app.search.TaskSearch;
-import com.besafx.app.service.*;
+import com.besafx.app.service.PersonService;
+import com.besafx.app.service.TaskOperationAttachService;
+import com.besafx.app.service.TaskOperationService;
+import com.besafx.app.service.TaskService;
 import com.besafx.app.util.DateConverter;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
@@ -39,9 +42,6 @@ public class TaskOperationRest {
 
     @Autowired
     private TaskService taskService;
-
-    @Autowired
-    private TaskToService taskToService;
 
     @Autowired
     private TaskOperationService taskOperationService;
@@ -82,6 +82,7 @@ public class TaskOperationRest {
         }
         taskOperation.setDate(new Date());
         taskOperation.setSender(person);
+        taskOperation.setType(TaskOperation.OperationType.Comment);
         taskOperation = taskOperationService.save(taskOperation);
         ListIterator<TaskOperationAttach> listIterator = taskOperation.getTaskOperationAttaches().listIterator();
         while (listIterator.hasNext()) {
