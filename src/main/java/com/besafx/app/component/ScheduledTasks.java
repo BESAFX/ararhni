@@ -252,7 +252,7 @@ public class ScheduledTasks {
         }
     }
 
-    @Scheduled(cron = "0 0 3 * * *")
+    @Scheduled(cron = "0 0 6 * * *")
     public void autoCloseTasks() throws IOException {
         DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
         DateTime today = new DateTime().withTimeAtStartOfDay();
