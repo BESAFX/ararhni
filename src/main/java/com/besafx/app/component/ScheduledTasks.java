@@ -356,6 +356,10 @@ public class ScheduledTasks {
                 taskOperation.setContent("إغلاق المهمة تلقائي من خلال الفحص اليومي.");
                 taskOperationService.save(taskOperation);
 
+                log.info("تحديث بيانات المهمة");
+                task.setCloseType(Task.CloseType.Auto);
+                taskService.save(task);
+
                 log.info("تم الإنتهاء من فحص المهمة رقم: " + task.getCode() + " بنجاح.");
 
             }

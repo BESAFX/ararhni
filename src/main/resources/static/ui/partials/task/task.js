@@ -450,6 +450,24 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
             ModalProvider.openTaskOperationCreateModel($scope.selected);
         };
 
+        $scope.closeTaskCompletely = function (task) {
+            if (task) {
+                $rootScope.showConfirmNotify("المهام", "هل تود إغلاق المهمة نهائياً ونقلها إلى الارشيف فعلاً؟", "error", "fa-black-tie", function () {
+                    TaskService.closeTaskCompletely(task.id).then(function (data) {
+                        $scope.refreshTaskCloseRequests();
+                        $scope.findTaskOperations();
+                    });
+                });
+                return;
+            }
+            $rootScope.showConfirmNotify("المهام", "هل تود إغلاق المهمة نهائياً ونقلها إلى الارشيف فعلاً؟", "error", "fa-black-tie", function () {
+                TaskService.closeTaskCompletely($scope.selected.id).then(function (data) {
+                    $scope.refreshTaskCloseRequests();
+                    $scope.findTaskOperations();
+                });
+            });
+        };
+
         $scope.rowMenu = [];
 
         if ($rootScope.contains($rootScope.authorities, ['ROLE_TASK_CREATE'])) {

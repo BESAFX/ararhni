@@ -49,6 +49,11 @@ app.factory("TaskService",
                     return response.data;
                 });
             },
+            closeTaskCompletely: function (taskId) {
+                return $http.get("/api/task/closeTaskCompletely?taskId=" + taskId).then(function (response) {
+                    return response.data;
+                });
+            },
             count: function () {
                 return $http.get("/api/task/count").then(function (response) {
                     return response.data;

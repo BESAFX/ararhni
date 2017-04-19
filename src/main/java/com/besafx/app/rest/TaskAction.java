@@ -299,6 +299,7 @@ public class TaskAction {
             if (task.getTaskTos().stream().filter(to -> !to.getClosed()).collect(Collectors.toList()).isEmpty()) {
 
                 task.setEndDate(new Date());
+                task.setCloseType(Task.CloseType.Manual);
                 taskService.save(task);
 
                 log.info("اضافة حركة جديدة لإغلاق المهمة تلقائي");
@@ -333,6 +334,57 @@ public class TaskAction {
             taskOperation.setContent(message);
             taskOperationService.save(taskOperation);
             log.info("إنهاء العمل على الحركة");
+
+            return task;
+        }
+    }
+
+    @RequestMapping(value = "closeTaskCompletely", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_TASK_UPDATE')")
+    public Task closeTaskCompletely(@RequestParam(value = "taskId") Long taskId, Principal principal) throws IOException {
+        Task task = taskService.findOne(taskId);
+        if (task == null) {
+            throw new CustomException("عفواً ، لا توجد هذة المهمة");
+        } else {
+            if (!task.getPerson().getEmail().equals(principal.getName())) {
+                throw new CustomException("عفواً، غير مصرح لك القيام بهذة العملية، فقط جهة التكليف المصرح لها بإغلاق المهمة.");
+            }
+
+            log.info("اضافة حركة جديدة لإغلاق المهمة تلقائي");
+            TaskOperation taskOperation = new TaskOperation();
+            TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskId);
+            if (tempTaskOperation == null) {
+                taskOperation.setCode(1);
+            } else {
+                taskOperation.setCode(tempTaskOperation.getCode() + 1);
+            }
+            taskOperation.setDate(new Date());
+            taskOperation.setSender(task.getPerson());
+            taskOperation.setTask(task);
+            taskOperation.setType(TaskOperation.OperationType.CloseTaskCompletely);
+            taskOperation.setContent("إغلاق المهمة نهائياً - نقل إلى الارشيف");
+            taskOperationService.save(taskOperation);
+            log.info("إنهاء العمل على الحركة");
+
+            task.setEndDate(new Date());
+            task.setCloseType(Task.CloseType.Manual);
+            taskService.save(task);
+
+            log.info("إنهاء كل طلبات الاغلاق الخاصة بهذة المهمة");
+            taskCloseRequestService.findByTask(task).stream().filter(request -> !request.getApproved()).forEach(request -> {
+                request.setApproved(true);
+                request.setApprovedDate(new Date());
+                taskCloseRequestService.save(request);
+            });
+
+            log.info("إغلاق المهمة على كل الموظفين");
+            taskToService.findByTask(task).stream().filter(taskTo -> !taskTo.getClosed()).forEach(taskTo -> {
+                taskTo.setClosed(true);
+                taskTo.setCloseDate(new Date());
+                taskTo.setDegree(TaskTo.PersonDegree.C);
+                taskToService.save(taskTo);
+            });
 
             return task;
         }

@@ -34,6 +34,10 @@ public class Task implements Serializable {
     private Double deductionOnAutoClose;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 32, columnDefinition = "varchar(32) default 'Pending'")
+    private CloseType closeType;
+
+    @Enumerated(EnumType.STRING)
     @Column(length = 32, columnDefinition = "varchar(32) default 'Regular'")
     private Importance importance;
 
@@ -81,5 +85,9 @@ public class Task implements Serializable {
 
     public enum Importance {
         Regular, Important, Critical
+    }
+
+    public enum CloseType {
+        Pending, Auto, Manual
     }
 }

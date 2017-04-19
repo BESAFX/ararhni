@@ -39,22 +39,14 @@
                         </li>
                         <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
                             ng-click="openFetchOutgoingClosed()">
-                            <span>المهام الصادرة المغلقة تلقائي</span>
-                        </li>
-                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
-                            ng-click="openFetchOutgoingClosed()">
-                            <span>المهام الصادرة المغلقة يدوي</span>
+                            <span>المهام الصادرة المغلقة</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="openFetchIncomingOpened()">
-                            <span>المهام الواردة الفعالة</span>
+                            <span>المهام الواردة السارية</span>
                         </li>
                         <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
                             ng-click="openFetchIncomingClosed()">
-                            <span>المهام الواردة المغلقة تلقائي</span>
-                        </li>
-                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
-                            ng-click="openFetchIncomingClosed()">
-                            <span>المهام الواردة المغلقة يدوي</span>
+                            <span>المهام الواردة المغلقة</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="showSlideFilter()">
                             <span>بحث تفصيلي</span>
@@ -78,10 +70,15 @@
                             ng-if="contains(authorities, ['ROLE_TASK_UPDATE']) && toggleList===1">
                             <span>تعديل بيانات مهمة</span>
                         </li>
-                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="delete()"
+                        <li class="mdl-menu__item" ng-click="delete()"
                             ng-hide="!tasks || tasks.length==0"
                             ng-if="contains(authorities, ['ROLE_TASK_DELETE']) && toggleList===1">
                             <span>حذف مهمة</span>
+                        </li>
+                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="closeTaskCompletely()"
+                            ng-hide="!tasks || tasks.length==0"
+                            ng-if="contains(authorities, ['ROLE_TASK_DELETE']) && toggleList===1">
+                            <span>إغلاق المهمة</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="openCreateOperationModel()"
                             ng-hide="!tasks || tasks.length==0"
@@ -199,6 +196,9 @@
                                 <th st-sort="endDate" class="text-right">
                                     <span>الحالة</span>
                                 </th>
+                                <th st-sort="closeType" class="text-right">
+                                    <span>حالة الإغلاق</span>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -242,11 +242,12 @@
                                 <td>
                                     <span ng-class="task.endDate < today ? 'label label-danger' : 'label label-success'">{{task.endDate < today ? 'مغلقة' : 'سارية'}}</span>
                                 </td>
+                                <td>{{task.closeType}}</td>
                             </tr>
                             <tr class="blank_row"
                                 style="height: 10px !important; background-color: #FFFFFF;"
                                 ng-show="!collection || collection.length ==0">
-                                <td colspan="9">لا توجد بيانات</td>
+                                <td colspan="10">لا توجد بيانات</td>
                             </tr>
                             </tbody>
                         </table>
