@@ -54,13 +54,6 @@ public class PersonRest {
                 .type("success")
                 .icon("fa-user")
                 .build(), principal.getName());
-//        notificationService.notifyAllExceptMe(Notification
-//                .builder()
-//                .title("العمليات على حسابات المستخدمين")
-//                .message("تم اضافة مستخدم جديد بواسطة " +  personService.findByEmail(principal.getName()).getName())
-//                .type("warning")
-//                .icon("fa-user")
-//                .build());
         return person;
     }
 
@@ -81,13 +74,6 @@ public class PersonRest {
                     .type("success")
                     .icon("fa-user")
                     .build(), principal.getName());
-//            notificationService.notifyAllExceptMe(Notification
-//                    .builder()
-//                    .title("العمليات على حسابات المستخدمين")
-//                    .message("تم تعديل بيانات الحساب الشخصي للموظف " + person.getName() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
-//                    .type("warning")
-//                    .icon("fa-user")
-//                    .build());
             return person;
         } else {
             return null;

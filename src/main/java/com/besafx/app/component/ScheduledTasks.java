@@ -115,7 +115,7 @@ public class ScheduledTasks {
 
                     log.info("عدد التحذيرات على المهمة = " + numberOfWarns);
 
-                    if (numberOfWarns <= task.getWarn().longValue()) {
+                    if (numberOfWarns < task.getWarn().longValue()) {
                         log.info("إرسال تحذير");
                         warningTasks.add(task);
                     } else {
