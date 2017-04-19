@@ -295,8 +295,8 @@ public class TaskAction {
                     .build(), principal.getName());
             log.info("إنهاء العمل على تحديث بيانات المهمة");
 
-            log.info("فى حال كان الموظفون المكلفين يساوي واحد");
-            if (task.getTaskTos().size() == 1) {
+            log.info("فى حال كان الموظفون المكلفين تم إغلاق مهامهم");
+            if (task.getTaskTos().stream().filter(to -> !to.getClosed()).collect(Collectors.toList()).isEmpty()) {
 
                 task.setEndDate(new Date());
                 taskService.save(task);

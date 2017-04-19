@@ -2,10 +2,7 @@ package com.besafx.app.component;
 
 import com.besafx.app.config.EmailSender;
 import com.besafx.app.controller.ReportTaskController;
-import com.besafx.app.entity.Person;
-import com.besafx.app.entity.Task;
-import com.besafx.app.entity.TaskDeduction;
-import com.besafx.app.entity.TaskWarn;
+import com.besafx.app.entity.*;
 import com.besafx.app.search.TaskSearch;
 import com.besafx.app.service.*;
 import com.besafx.app.util.DateConverter;
@@ -46,6 +43,9 @@ public class ScheduledTasks {
 
     @Autowired
     private TaskToService taskToService;
+
+    @Autowired
+    private TaskCloseRequestService taskCloseRequestService;
 
     @Autowired
     private TaskOperationService taskOperationService;
@@ -250,5 +250,104 @@ public class ScheduledTasks {
                 log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
             }
         }
+    }
+
+    @Scheduled(cron = "0 0 3 * * *")
+    public void autoCloseTasks() throws IOException {
+        DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
+        DateTime today = new DateTime().withTimeAtStartOfDay();
+
+        log.info("جاري البحث عن المهام التى تم إغلاقها خلال 24 السابقة");
+
+        log.info("سيتم إغلاق المهمة على الافراد المكلفين");
+
+        log.info("سيتم إرسال خصومات إلى الافراد الذين لم يرسلوا طلب إغلاق على الأقل طوال حياة المهمة");
+
+        List<Task> tasks = taskService.findByEndDateBetween(yesterday.toDate(), today.toDate());
+
+        log.info("عدد المهام التى أغلقت خلال 24 ساعة الماضية: " + tasks.size());
+
+        ListIterator<Task> listIterator = tasks.listIterator();
+
+        while (listIterator.hasNext()) {
+
+            Task task = listIterator.next();
+
+            log.info("فحص المهمة رقم: " + task.getCode());
+
+            log.info("فحص الموظفين المكلفين، ومعرفة إذا كان هناك أحد لم يرسل طلبات إغلاق");
+
+            List<TaskTo> taskTos = taskToService.findByTask(task);
+
+            log.info("عدد الموظفين المكلفين للمهمة رقم: " + task.getCode() + " يساوي : " + taskTos.size());
+
+            ListIterator<TaskTo> taskToListIterator = taskTos.listIterator();
+
+            while (taskToListIterator.hasNext()) {
+
+                TaskTo taskTo = taskToListIterator.next();
+
+                log.info("سيتم تجاهل هذا الموظف حال كانت المهمة مغلقة عليه");
+
+                if (!taskTo.getClosed()) {
+
+                    log.info("لن يتم تجاهل هذا الموظف حالة لم يرسل طلبات إغلاق إلى المهمة طوال حياة المهمة.");
+
+                    if (taskCloseRequestService.findByTaskAndPerson(task, taskTo.getPerson()).isEmpty()) {
+
+                        log.info("إرسال خصم إلى هذا الموظف / " + taskTo.getPerson().getName() + " بالمقدار المحدد من قبل جهة التكليف والذي يساوي: " + task.getDeductionOnAutoClose());
+
+                        TaskDeduction taskDeduction = new TaskDeduction();
+                        TaskDeduction tempTaskDeduction = taskDeductionService.findTopByTaskAndToPersonOrderByCodeDesc(task, taskTo.getPerson());
+                        if (tempTaskDeduction == null) {
+                            taskDeduction.setCode(1);
+                        } else {
+                            taskDeduction.setCode(tempTaskDeduction.getCode() + 1);
+                        }
+                        taskDeduction.setTask(task);
+                        taskDeduction.setToPerson(taskTo.getPerson());
+                        taskDeduction.setType(TaskDeduction.TaskDeductionType.Auto);
+                        taskDeduction.setContent("تقرر توقيع خصم على الموظف / " + taskTo.getPerson().getName() + " نظراً لإغلاق المهمة عليه تلقائي بمقدار " + task.getDeductionOnAutoClose() + " ريال سعودي، فضلاً قم بمراجهة جهة التكليف.");
+                        taskDeduction.setDate(new Date());
+                        taskDeductionService.save(taskDeduction);
+
+                        ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
+                        String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+                        message = message.replaceAll("MESSAGE", "خصم إلكتروني بسبب إغلاق المهمة رقم / " + task.getCode() + " عليك تلقائي دون إرسال اى طلبات إغلاق طوال فترة حياة المهمة.");
+                        String title = "خصم إلكتروني يومي بسبب إغلاق المهمة تلقائي بمقدار / " + task.getDeductionOnAutoClose() + " ريال سعودي.";
+                        emailSender.send(title, message, taskDeduction.getToPerson().getEmail());
+
+                        log.info("تم إرسال الخصم بنجاح إلى الموظف / " + taskTo.getPerson().getName());
+                    }
+
+                    log.info("إغلاق المهمة على هذا الموظف بتاريخ وقت الفحص");
+                    taskTo.setClosed(true);
+                    taskTo.setCloseDate(new Date());
+                    taskTo.setDegree(TaskTo.PersonDegree.F);
+                    taskToService.save(taskTo);
+                }
+
+                log.info("إرسال حركة إلى المهمة تفيد بأن المهمة أغلقت تلقائي");
+
+                TaskOperation taskOperation = new TaskOperation();
+                TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(task.getId());
+                if (tempTaskOperation == null) {
+                    taskOperation.setCode(1);
+                } else {
+                    taskOperation.setCode(tempTaskOperation.getCode() + 1);
+                }
+                taskOperation.setDate(new Date());
+                taskOperation.setSender(task.getPerson());
+                taskOperation.setTask(task);
+                taskOperation.setType(TaskOperation.OperationType.CloseTaskAuto);
+                taskOperation.setContent("إغلاق المهمة تلقائي من خلال الفحص اليومي.");
+                taskOperationService.save(taskOperation);
+
+                log.info("تم الإنتهاء من فحص المهمة رقم: " + task.getCode() + " بنجاح.");
+
+            }
+
+        }
+
     }
 }

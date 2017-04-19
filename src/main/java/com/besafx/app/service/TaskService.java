@@ -4,10 +4,13 @@ import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Temporal;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.TemporalType;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -18,4 +21,6 @@ public interface TaskService extends PagingAndSortingRepository<Task, Long>, Jpa
     Integer findMaxCode();
 
     List<Task> findByPerson(Person person);
+
+    List<Task> findByEndDateBetween(@Temporal(TemporalType.TIMESTAMP) Date date1, @Temporal(TemporalType.TIMESTAMP) Date date2);
 }

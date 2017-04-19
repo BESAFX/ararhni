@@ -112,6 +112,7 @@
                                     <th class="text-center">عدد الخصومات</th>
                                     <th class="text-center" st-sort="progress">معدل إنجاز العمل</th>
                                     <th class="text-center">عدد طلبات الإغلاق</th>
+                                    <th class="text-center">التقييم</th>
                                     <th class="text-center" st-sort="closeDate">تاريخ الإغلاق</th>
                                 </tr>
                                 </thead>
@@ -123,6 +124,7 @@
                                     <td>{{(task.taskDeductions | filter:{toPerson:taskTo.person}).length}}</td>
                                     <td>% {{taskTo.progress}}</td>
                                     <td>{{(task.taskCloseRequests | filter:{person:taskTo.person}).length}}</td>
+                                    <td>{{taskTo.degree}}</td>
                                     <td class="fit">
                                         {{taskTo.closeDate ? (taskTo.closeDate | kdate: 'yyyy-mm-dd' : 'ar'
                                         :'ummalqura') : '---'}}

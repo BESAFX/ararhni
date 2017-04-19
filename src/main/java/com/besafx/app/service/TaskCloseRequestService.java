@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public interface TaskCloseRequestService extends PagingAndSortingRepository<TaskCloseRequest, Long>, JpaSpecificationExecutor<TaskCloseRequest> {
@@ -18,6 +20,8 @@ public interface TaskCloseRequestService extends PagingAndSortingRepository<Task
 
     @Query("select max(code) from TaskCloseRequest c where (c.task.id) = (:id)")
     Integer findLastCodeByTask(@Param("id") Long id);
+
+    List<TaskCloseRequest> findByTaskAndPerson(Task task, Person person);
 
     TaskCloseRequest findTopByTaskOrderByCodeDesc(Task task);
 

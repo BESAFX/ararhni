@@ -35,18 +35,18 @@
                     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
                         for="view-menu-lower-right">
                         <li class="mdl-menu__item" ng-click="openFetchOutgoingOpened()">
-                            <span>المهام الصادرة الفعالة</span>
+                            <span>المهام الصادرة السارية</span>
                         </li>
                         <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
                             ng-click="openFetchOutgoingClosed()">
-                            <span>ارشيف المهام الصادرة</span>
+                            <span>المهام الصادرة المغلقة</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="openFetchIncomingOpened()">
                             <span>المهام الواردة الفعالة</span>
                         </li>
                         <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
                             ng-click="openFetchIncomingClosed()">
-                            <span>ارشيف المهام الواردة</span>
+                            <span>المهام الواردة المغلقة</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="showSlideFilter()">
                             <span>بحث تفصيلي</span>
@@ -219,7 +219,7 @@
                                 </td>
                                 <td st-select-row-custom="task">
                                     <span ng-repeat="to in task.taskTos"
-                                          ng-class="{'label label-default':to.closed, 'label label-success':!to.closed}"
+                                          ng-class="{'label label-default':to.closed===true, 'label label-success':to.closed===false}"
                                           style="margin: 2px">{{to.person.name}}</span>
                                 </td>
                                 <td st-select-row-custom="task">{{task.endDate | kdate: 'yyyy-mm-dd' :
