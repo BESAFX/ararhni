@@ -287,13 +287,17 @@ public class ScheduledTasks {
 
                 TaskTo taskTo = taskToListIterator.next();
 
+                log.info("إيجاد طلبات إغلاق الموظف");
+
+                List<TaskCloseRequest> closeRequests = taskCloseRequestService.findByTaskAndPerson(task, taskTo.getPerson());
+
                 log.info("سيتم تجاهل هذا الموظف حال كانت المهمة مغلقة عليه");
 
                 if (!taskTo.getClosed()) {
 
                     log.info("لن يتم تجاهل هذا الموظف حالة لم يرسل طلبات إغلاق إلى المهمة طوال حياة المهمة.");
 
-                    if (taskCloseRequestService.findByTaskAndPerson(task, taskTo.getPerson()).isEmpty()) {
+                    if (closeRequests.isEmpty()) {
 
                         log.info("إرسال خصم إلى هذا الموظف / " + taskTo.getPerson().getName() + " بالمقدار المحدد من قبل جهة التكليف والذي يساوي: " + task.getDeductionOnAutoClose());
 
@@ -326,6 +330,15 @@ public class ScheduledTasks {
                     taskTo.setDegree(TaskTo.PersonDegree.F);
                     taskToService.save(taskTo);
                 }
+
+                log.info("الموافقة على طلبات الاغلاق المعلقة كلها");
+                closeRequests.stream().forEach(request -> {
+                    if (request.getApproved() == null) {
+                        request.setApproved(true);
+                        request.setApprovedDate(new Date());
+                        taskCloseRequestService.save(request);
+                    }
+                });
 
                 log.info("إرسال حركة إلى المهمة تفيد بأن المهمة أغلقت تلقائي");
 
