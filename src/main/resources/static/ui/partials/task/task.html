@@ -94,9 +94,11 @@
                             <span>طلب تمديد</span>
                         </li>
                         <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
-                            ng-click="openRequestExtensionModel()"
                             ng-hide="!tasks || tasks.length==0" ng-if="toggleList===1">
-                            <span>طلب تعجيل</span>
+                            <span>
+                                <span>طلب تعجيل</span>
+                                <span class="label label-danger">قريباً</span>
+                            </span>
                         </li>
                         <li class="mdl-menu__item" ng-click="openDetailsModel()" ng-if="toggleList===1"
                             ng-hide="!tasks || tasks.length==0">
