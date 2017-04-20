@@ -19,7 +19,7 @@
                         chosen=""
                         ng-model="buffer.person"
                         focus-index="1"
-                        ng-options="person.name for person in persons track by person.id">
+                        ng-options="(person.nickname + ' / ' + person.name) for person in persons | orderBy:'name' track by person.id">
                 </select>
             </div>
 

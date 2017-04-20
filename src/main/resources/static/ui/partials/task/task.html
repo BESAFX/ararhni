@@ -184,8 +184,6 @@
                                 </th>
                                 <th st-sort="taskTos[0].person.name" class="text-right">
                                     <span>الموظفون</span>
-                                    <span class="fa fa-info-circle"
-                                          uib-tooltip="سيتم الترتيب حسب أول موظف فى الموظفون"></span>
                                 </th>
                                 <th st-sort="endDate" class="text-right">
                                     <span>تاريخ التسليم</span>
@@ -227,8 +225,8 @@
                                 </td>
                                 <td st-select-row-custom="task">
                                     <span ng-repeat="to in task.taskTos"
-                                          ng-class="{'label label-default':to.closed===true, 'label label-success':to.closed===false}"
-                                          style="margin: 2px">{{to.person.name}}</span>
+                                          ng-class="{'label label-success':to.closed===false}"
+                                          style="margin: 2px">{{(to.closed===false) ? to.person.name : ''}}</span>
                                 </td>
                                 <td st-select-row-custom="task">{{task.endDate | kdate: 'yyyy-mm-dd' :
                                     'ar' :
@@ -242,7 +240,11 @@
                                 <td>
                                     <span ng-class="task.endDate < today ? 'label label-danger' : 'label label-success'">{{task.endDate < today ? 'مغلقة' : 'سارية'}}</span>
                                 </td>
-                                <td>{{task.closeType}}</td>
+                                <td>
+                                    {{(task.closeType==='Pending')? 'تحت التنفيذ' : ''}}
+                                    {{(task.closeType==='Auto')? 'تلقائي' : ''}}
+                                    {{(task.closeType==='Manual')? 'يدوي' : ''}}
+                                </td>
                             </tr>
                             <tr class="blank_row"
                                 style="height: 10px !important; background-color: #FFFFFF;"
@@ -290,6 +292,22 @@
                             </div>
                             <div class="panel-footer">
                                 <div class="btn-group btn-group-justified">
+                                    <a ng-if="contains(authorities, ['ROLE_TASK_DELETE'])"
+                                       uib-tooltip="حذف"
+                                       tooltip-append-to-body="true"
+                                       type="button"
+                                       ng-click="delete(task)"
+                                       class="btn btn-primary">
+                                        <i class="fa fa-trash fa-lg"></i>
+                                    </a>
+                                    <a ng-if="contains(authorities, ['ROLE_TASK_DELETE'])"
+                                       uib-tooltip="حذف"
+                                       tooltip-append-to-body="true"
+                                       type="button"
+                                       ng-click="delete(task)"
+                                       class="btn btn-primary">
+                                        <i class="fa fa-trash fa-lg"></i>
+                                    </a>
                                     <a ng-if="contains(authorities, ['ROLE_TASK_DELETE'])"
                                        uib-tooltip="حذف"
                                        tooltip-append-to-body="true"
@@ -814,7 +832,7 @@
                                                             chosen=""
                                                             ng-model="buffer.person"
                                                             focus-index="1"
-                                                            ng-options="person.name for person in persons track by person.id">
+                                                            ng-options="(person.nickname + ' / ' + person.name) for person in persons | orderBy:'name' track by person.id">
                                                     </select>
                                                 </div>
 

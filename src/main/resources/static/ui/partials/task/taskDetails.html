@@ -69,10 +69,10 @@
                             </tr>
                             <tr>
                                 <td>الموظفون</td>
-                                <td>
-                                    <span class="label label-info"
-                                          ng-repeat="to in task.taskTos"
-                                          style="margin: 2px">{{to.person.name}}</span>
+                                <td st-select-row-custom="task">
+                                    <span ng-repeat="to in task.taskTos"
+                                          ng-class="{'label label-success':to.closed===false}"
+                                          style="margin: 2px">{{(to.closed===false) ? to.person.name : ''}}</span>
                                 </td>
                             </tr>
                             </tbody>
@@ -124,7 +124,13 @@
                                     <td>{{(task.taskDeductions | filter:{toPerson:taskTo.person}).length}}</td>
                                     <td>% {{taskTo.progress}}</td>
                                     <td>{{(task.taskCloseRequests | filter:{person:taskTo.person}).length}}</td>
-                                    <td>{{taskTo.degree}}</td>
+                                    <td>
+                                        {{taskTo.degree==='A' ? 'ممتاز' : ''}}
+                                        {{taskTo.degree==='B' ? 'جيد جداً' : ''}}
+                                        {{taskTo.degree==='C' ? 'جيد' : ''}}
+                                        {{taskTo.degree==='D' ? 'مقبول' : ''}}
+                                        {{taskTo.degree==='F' ? 'سئ' : ''}}
+                                    </td>
                                     <td class="fit">
                                         {{taskTo.closeDate ? (taskTo.closeDate | kdate: 'yyyy-mm-dd' : 'ar'
                                         :'ummalqura') : '---'}}

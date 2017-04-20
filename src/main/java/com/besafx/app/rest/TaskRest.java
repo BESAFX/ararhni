@@ -73,6 +73,7 @@ public class TaskRest {
             task.setCode(maxCode + 1);
         }
         task.setStartDate(new Date());
+        task.setCloseType(Task.CloseType.Pending);
         task.setPerson(person);
         task = taskService.save(task);
         ListIterator<TaskTo> listIterator = task.getTaskTos().listIterator();
