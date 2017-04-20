@@ -69,7 +69,7 @@
                             </tr>
                             <tr>
                                 <td>الموظفون</td>
-                                <td st-select-row-custom="task">
+                                <td>
                                     <span ng-repeat="to in task.taskTos"
                                           ng-class="{'label label-success':to.closed===false}"
                                           style="margin: 2px">{{(to.closed===false) ? to.person.name : ''}}</span>

@@ -182,12 +182,6 @@
                                 <th st-sort="person.name" class="text-right">
                                     <span>جهة التكليف</span>
                                 </th>
-                                <th st-sort="taskTos[0].person.name" class="text-right">
-                                    <span>الموظفون</span>
-                                </th>
-                                <th st-sort="endDate" class="text-right">
-                                    <span>تاريخ التسليم</span>
-                                </th>
                                 <th st-sort="importance" class="text-right">
                                     <span>درجة الأهمية</span>
                                 </th>
@@ -196,6 +190,12 @@
                                 </th>
                                 <th st-sort="closeType" class="text-right">
                                     <span>حالة الإغلاق</span>
+                                </th>
+                                <th st-sort="taskTos[0].person.name" class="text-right">
+                                    <span>الموظفون</span>
+                                </th>
+                                <th st-sort="endDate" class="text-right">
+                                    <span>تاريخ التسليم</span>
                                 </th>
                             </tr>
                             </thead>
@@ -223,15 +223,6 @@
                                 <td st-select-row-custom="task">
                                     <span class="label label-danger">{{task.person.nickname}} / {{task.person.name}}</span>
                                 </td>
-                                <td st-select-row-custom="task">
-                                    <span ng-repeat="to in task.taskTos"
-                                          ng-class="{'label label-success':to.closed===false}"
-                                          style="margin: 2px">{{(to.closed===false) ? to.person.name : ''}}</span>
-                                </td>
-                                <td st-select-row-custom="task">{{task.endDate | kdate: 'yyyy-mm-dd' :
-                                    'ar' :
-                                    'ummalqura'}}
-                                </td>
                                 <td>
                                     <span ng-class="{'label label-danger' : task.importance==='Critical', 'label label-warning': task.importance==='Important', 'label label-default': task.importance==='Regular'}">
                                         {{task.importance==='Critical' ? 'عاجلة' : (task.importance==='Important' ? 'متوسطة' : 'عادية')}}
@@ -244,6 +235,15 @@
                                     {{(task.closeType==='Pending')? 'تحت التنفيذ' : ''}}
                                     {{(task.closeType==='Auto')? 'تلقائي' : ''}}
                                     {{(task.closeType==='Manual')? 'يدوي' : ''}}
+                                </td>
+                                <td st-select-row-custom="task">
+                                    <span ng-repeat="to in task.taskTos"
+                                          ng-class="{'label label-success':to.closed===false}"
+                                          style="margin: 2px">{{(to.closed===false) ? to.person.name : ''}}</span>
+                                </td>
+                                <td st-select-row-custom="task">{{task.endDate | kdate: 'yyyy-mm-dd' :
+                                    'ar' :
+                                    'ummalqura'}}
                                 </td>
                             </tr>
                             <tr class="blank_row"
@@ -292,30 +292,6 @@
                             </div>
                             <div class="panel-footer">
                                 <div class="btn-group btn-group-justified">
-                                    <a ng-if="contains(authorities, ['ROLE_TASK_DELETE'])"
-                                       uib-tooltip="حذف"
-                                       tooltip-append-to-body="true"
-                                       type="button"
-                                       ng-click="delete(task)"
-                                       class="btn btn-primary">
-                                        <i class="fa fa-trash fa-lg"></i>
-                                    </a>
-                                    <a ng-if="contains(authorities, ['ROLE_TASK_DELETE'])"
-                                       uib-tooltip="حذف"
-                                       tooltip-append-to-body="true"
-                                       type="button"
-                                       ng-click="delete(task)"
-                                       class="btn btn-primary">
-                                        <i class="fa fa-trash fa-lg"></i>
-                                    </a>
-                                    <a ng-if="contains(authorities, ['ROLE_TASK_DELETE'])"
-                                       uib-tooltip="حذف"
-                                       tooltip-append-to-body="true"
-                                       type="button"
-                                       ng-click="delete(task)"
-                                       class="btn btn-primary">
-                                        <i class="fa fa-trash fa-lg"></i>
-                                    </a>
                                     <a ng-if="contains(authorities, ['ROLE_TASK_UPDATE'])"
                                        uib-tooltip="تعديل"
                                        tooltip-append-to-body="true"
@@ -324,12 +300,35 @@
                                        class="btn btn-primary">
                                         <i class="fa fa-edit fa-lg"></i>
                                     </a>
-                                    <a uib-tooltip="الحركات / المرفقات"
+                                    <a ng-if="contains(authorities, ['ROLE_TASK_DELETE'])"
+                                       uib-tooltip="حذف"
                                        tooltip-append-to-body="true"
                                        type="button"
-                                       ng-click="showSlideOperation();setSelected(task)"
+                                       ng-click="delete(task)"
                                        class="btn btn-primary">
-                                        <i class="fa fa-gg fa-lg"></i>
+                                        <i class="fa fa-trash fa-lg"></i>
+                                    </a>
+                                    <a ng-if="contains(authorities, ['ROLE_TASK_OPERATION_CREATE'])"
+                                       uib-tooltip="اضافة حركة"
+                                       tooltip-append-to-body="true"
+                                       type="button"
+                                       ng-click="openCreateOperationModel(task)"
+                                       class="btn btn-primary">
+                                        <i class="fa fa-clock-o fa-lg"></i>
+                                    </a>
+                                    <a uib-tooltip="طلب إغلاق"
+                                       tooltip-append-to-body="true"
+                                       type="button"
+                                       ng-click="openRequestCloseModel(task)"
+                                       class="btn btn-primary">
+                                        <i class="fa fa-power-off fa-lg"></i>
+                                    </a>
+                                    <a uib-tooltip="طلب تمديد"
+                                       tooltip-append-to-body="true"
+                                       type="button"
+                                       ng-click="openRequestExtensionModel(task)"
+                                       class="btn btn-primary">
+                                        <i class="fa fa-battery-full fa-lg"></i>
                                     </a>
                                 </div>
                             </div>
