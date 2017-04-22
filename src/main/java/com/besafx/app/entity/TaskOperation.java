@@ -2,6 +2,7 @@ package com.besafx.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.Type;
@@ -21,19 +22,24 @@ public class TaskOperation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @JsonView(Views.Summery.class)
     private Long id;
 
+    @JsonView(Views.Summery.class)
     private Integer code;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
+    @JsonView(Views.Summery.class)
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonView(Views.Summery.class)
     private Date date;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 32, columnDefinition = "varchar(32) default 'Comment'")
+    @JsonView(Views.Summery.class)
     private OperationType type;
 
     @ManyToOne
@@ -44,10 +50,12 @@ public class TaskOperation implements Serializable {
     @ManyToOne
     @JoinColumn(name = "sender")
     @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees", "team"}, allowSetters = true)
+    @JsonView(Views.Summery.class)
     private Person sender;
 
     @OneToMany(mappedBy = "taskOperation")
     @JsonIgnoreProperties(value = {"taskOperation"}, allowSetters = true)
+    @JsonView(Views.Summery.class)
     private List<TaskOperationAttach> taskOperationAttaches = new ArrayList<>();
 
     @JsonCreator

@@ -2,6 +2,7 @@ package com.besafx.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
@@ -18,16 +19,21 @@ public class TaskTo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @JsonView(Views.Summery.class)
     private Long id;
 
+    @JsonView(Views.Summery.class)
     private Integer progress;
 
+    @JsonView(Views.Summery.class)
     private Boolean closed;
 
     @Enumerated(EnumType.STRING)
+    @JsonView(Views.Summery.class)
     private PersonDegree degree;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonView(Views.Summery.class)
     private Date closeDate;
 
     @ManyToOne(optional = false)
@@ -37,6 +43,7 @@ public class TaskTo implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "person")
+    @JsonView(Views.Summery.class)
     @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees", "team"}, allowSetters = true)
     private Person person;
 

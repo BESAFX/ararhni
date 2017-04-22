@@ -1,13 +1,17 @@
 package com.besafx.app.config;
-
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.RoleService;
 import com.besafx.app.ws.NotificationService;
+import com.maxmind.geoip.Location;
+import com.maxmind.geoip.LookupService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,6 +32,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSessionEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +41,8 @@ import java.util.List;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final static Logger log = LoggerFactory.getLogger(WebSecurityConfig.class);
 
     @Autowired
     private PersonService personService;
@@ -95,15 +102,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher() {
             @Override
             public void sessionCreated(HttpSessionEvent event) {
-                String ipAddr = ((ServletRequestAttributes) RequestContextHolder
-                        .currentRequestAttributes())
-                        .getRequest().getRemoteAddr();
-//                notificationService.notifyAllExceptMe(Notification
-//                        .builder()
-//                        .title("الدخول إلى الموقع")
-//                        .message("جلسة تسجيل دخول جديدة من العنوان: " + ipAddr)
-//                        .type("information")
-//                        .build());
+                String ipAddr = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getRemoteAddr();
+                ClassPathResource classPathResource = new ClassPathResource("/geo-ip/GeoLiteCity.dat");
+                try {
+                    LookupService lookup = new LookupService(classPathResource.getFile(), LookupService.GEOIP_MEMORY_CACHE);
+                    Location locationServices = lookup.getLocation(ipAddr);
+                    log.info("Location: " + locationServices.countryName);
+
+                } catch (IOException ex) {
+                    log.info(ex.getMessage());
+                }
+
                 super.sessionCreated(event);
             }
 
@@ -115,12 +124,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     Person person = personService.findByEmail(userDetails.getUsername());
                     person.setActive(false);
                     personService.save(person);
-//                    notificationService.notifyAllExceptMe(Notification
-//                            .builder()
-//                            .title("تسجيل الخروج")
-//                            .message("المستخدم / " + person.getName() + " غادر النظام")
-//                            .type("error")
-//                            .build());
                 }
                 super.sessionDestroyed(event);
             }
@@ -141,13 +144,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         if (person == null) {
                             throw new UsernameNotFoundException(email);
                         }
-
-//                        notificationService.notifyAllExceptMe(Notification
-//                                .builder()
-//                                .title("تسجيل الدخول")
-//                                .message("المستخدم / " + person.getName() + " متاح حالياً")
-//                                .type("success")
-//                                .build());
+                        person.setLastLoginDate(new Date());
+                        person.setLastLoginLocation("");
 
                         person.setLastUpdate(new Date());
 

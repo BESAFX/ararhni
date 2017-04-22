@@ -9,13 +9,6 @@ app.controller("personCtrl", ['PersonService', 'ModalProvider', 'FileService', '
                 $scope.persons = data;
                 $scope.setSelected(data[0]);
                 $rootScope.showNotify("حسابات المستخدمين", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-user");
-                angular.forEach(data, function (person) {
-                    if(person.photo){
-                        FileService.getSharedLink(person.photo).then(function (data) {
-                            return person.pic = data;
-                        });
-                    }
-                })
             });
         };
 

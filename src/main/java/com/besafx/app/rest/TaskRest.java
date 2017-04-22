@@ -5,11 +5,13 @@ import com.besafx.app.config.EmailSender;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskTo;
+import com.besafx.app.entity.Views;
 import com.besafx.app.search.TaskSearch;
 import com.besafx.app.service.*;
 import com.besafx.app.util.DateConverter;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
@@ -173,6 +175,7 @@ public class TaskRest {
 
     @RequestMapping(value = "filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
+    @JsonView(Views.Summery.class)
     public List<Task> filter(
             @RequestParam(value = "title", required = false) final String title,
             @RequestParam(value = "importance", required = false) final Task.Importance importance,

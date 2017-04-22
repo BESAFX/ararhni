@@ -38,6 +38,11 @@ app.factory("PersonService",
                 return $http.get("/api/person/findPersonUnderMe").then(function (response) {
                     return response.data;
                 });
+            },
+            findPersonUnderMeSummery: function () {
+                return $http.get("/api/person/findPersonUnderMeSummery").then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);

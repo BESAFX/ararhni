@@ -2,10 +2,12 @@ package com.besafx.app.rest;
 
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Person;
+import com.besafx.app.entity.Views;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.TeamService;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -168,5 +170,13 @@ public class PersonRest {
         me.getEmployees().stream().forEach(employee -> list.add(employee.getPerson()));
         return list.stream().distinct().collect(Collectors.toList());
     }
+
+    @RequestMapping(value = "findPersonUnderMeSummery", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @JsonView(Views.Summery.class)
+    public List<Person> findPersonUnderMeSummery(Principal principal) {
+        return findPersonUnderMe(principal);
+    }
+
 
 }

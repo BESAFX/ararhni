@@ -2,6 +2,7 @@ package com.besafx.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.Type;
@@ -21,59 +22,76 @@ public class Task implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @JsonView(Views.Summery.class)
     private Long id;
 
+    @JsonView(Views.Summery.class)
     private Integer code;
 
+    @JsonView(Views.Summery.class)
     private String title;
 
+    @JsonView(Views.Summery.class)
     private Integer warn;
 
+    @JsonView(Views.Summery.class)
     private Double deduction;
 
+    @JsonView(Views.Summery.class)
     private Double deductionOnAutoClose;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 32, columnDefinition = "varchar(32) default 'Pending'")
+    @JsonView(Views.Summery.class)
     private CloseType closeType;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 32, columnDefinition = "varchar(32) default 'Regular'")
+    @JsonView(Views.Summery.class)
     private Importance importance;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
+    @JsonView(Views.Summery.class)
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonView(Views.Summery.class)
     private Date startDate;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonView(Views.Summery.class)
     private Date endDate;
 
     @ManyToOne
     @JoinColumn(name = "person")
     @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees", "team"}, allowSetters = true)
+    @JsonView(Views.Summery.class)
     private Person person;
 
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = {"task"}, allowSetters = true)
+    @JsonView(Views.Summery.class)
     private List<TaskTo> taskTos = new ArrayList<>();
 
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = {"task"}, allowSetters = true)
+    @JsonView(Views.Summery.class)
     private List<TaskCloseRequest> taskCloseRequests = new ArrayList<>();
 
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = {"task"}, allowSetters = true)
+    @JsonView(Views.Summery.class)
     private List<TaskOperation> taskOperations = new ArrayList<>();
 
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = {"task"}, allowSetters = true)
+    @JsonView(Views.Summery.class)
     private List<TaskWarn> taskWarns = new ArrayList<>();
 
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = {"task"}, allowSetters = true)
+    @JsonView(Views.Summery.class)
     private List<TaskDeduction> taskDeductions = new ArrayList<>();
 
     @JsonCreator

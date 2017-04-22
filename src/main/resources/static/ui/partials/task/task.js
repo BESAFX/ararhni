@@ -117,7 +117,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 $rootScope.showNotify("المهام", "تم تحميل نماذج الطباعة بنجاح", "success", "fa-black-tie");
             });
 
-            PersonService.findPersonUnderMe().then(function (data) {
+            PersonService.findPersonUnderMeSummery().then(function (data) {
                 $scope.persons = data;
                 $scope.buffer.person = data[0];
             });

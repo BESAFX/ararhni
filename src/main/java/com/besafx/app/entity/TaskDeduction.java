@@ -2,6 +2,7 @@ package com.besafx.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.Type;
@@ -19,20 +20,26 @@ public class TaskDeduction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @JsonView(Views.Summery.class)
     private Long id;
 
+    @JsonView(Views.Summery.class)
     private Integer code;
 
     @Enumerated(EnumType.STRING)
+    @JsonView(Views.Summery.class)
     private TaskDeductionType type;
 
+    @JsonView(Views.Summery.class)
     private Double deduction;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
+    @JsonView(Views.Summery.class)
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonView(Views.Summery.class)
     private Date date;
 
     @ManyToOne
@@ -43,6 +50,7 @@ public class TaskDeduction implements Serializable {
     @ManyToOne
     @JoinColumn(name = "toPerson")
     @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees", "team"}, allowSetters = true)
+    @JsonView(Views.Summery.class)
     private Person toPerson;
 
     @JsonCreator

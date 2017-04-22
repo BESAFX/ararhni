@@ -255,9 +255,9 @@
                                           ng-class="{'label label-success':to.closed===false}"
                                           style="margin: 2px">{{(to.closed===false) ? to.person.name : ''}}</span>
                                 </td>
-                                <td st-select-row-custom="task">{{task.endDate | kdate: 'yyyy-mm-dd' :
-                                    'ar' :
-                                    'ummalqura'}}
+                                <td st-select-row-custom="task">
+                                    {{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                    <span class="label label-success">{{task.endDate | date:'h:m a'}}</span>
                                 </td>
                             </tr>
                             <tr class="blank_row"

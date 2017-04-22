@@ -2,6 +2,7 @@ package com.besafx.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.hibernate.annotations.Type;
@@ -18,14 +19,17 @@ public class TaskOperationAttach implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @JsonView(Views.Summery.class)
     private Long id;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
+    @JsonView(Views.Summery.class)
     private String name;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
+    @JsonView(Views.Summery.class)
     private String link;
 
     @ManyToOne

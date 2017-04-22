@@ -1,7 +1,9 @@
 package com.besafx.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
@@ -20,10 +22,13 @@ public class Person implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @JsonView(Views.Summery.class)
     private Long id;
 
+    @JsonView(Views.Summery.class)
     private String name;
 
+    @JsonView(Views.Summery.class)
     private String nickname;
 
     private String address;
@@ -49,6 +54,13 @@ public class Person implements Serializable {
     private String optionThemeName;
 
     private Boolean active;
+
+    @JsonIgnore
+    private String hiddenPassword;
+
+    private Date lastLoginDate;
+
+    private String lastLoginLocation;
 
     @ManyToOne
     @JoinColumn(name = "Team")
