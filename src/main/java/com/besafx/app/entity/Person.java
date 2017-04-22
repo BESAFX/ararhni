@@ -43,6 +43,7 @@ public class Person implements Serializable {
 
     private String qualification;
 
+    @JsonView(Views.Summery.class)
     private String email;
 
     private String password;

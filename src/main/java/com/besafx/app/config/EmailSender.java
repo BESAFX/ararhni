@@ -1,11 +1,9 @@
 package com.besafx.app.config;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -31,9 +29,6 @@ public class EmailSender {
     @Autowired
     private JavaMailSender sender;
 
-    @Autowired
-    private JavaMailSenderImpl sender2;
-
     @PostConstruct
     public void init() {
         try {
@@ -43,7 +38,7 @@ public class EmailSender {
             helper.setFrom("anni4ksa@gmail.com");
             log.info("Login successfully");
         } catch (MessagingException e) {
-            log.error(e.getMessage(), e);
+            log.info(e.getMessage());
         }
     }
 
@@ -64,9 +59,9 @@ public class EmailSender {
             sender.send(message);
             log.info("Sending email successfully to this destinations: " + Arrays.toString(emails));
         } catch (MessagingException e) {
-            log.error(e.getMessage(), e);
+            log.info(e.getMessage());
         } catch (InterruptedException e) {
-            log.error(e.getMessage(), e);
+            log.info(e.getMessage());
         }
     }
 
@@ -92,9 +87,9 @@ public class EmailSender {
             sender.send(message);
             log.info("Sending email successfully to this destinations: " + Arrays.toString(emails));
         } catch (MessagingException e) {
-            log.error(e.getMessage(), e);
+            log.info(e.getMessage());
         } catch (InterruptedException e) {
-            log.error(e.getMessage(), e);
+            log.info(e.getMessage());
         }
     }
 
@@ -113,9 +108,9 @@ public class EmailSender {
             sender.send(message);
             log.info("Sending email successfully to this destination: " + email);
         } catch (MessagingException e) {
-            log.error(e.getMessage(), e);
+            log.info(e.getMessage());
         } catch (InterruptedException e) {
-            log.error(e.getMessage(), e);
+            log.info(e.getMessage());
         }
     }
 
@@ -140,10 +135,10 @@ public class EmailSender {
             log.info("Sending email successfully to this destination: " + email);
             return new AsyncResult<>(true);
         } catch (MessagingException e) {
-            log.error(e.getMessage(), e);
+            log.info(e.getMessage());
             return new AsyncResult<>(false);
         } catch (InterruptedException e) {
-            log.error(e.getMessage(), e);
+            log.info(e.getMessage());
             return new AsyncResult<>(false);
         }
     }
