@@ -313,6 +313,7 @@ public class ScheduledTasks {
                         taskDeduction.setType(TaskDeduction.TaskDeductionType.Auto);
                         taskDeduction.setContent("تقرر توقيع خصم على الموظف / " + taskTo.getPerson().getName() + " نظراً لإغلاق المهمة عليه تلقائي بمقدار " + task.getDeductionOnAutoClose() + " ريال سعودي، فضلاً قم بمراجهة جهة التكليف.");
                         taskDeduction.setDate(new Date());
+                        taskDeduction.setDeduction(task.getDeductionOnAutoClose());
                         taskDeductionService.save(taskDeduction);
 
                         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
@@ -353,7 +354,7 @@ public class ScheduledTasks {
                 taskOperation.setSender(task.getPerson());
                 taskOperation.setTask(task);
                 taskOperation.setType(TaskOperation.OperationType.CloseTaskAuto);
-                taskOperation.setContent("إغلاق المهمة تلقائي من خلال الفحص اليومي.");
+                taskOperation.setContent("إغلاق المهمة تلقائي من خلال الفحص اليومي على الموظف / " + taskTo.getPerson().getName());
                 taskOperationService.save(taskOperation);
 
                 log.info("تحديث بيانات المهمة");

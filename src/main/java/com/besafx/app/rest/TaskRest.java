@@ -12,6 +12,7 @@ import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,7 @@ public class TaskRest {
             task.setCode(maxCode + 1);
         }
         task.setStartDate(new Date());
+        task.setEndDate(new DateTime(task.getEndDate()).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(59).toDate());
         task.setCloseType(Task.CloseType.Pending);
         task.setPerson(person);
         task = taskService.save(task);

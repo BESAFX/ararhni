@@ -27,7 +27,7 @@
         </div>
         <div class="mdl-layout__header-row" style="height: auto!important;padding: 0px !important;">
             <div class="panel panel-body" style="width: 100%; margin-bottom: 0px !important;">
-                <div class="form-group row">
+                <div class="row">
                     <ul dir="rtl" class="breadcrumb">
                         <li ng-repeat="item in items | orderBy:'id' track by item.id">
                             <a ng-if="item.type==='link'" href="" ui-sref="{{item.link}}">{{item.name}}</a>
@@ -35,7 +35,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="form-group row">
+                <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 full-width-menu pull-right">
                         <button id="view-menu-lower-right" style="width: 100%;"
                                 class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">

@@ -1,12 +1,10 @@
 package com.besafx.app.search;
-
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskTo;
 import com.besafx.app.service.TaskService;
 import com.besafx.app.service.TaskToService;
 import com.besafx.app.util.DateConverter;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
@@ -56,8 +54,8 @@ public class TaskSearch {
             Optional.ofNullable(person).ifPresent(value -> predicates.add((root, cq, cb) -> cb.equal(root.get("person").get("id"), value)));
             Optional.ofNullable(isTaskOpen).ifPresent(value -> {
                 if (value) {
-                    LocalDate today = new DateTime().withTimeAtStartOfDay().toLocalDate();
-                    LocalDate tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay().toLocalDate();
+                    DateTime today = new DateTime().withTimeAtStartOfDay();
+                    DateTime tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay();
                     switch (timeType) {
                         case "Day":
                             predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("endDate"), today.toDate()));
@@ -70,14 +68,14 @@ public class TaskSearch {
                             predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("endDate"), weekEnd));
                             break;
                         case "Month":
-                            LocalDate monthStart = today.withDayOfMonth(1);
-                            LocalDate monthEnd = monthStart.plusMonths(1).minusDays(1);
+                            DateTime monthStart = today.withDayOfMonth(1);
+                            DateTime monthEnd = monthStart.plusMonths(1).minusDays(1);
                             predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("endDate"), monthStart.toDate()));
                             predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("endDate"), monthEnd.toDate()));
                             break;
                         case "Year":
-                            LocalDate yearStart = today.withDayOfYear(1);
-                            LocalDate yearEnd = yearStart.plusYears(1).minusDays(1);
+                            DateTime yearStart = today.withDayOfYear(1);
+                            DateTime yearEnd = yearStart.plusYears(1).minusDays(1);
                             predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("endDate"), yearStart.toDate()));
                             predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("endDate"), yearEnd.toDate()));
                             break;
@@ -114,8 +112,8 @@ public class TaskSearch {
             Optional.ofNullable(person).ifPresent(value -> predicates.add((root, cq, cb) -> cb.equal(root.get("person").get("id"), value)));
             Optional.ofNullable(isTaskOpen).ifPresent(value -> {
                 if (value) {
-                    LocalDate today = new DateTime().withTimeAtStartOfDay().toLocalDate();
-                    LocalDate tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay().toLocalDate();
+                    DateTime today = new DateTime().withTimeAtStartOfDay();
+                    DateTime tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay();
                     switch (timeType) {
                         case "Day":
                             predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("task").get("endDate"), today.toDate()));
@@ -128,14 +126,14 @@ public class TaskSearch {
                             predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("task").get("endDate"), weekEnd));
                             break;
                         case "Month":
-                            LocalDate monthStart = today.withDayOfMonth(1);
-                            LocalDate monthEnd = monthStart.plusMonths(1).minusDays(1);
+                            DateTime monthStart = today.withDayOfMonth(1);
+                            DateTime monthEnd = monthStart.plusMonths(1).minusDays(1);
                             predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("task").get("endDate"), monthStart.toDate()));
                             predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("task").get("endDate"), monthEnd.toDate()));
                             break;
                         case "Year":
-                            LocalDate yearStart = today.withDayOfYear(1);
-                            LocalDate yearEnd = yearStart.plusYears(1).minusDays(1);
+                            DateTime yearStart = today.withDayOfYear(1);
+                            DateTime yearEnd = yearStart.plusYears(1).minusDays(1);
                             predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("task").get("endDate"), yearStart.toDate()));
                             predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("task").get("endDate"), yearEnd.toDate()));
                             break;
