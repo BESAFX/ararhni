@@ -1,6 +1,12 @@
 app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseRequestService', 'PersonService', 'ReportModelService', 'ModalProvider', '$scope', '$rootScope', '$log', '$timeout', '$state', '$uibModal',
     function (TaskService, TaskOperationService, TaskCloseRequestService, PersonService, ReportModelService, ModalProvider, $scope, $rootScope, $log, $timeout, $state, $uibModal) {
 
+        $scope.items = [];
+        $scope.items.push(
+            {'id': 1, 'type': 'link', 'name': 'البرامج', 'link': 'menu'},
+            {'id': 2, 'type': 'title', 'name': 'المهام'}
+        );
+
         $timeout(function () {
 
             $scope.sideOpacity = 1;
@@ -187,6 +193,15 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 $scope.tasks = data;
                 $scope.setSelected(data[0]);
                 $rootScope.showNotify("المهام", "تم التحميل بنجاح، يمكنك متابعة عملك الآن", "success", "fa-black-tie");
+
+                $scope.items = [];
+                $scope.items.push(
+                    {'id': 1, 'type': 'link', 'name': 'البرامج', 'link': 'menu'},
+                    {'id': 2, 'type': 'title', 'name': 'المهام'},
+                    {'id': 3, 'type': 'title', 'name': 'بحث تفصيلي'},
+                    {'id': 4, 'type': 'title', 'name': $scope.buffer.person.nickname},
+                    {'id': 5, 'type': 'title', 'name': $scope.buffer.person.name}
+                );
             });
         };
 
@@ -672,6 +687,16 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                     $scope.tasks = data;
                     $scope.setSelected(data[0]);
                     $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الواردة السارية بنجاح", "success", "fa-black-tie");
+
+                    $scope.items = [];
+                    $scope.items.push(
+                        {'id': 1, 'type': 'link', 'name': 'البرامج', 'link': 'menu'},
+                        {'id': 2, 'type': 'title', 'name': 'المهام'},
+                        {'id': 3, 'type': 'title', 'name': 'الواردة السارية'},
+                        {'id': 4, 'type': 'title', 'name': buffer.person.nickname},
+                        {'id': 5, 'type': 'title', 'name': buffer.person.name}
+                    );
+
                 });
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
@@ -759,6 +784,15 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                     $scope.tasks = data;
                     $scope.setSelected(data[0]);
                     $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الواردة المغلقة بنجاح", "success", "fa-black-tie");
+
+                    $scope.items = [];
+                    $scope.items.push(
+                        {'id': 1, 'type': 'link', 'name': 'البرامج', 'link': 'menu'},
+                        {'id': 2, 'type': 'title', 'name': 'المهام'},
+                        {'id': 3, 'type': 'title', 'name': 'الواردة المغلقة'},
+                        {'id': 4, 'type': 'title', 'name': buffer.person.nickname},
+                        {'id': 5, 'type': 'title', 'name': buffer.person.name}
+                    );
                 });
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
@@ -846,6 +880,15 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                     $scope.tasks = data;
                     $scope.setSelected(data[0]);
                     $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الصادرة السارية بنجاح", "success", "fa-black-tie");
+
+                    $scope.items = [];
+                    $scope.items.push(
+                        {'id': 1, 'type': 'link', 'name': 'البرامج', 'link': 'menu'},
+                        {'id': 2, 'type': 'title', 'name': 'المهام'},
+                        {'id': 3, 'type': 'title', 'name': 'الصادرة السارية'},
+                        {'id': 4, 'type': 'title', 'name': buffer.person.nickname},
+                        {'id': 5, 'type': 'title', 'name': buffer.person.name}
+                    );
                 });
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
@@ -933,6 +976,15 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                     $scope.tasks = data;
                     $scope.setSelected(data[0]);
                     $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الصادرة المغلقة بنجاح", "success", "fa-black-tie");
+
+                    $scope.items = [];
+                    $scope.items.push(
+                        {'id': 1, 'type': 'link', 'name': 'البرامج', 'link': 'menu'},
+                        {'id': 2, 'type': 'title', 'name': 'المهام'},
+                        {'id': 3, 'type': 'title', 'name': 'الصادرة المغلقة'},
+                        {'id': 4, 'type': 'title', 'name': buffer.person.nickname},
+                        {'id': 5, 'type': 'title', 'name': buffer.person.name}
+                    );
                 });
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());

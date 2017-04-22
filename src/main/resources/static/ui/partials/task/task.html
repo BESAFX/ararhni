@@ -27,127 +27,139 @@
         </div>
         <div class="mdl-layout__header-row" style="height: auto!important;padding: 0px !important;">
             <div class="panel panel-body" style="width: 100%; margin-bottom: 0px !important;">
-                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 full-width-menu pull-right">
-                    <button id="view-menu-lower-right" style="width: 100%;"
-                            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
-                        <span>عرض</span>
-                    </button>
-                    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-                        for="view-menu-lower-right">
-                        <li class="mdl-menu__item" ng-click="openFetchOutgoingOpened()">
-                            <span>المهام الصادرة السارية</span>
-                        </li>
-                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
-                            ng-click="openFetchOutgoingClosed()">
-                            <span>المهام الصادرة المغلقة</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="openFetchIncomingOpened()">
-                            <span>المهام الواردة السارية</span>
-                        </li>
-                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
-                            ng-click="openFetchIncomingClosed()">
-                            <span>المهام الواردة المغلقة</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="showSlideFilter()">
-                            <span>بحث تفصيلي</span>
+                <div class="form-group row">
+                    <ul dir="rtl" class="breadcrumb">
+                        <li ng-repeat="item in items | orderBy:'id' track by item.id">
+                            <a ng-if="item.type==='link'" href="" ui-sref="{{item.link}}">{{item.name}}</a>
+                            <span ng-if=item.type==='title'>{{item.name}}</span>
                         </li>
                     </ul>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 full-width-menu pull-right">
-                    <button id="menu-lower-right" style="width: 100%;"
-                            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
-                        <span>العمليات</span>
-                    </button>
-                    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="menu-lower-right">
-                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="reload()">
-                            <span>تحديث</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="openCreateModel()"
-                            ng-if="contains(authorities, ['ROLE_TASK_CREATE'])">
-                            <span>اضافة مهمة</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="openUpdateModel()" ng-hide="!tasks || tasks.length==0"
-                            ng-if="contains(authorities, ['ROLE_TASK_UPDATE']) && toggleList===1">
-                            <span>تعديل بيانات مهمة</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="delete()"
-                            ng-hide="!tasks || tasks.length==0"
-                            ng-if="contains(authorities, ['ROLE_TASK_DELETE']) && toggleList===1">
-                            <span>حذف مهمة</span>
-                        </li>
-                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="closeTaskCompletely()"
-                            ng-hide="!tasks || tasks.length==0"
-                            ng-if="contains(authorities, ['ROLE_TASK_DELETE']) && toggleList===1">
-                            <span>إغلاق المهمة</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="openCreateOperationModel()"
-                            ng-hide="!tasks || tasks.length==0"
-                            ng-if="contains(authorities, ['ROLE_TASK_OPERATION_CREATE']) && toggleList===1">
-                            <span>اضافة حركة</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="openRequestCloseModel()"
-                            ng-hide="!tasks || tasks.length==0" ng-if="toggleList===1">
-                            <span>طلب إغلاق</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="openRequestExtensionModel()"
-                            ng-hide="!tasks || tasks.length==0" ng-if="toggleList===1">
-                            <span>طلب تمديد</span>
-                        </li>
-                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
-                            ng-hide="!tasks || tasks.length==0" ng-if="toggleList===1">
+                <div class="form-group row">
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 full-width-menu pull-right">
+                        <button id="view-menu-lower-right" style="width: 100%;"
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                            <span>عرض</span>
+                        </button>
+                        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                            for="view-menu-lower-right">
+                            <li class="mdl-menu__item" ng-click="openFetchOutgoingOpened()">
+                                <span>المهام الصادرة السارية</span>
+                            </li>
+                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
+                                ng-click="openFetchOutgoingClosed()">
+                                <span>المهام الصادرة المغلقة</span>
+                            </li>
+                            <li class="mdl-menu__item" ng-click="openFetchIncomingOpened()">
+                                <span>المهام الواردة السارية</span>
+                            </li>
+                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
+                                ng-click="openFetchIncomingClosed()">
+                                <span>المهام الواردة المغلقة</span>
+                            </li>
+                            <li class="mdl-menu__item" ng-click="showSlideFilter()">
+                                <span>بحث تفصيلي</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 full-width-menu pull-right">
+                        <button id="menu-lower-right" style="width: 100%;"
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                            <span>العمليات</span>
+                        </button>
+                        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                            for="menu-lower-right">
+                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="reload()">
+                                <span>تحديث</span>
+                            </li>
+                            <li class="mdl-menu__item" ng-click="openCreateModel()"
+                                ng-if="contains(authorities, ['ROLE_TASK_CREATE'])">
+                                <span>اضافة مهمة</span>
+                            </li>
+                            <li class="mdl-menu__item" ng-click="openUpdateModel()" ng-hide="!tasks || tasks.length==0"
+                                ng-if="contains(authorities, ['ROLE_TASK_UPDATE']) && toggleList===1">
+                                <span>تعديل بيانات مهمة</span>
+                            </li>
+                            <li class="mdl-menu__item" ng-click="delete()"
+                                ng-hide="!tasks || tasks.length==0"
+                                ng-if="contains(authorities, ['ROLE_TASK_DELETE']) && toggleList===1">
+                                <span>حذف مهمة</span>
+                            </li>
+                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
+                                ng-click="closeTaskCompletely()"
+                                ng-hide="!tasks || tasks.length==0"
+                                ng-if="contains(authorities, ['ROLE_TASK_DELETE']) && toggleList===1">
+                                <span>إغلاق المهمة</span>
+                            </li>
+                            <li class="mdl-menu__item" ng-click="openCreateOperationModel()"
+                                ng-hide="!tasks || tasks.length==0"
+                                ng-if="contains(authorities, ['ROLE_TASK_OPERATION_CREATE']) && toggleList===1">
+                                <span>اضافة حركة</span>
+                            </li>
+                            <li class="mdl-menu__item" ng-click="openRequestCloseModel()"
+                                ng-hide="!tasks || tasks.length==0" ng-if="toggleList===1">
+                                <span>طلب إغلاق</span>
+                            </li>
+                            <li class="mdl-menu__item" ng-click="openRequestExtensionModel()"
+                                ng-hide="!tasks || tasks.length==0" ng-if="toggleList===1">
+                                <span>طلب تمديد</span>
+                            </li>
+                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
+                                ng-hide="!tasks || tasks.length==0" ng-if="toggleList===1">
                             <span>
                                 <span>طلب تعجيل</span>
                                 <span class="label label-danger">قريباً</span>
                             </span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="openDetailsModel()" ng-if="toggleList===1"
-                            ng-hide="!tasks || tasks.length==0">
-                            <span>التفاصيل</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 full-width-menu pull-right">
-                    <button id="report-menu-lower-right" style="width: 100%;"
-                            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
-                        <span>التقارير</span>
-                    </button>
-                    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-                        for="report-menu-lower-right">
-                        <li class="mdl-menu__item" ng-click="openTaskOperationsReportModel()" ng-if="toggleList===1"
-                            ng-hide="!tasks || tasks.length==0">
-                            <span>تقرير الحركات</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="openReportTasksModel()" ng-if="toggleList===1"
-                            ng-hide="!tasks || tasks.length==0">
-                            <span>تقرير مهام مختصر</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="openTaskTosReportModel()" ng-if="toggleList===1"
-                            ng-hide="!tasks || tasks.length==0">
-                            <span>تقرير متابعة مكلفين</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pull-left" ng-init="toggleList=1">
-                    <div class="btn-toolbar">
-                        <div class="btn-group" data-toggle="buttons">
-                            <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
-                                    type="button" ng-click="toggleList=1"
-                                    ng-class="{'active':toggleList===1}">
-                                <input type="radio" name="options"/>
-                                <i class="material-icons">reorder</i>
-                            </button>
-                            <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
-                                    type="button" ng-click="toggleList=2"
-                                    ng-class="{'active':toggleList===2}">
-                                <input type="radio" name="options"/>
-                                <i class="material-icons">view_column</i>
-                            </button>
-                            <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
-                                    type="button" ng-click="toggleList=3"
-                                    ng-class="{'active':toggleList===3}">
-                                <input type="radio" name="options"/>
-                                <i class="material-icons">web</i>
-                            </button>
+                            </li>
+                            <li class="mdl-menu__item" ng-click="openDetailsModel()" ng-if="toggleList===1"
+                                ng-hide="!tasks || tasks.length==0">
+                                <span>التفاصيل</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 full-width-menu pull-right">
+                        <button id="report-menu-lower-right" style="width: 100%;"
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                            <span>التقارير</span>
+                        </button>
+                        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                            for="report-menu-lower-right">
+                            <li class="mdl-menu__item" ng-click="openTaskOperationsReportModel()" ng-if="toggleList===1"
+                                ng-hide="!tasks || tasks.length==0">
+                                <span>تقرير الحركات</span>
+                            </li>
+                            <li class="mdl-menu__item" ng-click="openReportTasksModel()" ng-if="toggleList===1"
+                                ng-hide="!tasks || tasks.length==0">
+                                <span>تقرير مهام مختصر</span>
+                            </li>
+                            <li class="mdl-menu__item" ng-click="openTaskTosReportModel()" ng-if="toggleList===1"
+                                ng-hide="!tasks || tasks.length==0">
+                                <span>تقرير متابعة مكلفين</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pull-left" ng-init="toggleList=1">
+                        <div class="btn-toolbar">
+                            <div class="btn-group" data-toggle="buttons">
+                                <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                                        type="button" ng-click="toggleList=1"
+                                        ng-class="{'active':toggleList===1}">
+                                    <input type="radio" name="options"/>
+                                    <i class="material-icons">reorder</i>
+                                </button>
+                                <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                                        type="button" ng-click="toggleList=2"
+                                        ng-class="{'active':toggleList===2}">
+                                    <input type="radio" name="options"/>
+                                    <i class="material-icons">view_column</i>
+                                </button>
+                                <button class="btn btn-default mdl-button mdl-js-button mdl-js-ripple-effect"
+                                        type="button" ng-click="toggleList=3"
+                                        ng-class="{'active':toggleList===3}">
+                                    <input type="radio" name="options"/>
+                                    <i class="material-icons">web</i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
