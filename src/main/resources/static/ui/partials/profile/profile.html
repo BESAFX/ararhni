@@ -15,9 +15,6 @@
                 <li class="mdl-menu__item">
                     <span>المساعدة</span>
                 </li>
-                <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">
-                    <span>الملف الشخصي</span>
-                </li>
                 <li class="mdl-menu__item" ng-click="logout()">
                     <span>تسجيل الخروج</span>
                 </li>
@@ -25,144 +22,171 @@
             <div class="mdl-layout-spacer"></div>
             <span class="mdl-layout__title">{{pageTitle}}</span>
         </div>
-        <!-- Tabs -->
-        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-            <a href="#fixed-tab-2" class="mdl-layout__tab">بيانات الحساب</a>
-            <a href="#fixed-tab-3" class="mdl-layout__tab">البيانات الشخصية</a>
-        </div>
     </header>
 
     <main class="mdl-layout__content">
 
-        <form name="from" ng-submit="submit()" novalidate="novalidate" focus-group="">
-            <div dir="rtl" class="panel panel-body">
-                <div class="form-group col-md-12">
-                    <section class="mdl-layout__tab-panel" id="fixed-tab-2">
-                        <div class="page-content">
+        <div dir="rtl" style="margin-top: 10px">
 
-                            <div class="form-group text-right col-md-4">
-                                <label for="password" class="control-label">كلمة المرور </label>
-                                <input id="password"
-                                       dir="ltr"
-                                       type="password"
-                                       required="required"
-                                       disable-validation-message=""
-                                       class="form-control"
-                                       focus-index="14"
-                                       ng-model="me.password">
-                            </div>
+            <form dir="rtl" name="from" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+                  focus-group-head="loop" focus-group-tail="loop">
 
-                            <div class="form-group text-right col-md-4">
-                                <label for="email" class="control-label">البريد الإلكتروني </label>
-                                <input id="email"
-                                       dir="ltr"
-                                       type="email"
-                                       required="required"
-                                       disable-validation-message=""
-                                       class="form-control"
-                                       focus-index="13"
-                                       ng-model="me.email">
-                            </div>
+                <div class="row">
 
-                            <div class="form-group text-right col-md-4">
-                                <label for="team" class="control-label">المجموعة</label>
-                                <input id="team"
-                                       type="text"
-                                       disabled="disabled"
-                                       class="form-control text-right"
-                                       ng-model="me.team.name">
-                            </div>
-
+                    <div class="form-group text-right col-md-12" ng-show="form.$invalid && form.$submitted">
+                        <div class="alert alert-danger" role="alert">
+                            <strong>فضلاً اكمل الحقول المطلوبة</strong>
                         </div>
-                    </section>
-                    <section class="mdl-layout__tab-panel is-active" id="fixed-tab-3">
-                        <div class="page-content">
+                    </div>
 
-                            <div class="col-md-3">
-                                <input type="file" nv-file-select="" uploader="uploader"/>
-                                <img ng-src="{{logoLink}}" style="width: 100%;"/>
+                    <div class="col-sm-12">
+
+                        <div class="panel panel-info">
+                            <div class="panel-heading">البيانات الأساسية</div>
+                            <div class="panel-body">
+
+                                <div class="col-md-8">
+
+                                    <div class="row">
+
+                                        <div class="form-group text-right col-md-12">
+                                            <label for="nickname" class="control-label">اللقب </label>
+                                            <input id="nickname"
+                                                   type="text"
+                                                   required="required"
+                                                   disable-validation-message=""
+                                                   class="form-control text-right"
+                                                   focus-index="1"
+                                                   ng-model="me.nickname">
+                                        </div>
+
+                                        <div class="form-group text-right col-md-12">
+                                            <label for="name" class="control-label">الاسم كاملاً </label>
+                                            <input id="name"
+                                                   type="text"
+                                                   required="required"
+                                                   disable-validation-message=""
+                                                   class="form-control text-right"
+                                                   focus-index="1"
+                                                   ng-model="me.name">
+                                        </div>
+
+                                        <div class="form-group text-right col-md-12">
+                                            <label for="nationality" class="control-label">الجنسية </label>
+                                            <input id="nationality"
+                                                   type="text"
+                                                   class="form-control text-right"
+                                                   focus-index="2"
+                                                   required="required"
+                                                   disable-validation-message=""
+                                                   ng-model="me.nationality">
+                                        </div>
+
+                                        <div class="form-group text-right col-md-12">
+                                            <label for="identityNumber" class="control-label">رقم الهوية / رخصة
+                                                الإقامة </label>
+                                            <input id="identityNumber"
+                                                   type="text"
+                                                   class="form-control text-right"
+                                                   focus-index="3"
+                                                   ng-model="me.identityNumber">
+                                        </div>
+
+                                        <div class="form-group text-right col-md-12">
+                                            <label for="mobile" class="control-label">الجوال </label>
+                                            <input id="mobile"
+                                                   type="text"
+                                                   required="required"
+                                                   disable-validation-message=""
+                                                   class="form-control text-right"
+                                                   focus-index="4"
+                                                   ng-model="me.mobile">
+                                        </div>
+
+                                        <div class="form-group text-right col-md-12">
+                                            <label for="address" class="control-label">العنوان الحالي </label>
+                                            <input id="address"
+                                                   type="text"
+                                                   class="form-control text-right"
+                                                   focus-index="5"
+                                                   ng-model="me.address">
+                                        </div>
+
+                                        <div class="form-group text-right col-md-12">
+                                            <label for="qualification" class="control-label">المؤهل </label>
+                                            <input id="qualification"
+                                                   type="text"
+                                                   required="required"
+                                                   disable-validation-message=""
+                                                   class="form-control text-right"
+                                                   focus-index="6"
+                                                   ng-model="me.qualification">
+                                        </div>
+
+                                        <div class="form-group text-right col-md-12">
+                                            <label for="team" class="control-label">مجموعة الصلاحيات</label>
+                                            <input id="team"
+                                                   type="text"
+                                                   readonly
+                                                   class="form-control text-right"
+                                                   ng-model="me.team.name">
+                                        </div>
+
+                                        <div class="form-group text-right col-md-12">
+                                            <label for="email" class="control-label">البريد الإلكتروني</label>
+                                            <input id="email"
+                                                   dir="ltr"
+                                                   type="text"
+                                                   focus-index="8"
+                                                   required="required"
+                                                   disable-validation-message=""
+                                                   class="form-control text-left"
+                                                   ng-model="me.email">
+                                        </div>
+
+                                        <div class="form-group text-right col-md-12">
+                                            <label for="password" class="control-label">الرقم السري</label>
+                                            <input id="password"
+                                                   dir="ltr"
+                                                   type="password"
+                                                   focus-index="9"
+                                                   required="required"
+                                                   disable-validation-message=""
+                                                   class="form-control text-left"
+                                                   ng-model="me.password">
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-4">
+                                    <input type="file" nv-file-select="" uploader="uploader"/>
+                                    <img ng-src="{{logoLink}}" style="width: 100%; height: 100%"/>
+                                </div>
                             </div>
+                            <div class="panel-footer">
 
-                            <div class="col-md-9">
-
-                                <div class="form-group text-right col-md-12">
-                                    <label for="firstName" class="control-label">الاسم
-                                        كاملاً </label>
-                                    <input id="firstName"
-                                           type="text"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control text-right"
-                                           focus-index="1"
-                                           ng-model="me.name">
-                                </div>
-
-                                <div class="form-group text-right col-md-12">
-                                    <label for="identityNumber" class="control-label">رقم
-                                        البطاقة</label>
-                                    <input id="identityNumber"
-                                           type="text"
-                                           class="form-control text-right"
-                                           focus-index="2"
-                                           ng-model="me.identityNumber">
-                                </div>
-
-                                <div class="form-group text-right col-md-12">
-                                    <label for="nationality" class="control-label">الجنسية </label>
-                                    <input id="nationality"
-                                           type="text"
-                                           class="form-control text-right"
-                                           focus-index="3"
-                                           ng-model="me.nationality">
-                                </div>
-
-                                <div class="form-group text-right col-md-12">
-                                    <label for="address" class="control-label">العنوان
-                                        الحالي </label>
-                                    <input id="address"
-                                           type="text"
-                                           class="form-control text-right"
-                                           focus-index="4"
-                                           ng-model="me.address">
-                                </div>
-
-                                <div class="form-group text-right col-md-12">
-                                    <label for="qualification" class="control-label">المؤهل </label>
-                                    <input id="qualification"
-                                           type="text"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control text-right"
-                                           focus-index="5"
-                                           ng-model="me.qualification">
-                                </div>
-
-                                <div class="form-group text-right col-md-12">
-                                    <label for="mobile" class="control-label">الجوال </label>
-                                    <input id="mobile"
-                                           type="text"
-                                           required="required"
-                                           disable-validation-message=""
-                                           class="form-control text-right"
-                                           focus-index="6"
-                                           ng-model="me.mobile">
+                                <div class="form-group col-md-12" role="group">
+                                    <button type="submit"
+                                            focus-index="10"
+                                            class="btn btn-success pull-right">
+                                        <span>حفظ</span>
+                                        <i class="fa fa-plus-square fa-lg"></i>
+                                    </button>
                                 </div>
 
                             </div>
-
                         </div>
-                    </section>
+
+                    </div>
+
                 </div>
-            </div>
-            <div class="panel-footer">
-                <button type="submit"
-                        focus-index="15"
-                        class="btn btn-primary pull-left">
-                    <span>حفظ</span>
-                    <span class="fa fa-floppy-o fa-right"></span>
-                </button>
-            </div>
-        </form>
+
+            </form>
+
+        </div>
 
     </main>
 

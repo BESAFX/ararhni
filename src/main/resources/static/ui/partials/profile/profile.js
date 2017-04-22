@@ -4,7 +4,7 @@ app.controller("profileCtrl", ['PersonService', 'FileUploader', 'FileService', '
         $timeout(function () {
             PersonService.findActivePerson().then(function (data) {
                 $scope.me = data;
-            })
+            });
             if ($scope.me.photo) {
                 FileService.getSharedLink($scope.me.photo).then(function (data) {
                     $scope.logoLink = data;
@@ -12,22 +12,14 @@ app.controller("profileCtrl", ['PersonService', 'FileUploader', 'FileService', '
             }
         }, 2000);
 
+        $timeout(function () {
+            window.componentHandler.upgradeAllRegistered();
+        }, 1500);
+
         $scope.submit = function () {
-            switch ($scope.tab) {
-                case '1' :
-                    PersonService.update($scope.me).then(function (data) {
-                        $scope.me = data;
-                    });
-                    break;
-                case '2' :
-                    PersonService.update($scope.me).then(function (data) {
-                        $scope.me = data;
-                    });
-                    break;
-                case '3' :
-                    $log.info('3');
-                    break;
-            }
+            PersonService.update($scope.me).then(function (data) {
+                $scope.me = data;
+            });
         };
         var uploader = $scope.uploader = new FileUploader({
             url: 'uploadFile'

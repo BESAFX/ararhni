@@ -56,8 +56,7 @@ app.run(['$http', '$location', '$state', '$window', 'PersonService', '$rootScope
                 }
                 case 'profile': {
                     $rootScope.pageTitle = 'الملف الشخصي';
-                    $rootScope.helpUrl = '/ui/partials/help/profile.html';
-                    $rootScope.MDLIcon = 'info';
+                    $rootScope.MDLIcon = 'contacts';
                     break;
                 }
                 case 'task': {
@@ -284,6 +283,9 @@ app.run(['$http', '$location', '$state', '$window', 'PersonService', '$rootScope
         };
         $rootScope.goToHelp = function () {
             $state.go('help');
+        };
+        $rootScope.goToProfile = function () {
+            $state.go('profile');
         };
 
     }]);
