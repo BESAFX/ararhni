@@ -4,6 +4,7 @@ import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.model.CityResponse;
 import com.maxmind.geoip2.record.City;
 import com.maxmind.geoip2.record.Country;
+import com.maxmind.geoip2.record.Subdivision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -35,7 +36,7 @@ public class LocationFinder {
             CityResponse response = reader.city(ipAddress);
             return response.getCountry();
         } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
+            log.info(ex.getMessage());
             return null;
         }
     }
@@ -46,7 +47,18 @@ public class LocationFinder {
             CityResponse response = reader.city(ipAddress);
             return response.getCity();
         } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
+            log.info(ex.getMessage());
+            return null;
+        }
+    }
+
+    public Subdivision getMostSpecificSubdivision(String ip) {
+        try {
+            InetAddress ipAddress = InetAddress.getByName(ip);
+            CityResponse response = reader.city(ipAddress);
+            return response.getMostSpecificSubdivision();
+        } catch (Exception ex) {
+            log.info(ex.getMessage());
             return null;
         }
     }

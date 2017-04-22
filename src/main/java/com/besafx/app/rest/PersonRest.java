@@ -44,6 +44,7 @@ public class PersonRest {
         if (personService.findByEmail(person.getEmail()) != null) {
             throw new CustomException("هذا البريد الإلكتروني غير متاح ، فضلاً ادخل بريد آخر غير مستخدم");
         }
+        person.setHiddenPassword(person.getPassword());
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         person.setEnabled(true);
         person.setTokenExpired(false);
@@ -66,6 +67,7 @@ public class PersonRest {
         Person object = personService.findOne(person.getId());
         if (object != null) {
             if (!object.getPassword().equals(person.getPassword())) {
+                person.setHiddenPassword(person.getPassword());
                 person.setPassword(passwordEncoder.encode(person.getPassword()));
             }
             person = personService.save(person);

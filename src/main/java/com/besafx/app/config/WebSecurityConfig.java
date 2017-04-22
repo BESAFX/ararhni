@@ -33,6 +33,7 @@ import javax.servlet.http.HttpSessionEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Configuration
 @EnableWebSecurity
@@ -125,7 +126,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             throw new UsernameNotFoundException(email);
                         }
                         String ipAddr = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getRemoteAddr();
-                        person.setLastLoginLocation(locationFinder.getCountry(ipAddr).getName() + "، " + locationFinder.getCity(ipAddr).getName());
+                        person.setLastLoginLocation(
+                                (Optional.ofNullable(locationFinder.getCountry(ipAddr)).isPresent() ? (locationFinder.getCountry(ipAddr).getName() + "، ") : "")
+                                        + (Optional.ofNullable(locationFinder.getCity(ipAddr)).isPresent() ? (locationFinder.getCity(ipAddr).getName() + "، ") : "")
+                                        + (Optional.ofNullable(locationFinder.getMostSpecificSubdivision(ipAddr)).isPresent() ? locationFinder.getMostSpecificSubdivision(ipAddr).getName() : ""));
                         person.setLastLoginDate(new Date());
                         person.setLastUpdate(new Date());
                         person.setActive(true);
