@@ -89,19 +89,27 @@
                                 </th>
 
                                 <th st-sort="name" class="text-right">
-                                    <span> اسم المستخدم</span>
+                                    <span>اسم المستخدم</span>
                                 </th>
 
                                 <th st-sort="email" class="text-right">
-                                    <span> البريد الإلكتروني</span>
+                                    <span>البريد الإلكتروني</span>
                                 </th>
 
                                 <th st-sort="mobile" class="text-right">
-                                    <span> الجوال</span>
+                                    <span>الجوال</span>
                                 </th>
 
                                 <th st-sort="qualification" class="text-right">
-                                    <span> المؤهل</span>
+                                    <span>المؤهل</span>
+                                </th>
+
+                                <th st-sort="lastLoginDate" class="text-right">
+                                    <span>تاريخ آخر دخول</span>
+                                </th>
+
+                                <th st-sort="lastLoginLocation" class="text-right">
+                                    <span>الموقع</span>
                                 </th>
 
                             </tr>
@@ -119,6 +127,11 @@
                                 <td st-select-row-custom="person">{{person.email}}</td>
                                 <td st-select-row-custom="person">{{person.mobile}}</td>
                                 <td st-select-row-custom="person">{{person.qualification}}</td>
+                                <td st-select-row-custom="person">
+                                    {{person.lastLoginDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                    <span class="label label-success">{{person.lastLoginDate | date:'h:m a'}}</span>
+                                </td>
+                                <td st-select-row-custom="person">{{person.lastLoginLocation}}</td>
                             </tr>
                             <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                 ng-show="!collection || collection.length ==0">

@@ -98,7 +98,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void sessionCreated(HttpSessionEvent event) {
                 String ipAddr = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getRemoteAddr();
-                log.info("Location: " + locationFinder.getCountry(ipAddr).getName());
                 super.sessionCreated(event);
             }
 
@@ -125,8 +124,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         if (person == null) {
                             throw new UsernameNotFoundException(email);
                         }
+                        String ipAddr = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getRemoteAddr();
+                        person.setLastLoginLocation(locationFinder.getCountry(ipAddr).getName() + "، " + locationFinder.getCity(ipAddr).getName());
                         person.setLastLoginDate(new Date());
-                        person.setLastLoginLocation("");
                         person.setLastUpdate(new Date());
                         person.setActive(true);
                         personService.save(person);
