@@ -1,17 +1,15 @@
 package com.besafx.app.config;
+import com.besafx.app.component.LocationFinder;
 import com.besafx.app.entity.Person;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.RoleService;
 import com.besafx.app.ws.NotificationService;
-import com.maxmind.geoip.Location;
-import com.maxmind.geoip.LookupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,7 +30,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSessionEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,6 +53,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private LocationFinder locationFinder;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -69,24 +69,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/task").access("hasRole('ROLE_TASK_CREATE') or hasRole('ROLE_TASK_UPDATE') or hasRole('ROLE_TASK_DELETE') or hasRole('ROLE_TASK_REPORT')")
                 .antMatchers("/person").access("hasRole('ROLE_PERSON_CREATE') or hasRole('ROLE_PERSON_UPDATE') or hasRole('ROLE_PERSON_DELETE') or hasRole('ROLE_PERSON_REPORT')")
                 .anyRequest().authenticated();
-
         http.formLogin()
                 .loginPage("/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/menu")
                 .permitAll();
-
         http.logout()
                 .logoutUrl("/logout")
                 .invalidateHttpSession(true)
                 .logoutSuccessUrl("/")
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
-
         http.rememberMe();
-
         http.csrf().disable();
-
         http.sessionManagement()
                 .maximumSessions(2)
                 .sessionRegistry(sessionRegistry());
@@ -103,16 +98,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void sessionCreated(HttpSessionEvent event) {
                 String ipAddr = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getRemoteAddr();
-                ClassPathResource classPathResource = new ClassPathResource("/geo-ip/GeoLiteCity.dat");
-                try {
-                    LookupService lookup = new LookupService(classPathResource.getFile(), LookupService.GEOIP_MEMORY_CACHE);
-                    Location locationServices = lookup.getLocation(ipAddr);
-                    log.info("Location: " + locationServices.countryName);
-
-                } catch (IOException ex) {
-                    log.info(ex.getMessage());
-                }
-
+                log.info("Location: " + locationFinder.getCountry(ipAddr).getName());
                 super.sessionCreated(event);
             }
 
@@ -132,29 +118,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
         auth.userDetailsService((String email) -> {
-
                     Person person = personService.findByEmail(email);
-
                     List<GrantedAuthority> authorities = new ArrayList<>();
-
                     if (SecurityContextHolder.getContext().getAuthentication() == null) {
-
                         if (person == null) {
                             throw new UsernameNotFoundException(email);
                         }
                         person.setLastLoginDate(new Date());
                         person.setLastLoginLocation("");
-
                         person.setLastUpdate(new Date());
-
                         person.setActive(true);
-
                         personService.save(person);
-
                         authorities.add(new SimpleGrantedAuthority("ROLE_PROFILE_UPDATE"));
-
                         roleService.findByTeam(person.getTeam()).stream().forEach(role -> {
                             if (role.getPermission().getCreateEntity()) {
                                 SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_" + role.getPermission().getScreen().getCode() + "_CREATE");
@@ -175,11 +151,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         });
 
                     }
-
                     return new org.springframework.security.core.userdetails.User(person.getEmail(), person.getPassword(),
                             person.getEnabled(), true, true, true, authorities);
                 }
-
         ).passwordEncoder(passwordEncoder);
 
     }
