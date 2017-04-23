@@ -81,6 +81,8 @@ public class PersonRest {
             if (!object.getPassword().equals(person.getPassword())) {
                 person.setHiddenPassword(person.getPassword());
                 person.setPassword(passwordEncoder.encode(person.getPassword()));
+            } else {
+                person.setHiddenPassword(object.getHiddenPassword());
             }
             person = personService.save(person);
             notificationService.notifyOne(Notification
