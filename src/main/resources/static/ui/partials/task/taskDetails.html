@@ -173,19 +173,22 @@
                                     <th class="text-center fit" st-sort="type">نوع الطلب</th>
                                     <th class="text-center" st-sort="taskCloseRequest.person">المرسل</th>
                                     <th class="text-center" st-sort="taskCloseRequest.date" st-sort-default="reverse">
-                                        التاريخ والوقت
+                                        <span>التاريخ والوقت</span>
                                     </th>
                                     <th class="text-center">التعليق</th>
+                                    <th class="text-center">الرد</th>
+                                    <th class="text-center">تاريخ الرد</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="taskCloseRequest in filteredCollectionTaskCloseRequests = (collectionTaskCloseRequests | filter:{'approved':null})">
+                                <tr ng-repeat="taskCloseRequest in collectionTaskCloseRequests">
                                     <td class="fit">{{taskCloseRequest.code}}</td>
-                                    <td class="fit"><strong
-                                            ng-class="{'label label-danger':taskCloseRequest.type, 'label label-warning':!taskCloseRequest.type}">{{taskCloseRequest.type
-                                        ? "طلب إغلاق" : "طلب تمديد"}}</strong></td>
-                                    <td class="fit">{{taskCloseRequest.person.nickname}} /
-                                        {{taskCloseRequest.person.name}}
+                                    <td class="fit">
+                                        <strong ng-class="{'label label-danger':taskCloseRequest.type, 'label label-warning':!taskCloseRequest.type}">
+                                            {{taskCloseRequest.type ? "طلب إغلاق" : "طلب تمديد"}}</strong>
+                                    </td>
+                                    <td class="fit">
+                                        {{taskCloseRequest.person.nickname}} / {{taskCloseRequest.person.name}}
                                     </td>
                                     <td class="fit">
                                         {{taskCloseRequest.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
@@ -193,15 +196,27 @@
                                     </td>
                                     <td>
                                         {{taskCloseRequest.note}}
-                                        <a href="" ng-click="acceptRequest(taskCloseRequest)"
-                                           ng-if="task.person.id===me.id">موافق</a>
-                                        <a href="" ng-click="declineRequest(taskCloseRequest)"
-                                           ng-if="task.person.id===me.id">غير موافق</a>
+                                        <span ng-if="task.endDate > today && taskCloseRequest.approved === null">
+                                            <a href="" ng-click="acceptRequest(taskCloseRequest)"
+                                               ng-if="task.person.id===me.id">موافق</a>
+                                            <a href="" ng-click="declineRequest(taskCloseRequest)"
+                                               ng-if="task.person.id===me.id">غير موافق</a>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {{taskCloseRequest.approved === null ? 'قيد الانتظار' : ''}}
+                                        {{taskCloseRequest.approved === true ? 'موافقة' : ''}}
+                                        {{taskCloseRequest.approved === false ? 'مرفوض' : ''}}
+                                    </td>
+                                    <td class="fit">
+                                        {{taskCloseRequest.approvedDate ? (taskCloseRequest.approvedDate | kdate:
+                                        'yyyy-mm-dd' : 'ar' :'ummalqura') : '---'}}
+                                        <span class="label label-success">{{taskCloseRequest.approvedDate ? (taskCloseRequest.approvedDate | date:'h:m a') : ''}}</span>
                                     </td>
                                 </tr>
                                 <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
-                                    ng-show="!filteredCollectionTaskCloseRequests || filteredCollectionTaskCloseRequests.length ==0">
-                                    <td colspan="5">لا توجد طلبات إغلاق/تمديد حتى الآن</td>
+                                    ng-show="!collectionTaskCloseRequests || collectionTaskCloseRequests.length ==0">
+                                    <td colspan="7">لا توجد طلبات إغلاق/تمديد حتى الآن</td>
                                 </tr>
                                 </tbody>
                             </table>

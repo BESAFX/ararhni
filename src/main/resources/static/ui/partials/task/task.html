@@ -229,6 +229,7 @@
                                     <span class="fa fa-info-circle" uib-tooltip="{{task.content}}"></span>
                                     <a href="" ng-click="openWarnsModel(task)"><span class="label label-warning">{{task.taskWarns.length > 0 ? task.taskWarns.length + ' تحذير' : ''}}</span></a>
                                     <a href="" ng-click="openDeductionsModel(task)"><span class="label label-danger">{{task.taskDeductions.length > 0 ? task.taskDeductions.length + ' خصم' : ''}}</span></a>
+                                    <a href=""><span class="label label-primary">{{task.taskCloseRequests.length > 0 ? task.taskCloseRequests.length + ' طلب إغلاق/تمديد' : ''}}</span></a>
                                 </td>
                                 <td st-select-row-custom="task">
                                     {{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
