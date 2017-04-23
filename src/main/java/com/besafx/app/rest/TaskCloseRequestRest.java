@@ -3,10 +3,12 @@ package com.besafx.app.rest;
 import com.besafx.app.config.CustomException;
 import com.besafx.app.config.EmailSender;
 import com.besafx.app.entity.Person;
+import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskCloseRequest;
 import com.besafx.app.search.TaskCloseRequestSearch;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.TaskCloseRequestService;
+import com.besafx.app.service.TaskService;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
@@ -16,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -33,6 +36,12 @@ public class TaskCloseRequestRest {
 
     @Autowired
     private PersonService personService;
+
+    @Autowired
+    private PersonRest personRest;
+
+    @Autowired
+    private TaskService taskService;
 
     @Autowired
     private TaskCloseRequestService taskCloseRequestService;
@@ -92,19 +101,62 @@ public class TaskCloseRequestRest {
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
+    @Transactional
     public void delete(@PathVariable Long id, Principal principal) throws IOException {
         TaskCloseRequest object = taskCloseRequestService.findOne(id);
         if (object != null) {
             taskCloseRequestService.delete(object);
             notificationService.notifyOne(Notification
                     .builder()
-                    .title("العمليات على طلبات الإغلاق")
+                    .title("العمليات على طلبات الإغلاق/التمديد")
                     .message("تم حذف طلب الإغلاق بنجاح")
                     .type("success")
-                    .icon("fa-power-off")
+                    .icon("fa-trash")
                     .build(), principal.getName());
         } else {
             throw new CustomException("هذا الطلب لم يعد موجوداً، فضلاً قم بإعادة التحميل او التأكد من رقم الطلب المراد حذفه");
+        }
+    }
+
+    @RequestMapping(value = "delete/{listId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    @Transactional
+    public void delete(@PathVariable List<Long> listId, Principal principal) throws IOException {
+        List<TaskCloseRequest> object = taskCloseRequestService.findByIdIn(listId);
+        if (!object.isEmpty()) {
+            taskCloseRequestService.delete(object);
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title("العمليات على طلبات الإغلاق/التمديد")
+                    .message("تم حذف طلبات الإغلاق بنجاح")
+                    .type("success")
+                    .icon("fa-trash")
+                    .build(), principal.getName());
+        } else {
+            throw new CustomException("هذة الطلبات لم تعد موجودة، فضلاً قم بإعادة التحميل او التأكد من أرقام الطلبات المراد حذفها");
+        }
+    }
+
+    @RequestMapping(value = "deleteByTaskAndType/{taskId}/{type}", method = RequestMethod.DELETE)
+    @ResponseBody
+    @Transactional
+    public void deleteByTaskAndType(@PathVariable(value = "taskId") Long taskId, @PathVariable(value = "type") Boolean type, Principal principal) throws IOException {
+        Task task = taskService.findOne(taskId);
+        if (!personRest.getPersonManager(task.getPerson()).getEmail().equals(principal.getName())) {
+            if (!task.getPerson().getEmail().equals(principal.getName())) {
+                throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه ذلك.");
+            }
+        }
+        List<TaskCloseRequest> object = taskCloseRequestService.findByTaskIdAndType(taskId, type);
+        if (!object.isEmpty()) {
+            taskCloseRequestService.delete(object);
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title("العمليات على طلبات الإغلاق/التمديد")
+                    .message("تم حذف الطلبات بنجاح")
+                    .type("success")
+                    .icon("fa-trash")
+                    .build(), principal.getName());
         }
     }
 

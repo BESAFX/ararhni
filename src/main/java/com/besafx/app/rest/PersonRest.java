@@ -139,6 +139,14 @@ public class PersonRest {
         return getPersonManager(person);
     }
 
+    @RequestMapping("findActivePersonManagerSummery")
+    @ResponseBody
+    @JsonView(Views.Summery.class)
+    public Person findActivePersonManagerSummery(Principal principal) {
+        Person person = personService.findByEmail(principal.getName());
+        return getPersonManager(person);
+    }
+
     public Person getPersonManager(Person person) {
         List<Employee> employees = employeeService.findByPerson(person);
         List<Department> departments = departmentService.findByManager(person);

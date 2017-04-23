@@ -142,6 +142,11 @@ app.controller("taskCtrl", ['TaskService', 'TaskOperationService', 'TaskCloseReq
                 search.push($scope.buffer.importance);
                 search.push('&');
             }
+            if ($scope.buffer.closeType) {
+                search.push('closeType=');
+                search.push($scope.buffer.closeType);
+                search.push('&');
+            }
             if ($scope.buffer.codeFrom) {
                 search.push('codeFrom=');
                 search.push($scope.buffer.codeFrom);

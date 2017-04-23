@@ -54,6 +54,16 @@ app.factory("TaskService",
                     return response.data;
                 });
             },
+            addPerson: function (taskId, personId, message) {
+                return $http.get("/api/task/addPerson?taskId=" + taskId + "&personId=" + personId + "&message=" + message).then(function (response) {
+                    return response.data;
+                });
+            },
+            removePerson: function (taskId, personId, message) {
+                return $http.get("/api/task/removePerson?taskId=" + taskId + "&personId=" + personId + "&message=" + message).then(function (response) {
+                    return response.data;
+                });
+            },
             count: function () {
                 return $http.get("/api/task/count").then(function (response) {
                     return response.data;

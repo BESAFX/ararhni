@@ -1,15 +1,8 @@
 package com.besafx.app.rest;
-
 import com.besafx.app.config.CustomException;
 import com.besafx.app.config.EmailSender;
-import com.besafx.app.entity.Task;
-import com.besafx.app.entity.TaskCloseRequest;
-import com.besafx.app.entity.TaskOperation;
-import com.besafx.app.entity.TaskTo;
-import com.besafx.app.service.TaskCloseRequestService;
-import com.besafx.app.service.TaskOperationService;
-import com.besafx.app.service.TaskService;
-import com.besafx.app.service.TaskToService;
+import com.besafx.app.entity.*;
+import com.besafx.app.service.*;
 import com.besafx.app.util.DateConverter;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
@@ -21,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -37,6 +31,9 @@ public class TaskAction {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private PersonService personService;
 
     @Autowired
     private TaskOperationService taskOperationService;
@@ -65,7 +62,8 @@ public class TaskAction {
                 if (!task.getPerson().getEmail().equalsIgnoreCase(principal.getName())) {
                     throw new CustomException("عفواً، لا يمكنك التعديل على بيانات مهمة لم تضيفها");
                 }
-                task.setEndDate(new DateTime(task.getEndDate()).plusDays(days).toDate());
+                task.setEndDate(new DateTime().plusDays(days).toDate());
+                task.setCloseType(Task.CloseType.Pending);
                 task = taskService.save(task);
                 notificationService.notifyOne(Notification
                         .builder()
@@ -82,7 +80,6 @@ public class TaskAction {
                 email = email.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
                 email = email.replaceAll("TASK_PERSON", task.getPerson().getName());
                 emailSender.send("تمديد تاريخ إستلام المهمة رقم: " + "(" + task.getCode() + ")", email, task.getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()));
-
                 TaskOperation taskOperation = new TaskOperation();
                 TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskId);
                 if (tempTaskOperation == null) {
@@ -96,7 +93,6 @@ public class TaskAction {
                 taskOperation.setType(TaskOperation.OperationType.IncreaseEndDate);
                 taskOperation.setContent(message);
                 taskOperationService.save(taskOperation);
-
                 return task;
 
             } catch (Exception ex) {
@@ -134,7 +130,6 @@ public class TaskAction {
             email = email.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
             email = email.replaceAll("TASK_PERSON", task.getPerson().getName());
             emailSender.send("تعجيل تاريخ إستلام المهمة رقم: " + "(" + task.getCode() + ")", email, task.getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()));
-
             TaskOperation taskOperation = new TaskOperation();
             TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskId);
             if (tempTaskOperation == null) {
@@ -148,7 +143,6 @@ public class TaskAction {
             taskOperation.setType(TaskOperation.OperationType.DecreaseEndDate);
             taskOperation.setContent(message);
             taskOperationService.save(taskOperation);
-
             return task;
         }
     }
@@ -164,7 +158,6 @@ public class TaskAction {
             if (!taskCloseRequest.getTask().getPerson().getEmail().equals(principal.getName())) {
                 throw new CustomException("عفواً، غير مصرح لك القيام بهذة العملية، فقط جهة التكليف مصرح لها رفض الطلب");
             }
-
             try {
                 log.info("العمل على الطلب");
                 taskCloseRequest.setApproved(false);
@@ -178,7 +171,6 @@ public class TaskAction {
                         .icon("fa-battery")
                         .build(), principal.getName());
                 log.info("نهاية العمل على الطلب");
-
                 log.info("العمل على الحركة");
                 TaskOperation taskOperation = new TaskOperation();
                 TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskCloseRequest.getTask().getId());
@@ -199,7 +191,6 @@ public class TaskAction {
                 }
                 taskOperationService.save(taskOperation);
                 log.info("نهاية العمل على الحركة");
-
                 return taskCloseRequest;
             } catch (Exception ex) {
                 log.error(ex.getMessage(), ex);
@@ -219,7 +210,6 @@ public class TaskAction {
             if (!taskCloseRequest.getTask().getPerson().getEmail().equals(principal.getName())) {
                 throw new CustomException("عفواً، غير مصرح لك القيام بهذة العملية، فقط جهة التكليف مصرح لها قبول الطلب");
             }
-
             try {
                 log.info("العمل على الطلب");
                 taskCloseRequest.setApproved(true);
@@ -233,7 +223,6 @@ public class TaskAction {
                         .icon("fa-battery")
                         .build(), principal.getName());
                 log.info("نهاية العمل على الطلب");
-
                 log.info("العمل على الحركة");
                 TaskOperation taskOperation = new TaskOperation();
                 TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskCloseRequest.getTask().getId());
@@ -254,7 +243,6 @@ public class TaskAction {
                 }
                 taskOperationService.save(taskOperation);
                 log.info("نهاية العمل على الحركة");
-
                 return taskCloseRequest;
 
             } catch (Exception ex) {
@@ -279,7 +267,6 @@ public class TaskAction {
             if (!task.getPerson().getEmail().equals(principal.getName())) {
                 throw new CustomException("عفواً، غير مصرح لك القيام بهذة العملية، فقط جهة التكليف المصرح لها بإغلاق المهمة.");
             }
-
             log.info("العمل على تحديث بيانات المهمة");
             TaskTo taskTo = taskToService.findByTaskIdAndPersonId(taskId, personId);
             taskTo.setCloseDate(new Date());
@@ -294,14 +281,11 @@ public class TaskAction {
                     .icon("fa-power-off")
                     .build(), principal.getName());
             log.info("إنهاء العمل على تحديث بيانات المهمة");
-
             log.info("فى حال كان الموظفون المكلفين تم إغلاق مهامهم");
             if (task.getTaskTos().stream().filter(to -> !to.getClosed()).collect(Collectors.toList()).isEmpty()) {
-
                 task.setEndDate(new Date());
-                task.setCloseType(Task.CloseType.Manual);
+                task.setCloseType(Task.CloseType.Auto);
                 taskService.save(task);
-
                 log.info("اضافة حركة جديدة لإغلاق المهمة تلقائي");
                 TaskOperation taskOperation = new TaskOperation();
                 TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskId);
@@ -318,7 +302,6 @@ public class TaskAction {
                 taskOperationService.save(taskOperation);
                 log.info("إنهاء العمل على الحركة");
             }
-
             log.info("العمل على الحركة");
             TaskOperation taskOperation = new TaskOperation();
             TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskId);
@@ -334,7 +317,6 @@ public class TaskAction {
             taskOperation.setContent(message);
             taskOperationService.save(taskOperation);
             log.info("إنهاء العمل على الحركة");
-
             return task;
         }
     }
@@ -350,7 +332,6 @@ public class TaskAction {
             if (!task.getPerson().getEmail().equals(principal.getName())) {
                 throw new CustomException("عفواً، غير مصرح لك القيام بهذة العملية، فقط جهة التكليف المصرح لها بإغلاق المهمة.");
             }
-
             log.info("اضافة حركة جديدة لإغلاق المهمة تلقائي");
             TaskOperation taskOperation = new TaskOperation();
             TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskId);
@@ -366,18 +347,15 @@ public class TaskAction {
             taskOperation.setContent("إغلاق المهمة نهائياً - نقل إلى الارشيف");
             taskOperationService.save(taskOperation);
             log.info("إنهاء العمل على الحركة");
-
             task.setEndDate(new Date());
             task.setCloseType(Task.CloseType.Manual);
             taskService.save(task);
-
             log.info("إنهاء كل طلبات الاغلاق الخاصة بهذة المهمة");
             taskCloseRequestService.findByTask(task).stream().filter(request -> !request.getApproved()).forEach(request -> {
                 request.setApproved(true);
                 request.setApprovedDate(new Date());
                 taskCloseRequestService.save(request);
             });
-
             log.info("إغلاق المهمة على كل الموظفين");
             taskToService.findByTask(task).stream().filter(taskTo -> !taskTo.getClosed()).forEach(taskTo -> {
                 taskTo.setClosed(true);
@@ -385,8 +363,120 @@ public class TaskAction {
                 taskTo.setDegree(TaskTo.PersonDegree.C);
                 taskToService.save(taskTo);
             });
-
             return task;
         }
     }
+
+    @RequestMapping(value = "addPerson", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_TASK_UPDATE')")
+    @Transactional
+    public Task addPerson(
+            @RequestParam(value = "taskId") Long taskId,
+            @RequestParam(value = "personId") Long personId,
+            @RequestParam(value = "message") String message,
+            Principal principal) throws IOException {
+        try {
+            Task task = taskService.findOne(taskId);
+            Person person = personService.findOne(personId);
+            if (!task.getPerson().getEmail().equals(principal.getName())) {
+                throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة تكليف المهمة بإمكانه ذلك.");
+            }
+            if (taskToService.findByTaskAndPerson(task, person) != null) {
+                throw new CustomException("هذا الموظف مكلف بالفعل بهذة المهمة.");
+            }
+            TaskTo taskTo = new TaskTo();
+            taskTo.setDegree(null);
+            taskTo.setProgress(0);
+            taskTo.setClosed(false);
+            taskTo.setCloseDate(null);
+            taskTo.setTask(task);
+            taskTo.setPerson(person);
+            taskToService.save(taskTo);
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title("العمليات على المهام")
+                    .message("تم اضافة التكليف الجديد بنجاح")
+                    .type("success")
+                    .icon("fa-black-tie")
+                    .build(), principal.getName());
+            ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewTask.html");
+            String email = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+            email = email.replaceAll("TASK_CODE", task.getCode().toString());
+            email = email.replaceAll("TASK_TITLE", task.getTitle());
+            email = email.replaceAll("TASK_CONTENT", task.getContent());
+            email = email.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
+            email = email.replaceAll("TASK_PERSON", task.getPerson().getName());
+            emailSender.send("مهمة جديدة رقم: " + "(" + task.getCode() + ")", email, person.getEmail());
+            log.info("اضافة الحركة الخاصة بالتحويل الى موظف جديد");
+            TaskOperation taskOperation = new TaskOperation();
+            TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(task.getId());
+            if (tempTaskOperation == null) {
+                taskOperation.setCode(1);
+            } else {
+                taskOperation.setCode(tempTaskOperation.getCode() + 1);
+            }
+            taskOperation.setDate(new Date());
+            taskOperation.setSender(task.getPerson());
+            taskOperation.setTask(task);
+            taskOperation.setType(TaskOperation.OperationType.AddPerson);
+            taskOperation.setContent("تحويل المهمة إلى " + person.getNickname() + " / " + person.getName() + " [ " + message + " ] ");
+            taskOperationService.save(taskOperation);
+            log.info("تم اضافة الحركة الجديدة بنجاح.");
+            return task;
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "removePerson", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_TASK_UPDATE')")
+    @Transactional
+    public Boolean removePerson(
+            @RequestParam(value = "taskId") Long taskId,
+            @RequestParam(value = "personId") Long personId,
+            @RequestParam(value = "message") String message,
+            Principal principal) throws IOException {
+        try {
+            Task task = taskService.findOne(taskId);
+            Person person = personService.findOne(personId);
+            if (!task.getPerson().getEmail().equals(principal.getName())) {
+                throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة تكليف المهمة بإمكانه ذلك.");
+            }
+            TaskTo taskTo = taskToService.findByTaskAndPerson(task, person);
+            if (taskTo == null) {
+                throw new CustomException("هذا الموظف غير مكلف بهذة المهمة.");
+            }
+            taskToService.delete(taskTo);
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title("العمليات على المهام")
+                    .message("تم حذف التكليف بنجاح")
+                    .type("success")
+                    .icon("fa-trash")
+                    .build(), principal.getName());
+            log.info("اضافة الحركة الخاصة بحذف موظف من التكليف");
+            TaskOperation taskOperation = new TaskOperation();
+            TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(task.getId());
+            if (tempTaskOperation == null) {
+                taskOperation.setCode(1);
+            } else {
+                taskOperation.setCode(tempTaskOperation.getCode() + 1);
+            }
+            taskOperation.setDate(new Date());
+            taskOperation.setSender(task.getPerson());
+            taskOperation.setTask(task);
+            taskOperation.setType(TaskOperation.OperationType.AddPerson);
+            taskOperation.setContent("حذف تكليف المهمة من " + person.getNickname() + " / " + person.getName() + " [ " + message + " ] ");
+            taskOperationService.save(taskOperation);
+            log.info("تم اضافة الحركة الجديدة بنجاح.");
+            return true;
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            return false;
+        }
+    }
+
 }

@@ -14,6 +14,9 @@ app.factory("TaskCloseRequestService",
             remove: function (id) {
                 return $http.delete("/api/taskCloseRequest/delete/" +  id);
             },
+            deleteByTaskAndType: function (taskId, type) {
+                return $http.delete("/api/taskCloseRequest/deleteByTaskAndType/" + taskId + "/" + type);
+            },
             count: function () {
                 return $http.get("/api/taskCloseRequest/count").then(function (response) {
                     return response.data;

@@ -28,6 +28,7 @@ public class TaskSearch {
     public List<Task> search(
             final String title,
             final Task.Importance importance,
+            final Task.CloseType closeType,
             final Long codeFrom,
             final Long codeTo,
             final Long startDateFrom,
@@ -45,6 +46,7 @@ public class TaskSearch {
             List<Specification> predicates = new ArrayList<>();
             Optional.ofNullable(title).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("title"), "%" + value + "%")));
             Optional.ofNullable(importance).ifPresent(value -> predicates.add((root, cq, cb) -> cb.equal(root.get("importance"), value)));
+            Optional.ofNullable(closeType).ifPresent(value -> predicates.add((root, cq, cb) -> cb.equal(root.get("closeType"), value)));
             Optional.ofNullable(codeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("code"), value)));
             Optional.ofNullable(codeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("code"), value)));
             Optional.ofNullable(startDateFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("startDate"), new Date(value))));
@@ -103,6 +105,7 @@ public class TaskSearch {
             List<Specification> predicates = new ArrayList<>();
             Optional.ofNullable(title).ifPresent(value -> predicates.add((root, cq, cb) -> cb.like(root.get("task").get("title"), "%" + value + "%")));
             Optional.ofNullable(importance).ifPresent(value -> predicates.add((root, cq, cb) -> cb.equal(root.get("task").get("importance"), value)));
+            Optional.ofNullable(closeType).ifPresent(value -> predicates.add((root, cq, cb) -> cb.equal(root.get("task").get("closeType"), value)));
             Optional.ofNullable(codeFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("task").get("code"), value)));
             Optional.ofNullable(codeTo).ifPresent(value -> predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("task").get("code"), value)));
             Optional.ofNullable(startDateFrom).ifPresent(value -> predicates.add((root, cq, cb) -> cb.greaterThanOrEqualTo(root.get("task").get("startDate"), new Date(value))));
@@ -160,18 +163,18 @@ public class TaskSearch {
     }
 
     public List<Task> getIncomingOpenedTasks(String timeType, Long personId) {
-        return search(null, null, null, null, null, null, null, null, true, true, timeType, personId);
+        return search(null, null, Task.CloseType.Pending, null, null, null, null, null, null, true, true, timeType, personId);
     }
 
     public List<Task> getOutgoingOpenedTasks(String timeType, Long personId) {
-        return search(null, null, null, null, null, null, null, null, false, true, timeType, personId);
+        return search(null, null, Task.CloseType.Pending, null, null, null, null, null, null, false, true, timeType, personId);
     }
 
     public List<Task> getIncomingClosedTasks(String timeType, Long personId) {
-        return search(null, null, null, null, null, null, null, null, true, false, timeType, personId);
+        return search(null, null, Task.CloseType.Auto, null, null, null, null, null, null, true, false, timeType, personId);
     }
 
     public List<Task> getOutgoingClosedTasks(String timeType, Long personId) {
-        return search(null, null, null, null, null, null, null, null, false, false, timeType, personId);
+        return search(null, null, Task.CloseType.Auto, null, null, null, null, null, null, false, false, timeType, personId);
     }
 }

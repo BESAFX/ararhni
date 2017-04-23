@@ -97,7 +97,7 @@ app.run(['$http', '$location', '$state', '$window', 'PersonService', '$rootScope
                 $rootScope.me = data;
             });
 
-            PersonService.findActivePersonManager().then(function (data) {
+            PersonService.findActivePersonManagerSummery().then(function (data) {
                 $rootScope.me.manager = data;
             });
 

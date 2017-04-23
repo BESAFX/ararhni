@@ -1,5 +1,4 @@
 package com.besafx.app.rest;
-
 import com.besafx.app.config.CustomException;
 import com.besafx.app.config.EmailSender;
 import com.besafx.app.entity.Person;
@@ -54,6 +53,12 @@ public class TaskRest {
 
     @Autowired
     private TaskOperationAttachService taskOperationAttachService;
+
+    @Autowired
+    private TaskWarnService taskWarnService;
+
+    @Autowired
+    private TaskDeductionService taskDeductionService;
 
     @Autowired
     private NotificationService notificationService;
@@ -140,6 +145,8 @@ public class TaskRest {
             if (!object.getPerson().getEmail().equalsIgnoreCase(principal.getName())) {
                 throw new CustomException("عفواً، لا يمكنك حذف مهمة لم تضيفها");
             }
+            taskWarnService.delete(object.getTaskWarns());
+            taskDeductionService.delete(object.getTaskDeductions());
             taskToService.delete(object.getTaskTos());
             taskCloseRequestService.delete(object.getTaskCloseRequests());
             object.getTaskOperations().stream().forEach(taskOperation -> taskOperationAttachService.delete(taskOperation.getTaskOperationAttaches()));
@@ -179,6 +186,7 @@ public class TaskRest {
     public List<Task> filter(
             @RequestParam(value = "title", required = false) final String title,
             @RequestParam(value = "importance", required = false) final Task.Importance importance,
+            @RequestParam(value = "closeType", required = false) final Task.CloseType closeType,
             @RequestParam(value = "codeFrom", required = false) final Long codeFrom,
             @RequestParam(value = "codeTo", required = false) final Long codeTo,
             @RequestParam(value = "startDateFrom", required = false) final Long startDateFrom,
@@ -189,7 +197,7 @@ public class TaskRest {
             @RequestParam(value = "isTaskOpen") final Boolean isTaskOpen,
             @RequestParam(value = "timeType") final String timeType,
             @RequestParam(value = "person") final Long person) {
-        return taskSearch.search(title, importance, codeFrom, codeTo, startDateFrom, startDateTo, endDateFrom, endDateTo, taskType, isTaskOpen, timeType, person);
+        return taskSearch.search(title, importance, closeType, codeFrom, codeTo, startDateFrom, startDateTo, endDateFrom, endDateTo, taskType, isTaskOpen, timeType, person);
     }
 
 }

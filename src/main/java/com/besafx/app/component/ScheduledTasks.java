@@ -83,8 +83,7 @@ public class ScheduledTasks {
             log.info("////////////////////////////////" + person.getName() + "////////////////////////////////////////");
 
             log.info("فحص المهام الواردة السارية للموظف / " + person.getName());
-
-            List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, null, true, true, "All", person.getId());
+            List<Task> tasks = taskSearch.search(null, null, Task.CloseType.Pending, null, null, null, null, null, null, true, true, "All", person.getId());
 
             log.info("عدد المهام المكلف بها = " + tasks.size());
 

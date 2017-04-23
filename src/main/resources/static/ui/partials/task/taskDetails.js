@@ -68,6 +68,10 @@ app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskToService', 'TaskServic
             ModalProvider.openTaskToCreateModel($scope.task);
         };
 
+        $scope.openRemoveTaskToModel = function () {
+            ModalProvider.openTaskToRemoveModel($scope.task);
+        };
+
         $scope.findTaskOperations = function () {
             TaskOperationService.findByTask($scope.task).then(function (data) {
                 $scope.task.taskOperations = data;
@@ -128,6 +132,22 @@ app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskToService', 'TaskServic
 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
+        };
+
+        $scope.deleteTaskCloseRequests = function () {
+            $rootScope.showConfirmNotify("المهام", "هل تود حذف جميع طلبات الإغلاق فعلاً؟", "error", "fa-trash", function () {
+                TaskCloseRequestService.deleteByTaskAndType($scope.task.id, true).then(function (data) {
+                    $scope.refreshTaskCloseRequests();
+                });
+            });
+        };
+
+        $scope.deleteTaskExtendRequests = function () {
+            $rootScope.showConfirmNotify("المهام", "هل تود حذف جميع طلبات التمديد فعلاً؟", "error", "fa-trash", function () {
+                TaskCloseRequestService.deleteByTaskAndType($scope.task.id, false).then(function (data) {
+                    $scope.refreshTaskCloseRequests();
+                });
+            });
         };
 
     }]);

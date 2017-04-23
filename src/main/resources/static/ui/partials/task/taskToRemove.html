@@ -2,7 +2,7 @@
       focus-group-head="loop" focus-group-tail="loop">
 
     <div class="modal-header">
-        <h3 class="modal-title text-center" id="modal-title">تكليف موظف جديد بمهمة</h3>
+        <h3 class="modal-title text-center" id="modal-title">حذف موظف من تكليف مهمة</h3>
     </div>
 
     <div class="modal-body" id="modal-body">
@@ -79,9 +79,8 @@
 
             <div class="form-group text-right col-md-12">
                 <div class="alert alert-danger" role="alert">
-                    <strong>سيتم إرسال رسالة إلى البريد الإلكتروني الخاص بالموظف لإعلامه بالتكليف الجديد وسيكون بإمكانه
-                        التعقيب على المهمة وإرفاق الملفات والمستندات، وسيتم تطبيق الخصومات والتحذيرات الآلية الخاصة
-                        بالمهمة.</strong>
+                    <strong>بإمكانك حذف كل مايتعلق بالموظف على هذة المهمة من حركات وطلبات وانذارات وخصومات، ويمكن ايضا
+                        الابقاء على مدخلاته كتوثيق لدورة حياة المهمة</strong>
                 </div>
             </div>
 
@@ -104,10 +103,10 @@
                                     placeholder-text-single="'اختر الحساب الشخصي'"
                                     class="form-control text-right"
                                     chosen=""
-                                    ng-model="buffer.person"
+                                    ng-model="buffer.taskTo"
                                     disable-validation-message=""
                                     focus-index="1"
-                                    ng-options="person.name for person in persons track by person.id">
+                                    ng-options="taskTo.person.name for taskTo in task.taskTos track by taskTo.id">
                             </select>
                         </div>
 
@@ -146,8 +145,8 @@
             <button type="submit"
                     focus-index="2"
                     class="btn btn-success pull-right">
-                <span>اضافة</span>
-                <i class="fa fa-plus fa-lg"></i>
+                <span>حذف</span>
+                <i class="fa fa-minus fa-lg"></i>
             </button>
         </div>
 

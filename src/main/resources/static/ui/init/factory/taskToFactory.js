@@ -15,11 +15,6 @@ app.factory("TaskToService",
                 return $http.get("/api/taskTo/findByTask/" + taskId).then(function (response) {
                     return response.data;
                 });
-            },
-            setClosed: function (taskTo) {
-                return $http.put("/api/taskTo/setClosed", taskTo).then(function (response) {
-                    return response.data;
-                });
             }
         };
     }]);

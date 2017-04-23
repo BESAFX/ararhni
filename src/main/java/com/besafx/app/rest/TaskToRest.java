@@ -1,18 +1,17 @@
 package com.besafx.app.rest;
-
 import com.besafx.app.config.CustomException;
 import com.besafx.app.config.EmailSender;
-import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskOperation;
 import com.besafx.app.entity.TaskTo;
 import com.besafx.app.service.TaskOperationService;
-import com.besafx.app.service.TaskService;
 import com.besafx.app.service.TaskToService;
 import com.besafx.app.util.DateConverter;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -28,8 +27,7 @@ import java.util.List;
 @RequestMapping(value = "/api/taskTo/")
 public class TaskToRest {
 
-    @Autowired
-    private TaskService taskService;
+    private final static Logger log = LoggerFactory.getLogger(TaskRest.class);
 
     @Autowired
     private TaskOperationService taskOperationService;
@@ -57,15 +55,13 @@ public class TaskToRest {
         taskTo.setClosed(false);
         taskTo.setCloseDate(null);
         taskTo = taskToService.save(taskTo);
-
         notificationService.notifyOne(Notification
                 .builder()
                 .title("العمليات على المهام")
-                .message("تم اضافة تكليف الجديد بنجاح")
+                .message("تم اضافة التكليف الجديد بنجاح")
                 .type("success")
                 .icon("fa-black-tie")
                 .build(), principal.getName());
-
         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewTask.html");
         String email = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
         email = email.replaceAll("TASK_CODE", taskTo.getTask().getCode().toString());
@@ -74,7 +70,7 @@ public class TaskToRest {
         email = email.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(taskTo.getTask().getEndDate()));
         email = email.replaceAll("TASK_PERSON", taskTo.getTask().getPerson().getName());
         emailSender.send("مهمة جديدة رقم: " + "(" + taskTo.getTask().getCode() + ")", email, taskTo.getPerson().getEmail());
-
+        log.info("اضافة الحركة الخاصة بالتحويل الى موظف جديد");
         TaskOperation taskOperation = new TaskOperation();
         TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskTo.getTask().getId());
         if (tempTaskOperation == null) {
@@ -88,6 +84,7 @@ public class TaskToRest {
         taskOperation.setType(TaskOperation.OperationType.AddPerson);
         taskOperation.setContent("تحويل المهمة إلى " + taskTo.getPerson().getNickname() + " / " + taskTo.getPerson().getName());
         taskOperationService.save(taskOperation);
+        log.info("تم اضافة الحركة الجديدة بنجاح.");
 
         return taskTo;
     }
@@ -108,26 +105,6 @@ public class TaskToRest {
                 .build(), principal.getName());
         return taskTo;
     }
-
-    @RequestMapping(value = "setClosed", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public TaskTo setClosed(@RequestBody TaskTo taskTo, Principal principal) throws IOException {
-        Task task = taskService.findOne(taskTo.getTask().getId());
-        if (!task.getPerson().getEmail().equalsIgnoreCase(principal.getName())) {
-            throw new CustomException("عفواً، مسموح فقط لجهة التكليف بإغلاق المهمة.");
-        }
-        taskTo.setCloseDate(taskTo.getClosed() ? new Date() : null);
-        taskTo = taskToService.save(taskTo);
-        notificationService.notifyOne(Notification
-                .builder()
-                .title("العمليات على المهام")
-                .message("تمت العملية بنجاح.")
-                .type("success")
-                .icon("fa-power-off")
-                .build(), principal.getName());
-        return taskTo;
-    }
-
 
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody

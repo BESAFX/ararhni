@@ -21,6 +21,7 @@
                                     <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href="" ng-click="openExtensionModel()" tooltip-append-to-body="true"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
                                    uib-tooltip="تمديد المهمة">
                                     <span class="fa fa-battery-full"></span>
                                 </a>
@@ -94,9 +95,15 @@
                                    uib-tooltip="تحديث">
                                     <span class="fa fa-refresh"></span>
                                 </a>
-                                <a href="" tooltip-append-to-body="true" ng-if="task.person.id===me.id"
+                                <a href="" tooltip-append-to-body="true"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
                                    ng-click="openCreateTaskToModel()" uib-tooltip="تحويل إلى موظف">
                                     <span class="fa fa-plus"></span>
+                                </a>
+                                <a href="" tooltip-append-to-body="true"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                   ng-click="openRemoveTaskToModel()" uib-tooltip="حذف موظف من التكليف">
+                                    <span class="fa fa-minus"></span>
                                 </a>
                             </li>
                         </ul>
@@ -160,6 +167,16 @@
                                 <a href="" tooltip-append-to-body="true"
                                    ng-click="refreshTaskCloseRequests()" uib-tooltip="تحديث">
                                     <span class="fa fa-refresh"></span>
+                                </a>
+                                <a href="" tooltip-append-to-body="true"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                   ng-click="deleteTaskCloseRequests()" uib-tooltip="حذف طلبات الإغلاق">
+                                    <span class="fa fa-trash"></span>
+                                </a>
+                                <a href="" tooltip-append-to-body="true"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                   ng-click="deleteTaskExtendRequests()" uib-tooltip="حذف طلبات التمديد">
+                                    <span class="fa fa-trash"></span>
                                 </a>
                             </li>
                         </ul>

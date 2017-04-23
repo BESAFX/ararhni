@@ -20,6 +20,9 @@ public interface TaskCloseRequestService extends PagingAndSortingRepository<Task
 
     @Query("select max(code) from TaskCloseRequest c where (c.task.id) = (:id)")
     Integer findLastCodeByTask(@Param("id") Long id);
+    List<TaskCloseRequest> findByIdIn(List<Long> listId);
+    List<TaskCloseRequest> findByTaskAndType(Task task, Boolean type);
+    List<TaskCloseRequest> findByTaskIdAndType(Long taskId, Boolean type);
 
     List<TaskCloseRequest> findByTask(Task task);
 
