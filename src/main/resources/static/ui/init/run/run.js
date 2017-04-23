@@ -91,6 +91,8 @@ app.run(['$http', '$location', '$state', '$window', 'PersonService', '$rootScope
         PersonService.findAuthorities().then(function (data) {
             $rootScope.authorities = data;
 
+            $rootScope.me = {};
+
             PersonService.findActivePerson().then(function (data) {
                 $rootScope.me = data;
             });
