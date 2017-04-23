@@ -20,6 +20,10 @@
                                    uib-tooltip="تحديث المهمة">
                                     <span class="fa fa-refresh"></span>
                                 </a>
+                                <a href="" ng-click="openExtensionModel()" tooltip-append-to-body="true"
+                                   uib-tooltip="تمديد المهمة">
+                                    <span class="fa fa-battery-full"></span>
+                                </a>
                             </li>
                         </ul>
                         <div class="panel-title-box pull-right">
@@ -71,8 +75,8 @@
                                 <td>الموظفون</td>
                                 <td>
                                     <span ng-repeat="to in task.taskTos"
-                                          ng-class="{'label label-success':to.closed===false}"
-                                          style="margin: 2px">{{(to.closed===false) ? to.person.name : ''}}</span>
+                                          ng-class="{'label label-success':to.closed===false, 'label label-default':to.closed===true}"
+                                          style="margin: 2px">{{to.person.name}}</span>
                                 </td>
                             </tr>
                             </tbody>
