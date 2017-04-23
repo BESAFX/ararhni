@@ -9,6 +9,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public interface EmployeeService extends PagingAndSortingRepository<Employee, Long>, JpaSpecificationExecutor<Employee> {
@@ -17,4 +19,5 @@ public interface EmployeeService extends PagingAndSortingRepository<Employee, Lo
     Integer findMaxCode();
 
     Employee findByPersonAndDepartment(Person person, Department department);
+    List<Employee> findByPerson(Person person);
 }

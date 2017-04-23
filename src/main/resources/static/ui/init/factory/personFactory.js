@@ -29,6 +29,11 @@ app.factory("PersonService",
                     return response.data;
                 });
             },
+            findActivePersonManager: function () {
+                return $http.get("/api/person/findActivePersonManager").then(function (response) {
+                    return response.data;
+                });
+            },
             findAuthorities: function () {
                 return $http.get("/api/person/findAuthorities").then(function (response) {
                     return response.data;

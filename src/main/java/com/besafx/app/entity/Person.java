@@ -68,19 +68,19 @@ public class Person implements Serializable {
     @JsonIgnoreProperties(value = {"persons"}, allowSetters = true)
     private Team team;
 
-    @OneToMany(mappedBy = "manager")
+    @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
     private List<Company> companies = new ArrayList<>();
 
-    @OneToMany(mappedBy = "manager")
+    @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
     private List<Region> regions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "manager")
+    @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
     private List<Branch> branches = new ArrayList<>();
 
-    @OneToMany(mappedBy = "manager")
+    @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
     private List<Department> departments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
     private List<Employee> employees = new ArrayList<>();
 
     @Temporal(TemporalType.TIMESTAMP)

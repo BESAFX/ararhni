@@ -51,11 +51,16 @@ public class TaskWarnRest {
     @Autowired
     private EmailSender emailSender;
 
+    @Autowired
+    private PersonRest personRest;
+
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public TaskWarn create(@RequestBody TaskWarn taskWarn, Principal principal) {
-        if (!taskWarn.getTask().getPerson().getEmail().equals(principal.getName())) {
-            throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه ارسال التحذيرات");
+        if (!personRest.getPersonManager(taskWarn.getTask().getPerson()).getEmail().equals(principal.getName())) {
+            if (!taskWarn.getTask().getPerson().getEmail().equals(principal.getName())) {
+                throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه ارسال التحذيرات");
+            }
         }
         try {
             Person person = personService.findByEmail(principal.getName());
@@ -89,8 +94,11 @@ public class TaskWarnRest {
     @RequestMapping(value = "clearCounters/{taskId}/{personId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public boolean clearCounters(@PathVariable(value = "taskId") Long taskId, @PathVariable(value = "personId") Long personId, Principal principal) {
-        if (!taskService.findOne(taskId).getPerson().getEmail().equals(principal.getName())) {
-            throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه حذف التحذيرات");
+        Task task = taskService.findOne(taskId);
+        if (!personRest.getPersonManager(task.getPerson()).getEmail().equals(principal.getName())) {
+            if (!task.getPerson().getEmail().equals(principal.getName())) {
+                throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه حذف التحذيرات");
+            }
         }
         taskWarnService.delete(taskWarnService.findByTaskIdAndToPersonIdAndType(taskId, personId, TaskWarn.TaskWarnType.Auto));
         notificationService.notifyOne(Notification

@@ -1,5 +1,4 @@
 package com.besafx.app.rest;
-
 import com.besafx.app.config.CustomException;
 import com.besafx.app.config.EmailSender;
 import com.besafx.app.entity.Person;
@@ -51,11 +50,16 @@ public class TaskDeductionRest {
     @Autowired
     private EmailSender emailSender;
 
+    @Autowired
+    private PersonRest personRest;
+
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public TaskDeduction create(@RequestBody TaskDeduction taskDeduction, Principal principal) {
-        if (!taskDeduction.getTask().getPerson().getEmail().equals(principal.getName())) {
-            throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه ارسال الخصومات");
+        if (!personRest.getPersonManager(taskDeduction.getTask().getPerson()).getEmail().equals(principal.getName())) {
+            if (!taskDeduction.getTask().getPerson().getEmail().equals(principal.getName())) {
+                throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه ارسال الخصومات");
+            }
         }
         try {
             Person person = personService.findByEmail(principal.getName());
@@ -89,8 +93,11 @@ public class TaskDeductionRest {
     @RequestMapping(value = "clearCounters/{taskId}/{personId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public boolean clearCounters(@PathVariable(value = "taskId") Long taskId, @PathVariable(value = "personId") Long personId, Principal principal) {
-        if (!taskService.findOne(taskId).getPerson().getEmail().equals(principal.getName())) {
-            throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه حذف الخصومات");
+        Task task = taskService.findOne(taskId);
+        if (!personRest.getPersonManager(task.getPerson()).getEmail().equals(principal.getName())) {
+            if (!task.getPerson().getEmail().equals(principal.getName())) {
+                throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه حذف الخصومات");
+            }
         }
         taskDeductionService.delete(taskDeductionService.findByTaskIdAndToPersonIdAndType(taskId, personId, TaskDeduction.TaskDeductionType.Auto));
         notificationService.notifyOne(Notification

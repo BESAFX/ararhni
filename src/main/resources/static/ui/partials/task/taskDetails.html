@@ -235,12 +235,12 @@
                                     <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href="" ng-click="openCreateWarnModel()" tooltip-append-to-body="true"
-                                   ng-if="task.person.id===me.id || task.person.id===me.manager.id"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
                                    uib-tooltip="اضافة تحذير">
                                     <span class="fa fa-bell-o"></span>
                                 </a>
                                 <a href="" tooltip-append-to-body="true"
-                                   ng-if="task.person.id===me.id || task.person.id===me.manager.id"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
                                    ng-click="openClearWarnsAndDeductionsModel()" uib-tooltip="حذف التحذيرات">
                                     <span class="fa fa-eraser"></span>
                                 </a>
@@ -301,12 +301,12 @@
                                     <span class="fa fa-refresh"></span>
                                 </a>
                                 <a href="" ng-click="openCreateDeductionModel()" tooltip-append-to-body="true"
-                                   ng-if="task.person.id===me.id || task.person.id===me.manager.id"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
                                    uib-tooltip="اضافة خصم">
                                     <span class="fa fa-bomb"></span>
                                 </a>
                                 <a href="" tooltip-append-to-body="true"
-                                   ng-if="task.person.id===me.id || task.person.id===me.manager.id"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
                                    ng-click="openClearWarnsAndDeductionsModel()" uib-tooltip="حذف الخصومات">
                                     <span class="fa fa-eraser"></span>
                                 </a>
@@ -372,13 +372,13 @@
                                     <span class="fa fa-clock-o"></span>
                                 </a>
                                 <a href="" ng-click="openCreateWarnModel()"
-                                   ng-if="task.person.id===me.id || task.person.id===me.manager.id"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
                                    tooltip-append-to-body="true"
                                    uib-tooltip="ارسال تحذير">
                                     <span class="fa fa-bell-o"></span>
                                 </a>
                                 <a href="" ng-click="openCreateDeductionModel()"
-                                   ng-if="task.person.id===me.id || task.person.id===me.manager.id"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
                                    tooltip-append-to-body="true"
                                    uib-tooltip="ارسال خصم">
                                     <span class="fa fa-bomb"></span>
