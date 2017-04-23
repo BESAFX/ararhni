@@ -59,8 +59,8 @@ public class EmailSender {
             log.info("Trying sending email to this destinations: " + toEmailList);
             transport = mailSession.getTransport();
             message = new MimeMessage(mailSession);
-            message.setSubject(title);
-            message.setContent(content, "text/html");
+            message.setSubject(title, "UTF-8");
+            message.setText(content, "UTF-8", "html");
             Address[] from = InternetAddress.parse("admin@ararhni.com");
             message.addFrom(from);
             toEmailList.stream().forEach(email -> {
@@ -89,7 +89,8 @@ public class EmailSender {
             message = new MimeMessage(mailSession);
             Address[] from = InternetAddress.parse("admin@ararhni.com");
             message.addFrom(from);
-            message.setSubject(title);
+            message.setSubject(title, "UTF-8");
+            message.setText(content, "UTF-8", "html");
             toEmailList.stream().forEach(email -> {
                 try {
                     message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
@@ -98,7 +99,6 @@ public class EmailSender {
                 }
             });
             BodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setContent(content, "text/html");
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
             ListIterator<FileSystemResource> fileSystemResourceListIterator = files.listIterator();
@@ -128,8 +128,8 @@ public class EmailSender {
             log.info("Trying sending email to this destinations: " + email);
             transport = mailSession.getTransport();
             message = new MimeMessage(mailSession);
-            message.setSubject(title);
-            message.setContent(content, "text/html");
+            message.setSubject(title, "UTF-8");
+            message.setText(content, "UTF-8", "html");
             Address[] from = InternetAddress.parse("admin@ararhni.com");
             message.addFrom(from);
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
@@ -138,7 +138,7 @@ public class EmailSender {
             transport.close();
             log.info("Sending email successfully to this destinations: " + email);
         } catch (Exception ex) {
-            log.info(ex.getMessage());
+            log.error(ex.getMessage(), ex);
         }
     }
 
@@ -152,10 +152,10 @@ public class EmailSender {
             message = new MimeMessage(mailSession);
             Address[] from = InternetAddress.parse("admin@ararhni.com");
             message.addFrom(from);
-            message.setSubject(title);
+            message.setSubject(title, "UTF-8");
+            message.setText(content, "UTF-8", "html");
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             BodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setContent(content, "text/html");
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
             ListIterator<FileSystemResource> fileSystemResourceListIterator = files.listIterator();
