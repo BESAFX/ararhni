@@ -164,7 +164,7 @@ public class PersonRest {
         } else if (companies.isEmpty()) {
             return companies.get(0).getManager();
         } else {
-            return null;
+            return person;
         }
     }
 
