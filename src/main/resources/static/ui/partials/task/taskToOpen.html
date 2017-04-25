@@ -2,12 +2,18 @@
       focus-group-head="loop" focus-group-tail="loop">
 
     <div class="modal-header">
-        <h3 class="modal-title text-center" id="modal-title">{{title}}</h3>
+        <h3 class="modal-title text-center" id="modal-title">فتح المهمة على موظف</h3>
     </div>
 
     <div class="modal-body" id="modal-body">
 
         <div class="row">
+
+            <div class="form-group text-right col-md-12" ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong>فضلاً اكمل الحقول المطلوبة</strong>
+                </div>
+            </div>
 
             <div class="form-group text-right col-md-12">
                 <div class="panel panel-success">
@@ -72,14 +78,16 @@
             </div>
 
             <div class="form-group text-right col-md-12">
-                <div class="alert alert-info" role="alert">
-                    <strong>ملاحظة هامة: سيتم إرسال طلب الإغلاق/التمديد إلى جهة التكليف، ويجب عليك إستمرار التفاعل مع
-                        المهمة حتى يتم الرد وإلا سيتم تطبيق الخصومات.</strong>
+                <div class="alert alert-danger" role="alert">
+                    <strong>نظراً لامكانية اعادة استخدام المهمة أكثر من مرة، يمكنك إعادة فتح المهمة على الموظف ومسح
+                        تقييمه من الدورة، مع العلم سيتم الابقاء على كل مايتعلق به من حركات وانذارات وطلبات والتي بامكان
+                        جهة التكليف حذف ما يشاء منها فى حال الشروع فى بدء دورة جديدة للمهمة بما يتناسب مع تطورات
+                        العمل.</strong>
                 </div>
             </div>
 
             <div class="form-group text-right col-md-12">
-                <div class="panel panel-danger">
+                <div class="panel panel-success">
                     <div class="panel-heading">
                         <div class="panel-title-box pull-right">
                             <h3>البيانات المطلوبة</h3>
@@ -87,14 +95,25 @@
                     </div>
                     <div class="panel-body">
 
-                        <div class="form-group text-right col-md-12" ng-show="form.$invalid && form.$submitted">
-                            <div class="alert alert-danger" role="alert">
-                                <strong>فضلاً اكمل الحقول المطلوبة</strong>
-                            </div>
+                        <div class="form-group text-right col-md-12">
+                            <label for="person" class="control-label">
+                                <span>الموظف</span>
+                            </label>
+                            <select id="person"
+                                    data-placeholder="ابحث عن المستخدم"
+                                    no-results-text="'لا توجد بيانات توافق بحثك'"
+                                    placeholder-text-single="'اختر الحساب الشخصي'"
+                                    class="form-control text-right"
+                                    chosen=""
+                                    ng-model="buffer.taskTo"
+                                    disable-validation-message=""
+                                    focus-index="1"
+                                    ng-options="taskTo.person.name for taskTo in task.taskTos track by taskTo.id">
+                            </select>
                         </div>
 
                         <div class="form-group text-right col-md-12">
-                            <label for="note" class="control-label">ملاحظات</label>
+                            <label for="note" class="control-label">التعليق</label>
                             <textarea id="note"
                                       type="text"
                                       focus-index="2"
@@ -102,9 +121,9 @@
                                       required="required"
                                       class="form-control text-right"
                                       disable-validation-message=""
-                                      placeholder="اذكر بإختصار سبب طلبك لإغلاق/تمديد المهمة"
-                                      ng-model="taskCloseRequest.note">
-                            </textarea>
+                                      placeholder="اكتب ما تود ارساله الى المكلفين"
+                                      ng-model="buffer.message">
+                             </textarea>
                         </div>
 
                     </div>
@@ -118,11 +137,11 @@
     <div class="modal-footer">
 
         <div class="row">
-            <button uib-tooltip="ارسال"
+            <button uib-tooltip="فتح المهمة"
                     tooltip-append-to-body="true"
                     type="submit"
                     class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
-                <i class="material-icons">send</i>
+                <i class="material-icons">restore</i>
             </button>
             <button uib-tooltip="مسح الحقول"
                     tooltip-append-to-body="true"

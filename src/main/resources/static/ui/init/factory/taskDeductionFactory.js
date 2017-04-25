@@ -11,13 +11,13 @@ app.factory("TaskDeductionService",
                     return response.data;
                 });
             },
-            create: function (taskDeduction) {
-                return $http.post("/api/taskDeduction/create", taskDeduction).then(function (response) {
+            clearCounters: function (taskId, personId) {
+                return $http.get("/api/taskDeduction/clearCounters/" + taskId + "/" + personId).then(function (response) {
                     return response.data;
                 });
             },
-            clearCounters: function (taskId, personId) {
-                return $http.get("/api/taskDeduction/clearCounters/" + taskId + "/" + personId).then(function (response) {
+            clearAllCounters: function (taskId) {
+                return $http.get("/api/taskDeduction/clearAllCounters/" + taskId).then(function (response) {
                     return response.data;
                 });
             },

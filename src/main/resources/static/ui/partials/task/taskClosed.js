@@ -19,4 +19,8 @@ app.controller('taskClosedCtrl', ['TaskService', '$scope', '$rootScope', '$timeo
             $uibModalInstance.close(false);
         };
 
+        $timeout(function () {
+            window.componentHandler.upgradeAllRegistered();
+        }, 1500);
+
     }]);

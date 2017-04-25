@@ -119,27 +119,30 @@
 
     <div class="modal-footer">
 
-        <div class="form-group col-md-12" role="group">
-            <button type="button"
-                    focus-index="4"
-                    ng-click="cancel()"
-                    class="btn btn-danger pull-left">
-                <span>خروج</span>
-                <i class="fa fa-power-off  fa-lg"></i>
-            </button>
-            <button type="submit"
-                    focus-index="3"
-                    ng-click="action='clearWarn'"
-                    class="btn btn-success pull-right">
-                <span>حذف التحذيرات</span>
-                <i class="fa fa-eraser fa-lg"></i>
-            </button>
-            <button type="submit"
+        <div class="row">
+            <button uib-tooltip="حذف التحذيرات"
+                    tooltip-append-to-body="true"
                     focus-index="2"
+                    type="submit"
+                    ng-click="action='clearWarn'"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="حذف الخصومات"
+                    tooltip-append-to-body="true"
+                    focus-index="3"
+                    type="submit"
                     ng-click="action='clearDeduction'"
-                    class="btn btn-success pull-right">
-                <span>حذف الخصومات</span>
-                <i class="fa fa-eraser fa-lg"></i>
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="خروج"
+                    tooltip-append-to-body="true"
+                    focus-index="4"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
             </button>
         </div>
 

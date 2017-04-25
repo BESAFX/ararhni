@@ -58,6 +58,9 @@ public class TaskCloseRequestRest {
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public TaskCloseRequest create(@RequestBody TaskCloseRequest taskCloseRequest, Principal principal) {
+        if (taskCloseRequest.getTask().getCloseType().equals(Task.CloseType.Manual)) {
+            throw new CustomException("لا يمكن القيام بأي عمليات على مهام الارشيف.");
+        }
 
         if (!taskCloseRequest.getTask().getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()).contains(principal.getName())) {
             throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط الموظفين المكلفين بإمكانهم ذلك.");

@@ -72,6 +72,10 @@ app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskToService', 'TaskServic
             ModalProvider.openTaskToRemoveModel($scope.task);
         };
 
+        $scope.openTaskToOpenDialog = function () {
+            ModalProvider.openTaskToOpenModel($scope.task);
+        };
+
         $scope.findTaskOperations = function () {
             TaskOperationService.findByTask($scope.task).then(function (data) {
                 $scope.task.taskOperations = data;
@@ -149,5 +153,25 @@ app.controller('taskDetailsCtrl', ['ModalProvider', 'TaskToService', 'TaskServic
                 });
             });
         };
+
+        $scope.clearAllWarns = function () {
+            $rootScope.showConfirmNotify("المهام", "هل تود حذف جميع التحذيرات فعلاً؟", "error", "fa-trash", function () {
+                TaskWarnService.clearAllCounters($scope.task.id).then(function (data) {
+                    $scope.findTaskWarns();
+                });
+            });
+        };
+
+        $scope.clearAllDeductions = function () {
+            $rootScope.showConfirmNotify("المهام", "هل تود حذف جميع الخصومات فعلاً؟", "error", "fa-trash", function () {
+                TaskDeductionService.clearAllCounters($scope.task.id).then(function (data) {
+                    $scope.findTaskDeductions();
+                });
+            });
+        };
+
+        $timeout(function () {
+            window.componentHandler.upgradeAllRegistered();
+        }, 1500);
 
     }]);

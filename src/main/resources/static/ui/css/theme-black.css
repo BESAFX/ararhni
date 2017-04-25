@@ -2959,34 +2959,33 @@ label.valid {
 /* EOF LABELS AND BADGES */
 /* ALERTS */
 .alert {
-    float: left;
+    float: right;
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
     line-height: 21px;
+    border-radius: 0 !important;
+    border-radius: 0 !important;
 }
 
 .alert-success {
-    background-color: #95b75d;
-    color: #FFF;
-    border-color: #90b456;
+    background-color: #4caf50;
+    color: rgba(255, 255, 255, 0.84);
 }
 
 .alert-info {
-    background-color: #1caf9a;
-    color: #FFF;
-    border-color: #36b7e3;
+    background-color: #03a9f4;
+    color: rgba(255, 255, 255, 0.84);
 }
 
 .alert-warning {
-    background-color: #1caf9a;
-    color: #FFF;
-    border-color: #fe9e19;
+    background-color: #ff5722;
+    color: rgba(255, 255, 255, 0.84);
 }
 
 .alert-danger {
-    background-color: #E04B4A;
-    color: #FFF;
-    border-color: #af4342;
+    background-color: #f44336;
+    color: rgba(255, 255, 255, 0.84);
 }
 
 /* EOF ALERTS */

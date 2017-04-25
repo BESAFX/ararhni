@@ -19,4 +19,8 @@ app.controller('taskExtensionCtrl', ['TaskService', '$scope', '$rootScope', '$ti
             $uibModalInstance.close(false);
         };
 
+        $timeout(function () {
+            window.componentHandler.upgradeAllRegistered();
+        }, 1500);
+
     }]);

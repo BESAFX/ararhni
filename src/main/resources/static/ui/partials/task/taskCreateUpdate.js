@@ -13,7 +13,7 @@ app.controller('taskCreateUpdateCtrl', ['TaskService', 'PersonService', '$scope'
 
         $scope.fetchPersonData = function () {
             $rootScope.showNotify("المهام", "جاري تحميل حسابات الموظفين، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
-            PersonService.findPersonUnderMe().then(function (data) {
+            PersonService.findPersonUnderMeSummery().then(function (data) {
                 $scope.persons = data;
                 $rootScope.showNotify("المهام", "تم التحميل بنجاح، يمكنك متابعة عملك الآن", "success", "fa-black-tie");
             })
@@ -56,5 +56,9 @@ app.controller('taskCreateUpdateCtrl', ['TaskService', 'PersonService', '$scope'
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
+
+        $timeout(function () {
+            window.componentHandler.upgradeAllRegistered();
+        }, 1500);
 
     }]);

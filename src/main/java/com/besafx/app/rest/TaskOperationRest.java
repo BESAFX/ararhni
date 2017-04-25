@@ -65,6 +65,9 @@ public class TaskOperationRest {
     }
 
     public TaskOperation create(TaskOperation taskOperation, Person person) throws IOException {
+        if (taskOperation.getTask().getCloseType().equals(Task.CloseType.Manual)) {
+            throw new CustomException("لا يمكن القيام بأي عمليات على مهام الارشيف.");
+        }
         taskOperation.getTask().getTaskTos()
                 .stream()
                 .filter(taskTo -> taskTo.getPerson().getId().intValue() == person.getId() && taskTo.getClosed())
@@ -116,6 +119,9 @@ public class TaskOperationRest {
     @RequestMapping(value = "update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public TaskOperation update(@RequestBody TaskOperation taskOperation, Principal principal) {
+        if (taskOperation.getTask().getCloseType().equals(Task.CloseType.Manual)) {
+            throw new CustomException("لا يمكن القيام بأي عمليات على مهام الارشيف.");
+        }
         if (!taskOperation.getSender().getEmail().equals(principal.getName())) {
             throw new CustomException("لا يمكنك التعديل على حركة لم تضيفها");
         }

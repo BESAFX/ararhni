@@ -141,19 +141,21 @@
 
     <div class="modal-footer">
 
-        <div class="form-group col-md-12" role="group">
-            <button type="button"
-                    ng-click="cancel()"
-                    class="btn btn-danger pull-left">
-                <span>خروج</span>
-                <i class="fa fa-power-off  fa-lg"></i>
-            </button>
-            <button type="button"
+        <div class="row">
+            <button uib-tooltip="اضافة تحذير"
+                    tooltip-append-to-body="true"
+                    type="button"
                     ng-click="openCreateWarnModel()"
                     ng-if="task.person.id===me.id"
-                    class="btn btn-success">
-                <i class="fa fa-bell-o fa-lg"></i>
-                <span>اضافة تحذير جديد</span>
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-6 col-sm-6 col-md-6">
+                <i class="material-icons">add</i>
+            </button>
+            <button uib-tooltip="خروج"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-6 col-sm-6 col-md-6 pull-left">
+                <i class="material-icons">power_settings_new</i>
             </button>
         </div>
 

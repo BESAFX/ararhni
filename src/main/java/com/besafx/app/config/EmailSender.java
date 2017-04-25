@@ -93,7 +93,6 @@ public class EmailSender {
             Address[] from = InternetAddress.parse("admin@ararhni.com");
             message.addFrom(from);
             message.setSubject(title, "UTF-8");
-            message.setText(content, "UTF-8", "html");
             toEmailList.stream().forEach(email -> {
                 try {
                     message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
@@ -105,6 +104,7 @@ public class EmailSender {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
             /////
             BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setContent(content, "text/html");
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
             ListIterator<FileSystemResource> fileSystemResourceListIterator = files.listIterator();
@@ -162,12 +162,12 @@ public class EmailSender {
             Address[] from = InternetAddress.parse("admin@ararhni.com");
             message.addFrom(from);
             message.setSubject(title, "UTF-8");
-            message.setText(content, "UTF-8", "html");
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             /////
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
             /////
             BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setContent(content, "text/html");
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
             ListIterator<FileSystemResource> fileSystemResourceListIterator = files.listIterator();

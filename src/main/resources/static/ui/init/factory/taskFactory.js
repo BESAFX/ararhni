@@ -64,6 +64,21 @@ app.factory("TaskService",
                     return response.data;
                 });
             },
+            addWarn: function (taskId, personId, message) {
+                return $http.get("/api/task/addWarn?taskId=" + taskId + "&personId=" + personId + "&message=" + message).then(function (response) {
+                    return response.data;
+                });
+            },
+            addDeduction: function (taskId, personId, message, deduction) {
+                return $http.get("/api/task/addDeduction?taskId=" + taskId + "&personId=" + personId + "&message=" + message + "&deduction=" + deduction).then(function (response) {
+                    return response.data;
+                });
+            },
+            openTaskOnPerson: function (taskId, personId, message) {
+                return $http.get("/api/task/openTaskOnPerson?taskId=" + taskId + "&personId=" + personId + "&message=" + message).then(function (response) {
+                    return response.data;
+                });
+            },
             count: function () {
                 return $http.get("/api/task/count").then(function (response) {
                     return response.data;

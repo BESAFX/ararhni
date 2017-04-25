@@ -11,13 +11,13 @@ app.factory("TaskWarnService",
                     return response.data;
                 });
             },
-            create: function (taskWarn) {
-                return $http.post("/api/taskWarn/create", taskWarn).then(function (response) {
+            clearCounters: function (taskId, personId) {
+                return $http.get("/api/taskWarn/clearCounters/" + taskId + "/" + personId).then(function (response) {
                     return response.data;
                 });
             },
-            clearCounters: function (taskId, personId) {
-                return $http.get("/api/taskWarn/clearCounters/" + taskId + "/" + personId).then(function (response) {
+            clearAllCounters: function (taskId) {
+                return $http.get("/api/taskWarn/clearAllCounters/" + taskId).then(function (response) {
                     return response.data;
                 });
             },

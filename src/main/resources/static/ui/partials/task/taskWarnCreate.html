@@ -104,7 +104,7 @@
                                     disable-validation-message=""
                                     ng-model="buffer.taskTo"
                                     focus-index="1"
-                                    ng-options="taskTo.person.name for taskTo in task.taskTos track by taskTo.id">
+                                    ng-options="(taskTo.person.nickname + ' / ' + taskTo.person.name) for taskTo in task.taskTos | orderBy:'person.name' track by taskTo.id">
                             </select>
                         </div>
 
@@ -118,7 +118,7 @@
                                       class="form-control text-right"
                                       disable-validation-message=""
                                       placeholder="ادخل الرسالة المراد ارسالها الى هذا الموظف"
-                                      ng-model="taskWarn.content">
+                                      ng-model="buffer.content">
                              </textarea>
                         </div>
 
@@ -132,19 +132,26 @@
 
     <div class="modal-footer">
 
-        <div class="form-group col-md-12" role="group">
-            <button type="button"
-                    focus-index="5"
-                    ng-click="cancel()"
-                    class="btn btn-danger pull-left">
-                <span>خروج</span>
-                <i class="fa fa-power-off  fa-lg"></i>
+        <div class="row">
+            <button uib-tooltip="ارسال"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">send</i>
             </button>
-            <button type="submit"
-                    focus-index="2"
-                    class="btn btn-success pull-right">
-                <span>حفظ</span>
-                <i class="fa fa-save fa-lg"></i>
+            <button uib-tooltip="مسح الحقول"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="خروج"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
             </button>
         </div>
 

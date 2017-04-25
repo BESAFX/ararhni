@@ -1,8 +1,6 @@
 package com.besafx.app.rest;
-
 import com.besafx.app.config.CustomException;
 import com.besafx.app.config.EmailSender;
-import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskWarn;
 import com.besafx.app.search.TaskSearch;
@@ -17,11 +15,9 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.charset.Charset;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,43 +50,6 @@ public class TaskWarnRest {
     @Autowired
     private PersonRest personRest;
 
-    @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public TaskWarn create(@RequestBody TaskWarn taskWarn, Principal principal) {
-        if (!personRest.getPersonManager(taskWarn.getTask().getPerson()).getEmail().equals(principal.getName())) {
-            if (!taskWarn.getTask().getPerson().getEmail().equals(principal.getName())) {
-                throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه ارسال التحذيرات");
-            }
-        }
-        try {
-            Person person = personService.findByEmail(principal.getName());
-            TaskWarn tempTaskWarn = taskWarnService.findTopByTaskAndToPersonOrderByCodeDesc(taskWarn.getTask(), taskWarn.getToPerson());
-            if (tempTaskWarn == null) {
-                taskWarn.setCode(1);
-            } else {
-                taskWarn.setCode(tempTaskWarn.getCode() + 1);
-            }
-            taskWarn.setDate(new Date());
-            taskWarn = taskWarnService.save(taskWarn);
-            notificationService.notifyOne(Notification
-                    .builder()
-                    .title("العمليات على المهام")
-                    .message("تم إرسال التحذير بنجاح")
-                    .type("success")
-                    .icon("fa-black-tie")
-                    .build(), person.getName());
-            ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
-            String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
-            message = message.replaceAll("MESSAGE", "تحذير من " + taskWarn.getTask().getPerson().getNickname() + " / " + taskWarn.getTask().getPerson().getName() + " بشأن المهمة رقم " + "(" + taskWarn.getTask().getCode() + ")" + " وفيما يلي محتوى التحذير" + "<br/>" + "<u>" + taskWarn.getContent() + "</u>");
-            String title = "تحذير من " + taskWarn.getTask().getPerson().getNickname() + " / " + taskWarn.getTask().getPerson().getName();
-            emailSender.send(title, message, taskWarn.getToPerson().getEmail());
-            return taskWarn;
-        } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return null;
-        }
-    }
-
     @RequestMapping(value = "clearCounters/{taskId}/{personId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public boolean clearCounters(@PathVariable(value = "taskId") Long taskId, @PathVariable(value = "personId") Long personId, Principal principal) {
@@ -107,6 +66,26 @@ public class TaskWarnRest {
                 .message("تم حذف كل التحذيرات الإلكترونية على الموظف بالنسبة لهذة المهمة")
                 .type("success")
                 .icon("fa-black-tie")
+                .build(), principal.getName());
+        return true;
+    }
+
+    @RequestMapping(value = "clearAllCounters/{taskId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public boolean clearAllCounters(@PathVariable(value = "taskId") Long taskId, Principal principal) {
+        Task task = taskService.findOne(taskId);
+        if (!personRest.getPersonManager(task.getPerson()).getEmail().equals(principal.getName())) {
+            if (!task.getPerson().getEmail().equals(principal.getName())) {
+                throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه حذف التحذيرات");
+            }
+        }
+        taskWarnService.delete(taskWarnService.findByTaskIdAndType(taskId, TaskWarn.TaskWarnType.Auto));
+        notificationService.notifyOne(Notification
+                .builder()
+                .title("العمليات على المهام")
+                .message("تم حذف كل التحذيرات الإلكترونية لهذة المهمة")
+                .type("success")
+                .icon("fa-trash")
                 .build(), principal.getName());
         return true;
     }

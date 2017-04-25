@@ -79,6 +79,8 @@ public class TaskOperation implements Serializable {
         AcceptDecreaseEndDateRequest,
         DeclineCloseRequest,
         DeclineIncreaseEndDateRequest,
-        DeclineDecreaseEndDateRequest
+        DeclineDecreaseEndDateRequest,
+        OpenTaskOnPersonAuto,
+        OpenTaskOnPerson
     }
 }

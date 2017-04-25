@@ -69,6 +69,9 @@ public class TaskRest {
     @Autowired
     private TaskSearch taskSearch;
 
+    @Autowired
+    private PersonRest personRest;
+
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_TASK_CREATE')")
@@ -116,11 +119,16 @@ public class TaskRest {
     @PreAuthorize("hasRole('ROLE_TASK_UPDATE')")
     public Task update(@RequestBody Task task, Principal principal) {
         Task object = taskService.findOne(task.getId());
+        if (task.getCloseType().equals(Task.CloseType.Manual)) {
+            throw new CustomException("لا يمكن القيام بأي عمليات على مهام الارشيف.");
+        }
         if (object == null) {
             throw new CustomException("عفواً ، لا توجد هذة المهمة");
         } else {
-            if (!object.getPerson().getEmail().equalsIgnoreCase(principal.getName())) {
-                throw new CustomException("عفواً، لا يمكنك التعديل على بيانات مهمة لم تضيفها");
+            if (!personRest.getPersonManager(object.getPerson()).getEmail().equals(principal.getName())) {
+                if (!object.getPerson().getEmail().equals(principal.getName())) {
+                    throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف مصرح له بذلك.");
+                }
             }
             task = taskService.save(task);
             notificationService.notifyOne(Notification
@@ -194,7 +202,7 @@ public class TaskRest {
             @RequestParam(value = "endDateFrom", required = false) final Long endDateFrom,
             @RequestParam(value = "endDateTo", required = false) final Long endDateTo,
             @RequestParam(value = "taskType") final Boolean taskType,
-            @RequestParam(value = "isTaskOpen") final Boolean isTaskOpen,
+            @RequestParam(value = "isTaskOpen", required = false) final Boolean isTaskOpen,
             @RequestParam(value = "timeType") final String timeType,
             @RequestParam(value = "person") final Long person) {
         return taskSearch.search(title, importance, closeType, codeFrom, codeTo, startDateFrom, startDateTo, endDateFrom, endDateTo, taskType, isTaskOpen, timeType, person);

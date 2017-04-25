@@ -5,10 +5,6 @@ app.controller('taskOperationCreateCtrl', ['TaskService', 'TaskOperationService'
 
         $scope.taskOperation.task = task;
 
-        $scope.taskOperation.task.tos = task.taskTos.map(function (a) {
-            return a.person.name
-        });
-
         var uploader = $scope.uploader = new FileUploader({
             url: 'uploadFileAndGetShared/' + task.id
         });
@@ -23,7 +19,6 @@ app.controller('taskOperationCreateCtrl', ['TaskService', 'TaskOperationService'
                 taskOperationAttaches.push(taskOperationAttach);
             }
             $scope.taskOperation.taskOperationAttaches = taskOperationAttaches;
-            $scope.taskOperation.type = 1;
             TaskOperationService.create($scope.taskOperation).then(function (data) {
                 $scope.taskOperation = {};
                 $scope.taskOperation.task = task;
@@ -55,5 +50,9 @@ app.controller('taskOperationCreateCtrl', ['TaskService', 'TaskOperationService'
         uploader.onSuccessItem = function (fileItem, response, status, headers) {
             fileItem.file.url = response;
         };
+
+        $timeout(function () {
+            window.componentHandler.upgradeAllRegistered();
+        }, 1500);
 
     }]);

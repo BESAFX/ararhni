@@ -9,16 +9,17 @@
 
         <div class="row">
 
-            <div class="form-group text-right col-md-12" ng-show="form.$invalid && form.$submitted">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12" ng-show="form.$invalid && form.$submitted">
                 <div class="alert alert-danger" role="alert">
                     <strong>فضلاً اكمل الحقول المطلوبة</strong>
                 </div>
             </div>
 
-            <div class="form-group text-right col-md-12" ng-show="action=='create'">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12" ng-show="action=='create'">
                 <label for="master" class="control-label">
                     <span>الموظفون</span>
-                    <span class="fa fa-info-circle" tooltip-append-to-body="true" uib-tooltip="يمكنك تكليف عدد غير محدود من الموظفين بنفس المهمة"></span>
+                    <span class="fa fa-info-circle" tooltip-append-to-body="true"
+                          uib-tooltip="يمكنك تكليف عدد غير محدود من الموظفين بنفس المهمة"></span>
                 </label>
                 <select id="master"
                         data-placeholder="ابحث عن البريد الإلكتروني"
@@ -35,7 +36,17 @@
                 </select>
             </div>
 
-            <div class="form-group text-right col-sm-12">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12" ng-if="action==='update'">
+                <label for="code" class="control-label"> رقم المهمة </label>
+                <input id="code"
+                       focus-index="2"
+                       type="text"
+                       class="form-control text-right"
+                       readonly
+                       ng-model="task.code">
+            </div>
+
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12">
                 <label for="title" class="control-label"> عنوان المهمة </label>
                 <input id="title"
                        focus-index="2"
@@ -46,7 +57,7 @@
                        ng-model="task.title">
             </div>
 
-            <div class="form-group text-right col-md-12">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12">
                 <label for="note" class="control-label">تفاصيل المهمة</label>
                 <textarea id="note"
                           type="text"
@@ -60,66 +71,71 @@
                 </textarea>
             </div>
 
-            <div class="form-group text-right col-md-12" ng-init="action==='create' ? task.importance=">
-                <label for="importance" class="control-label">
-                    <span>درجة الأهمية</span>
-                </label>
-                <select id="importance"
-                        placeholder="اختر درجة الأهمية للمساعدة فى التصنيف"
-                        class="form-control text-right"
-                        required="required"
-                        disable-validation-message=""
-                        ng-model="task.importance"
-                        focus-index="4">
-                    <option value="Regular">عادية</option>
-                    <option value="Important">متوسطة</option>
-                    <option value="Critical">عاجلة</option>
-                </select>
-            </div>
+            <div class="form-group row">
+                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6">
+                    <label for="importance" class="control-label">
+                        <span>درجة الأهمية</span>
+                    </label>
+                    <select id="importance"
+                            placeholder="اختر درجة الأهمية للمساعدة فى التصنيف"
+                            class="form-control text-right"
+                            required="required"
+                            disable-validation-message=""
+                            ng-model="task.importance"
+                            focus-index="4">
+                        <option value="Regular">عادية</option>
+                        <option value="Important">متوسطة</option>
+                        <option value="Critical">عاجلة</option>
+                    </select>
+                </div>
 
-            <div class="form-group text-right col-sm-12">
-                <label for="warn" class="control-label"> الحد الأقصى للتحذيرات </label>
-                <input id="warn"
-                       focus-index="5"
-                       type="number"
-                       min="0"
-                       class="form-control text-right"
-                       required="required"
-                       disable-validation-message=""
-                       ng-model="task.warn">
-            </div>
-
-            <div class="form-group text-right col-sm-12">
-                <label for="deduction" class="control-label"> مقدار الحسم عند الوصول للحد الاقصي للتحذيرات </label>
-                <div dir="ltr" class="input-group" id="deduction">
-                    <span class="input-group-addon">ريال</span>
-                    <input focus-index="6"
-                           dir="rtl"
+                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6">
+                    <label for="warn" class="control-label"> الحد الأقصى للتحذيرات </label>
+                    <input id="warn"
+                           focus-index="5"
                            type="number"
                            min="0"
+                           class="form-control text-right"
                            required="required"
                            disable-validation-message=""
-                           class="form-control text-right "
-                           ng-model="task.deduction">
+                           ng-model="task.warn">
                 </div>
             </div>
 
-            <div class="form-group text-right col-sm-12">
-                <label for="deductionOnAutoClose" class="control-label"> مقدار الحسم عند إغلاق المهمة تلقائياً </label>
-                <div dir="ltr" class="input-group" id="deductionOnAutoClose">
-                    <span class="input-group-addon">ريال</span>
-                    <input focus-index="7"
-                           dir="rtl"
-                           type="number"
-                           min="0"
-                           required="required"
-                           disable-validation-message=""
-                           class="form-control text-right "
-                           ng-model="task.deductionOnAutoClose">
+            <div class="form-group row">
+                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6">
+                    <label for="deduction" class="control-label"> مقدار الحسم عند الوصول للحد الاقصي للتحذيرات </label>
+                    <div dir="ltr" class="input-group" id="deduction">
+                        <span class="input-group-addon">ريال</span>
+                        <input focus-index="6"
+                               dir="rtl"
+                               type="number"
+                               min="0"
+                               required="required"
+                               disable-validation-message=""
+                               class="form-control text-right "
+                               ng-model="task.deduction">
+                    </div>
+                </div>
+
+                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6">
+                    <label for="deductionOnAutoClose" class="control-label"> مقدار الحسم عند إغلاق المهمة
+                        تلقائياً </label>
+                    <div dir="ltr" class="input-group" id="deductionOnAutoClose">
+                        <span class="input-group-addon">ريال</span>
+                        <input focus-index="7"
+                               dir="rtl"
+                               type="number"
+                               min="0"
+                               required="required"
+                               disable-validation-message=""
+                               class="form-control text-right "
+                               ng-model="task.deductionOnAutoClose">
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group text-right col-sm-12" ng-if="action==='create'">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-sm-12" ng-if="action==='create'">
                 <label for="endDate" class="control-label">تاريخ التسليم</label>
                 <div dir="ltr" class="input-group">
                     <input dir="rtl"
@@ -144,34 +160,30 @@
 
     <div class="modal-footer">
 
-        <div class="form-group col-md-12" role="group">
-            <button type="button"
-                    focus-index="11"
-                    ng-click="cancel()"
-                    class="btn btn-danger pull-left">
-                <span>خروج</span>
-                <i class="fa fa-power-off  fa-lg"></i>
-            </button>
-            <button type="button"
-                    focus-index="10"
-                    ng-click="clear()"
-                    class="btn btn-info pull-left">
-                <span>مسح الحقول</span>
-                <i class="fa fa-recycle  fa-lg"></i>
-            </button>
-            <button ng-show="action=='update'"
-                    type="submit"
-                    focus-index="9"
-                    class="btn btn-warning pull-right">
-                <span>تعديل</span>
-                <i class="fa fa-edit fa-lg"></i>
-            </button>
-            <button ng-show="action=='create'"
-                    type="submit"
+        <div class="row">
+            <button ng-if="action=='create'"
+                    uib-tooltip="اضافة"
+                    tooltip-append-to-body="true"
                     focus-index="8"
-                    class="btn btn-success pull-right">
-                <span>اضافة</span>
-                <i class="fa fa-plus-square fa-lg"></i>
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-6 col-sm-6 col-md-6">
+                <i class="material-icons">add</i>
+            </button>
+            <button ng-if="action=='update'"
+                    uib-tooltip="تعديل"
+                    tooltip-append-to-body="true"
+                    focus-index="9"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-6 col-sm-6 col-md-6">
+                <i class="material-icons">edit</i>
+            </button>
+            <button uib-tooltip="خروج"
+                    tooltip-append-to-body="true"
+                    focus-index="11"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-6 col-sm-6 col-md-6">
+                <i class="material-icons">power_settings_new</i>
             </button>
         </div>
 

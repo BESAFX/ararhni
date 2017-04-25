@@ -17,4 +17,8 @@ app.controller('taskWarnsCtrl', ['ModalProvider', 'TaskWarnService', '$scope', '
             $uibModalInstance.dismiss('cancel');
         };
 
+        $timeout(function () {
+            window.componentHandler.upgradeAllRegistered();
+        }, 1500);
+
     }]);

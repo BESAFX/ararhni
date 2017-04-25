@@ -26,6 +26,7 @@ public interface TaskWarnService extends PagingAndSortingRepository<TaskWarn, Lo
     List<TaskWarn> findByTaskInAndDateBetween(List<Task> tasks, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
     List<TaskWarn> findByTaskAndType(Task task, TaskWarn.TaskWarnType type);
+    List<TaskWarn> findByTaskIdAndType(Long task, TaskWarn.TaskWarnType type);
 
     List<TaskWarn> findByTaskIdAndToPersonIdAndType(Long task, Long person, TaskWarn.TaskWarnType type);
 

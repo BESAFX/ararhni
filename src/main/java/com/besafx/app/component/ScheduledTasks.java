@@ -1,5 +1,4 @@
 package com.besafx.app.component;
-
 import com.besafx.app.config.EmailSender;
 import com.besafx.app.controller.ReportTaskController;
 import com.besafx.app.entity.*;
@@ -64,67 +63,46 @@ public class ScheduledTasks {
 
     @Scheduled(cron = "0 0 2 * * SUN,MON,TUE,WED,THU")
     public void warnAllAboutUnCommentedTasksAtMidNight() {
-
         DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
         DateTime today = new DateTime().withTimeAtStartOfDay();
-
         log.info("عدد المهام = " + taskService.count());
-
         log.info("عدد الافراد = " + personService.count());
-
         log.info("فحص كل فرد على حدا");
-
         check(yesterday, today);
     }
 
     private void check(DateTime startLast12Hour, DateTime endLast12Hour) {
         personService.findAll().forEach(person -> {
-
             log.info("////////////////////////////////" + person.getName() + "////////////////////////////////////////");
-
             log.info("فحص المهام الواردة السارية للموظف / " + person.getName());
             List<Task> tasks = taskSearch.search(null, null, Task.CloseType.Pending, null, null, null, null, null, null, true, true, "All", person.getId());
-
             log.info("عدد المهام المكلف بها = " + tasks.size());
-
             log.info("فحص كل مهمة على حدا");
-
             List<Task> warningTasks = new ArrayList<>();
-
             List<Task> deductionTasks = new ArrayList<>();
-
             DateTime nowCheckDate = new DateTime();
-
             tasks.stream()
                     .filter(task -> !taskToService.findByTaskAndPerson(task, person).getClosed())
                     .filter(task -> nowCheckDate.isAfter(new DateTime(task.getStartDate()).plusHours(24)))
                     .forEach(task -> {
+                        log.info("البحث عن عدد حركات الموظف " + person.getName() + " على المهمة رقم " + task.getCode());
+                        log.info("من الفترة: " + DateConverter.getDateInFormatWithTime(startLast12Hour.toDate()));
+                        log.info("إلى الفترة: " + DateConverter.getDateInFormatWithTime(endLast12Hour.toDate()));
+                        long numberOfOperations = taskOperationService.countByTaskAndSenderAndDateBetween(task, person, startLast12Hour.toDate(), endLast12Hour.toDate());
+                        log.info("عدد الحركات فى الفترة = " + numberOfOperations);
+                        if (numberOfOperations == 0) {
+                            long numberOfWarns = taskWarnService.countByTaskAndToPersonAndType(task, person, TaskWarn.TaskWarnType.Auto);
+                            log.info("عدد التحذيرات على المهمة = " + numberOfWarns);
+                            if (numberOfWarns < task.getWarn().longValue()) {
+                                log.info("إرسال تحذير");
+                                warningTasks.add(task);
+                            } else {
+                                log.info("إرسال خصم");
+                                deductionTasks.add(task);
+                            }
+                        }
 
-                log.info("البحث عن عدد حركات الموظف " + person.getName() + " على المهمة رقم " + task.getCode());
-                log.info("من الفترة: " + DateConverter.getDateInFormatWithTime(startLast12Hour.toDate()));
-                log.info("إلى الفترة: " + DateConverter.getDateInFormatWithTime(endLast12Hour.toDate()));
-
-                long numberOfOperations = taskOperationService.countByTaskAndSenderAndDateBetween(task, person, startLast12Hour.toDate(), endLast12Hour.toDate());
-
-                log.info("عدد الحركات فى الفترة = " + numberOfOperations);
-
-                if (numberOfOperations == 0) {
-
-                    long numberOfWarns = taskWarnService.countByTaskAndToPersonAndType(task, person, TaskWarn.TaskWarnType.Auto);
-
-                    log.info("عدد التحذيرات على المهمة = " + numberOfWarns);
-
-                    if (numberOfWarns < task.getWarn().longValue()) {
-                        log.info("إرسال تحذير");
-                        warningTasks.add(task);
-                    } else {
-                        log.info("إرسال خصم");
-                        deductionTasks.add(task);
-                    }
-                }
-
-            });
-
+                    });
             if (!warningTasks.isEmpty()) {
                 log.info("ارسال رسالة مجمعة بها كل التحذيرات");
                 //Send Warn
@@ -145,7 +123,6 @@ public class ScheduledTasks {
                     e.printStackTrace();
                 }
             }
-
             if (!deductionTasks.isEmpty()) {
                 log.info("إرسال رسالة مجمعة بها كل الحسومات والخصومات");
                 //Send Discount
@@ -163,7 +140,6 @@ public class ScheduledTasks {
                     e.printStackTrace();
                 }
             }
-
             log.info("////////////////////////////////" + person.getName() + "////////////////////////////////////////");
 
         });
@@ -190,7 +166,6 @@ public class ScheduledTasks {
             taskWarnService.save(taskWarn);
             log.info("تم حفظ التحذير الآلي باسم الموظف");
         }
-
         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
         String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
         message = message.replaceAll("MESSAGE", content.toString());
@@ -220,7 +195,6 @@ public class ScheduledTasks {
             taskDeductionService.save(taskDeduction);
             log.info("تم حفظ الخصم الآلي باسم الموظف");
         }
-
         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
         String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
         message = message.replaceAll("MESSAGE", content.toString());
@@ -255,51 +229,28 @@ public class ScheduledTasks {
     public void autoCloseTasks() throws IOException {
         DateTime yesterday = new DateTime().minusDays(1).withTimeAtStartOfDay();
         DateTime today = new DateTime().withTimeAtStartOfDay();
-
         log.info("جاري البحث عن المهام التى تم إغلاقها خلال 24 السابقة");
-
         log.info("سيتم إغلاق المهمة على الافراد المكلفين");
-
         log.info("سيتم إرسال خصومات إلى الافراد الذين لم يرسلوا طلب إغلاق على الأقل طوال حياة المهمة");
-
         List<Task> tasks = taskService.findByEndDateBetween(yesterday.toDate(), today.toDate());
-
         log.info("عدد المهام التى أغلقت خلال 24 ساعة الماضية: " + tasks.size());
-
         ListIterator<Task> listIterator = tasks.listIterator();
-
         while (listIterator.hasNext()) {
-
             Task task = listIterator.next();
-
             log.info("فحص المهمة رقم: " + task.getCode());
-
             log.info("فحص الموظفين المكلفين، ومعرفة إذا كان هناك أحد لم يرسل طلبات إغلاق");
-
             List<TaskTo> taskTos = taskToService.findByTask(task);
-
             log.info("عدد الموظفين المكلفين للمهمة رقم: " + task.getCode() + " يساوي : " + taskTos.size());
-
             ListIterator<TaskTo> taskToListIterator = taskTos.listIterator();
-
             while (taskToListIterator.hasNext()) {
-
                 TaskTo taskTo = taskToListIterator.next();
-
                 log.info("إيجاد طلبات إغلاق الموظف");
-
                 List<TaskCloseRequest> closeRequests = taskCloseRequestService.findByTaskAndPerson(task, taskTo.getPerson());
-
                 log.info("سيتم تجاهل هذا الموظف حال كانت المهمة مغلقة عليه");
-
                 if (!taskTo.getClosed()) {
-
                     log.info("لن يتم تجاهل هذا الموظف حالة لم يرسل طلبات إغلاق إلى المهمة طوال حياة المهمة.");
-
                     if (closeRequests.isEmpty()) {
-
                         log.info("إرسال خصم إلى هذا الموظف / " + taskTo.getPerson().getName() + " بالمقدار المحدد من قبل جهة التكليف والذي يساوي: " + task.getDeductionOnAutoClose());
-
                         TaskDeduction taskDeduction = new TaskDeduction();
                         TaskDeduction tempTaskDeduction = taskDeductionService.findTopByTaskAndToPersonOrderByCodeDesc(task, taskTo.getPerson());
                         if (tempTaskDeduction == null) {
@@ -314,34 +265,36 @@ public class ScheduledTasks {
                         taskDeduction.setDate(new Date());
                         taskDeduction.setDeduction(task.getDeductionOnAutoClose());
                         taskDeductionService.save(taskDeduction);
-
                         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
                         String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
                         message = message.replaceAll("MESSAGE", "خصم إلكتروني بسبب إغلاق المهمة رقم / " + task.getCode() + " عليك تلقائي دون إرسال اى طلبات إغلاق طوال فترة حياة المهمة.");
                         String title = "خصم إلكتروني يومي بسبب إغلاق المهمة تلقائي بمقدار / " + task.getDeductionOnAutoClose() + " ريال سعودي.";
                         emailSender.send(title, message, taskDeduction.getToPerson().getEmail());
-
                         log.info("تم إرسال الخصم بنجاح إلى الموظف / " + taskTo.getPerson().getName());
                     }
-
                     log.info("إغلاق المهمة على هذا الموظف بتاريخ وقت الفحص");
                     taskTo.setClosed(true);
                     taskTo.setCloseDate(new Date());
                     taskTo.setDegree(TaskTo.PersonDegree.F);
                     taskToService.save(taskTo);
                 }
-
-                log.info("الموافقة على طلبات الاغلاق المعلقة كلها");
+                log.info("فحص الطلبات المعلقة...");
                 closeRequests.stream().forEach(request -> {
                     if (request.getApproved() == null) {
-                        request.setApproved(true);
+                        if (request.getType()) {
+                            log.info("الموافقة على طلب الاغلاق");
+                            request.setApproved(true);
+                        } else {
+                            log.info("رفض طلب التمديد");
+                            request.setApproved(false);
+                        }
                         request.setApprovedDate(new Date());
                         taskCloseRequestService.save(request);
                     }
                 });
+                log.info("الانتهاء من فحص الطلبات المعلقة بنجاح.");
 
                 log.info("إرسال حركة إلى المهمة تفيد بأن المهمة أغلقت تلقائي");
-
                 TaskOperation taskOperation = new TaskOperation();
                 TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(task.getId());
                 if (tempTaskOperation == null) {
@@ -355,11 +308,9 @@ public class ScheduledTasks {
                 taskOperation.setType(TaskOperation.OperationType.CloseTaskAuto);
                 taskOperation.setContent("إغلاق المهمة تلقائي من خلال الفحص اليومي على الموظف / " + taskTo.getPerson().getName());
                 taskOperationService.save(taskOperation);
-
                 log.info("تحديث بيانات المهمة");
                 task.setCloseType(Task.CloseType.Auto);
                 taskService.save(task);
-
                 log.info("تم الإنتهاء من فحص المهمة رقم: " + task.getCode() + " بنجاح.");
 
             }

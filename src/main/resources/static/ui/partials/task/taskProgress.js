@@ -21,4 +21,8 @@ app.controller('taskProgressCtrl', ['TaskToService', '$scope', '$rootScope', '$t
             $uibModalInstance.dismiss('cancel');
         };
 
+        $timeout(function () {
+            window.componentHandler.upgradeAllRegistered();
+        }, 1500);
+
     }]);

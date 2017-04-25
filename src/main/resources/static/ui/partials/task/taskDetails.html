@@ -32,7 +32,8 @@
                         </div>
                     </div>
                     <div class="panel-body panel-body-table">
-                        <table class="table table-bordered">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
                             <tbody>
                             <tr>
                                 <td>رقم المهمة</td>
@@ -82,6 +83,7 @@
                             </tr>
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -104,6 +106,16 @@
                                    ng-if="task.person.id===me.id || me.id===me.manager.id"
                                    ng-click="openRemoveTaskToModel()" uib-tooltip="حذف موظف من التكليف">
                                     <span class="fa fa-minus"></span>
+                                </a>
+                                <a href="" tooltip-append-to-body="true"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                   ng-click="openClosedModel()" uib-tooltip="إغلاق المهمة على موظف">
+                                    <span class="fa fa-power-off"></span>
+                                </a>
+                                <a href="" tooltip-append-to-body="true"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                   ng-click="openTaskToOpenDialog()" uib-tooltip="فتح المهمة على موظف">
+                                    <span class="fa fa-history"></span>
                                 </a>
                             </li>
                         </ul>
@@ -265,6 +277,11 @@
                                    ng-click="openClearWarnsAndDeductionsModel()" uib-tooltip="حذف التحذيرات">
                                     <span class="fa fa-eraser"></span>
                                 </a>
+                                <a href="" tooltip-append-to-body="true"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                   ng-click="clearAllWarns()" uib-tooltip="حذف الكل">
+                                    <span class="fa fa-trash"></span>
+                                </a>
                             </li>
                         </ul>
                         <div class="panel-title-box pull-right">
@@ -330,6 +347,11 @@
                                    ng-if="task.person.id===me.id || me.id===me.manager.id"
                                    ng-click="openClearWarnsAndDeductionsModel()" uib-tooltip="حذف الخصومات">
                                     <span class="fa fa-eraser"></span>
+                                </a>
+                                <a href="" tooltip-append-to-body="true"
+                                   ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                   ng-click="clearAllDeductions()" uib-tooltip="حذف الكل">
+                                    <span class="fa fa-trash"></span>
                                 </a>
                             </li>
                         </ul>
@@ -452,6 +474,8 @@
                                             {{taskOperation.type==='DeclineCloseRequest' ? 'رفض طلب إغلاق' : ''}}
                                             {{taskOperation.type==='DeclineIncreaseEndDateRequest' ? 'رفض طلب تمديد' : ''}}
                                             {{taskOperation.type==='DeclineDecreaseEndDateRequest' ? 'رفض طلب تعجيل' : ''}}
+                                            {{taskOperation.type==='OpenTaskOnPersonAuto' ? 'فتح المهمة على موظف تلقائي' : ''}}
+                                            {{taskOperation.type==='OpenTaskOnPerson' ? 'فتح المهمة على موظف' : ''}}
                                         </span>
                                         {{taskOperation.content}}
                                         <span ng-repeat="taskOperationAttach in taskOperation.taskOperationAttaches"><a
@@ -485,36 +509,41 @@
 
     <div class="modal-footer">
 
-        <div class="form-group col-md-12" role="group">
-            <button type="button"
-                    ng-click="cancel()"
-                    class="btn btn-danger pull-left">
-                <span>خروج</span>
-                <i class="fa fa-power-off  fa-lg"></i>
-            </button>
-            <button type="button"
+        <div class="row">
+            <button uib-tooltip="حركة جديدة"
+                    tooltip-append-to-body="true"
+                    type="button"
                     ng-click="openCreateOperationModel()"
-                    class="btn btn-success">
-                <i class="fa fa-clock-o fa-lg"></i>
-                <span>اضافة حركة جديدة</span>
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-2 col-sm-2 col-md-2">
+                <i class="material-icons">search</i>
             </button>
-            <button type="button"
+            <button uib-tooltip="تحديد نسبة إنجاز العمل"
+                    tooltip-append-to-body="true"
+                    type="button"
                     ng-click="openProgressModel()"
-                    class="btn btn-warning">
-                <i class="fa fa-hourglass-2 fa-lg"></i>
-                <span>تحديد نسبة الإنجاز</span>
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-2 col-sm-2 col-md-2">
+                <i class="material-icons">done_all</i>
             </button>
-            <button type="button"
+            <button uib-tooltip="طلب إغلاق"
+                    tooltip-append-to-body="true"
+                    type="button"
                     ng-click="openRequestCloseModel()"
-                    class="btn btn-danger">
-                <i class="fa fa-power-off fa-lg"></i>
-                <span>طلب إغلاق</span>
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-2 col-sm-2 col-md-2">
+                <i class="material-icons">stop</i>
             </button>
-            <button type="button"
-                    ng-click="openReportTaskOperationsModel()"
-                    class="btn btn-primary">
-                <i class="fa fa-print fa-lg"></i>
-                <span>طباعة تقرير الحركات</span>
+            <button uib-tooltip="طلب تمديد"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="openRequestExtensionModel()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-2 col-sm-2 col-md-2">
+                <i class="material-icons">battery_full</i>
+            </button>
+            <button uib-tooltip="خروج"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
             </button>
         </div>
 

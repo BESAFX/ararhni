@@ -71,7 +71,7 @@
                 </div>
             </div>
 
-            <div class="form-group text-right col-md-12">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12">
                 <div class="alert alert-info" role="alert">
                     <strong>ذكرك لإنجازاتك فى خلال فترة زمنية من العمل له عدة فوائد فهو:</strong>
                     <ul>
@@ -101,7 +101,7 @@
                     </div>
                     <div class="panel-body">
 
-                        <div class="form-group text-right col-md-12">
+                        <div class="form-group text-right col-xs-12 col-sm-12 col-md-12">
                             <label for="note" class="control-label">الحركة / التعليق</label>
                             <textarea id="note"
                                       type="text"
@@ -115,8 +115,8 @@
                              </textarea>
                         </div>
 
-                        <div class="form-group text-right col-md-12">
-                            <div class="alert alert-danger" role="alert">
+                        <div class="form-group text-right col-xs-12 col-sm-12 col-md-12">
+                            <div class="alert alert-warning" role="alert">
                                 <strong>ملحوظة هامة : لا يمكن تعديل الحركات/التعليقات فيما بعد فاحرص على كتابة كل ما
                                     أنجزته</strong>
                             </div>
@@ -226,26 +226,28 @@
 
     <div class="modal-footer">
 
-        <div class="form-group col-md-12" role="group">
-            <button type="button"
-                    focus-index="5"
-                    ng-click="cancel()"
-                    class="btn btn-danger pull-left">
-                <span>خروج</span>
-                <i class="fa fa-power-off  fa-lg"></i>
-            </button>
-            <button type="button"
-                    focus-index="4"
-                    ng-click="clear()"
-                    class="btn btn-info pull-left">
-                <span>مسح الحقول</span>
-                <i class="fa fa-recycle  fa-lg"></i>
-            </button>
-            <button type="submit"
+        <div class="row">
+            <button uib-tooltip="اضافة"
+                    tooltip-append-to-body="true"
                     focus-index="2"
-                    class="btn btn-success pull-right">
-                <span>اضافة</span>
-                <i class="fa fa-plus-square fa-lg"></i>
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">add</i>
+            </button>
+            <button uib-tooltip="مسح الحقول"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="خروج"
+                    tooltip-append-to-body="true"
+                    focus-index="4"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
             </button>
         </div>
 

@@ -12,4 +12,8 @@ app.controller('taskFilterCtrl', ['$scope', '$rootScope', '$timeout', '$log', '$
             $uibModalInstance.dismiss('cancel');
         };
 
+        $timeout(function () {
+            window.componentHandler.upgradeAllRegistered();
+        }, 1500);
+
     }]);

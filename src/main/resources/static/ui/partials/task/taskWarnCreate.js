@@ -1,5 +1,5 @@
-app.controller('taskWarnCreateCtrl', ['TaskWarnService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'task',
-    function (TaskWarnService, $scope, $rootScope, $timeout, $log, $uibModalInstance, task) {
+app.controller('taskWarnCreateCtrl', ['TaskService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'task',
+    function (TaskService, $scope, $rootScope, $timeout, $log, $uibModalInstance, task) {
 
         $scope.task = task;
 
@@ -7,10 +7,7 @@ app.controller('taskWarnCreateCtrl', ['TaskWarnService', '$scope', '$rootScope',
 
         $scope.submit = function () {
             $rootScope.showNotify("المهام", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
-            $scope.taskWarn.type = 'Manual';
-            $scope.taskWarn.task = task;
-            $scope.taskWarn.toPerson = $scope.buffer.taskTo.person;
-            TaskWarnService.create($scope.taskWarn).then(function (data) {
+            TaskService.addWarn($scope.task.id, $scope.buffer.taskTo.person.id, $scope.buffer.content).then(function (data) {
                 $scope.taskWarn = {};
                 if ($scope.form) {
                     $scope.form.$setPristine();
@@ -22,5 +19,9 @@ app.controller('taskWarnCreateCtrl', ['TaskWarnService', '$scope', '$rootScope',
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
+
+        $timeout(function () {
+            window.componentHandler.upgradeAllRegistered();
+        }, 1500);
 
     }]);

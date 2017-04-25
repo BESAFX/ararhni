@@ -1,7 +1,6 @@
 package com.besafx.app.rest;
 import com.besafx.app.config.CustomException;
 import com.besafx.app.config.EmailSender;
-import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskDeduction;
 import com.besafx.app.search.TaskSearch;
@@ -16,11 +15,9 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.charset.Charset;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,43 +50,6 @@ public class TaskDeductionRest {
     @Autowired
     private PersonRest personRest;
 
-    @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public TaskDeduction create(@RequestBody TaskDeduction taskDeduction, Principal principal) {
-        if (!personRest.getPersonManager(taskDeduction.getTask().getPerson()).getEmail().equals(principal.getName())) {
-            if (!taskDeduction.getTask().getPerson().getEmail().equals(principal.getName())) {
-                throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه ارسال الخصومات");
-            }
-        }
-        try {
-            Person person = personService.findByEmail(principal.getName());
-            TaskDeduction tempTaskDeduction = taskDeductionService.findTopByTaskAndToPersonOrderByCodeDesc(taskDeduction.getTask(), taskDeduction.getToPerson());
-            if (tempTaskDeduction == null) {
-                taskDeduction.setCode(1);
-            } else {
-                taskDeduction.setCode(tempTaskDeduction.getCode() + 1);
-            }
-            taskDeduction.setDate(new Date());
-            taskDeduction = taskDeductionService.save(taskDeduction);
-            notificationService.notifyOne(Notification
-                    .builder()
-                    .title("العمليات على المهام")
-                    .message("تم إرسال الخصم بنجاح")
-                    .type("success")
-                    .icon("fa-black-tie")
-                    .build(), person.getName());
-            ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
-            String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
-            message = message.replaceAll("MESSAGE", "خصم من " + taskDeduction.getTask().getPerson().getNickname() + " / " + taskDeduction.getTask().getPerson().getName() + " بشأن المهمة رقم " + "(" + taskDeduction.getTask().getCode() + ")" + " وفيما يلي محتوى الخصم" + "<br/>" + "<u>" + taskDeduction.getContent() + "</u>");
-            String title = "خصم من " + taskDeduction.getTask().getPerson().getNickname() + " / " + taskDeduction.getTask().getPerson().getName() + " بقيمة " + taskDeduction.getDeduction() + " ريال سعودي";
-            emailSender.send(title, message, taskDeduction.getToPerson().getEmail());
-            return taskDeduction;
-        } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
-            return null;
-        }
-    }
-
     @RequestMapping(value = "clearCounters/{taskId}/{personId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public boolean clearCounters(@PathVariable(value = "taskId") Long taskId, @PathVariable(value = "personId") Long personId, Principal principal) {
@@ -106,6 +66,26 @@ public class TaskDeductionRest {
                 .message("تم حذف كل الخصومات الإلكترونية على الموظف بالنسبة لهذة المهمة")
                 .type("success")
                 .icon("fa-black-tie")
+                .build(), principal.getName());
+        return true;
+    }
+
+    @RequestMapping(value = "clearAllCounters/{taskId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public boolean clearAllCounters(@PathVariable(value = "taskId") Long taskId, Principal principal) {
+        Task task = taskService.findOne(taskId);
+        if (!personRest.getPersonManager(task.getPerson()).getEmail().equals(principal.getName())) {
+            if (!task.getPerson().getEmail().equals(principal.getName())) {
+                throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف بإمكانه حذف الخصومات");
+            }
+        }
+        taskDeductionService.delete(taskDeductionService.findByTaskIdAndType(taskId, TaskDeduction.TaskDeductionType.Auto));
+        notificationService.notifyOne(Notification
+                .builder()
+                .title("العمليات على المهام")
+                .message("تم حذف كل الخصومات الإلكترونية لهذة المهمة")
+                .type("success")
+                .icon("fa-trash")
                 .build(), principal.getName());
         return true;
     }

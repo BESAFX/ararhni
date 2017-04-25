@@ -43,19 +43,17 @@
                         </button>
                         <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
                             for="view-menu-lower-right">
-                            <li class="mdl-menu__item" ng-click="openFetchOutgoingOpened()">
-                                <span>المهام الصادرة السارية</span>
+                            <li class="mdl-menu__item"
+                                ng-click="showSlideOperation()">
+                                <span>لوحة التحكم</span>
+                            </li>
+                            <li class="mdl-menu__item"
+                                ng-click="openFetchOutgoing()">
+                                <span>المهام الصادرة</span>
                             </li>
                             <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
-                                ng-click="openFetchOutgoingClosed()">
-                                <span>المهام الصادرة المغلقة</span>
-                            </li>
-                            <li class="mdl-menu__item" ng-click="openFetchIncomingOpened()">
-                                <span>المهام الواردة السارية</span>
-                            </li>
-                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
-                                ng-click="openFetchIncomingClosed()">
-                                <span>المهام الواردة المغلقة</span>
+                                ng-click="openFetchIncoming()">
+                                <span>المهام الواردة</span>
                             </li>
                             <li class="mdl-menu__item" ng-click="showSlideFilter()">
                                 <span>بحث تفصيلي</span>
@@ -69,8 +67,8 @@
                         </button>
                         <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
                             for="menu-lower-right">
-                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="reload()">
-                                <span>تحديث</span>
+                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="filter()">
+                                <span>تحديث البيانات</span>
                             </li>
                             <li class="mdl-menu__item" ng-click="openCreateModel()"
                                 ng-if="contains(authorities, ['ROLE_TASK_CREATE'])">
@@ -616,9 +614,44 @@
                     right: -9999px !important;
                     left: auto !important;
                 }
+
+                /*This is our main wrapping element, it's made 100vh high to ensure it is always the correct size and then moved into place and padded with negative margin and padding*/
+                .Container {
+                    display: flex;
+                    overflow: hidden;
+                    height: 100vh;
+                    padding-bottom: 200px;
+                    margin-top: 3px;
+                    position: relative;
+                    width: 100%;
+                    backface-visibility: hidden;
+                    will-change: overflow;
+                }
+
+                /*All the scrollable sections should overflow and be whatever height they need to be. As they are flex-items (due to being inside a flex container) they could be made to stretch full height at all times if needed.
+                WebKit inertia scrolling is being added here for any present/future devices that are able to make use of it.
+                */
+                .Middle {
+                    overflow: auto;
+                    height: auto;
+                    padding: .5rem;
+                    -webkit-overflow-scrolling: touch;
+                    -ms-overflow-style: none;
+                }
+
+                /*Entirely optional – just wanted to remove the scrollbar on WebKit browsers as I find them ugly*/
+                .Middle::-webkit-scrollbar {
+                    display: none;
+                }
+
+                .Middle {
+                    flex: 1;
+                }
+
             </style>
 
-            <div dir="rtl" id="slide"
+            <div id="slide"
+                 dir="rtl"
                  ng-init="showSlide"
                  ps-open="showSlide"
                  pageslide=""
@@ -718,7 +751,7 @@
                                                         <input id="codeFrom"
                                                                type="number"
                                                                min="1"
-                                                               focus-index="1"
+                                                               focus-index="4"
                                                                class="form-control text-right"
                                                                placeholder="ادخل رقم المهمة من"
                                                                ng-model="buffer.codeFrom">
@@ -730,7 +763,7 @@
                                                         <input id="codeTo"
                                                                type="number"
                                                                min="1"
-                                                               focus-index="3"
+                                                               focus-index="5"
                                                                class="form-control text-right"
                                                                placeholder="ادخل رقم المهمة إلى"
                                                                ng-model="buffer.codeTo">
@@ -746,7 +779,6 @@
                                                             <input dir="rtl"
                                                                    id="startDateTo"
                                                                    type="text"
-                                                                   focus-index="3"
                                                                    class="form-control text-right is-calendarPicker"
                                                                    ng-model="buffer.startDateTo"
                                                                    calendarType="ummalqura"
@@ -767,7 +799,6 @@
                                                             <input dir="rtl"
                                                                    id="startDateFrom"
                                                                    type="text"
-                                                                   focus-index="3"
                                                                    class="form-control text-right is-calendarPicker"
                                                                    ng-model="buffer.startDateFrom"
                                                                    calendarType="ummalqura"
@@ -789,7 +820,6 @@
                                                             <input dir="rtl"
                                                                    id="endDateTo"
                                                                    type="text"
-                                                                   focus-index="3"
                                                                    class="form-control text-right is-calendarPicker"
                                                                    ng-model="buffer.endDateTo"
                                                                    calendarType="ummalqura"
@@ -810,7 +840,6 @@
                                                             <input dir="rtl"
                                                                    id="endDateFrom"
                                                                    type="text"
-                                                                   focus-index="3"
                                                                    class="form-control text-right is-calendarPicker"
                                                                    ng-model="buffer.endDateFrom"
                                                                    calendarType="ummalqura"
@@ -822,17 +851,6 @@
                                                                    kdatepicker>
                                                         </div>
                                                     </div>
-                                                </div>
-
-                                                <div class="form-group text-right col-md-12">
-                                                    <toggle-switch
-                                                            dir="ltr"
-                                                            style="width: 100%"
-                                                            ng-model="buffer.isTaskOpen"
-                                                            class="switch-success"
-                                                            on-label="مهام سارية"
-                                                            off-label="مهام مغلقة">
-                                                    </toggle-switch>
                                                 </div>
 
                                                 <div class="form-group text-right col-md-12">
@@ -1142,23 +1160,55 @@
                 <div ng-show="showOperation">
                     <div class="panel panel-info">
 
-                        <div class="panel-heading">
-                            <a class="pull-left" href="" ng-click="showSlide=false"><span
-                                    class="fa fa-close fa-2x"></span></a>
-                            <h3 class="panel-title pull-right">
-                                <span class="fa fa-comments-o"></span>
-                                <span>الحركات / المرفقات</span>
-                            </h3>
-                        </div>
-
-                        <div class="panel-body"
-                             style="overflow-y: auto; overflow-x: hidden;"
-                             ng-style="resizeWithOffset(130)"
-                             resize="">
-
-                            <div class="row">
-
-                                <div class="form-group text-right col-md-12">
+                        <div class="panel-heading mdl-shadow--2dp">
+                            <div class="form-group row">
+                                <ul dir="rtl" class="breadcrumb">
+                                    <li ng-repeat="item in items | orderBy:'id' track by item.id">
+                                        <a ng-if="item.type==='link'" href="" ui-sref="{{item.link}}">{{item.name}}</a>
+                                        <span ng-if=item.type==='title'>{{item.name}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="form-group row">
+                                <button focus-index="1"
+                                        type="button"
+                                        ng-click="fetchIncomingTasksPending()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-6 col-sm-4 col-md-2">
+                                    <span>الوارد / تحت التنفيذ</span>
+                                </button>
+                                <button focus-index="2"
+                                        type="button"
+                                        ng-click="fetchIncomingTasksAuto()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-6 col-sm-4 col-md-2">
+                                    <span>الوارد / تلقائي</span>
+                                </button>
+                                <button focus-index="3"
+                                        type="button"
+                                        ng-click="fetchIncomingTasksManual()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-6 col-sm-4 col-md-2">
+                                    <span>الوارد / ارشيف</span>
+                                </button>
+                                <button focus-index="4"
+                                        type="button"
+                                        ng-click="fetchOutgoingTasksPending()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-6 col-sm-4 col-md-2">
+                                    <span>الصادر / تحت التنفيذ</span>
+                                </button>
+                                <button focus-index="5"
+                                        type="button"
+                                        ng-click="fetchOutgoingTasksAuto()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-6 col-sm-4 col-md-2">
+                                    <span>الصادر / تلقائي</span>
+                                </button>
+                                <button focus-index="6"
+                                        type="button"
+                                        ng-click="fetchOutgoingTasksManual()"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-6 col-sm-4 col-md-2">
+                                    <span>الصادر / ارشيف</span>
+                                </button>
+                            </div>
+                            <div class="form-group row">
+                                <div class="text-right col-md-11">
                                     <label for="task" class="control-label">[رقم المهمة][عنوان المهمة]</label>
                                     <select id="task"
                                             data-placeholder="ابحث عن اسم المهمة"
@@ -1172,132 +1222,649 @@
                                             ng-options="( ' [ ' + task.code + ' ] ' + ' ' + ' [ ' + task.title + ' ] ') for task in tasks track by task.id">
                                     </select>
                                 </div>
-
-                                <div class="form-group text-right col-md-8">
-                                    <div class="panel panel-success">
-                                        <div class="panel-heading">
-                                            <ul class="panel-controls pull-left" style="margin-top: 2px;">
-                                                <li>
-                                                    <a href="" ng-click="findTaskOperations()" uib-tooltip="تحديث">
-                                                        <span class="fa fa-refresh"></span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            <div class="panel-title-box pull-right">
-                                                <h3>الحركات</h3>
-                                            </div>
-                                        </div>
-                                        <div class="panel-body panel-body-table">
-                                            <div class="table-responsive">
-                                                <table st-table="collection2" st-safe-src="selected.taskOperations"
-                                                       class="table table-bordered">
-                                                    <thead>
-                                                    <tr>
-                                                        <th class="text-right">
-                                                            <span>رقم الحركة</span>
-                                                        </th>
-                                                        <th st-sort="sender.name" class="text-right">
-                                                            <span>المرسل</span>
-                                                        </th>
-                                                        <th class="text-right" st-sort="date" st-sort-default="reverse">
-                                                            <span>التاريخ والوقت</span>
-                                                        </th>
-                                                        <th class="text-right">
-                                                            <span>الحركة</span>
-                                                        </th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr class="text-right"
-                                                        ng-click="setSelectedOperation(taskOperation)"
-                                                        ng-right-click="setSelectedOperation(taskOperation)"
-                                                        st-select-mode="single"
-                                                        ng-repeat="taskOperation in collection2"
-                                                        ng-class="{'info':(taskOperation.sender.id===me.manager.id)}">
-                                                        <td st-select-row-custom="taskOperation" class="fit">
-                                                            {{taskOperation.code}}
-                                                        </td>
-                                                        <td st-select-row-custom="taskOperation" class="fit">
-                                                            {{taskOperation.sender.nickname}} /
-                                                            {{taskOperation.sender.name}}
-                                                        </td>
-                                                        <td st-select-row-custom="taskOperation" class="fit">
-                                                            {{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' :
-                                                            'ummalqura'}}
-                                                            <span class="label label-success">{{taskOperation.date | date:'h:m a'}}</span>
-                                                        </td>
-                                                        <td st-select-row-custom="taskOperation">
-                                                            {{taskOperation.content}}
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="blank_row"
-                                                        style="height: 10px !important; background-color: #FFFFFF;"
-                                                        ng-show="collection2.length == 0">
-                                                        <td colspan="3">لا توجد حركات على هذة المهمة</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="text-right pull-left">
+                                    <button id="slide-menu-lower-left"
+                                            class="mdl-button mdl-js-button mdl-button--icon">
+                                        <i class="material-icons">more_vert</i>
+                                    </button>
+                                    <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+                                        for="slide-menu-lower-left">
+                                        <li class="mdl-menu__item"
+                                            ng-click="openFetchOutgoing()">
+                                            <span>المهام الصادرة</span>
+                                        </li>
+                                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
+                                            ng-click="openFetchIncoming()">
+                                            <span>المهام الواردة</span>
+                                        </li>
+                                        <li class="mdl-menu__item" ng-click="openCreateModel()"
+                                            ng-if="contains(authorities, ['ROLE_TASK_CREATE'])">
+                                            <span>مهمة جديدة</span>
+                                        </li>
+                                        <li class="mdl-menu__item" ng-click="openUpdateModel()"
+                                            ng-hide="!tasks || tasks.length==0"
+                                            ng-if="contains(authorities, ['ROLE_TASK_UPDATE']) && toggleList===1">
+                                            <span>تعديل بيانات المهمة</span>
+                                        </li>
+                                        <li class="mdl-menu__item" ng-click="delete()"
+                                            ng-hide="!tasks || tasks.length==0"
+                                            ng-if="contains(authorities, ['ROLE_TASK_DELETE']) && toggleList===1">
+                                            <span>حذف المهمة</span>
+                                        </li>
+                                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
+                                            ng-click="closeTaskCompletely()"
+                                            ng-hide="!tasks || tasks.length==0"
+                                            ng-if="contains(authorities, ['ROLE_TASK_DELETE']) && toggleList===1">
+                                            <span>ارشفة المهمة</span>
+                                        </li>
+                                        <li class="mdl-menu__item" ng-click="openCreateOperationModel()"
+                                            ng-hide="!tasks || tasks.length==0"
+                                            ng-if="contains(authorities, ['ROLE_TASK_OPERATION_CREATE']) && toggleList===1">
+                                            <span>اضافة حركة</span>
+                                        </li>
+                                        <li class="mdl-menu__item" ng-click="openRequestCloseModel()"
+                                            ng-hide="!tasks || tasks.length==0" ng-if="toggleList===1">
+                                            <span>طلب إغلاق</span>
+                                        </li>
+                                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
+                                            ng-click="openRequestExtensionModel()"
+                                            ng-hide="!tasks || tasks.length==0" ng-if="toggleList===1">
+                                            <span>طلب تمديد</span>
+                                        </li>
+                                        <li class="mdl-menu__item" ng-click="showSlide=false">
+                                            <span>خروج</span>
+                                        </li>
+                                    </ul>
                                 </div>
-
-                                <div class="form-group text-right col-md-4">
-                                    <div class="panel panel-success">
-                                        <div class="panel-heading">
-                                            <div class="panel-title-box pull-right">
-                                                <h3>المرفقات</h3>
-                                            </div>
-                                        </div>
-                                        <div class="panel-body panel-body-table">
-                                            <div class="table-responsive">
-                                                <table st-table="collection3"
-                                                       st-safe-src="selectedOperation.taskOperationAttaches"
-                                                       class="table table-bordered">
-                                                    <tbody>
-                                                    <tr class="text-right"
-                                                        ng-repeat="taskOperationAttach in collection3">
-                                                        <td><a href="" target="_blank"
-                                                               ng-href="{{taskOperationAttach.link}}">{{taskOperationAttach.name}}</a>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="blank_row"
-                                                        style="height: 10px !important; background-color: #FFFFFF;"
-                                                        ng-show="collection3.length == 0">
-                                                        <td colspan="1">لا توجد مرفقات على هذة الحركة</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
-
                         </div>
 
-                        <div class="panel-footer">
+                        <div class="panel-body" style="padding: 0px;">
 
-                            <div class="form-group col-md-12" role="group">
-                                <button type="button"
-                                        ng-click="openTaskOperationsReportModel()"
-                                        class="btn btn-success">
-                                    <i class="fa fa-print fa-lg"></i>
-                                    <span>طباعة تقرير الحركات</span>
-                                </button>
-                                <button type="button"
-                                        ng-click="openReportTasksModel()"
-                                        class="btn btn-success">
-                                    <i class="fa fa-print fa-lg"></i>
-                                    <span>طباعة تقرير مختصر</span>
-                                </button>
-                                <button type="button"
-                                        ng-click="openCreateOperationModel()"
-                                        class="btn btn-success">
-                                    <i class="fa fa-clock-o fa-lg"></i>
-                                    <span>اضافة حركة جديدة</span>
-                                </button>
+                            <div class="Container">
+                                <div class="Middle">
+                                    <div class="row">
+
+                                        <div ng-if="tasks.length>0" class="form-group text-right col-md-12">
+                                            <div class="panel panel-success">
+                                                <div class="panel-heading">
+                                                    <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                                                        <li>
+                                                            <a href="" ng-click="refreshTask()"
+                                                               tooltip-append-to-body="true"
+                                                               uib-tooltip="تحديث المهمة">
+                                                                <span class="fa fa-refresh"></span>
+                                                            </a>
+                                                            <a href="" ng-click="openExtensionModel()"
+                                                               tooltip-append-to-body="true"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               uib-tooltip="تمديد المهمة">
+                                                                <span class="fa fa-battery-full"></span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="panel-title-box pull-right">
+                                                        <h3>البيانات الاساسية</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body panel-body-table">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered">
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>رقم المهمة</td>
+                                                                <td>{{selected.code}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>عنوان المهمة</td>
+                                                                <td>{{selected.title}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>تفاصيل المهمة</td>
+                                                                <td>{{selected.content}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>الحد الأقصى للتحذيرات</td>
+                                                                <td>{{selected.warn}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="fit">مقدار الحسم عند الوصول للحد الاقصي
+                                                                    للتحذيرات
+                                                                </td>
+                                                                <td>{{selected.deduction}} ريال سعودي</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>مقدار الحسم عند إغلاق المهمة تلقائياً</td>
+                                                                <td>{{selected.deductionOnAutoClose}} ريال سعودي</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>تاريخ الإنشاء</td>
+                                                                <td>{{selected.startDate | kdate: 'yyyy-mm-dd' : 'ar' :
+                                                                    'ummalqura'}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>تاريخ التسليم</td>
+                                                                <td>{{selected.endDate | kdate: 'yyyy-mm-dd' : 'ar' :
+                                                                    'ummalqura'}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>جهة التكليف</td>
+                                                                <td>{{selected.person.nickname}} /
+                                                                    {{selected.person.name}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>الموظفون</td>
+                                                                <td>
+                                                                    <span ng-repeat="to in selected.taskTos"
+                                                                          ng-class="{'label label-success':to.closed===false, 'label label-default':to.closed===true}"
+                                                                          style="margin: 2px">{{to.person.name}}</span>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="tasks.length>0" class="form-group text-right col-md-12">
+                                            <div class="panel panel-danger">
+                                                <div class="panel-heading">
+                                                    <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                                                        <li>
+                                                            <a href="" ng-click="refreshTaskTo()"
+                                                               tooltip-append-to-body="true"
+                                                               uib-tooltip="تحديث">
+                                                                <span class="fa fa-refresh"></span>
+                                                            </a>
+                                                            <a href="" tooltip-append-to-body="true"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               ng-click="openCreateTaskToModel()"
+                                                               uib-tooltip="تحويل إلى موظف">
+                                                                <span class="fa fa-plus"></span>
+                                                            </a>
+                                                            <a href="" tooltip-append-to-body="true"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               ng-click="openRemoveTaskToModel()"
+                                                               uib-tooltip="حذف موظف من التكليف">
+                                                                <span class="fa fa-minus"></span>
+                                                            </a>
+                                                            <a href="" tooltip-append-to-body="true"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               ng-click="openClosedModel()"
+                                                               uib-tooltip="إغلاق المهمة على موظف">
+                                                                <span class="fa fa-power-off"></span>
+                                                            </a>
+                                                            <a href="" tooltip-append-to-body="true"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               ng-click="openTaskToOpenDialog()"
+                                                               uib-tooltip="فتح المهمة على موظف">
+                                                                <span class="fa fa-history"></span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="panel-title-box pull-right">
+                                                        <h3>متابعة الموظفين المكلفين</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body panel-body-table">
+                                                    <div class="table-responsive">
+                                                        <table st-table="collectionTaskTos"
+                                                               st-safe-src="selected.taskTos"
+                                                               class="table table-bordered">
+                                                            <thead>
+                                                            <tr>
+                                                                <th class="text-center">م</th>
+                                                                <th class="text-center" st-sort="person.name">اسم
+                                                                    الموظف
+                                                                </th>
+                                                                <th class="text-center">عدد التحذيرات</th>
+                                                                <th class="text-center">عدد الخصومات</th>
+                                                                <th class="text-center" st-sort="progress">معدل إنجاز
+                                                                    العمل
+                                                                </th>
+                                                                <th class="text-center">عدد طلبات الإغلاق</th>
+                                                                <th class="text-center">التقييم</th>
+                                                                <th class="text-center" st-sort="closeDate">تاريخ
+                                                                    الإغلاق
+                                                                </th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr ng-repeat="taskTo in collectionTaskTos">
+                                                                <td>{{$index+1}}</td>
+                                                                <td>{{taskTo.person.nickname}} /
+                                                                    {{taskTo.person.name}}
+                                                                </td>
+                                                                <td>{{(task.taskWarns |
+                                                                    filter:{toPerson:taskTo.person}).length}}
+                                                                </td>
+                                                                <td>{{(task.taskDeductions |
+                                                                    filter:{toPerson:taskTo.person}).length}}
+                                                                </td>
+                                                                <td>% {{taskTo.progress}}</td>
+                                                                <td>{{(task.taskCloseRequests |
+                                                                    filter:{person:taskTo.person}).length}}
+                                                                </td>
+                                                                <td>
+                                                                    {{taskTo.degree==='A' ? 'ممتاز' : ''}}
+                                                                    {{taskTo.degree==='B' ? 'جيد جداً' : ''}}
+                                                                    {{taskTo.degree==='C' ? 'جيد' : ''}}
+                                                                    {{taskTo.degree==='D' ? 'مقبول' : ''}}
+                                                                    {{taskTo.degree==='F' ? 'سيئ' : ''}}
+                                                                </td>
+                                                                <td class="fit">
+                                                                    {{taskTo.closeDate ? (taskTo.closeDate | kdate:
+                                                                    'yyyy-mm-dd' : 'ar'
+                                                                    :'ummalqura') : '---'}}
+                                                                    <span class="label label-success">{{taskTo.closeDate ? (taskTo.closeDate | date:'h:m a') : ''}}</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="blank_row"
+                                                                style="height: 10px !important; background-color: #FFFFFF;"
+                                                                ng-show="!collectionTaskTos || collectionTaskTos.length ==0">
+                                                                <td colspan="7">لا توجد بيانات</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="tasks.length>0" class="form-group text-right col-md-12">
+                                            <div class="panel panel-danger">
+                                                <div class="panel-heading">
+                                                    <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                                                        <li>
+                                                            <a href="" tooltip-append-to-body="true"
+                                                               ng-click="refreshTaskCloseRequests()"
+                                                               uib-tooltip="تحديث">
+                                                                <span class="fa fa-refresh"></span>
+                                                            </a>
+                                                            <a href="" tooltip-append-to-body="true"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               ng-click="deleteTaskCloseRequests()"
+                                                               uib-tooltip="حذف طلبات الإغلاق">
+                                                                <span class="fa fa-trash"></span>
+                                                            </a>
+                                                            <a href="" tooltip-append-to-body="true"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               ng-click="deleteTaskExtendRequests()"
+                                                               uib-tooltip="حذف طلبات التمديد">
+                                                                <span class="fa fa-trash"></span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="panel-title-box pull-right">
+                                                        <h3>طلبات الإغلاق/التمديد</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body panel-body-table">
+                                                    <div class="table-responsive">
+                                                        <table st-table="collectionTaskCloseRequests"
+                                                               st-safe-src="selected.taskCloseRequests"
+                                                               class="table table-bordered">
+                                                            <thead>
+                                                            <tr>
+                                                                <th class="text-center fit" st-sort="code">رقم الطلب
+                                                                </th>
+                                                                <th class="text-center fit" st-sort="type">نوع الطلب
+                                                                </th>
+                                                                <th class="text-center"
+                                                                    st-sort="taskCloseRequest.person">المرسل
+                                                                </th>
+                                                                <th class="text-center" st-sort="taskCloseRequest.date"
+                                                                    st-sort-default="reverse">
+                                                                    <span>التاريخ والوقت</span>
+                                                                </th>
+                                                                <th class="text-center">التعليق</th>
+                                                                <th class="text-center">الرد</th>
+                                                                <th class="text-center">تاريخ الرد</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr ng-repeat="taskCloseRequest in collectionTaskCloseRequests">
+                                                                <td class="fit">{{taskCloseRequest.code}}</td>
+                                                                <td class="fit">
+                                                                    <strong ng-class="{'label label-danger':taskCloseRequest.type, 'label label-warning':!taskCloseRequest.type}">
+                                                                        {{taskCloseRequest.type ? "طلب إغلاق" : "طلب
+                                                                        تمديد"}}</strong>
+                                                                </td>
+                                                                <td class="fit">
+                                                                    {{taskCloseRequest.person.nickname}} /
+                                                                    {{taskCloseRequest.person.name}}
+                                                                </td>
+                                                                <td class="fit">
+                                                                    {{taskCloseRequest.date | kdate: 'yyyy-mm-dd' : 'ar'
+                                                                    :'ummalqura'}}
+                                                                    <span class="label label-success">{{taskCloseRequest.date | date:'h:m a'}}</span>
+                                                                </td>
+                                                                <td>
+                                                                    {{taskCloseRequest.note}}
+                                                                    <span ng-if="task.endDate > today && taskCloseRequest.approved === null">
+                                                                        <a href=""
+                                                                           ng-click="acceptRequest(taskCloseRequest)"
+                                                                           ng-if="task.person.id===me.id">موافق</a>
+                                                                        <a href=""
+                                                                           ng-click="declineRequest(taskCloseRequest)"
+                                                                           ng-if="task.person.id===me.id">غير موافق</a>
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    {{taskCloseRequest.approved === null ? 'قيد
+                                                                    الانتظار' : ''}}
+                                                                    {{taskCloseRequest.approved === true ? 'موافقة' :
+                                                                    ''}}
+                                                                    {{taskCloseRequest.approved === false ? 'مرفوض' :
+                                                                    ''}}
+                                                                </td>
+                                                                <td class="fit">
+                                                                    {{taskCloseRequest.approvedDate ?
+                                                                    (taskCloseRequest.approvedDate | kdate:
+                                                                    'yyyy-mm-dd' : 'ar' :'ummalqura') : '---'}}
+                                                                    <span class="label label-success">{{taskCloseRequest.approvedDate ? (taskCloseRequest.approvedDate | date:'h:m a') : ''}}</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="blank_row"
+                                                                style="height: 10px !important; background-color: #FFFFFF;"
+                                                                ng-show="!collectionTaskCloseRequests || collectionTaskCloseRequests.length ==0">
+                                                                <td colspan="7">لا توجد طلبات إغلاق/تمديد حتى الآن</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="tasks.length>0" class="form-group text-right col-md-12">
+                                            <div class="panel panel-warning">
+                                                <div class="panel-heading">
+                                                    <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                                                        <li>
+                                                            <a href="" ng-click="findTaskWarns()"
+                                                               tooltip-append-to-body="true"
+                                                               uib-tooltip="تحديث">
+                                                                <span class="fa fa-refresh"></span>
+                                                            </a>
+                                                            <a href="" ng-click="openCreateWarnModel()"
+                                                               tooltip-append-to-body="true"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               uib-tooltip="اضافة تحذير">
+                                                                <span class="fa fa-bell-o"></span>
+                                                            </a>
+                                                            <a href="" tooltip-append-to-body="true"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               ng-click="openClearWarnsAndDeductionsModel()"
+                                                               uib-tooltip="حذف التحذيرات">
+                                                                <span class="fa fa-eraser"></span>
+                                                            </a>
+                                                            <a href="" tooltip-append-to-body="true"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               ng-click="clearAllWarns()" uib-tooltip="حذف الكل">
+                                                                <span class="fa fa-trash"></span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="panel-title-box pull-right">
+                                                        <h3>التحذيرات</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body panel-body-table">
+                                                    <div class="table-responsive">
+                                                        <table st-table="collectionWarns"
+                                                               st-safe-src="selected.taskWarns"
+                                                               class="table table-bordered">
+                                                            <thead>
+                                                            <tr>
+                                                                <th st-sort="code" class="text-center fit">رقم التحذير
+                                                                </th>
+                                                                <th st-sort="type" class="text-center fit">نوع التحذير
+                                                                </th>
+                                                                <th st-sort="toPerson.name" class="text-center">الموظف
+                                                                </th>
+                                                                <th st-sort="date" st-sort-default="reverse"
+                                                                    class="text-center fit">التاريخ
+                                                                    والوقت
+                                                                </th>
+                                                                <th st-sort="content" class="text-center">المحتوى</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr ng-repeat="taskWarn in collectionWarns">
+                                                                <td>{{taskWarn.code}}</td>
+                                                                <td>{{taskWarn.type}}</td>
+                                                                <td class="fit">{{taskWarn.toPerson.nickname}} /
+                                                                    {{taskWarn.toPerson.name}}
+                                                                </td>
+                                                                <td>
+                                                                    {{taskWarn.date | kdate: 'yyyy-mm-dd' : 'ar' :
+                                                                    'ummalqura'}}
+                                                                    <span class="label label-success">{{taskWarn.date | date:'h:m a'}}</span>
+                                                                </td>
+                                                                <td>
+                                                                    {{taskWarn.content}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="blank_row"
+                                                                style="height: 10px !important; background-color: #FFFFFF;"
+                                                                ng-show="!collectionWarns || collectionWarns.length ==0">
+                                                                <td colspan="5">لا توجد تحذيرات</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="tasks.length>0" class="form-group text-right col-md-12">
+                                            <div class="panel panel-warning">
+                                                <div class="panel-heading">
+                                                    <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                                                        <li>
+                                                            <a href="" ng-click="findTaskDeductions()"
+                                                               tooltip-append-to-body="true"
+                                                               uib-tooltip="تحديث">
+                                                                <span class="fa fa-refresh"></span>
+                                                            </a>
+                                                            <a href="" ng-click="openCreateDeductionModel()"
+                                                               tooltip-append-to-body="true"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               uib-tooltip="اضافة خصم">
+                                                                <span class="fa fa-bomb"></span>
+                                                            </a>
+                                                            <a href="" tooltip-append-to-body="true"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               ng-click="openClearWarnsAndDeductionsModel()"
+                                                               uib-tooltip="حذف الخصومات">
+                                                                <span class="fa fa-eraser"></span>
+                                                            </a>
+                                                            <a href="" tooltip-append-to-body="true"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               ng-click="clearAllDeductions()" uib-tooltip="حذف الكل">
+                                                                <span class="fa fa-trash"></span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="panel-title-box pull-right">
+                                                        <h3>الخصومات</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body panel-body-table">
+                                                    <div class="table-responsive">
+                                                        <table st-table="collectionDeduction"
+                                                               st-safe-src="selected.taskDeductions"
+                                                               class="table table-bordered">
+                                                            <thead>
+                                                            <tr>
+                                                                <th st-sort="code" class="text-center fit">رقم الخصم
+                                                                </th>
+                                                                <th st-sort="type" class="text-center fit">نوع الخصم
+                                                                </th>
+                                                                <th st-sort="deduction" class="text-center fit">قيمة
+                                                                    الخصم
+                                                                </th>
+                                                                <th st-sort="toPerson.name" class="text-center">الموظف
+                                                                </th>
+                                                                <th st-sort="date" st-sort-default="reverse"
+                                                                    class="text-center fit">التاريخ
+                                                                    والوقت
+                                                                </th>
+                                                                <th st-sort="content" class="text-center">المحتوى</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr ng-repeat="taskDeduction in collectionDeduction">
+                                                                <td>{{taskDeduction.code}}</td>
+                                                                <td>{{taskDeduction.type}}</td>
+                                                                <td>{{taskDeduction.deduction | currency:'SAR':0}}</td>
+                                                                <td class="fit">{{taskDeduction.toPerson.nickname}} /
+                                                                    {{taskDeduction.toPerson.name}}
+                                                                </td>
+                                                                <td>
+                                                                    {{taskDeduction.date | kdate: 'yyyy-mm-dd' : 'ar' :
+                                                                    'ummalqura'}}
+                                                                    <span class="label label-success">{{taskDeduction.date | date:'h:m a'}}</span>
+                                                                </td>
+                                                                <td>{{taskDeduction.content}}</td>
+                                                            </tr>
+                                                            <tr class="blank_row"
+                                                                style="height: 10px !important; background-color: #FFFFFF;"
+                                                                ng-show="!collectionDeduction || collectionDeduction.length ==0">
+                                                                <td colspan="6">لا توجد خصومات</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="tasks.length>0" class="form-group text-right col-md-12">
+                                            <div class="panel panel-success">
+                                                <div class="panel-heading">
+                                                    <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                                                        <li>
+                                                            <a href="" ng-click="findTaskOperations()"
+                                                               tooltip-append-to-body="true"
+                                                               uib-tooltip="تحديث">
+                                                                <span class="fa fa-refresh"></span>
+                                                            </a>
+                                                            <a href="" ng-click="openCreateOperationModel()"
+                                                               tooltip-append-to-body="true"
+                                                               uib-tooltip="اضافة حركة">
+                                                                <span class="fa fa-clock-o"></span>
+                                                            </a>
+                                                            <a href="" ng-click="openCreateWarnModel()"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               tooltip-append-to-body="true"
+                                                               uib-tooltip="ارسال تحذير">
+                                                                <span class="fa fa-bell-o"></span>
+                                                            </a>
+                                                            <a href="" ng-click="openCreateDeductionModel()"
+                                                               ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                                               tooltip-append-to-body="true"
+                                                               uib-tooltip="ارسال خصم">
+                                                                <span class="fa fa-bomb"></span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="panel-title-box pull-right">
+                                                        <h3>الحركات / المرفقات</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body panel-body-table">
+                                                    <div class="table-responsive">
+                                                        <table st-table="collectionOperation"
+                                                               st-safe-src="selected.taskOperations"
+                                                               class="table table-bordered">
+                                                            <thead>
+                                                            <tr>
+                                                                <th st-sort="code" class="text-center fit">رقم الحركة
+                                                                </th>
+                                                                <th st-sort="sender.name" class="text-center">المرسل
+                                                                </th>
+                                                                <th st-sort="date" st-sort-default="reverse"
+                                                                    class="text-center fit">التاريخ
+                                                                    والوقت
+                                                                </th>
+                                                                <th st-sort="content" class="text-center">التعليق</th>
+                                                                <th st-sort="date" class="text-center fit">الوقت
+                                                                    المنقضي
+                                                                </th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr ng-repeat="taskOperation in collectionOperation"
+                                                                ng-class="{'info':(taskOperation.sender.id===me.manager.id)}">
+                                                                <td>{{taskOperation.code}}</td>
+                                                                <td class="fit">
+                                                                    {{taskOperation.sender.nickname}} /
+                                                                    {{taskOperation.sender.name}}
+                                                                </td>
+                                                                <td>
+                                                                    {{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' :
+                                                                    'ummalqura'}}
+                                                                    <span class="label label-success">{{taskOperation.date | date:'h:m a'}}</span>
+                                                                </td>
+                                                                <td>
+                                                                    <span class="label label-default">
+                                                                        {{taskOperation.type==='Comment' ? 'تعليق' : ''}}
+                                                                        {{taskOperation.type==='IncreaseEndDate' ? 'تمديد تاريخ إستلام' : ''}}
+                                                                        {{taskOperation.type==='DecreaseEndDate' ? 'تعجيل تاريخ إستلام' : ''}}
+                                                                        {{taskOperation.type==='CloseTaskOnPerson' ? 'إغلاق المهمة لموظف' : ''}}
+                                                                        {{taskOperation.type==='CloseTaskCompletely' ? 'أرشفة المهمة' : ''}}
+                                                                        {{taskOperation.type==='CloseTaskAuto' ? 'إغلاق تلقائي' : ''}}
+                                                                        {{taskOperation.type==='AddPerson' ? 'تحويل' : ''}}
+                                                                        {{taskOperation.type==='RemovePerson' ? 'حذف موظف' : ''}}
+                                                                        {{taskOperation.type==='AcceptCloseRequest' ? 'قبول طلب إغلاق' : ''}}
+                                                                        {{taskOperation.type==='AcceptIncreaseEndDateRequest' ? 'قبول طلب تمديد' : ''}}
+                                                                        {{taskOperation.type==='AcceptDecreaseEndDateRequest' ? 'قبول طلب تعجيل' : ''}}
+                                                                        {{taskOperation.type==='DeclineCloseRequest' ? 'رفض طلب إغلاق' : ''}}
+                                                                        {{taskOperation.type==='DeclineIncreaseEndDateRequest' ? 'رفض طلب تمديد' : ''}}
+                                                                        {{taskOperation.type==='DeclineDecreaseEndDateRequest' ? 'رفض طلب تعجيل' : ''}}
+                                                                        {{taskOperation.type==='OpenTaskOnPersonAuto' ? 'فتح المهمة على موظف تلقائي' : ''}}
+                                                                        {{taskOperation.type==='OpenTaskOnPerson' ? 'فتح المهمة على موظف' : ''}}
+                                                                    </span>
+                                                                    {{taskOperation.content}}
+                                                                    <span ng-repeat="taskOperationAttach in taskOperation.taskOperationAttaches"><a
+                                                                            uib-tooltip="{{taskOperationAttach.name}}"
+                                                                            tooltip-append-to-body="true"
+                                                                            href=""
+                                                                            ng-href="{{taskOperationAttach.link}}"
+                                                                            target="_blank"><i
+                                                                            class="fa fa-link fa-lg"></i></a></span>
+                                                                </td>
+                                                                <td class="fit">
+                                                                    <timer interval="60000"
+                                                                           start-time="taskOperation.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span>
+                                                                        {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' :
+                                                                        ''}} {{hours > 0 ? hours :
+                                                                        ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ?
+                                                                        minutes : ''}} {{minutes >
+                                                                        0 ? 'دقيقة' : ''}}
+                                                                    </timer>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="blank_row"
+                                                                style="height: 10px !important; background-color: #FFFFFF;"
+                                                                ng-show="!collectionOperation || collectionOperation.length ==0">
+                                                                <td colspan="5">لا توجد حركات</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
