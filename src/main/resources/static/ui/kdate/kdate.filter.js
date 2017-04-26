@@ -7,8 +7,7 @@
 (function () {
     'use strict';
 
-    angular.module('kdate')
-        .filter('kdate', kdate);
+    angular.module('kdate').filter('kdate', kdate);
 
     kdate.$inject = ['$filter'];
 

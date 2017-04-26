@@ -724,7 +724,10 @@
             }
             else {
                 elem.prop('disabled', false);
-                inst.trigger.filter('button.' + this._triggerClass).prop('disabled', false).end().filter('img.' + this._triggerClass).css({opacity: '1.0', cursor: ''});
+                inst.trigger.filter('button.' + this._triggerClass).prop('disabled', false).end().filter('img.' + this._triggerClass).css({
+                    opacity: '1.0',
+                    cursor: ''
+                });
             }
             this._disabled = $.map(this._disabled,
                 function (value) {
@@ -761,7 +764,10 @@
             }
             else {
                 elem.prop('disabled', true);
-                inst.trigger.filter('button.' + this._triggerClass).prop('disabled', true).end().filter('img.' + this._triggerClass).css({opacity: '0.5', cursor: 'default'});
+                inst.trigger.filter('button.' + this._triggerClass).prop('disabled', true).end().filter('img.' + this._triggerClass).css({
+                    opacity: '0.5',
+                    cursor: 'default'
+                });
             }
             this._disabled = $.map(this._disabled,
                 function (value) {
