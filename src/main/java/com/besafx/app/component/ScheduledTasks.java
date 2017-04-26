@@ -318,4 +318,32 @@ public class ScheduledTasks {
         }
 
     }
+
+    @Scheduled(cron = "0 0 10 * * *")
+    public void notifyPeopleAboutClosedSoonTasks() {
+        log.info("فحص كل المسخدمين");
+        Iterator<Person> iterator = personService.findAll().iterator();
+        while (iterator.hasNext()) {
+            Person person = iterator.next();
+            try {
+                log.info("جاري العمل على مهام: " + person.getName());
+                Future<byte[]> work = reportTaskController.ReportTasksClosedSoonNotify(person.getId());
+                byte[] fileBytes = work.get();
+                if (fileBytes == null) {
+                    continue;
+                }
+                String randomFileName = "TasksClosedSoonNotify-" + ThreadLocalRandom.current().nextInt(1, 50000);
+                log.info("جاري إنشاء ملف التقرير: " + randomFileName);
+                File reportFile = File.createTempFile(randomFileName, ".pdf");
+                FileUtils.writeByteArrayToFile(reportFile, fileBytes);
+                log.info("جاري تحويل الملف");
+                Thread.sleep(10000);
+                Future<Boolean> mail = emailSender.send("تنبية بخصوص مهامك التى أوشكت على الإغلاق - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(new FileSystemResource(reportFile)));
+                mail.get();
+                log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
+            } catch (Exception ex) {
+                log.info(ex.getMessage(), ex);
+            }
+        }
+    }
 }

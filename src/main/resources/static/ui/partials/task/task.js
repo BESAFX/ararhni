@@ -631,7 +631,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
 
         $scope.rowMenu.push(
             {
-                html: '<div style="cursor: pointer;padding: 10px;text-align: right"> الحركات / المرفقات <span class="fa fa-gg fa-lg"></span></div>',
+                html: '<div style="cursor: pointer;padding: 10px;text-align: right">لوحة التحكم <span class="fa fa-gears fa-lg"></span></div>',
                 enabled: function () {
                     return true
                 },

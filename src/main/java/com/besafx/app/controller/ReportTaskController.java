@@ -1,12 +1,14 @@
 package com.besafx.app.controller;
-
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Task;
+import com.besafx.app.search.TaskSearch;
 import com.besafx.app.service.*;
 import com.besafx.app.util.DateConverter;
 import com.besafx.app.util.WrapperUtil;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.joda.time.DateTime;
+import org.joda.time.Hours;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class ReportTaskController {
 
     @Autowired
     private TaskToService taskToService;
+
+    @Autowired
+    private TaskSearch taskSearch;
 
     @Autowired
     private TaskOperationService taskOperationService;
@@ -197,6 +202,35 @@ public class ReportTaskController {
         }
     }
 
+    @Async("threadPoolReportGenerator")
+    public Future<byte[]> ReportTasksClosedSoonNotify(Long personId) {
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        StringBuilder param1 = new StringBuilder();
+        param1.append("المعهد الأهلي العالي للتدريب");
+        param1.append("\n");
+        param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
+        param1.append("\n");
+        param1.append("تقرير عن المهام الباقي على تاريخ إغلاقها أقل من 125 ساعة (خمس أيام) من تاريخ اليوم");
+        map.put("title", param1.toString());
+        List<WrapperUtil> list = initTasksClosedSoonNotifyList(personId);
+        map.put("list", list);
+        if (list.isEmpty()) {
+            return null;
+        }
+        try {
+            ClassPathResource jrxmlFile = new ClassPathResource("/report/task/TasksClosedSoonNotify.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+            return new AsyncResult<>(JasperExportManager.exportReportToPdf(jasperPrint));
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            return null;
+        }
+    }
+
     private void initTaskTosCheckList(@RequestParam("tasksList") List<Long> tasksList, List<WrapperUtil> list) {
         tasksList.stream().forEach(id -> {
             Task task = taskService.findOne(id);
@@ -221,5 +255,33 @@ public class ReportTaskController {
             wrapperUtil.setObj2(tempList);
             list.add(wrapperUtil);
         });
+    }
+
+    private List<WrapperUtil> initTasksClosedSoonNotifyList(@RequestParam("personId") Long personId) {
+        log.info("قراءة كل المهام الواردة لهذا المستخدم...");
+        List<Task> tasks = taskSearch.search(null, null, Task.CloseType.Pending, null, null, null, null, null, null, true, true, "All", personId);
+        log.info("عدد المهام المكلف بها = " + tasks.size());
+        log.info("فحص كل مهمة على حدا");
+        List<WrapperUtil> list = new ArrayList<>();
+        tasks.stream().forEach(task -> {
+            log.info("فحص المهمة رقم : " + task.getCode());
+            DateTime now = new DateTime();
+            DateTime taskEndDate = new DateTime(task.getEndDate());
+            int hours = Hours.hoursBetween(now.withTimeAtStartOfDay(), taskEndDate).getHours();
+            log.info("عدد الساعات بين تاريخ نهاية المهمة والآن: " + hours);
+            log.info("فحص إذا كانت الساعات المتبقية أقل من 5 * 24 ساعة (خمس أيام)");
+            if (hours < 120) {
+                WrapperUtil wrapperUtil = new WrapperUtil();
+                wrapperUtil.setObj1(task.getCode());
+                wrapperUtil.setObj2(hours + " ساعة");
+                wrapperUtil.setObj3(taskCloseRequestService.findByTaskIdAndPersonIdAndTypeAndApprovedIsNull(task.getId(), personId, false).size());
+                wrapperUtil.setObj4(taskCloseRequestService.findByTaskIdAndPersonIdAndTypeAndApprovedIsNull(task.getId(), personId, false).size());
+                wrapperUtil.setObj5(taskWarnService.findByTaskIdAndToPersonId(task.getId(), personId).size());
+                wrapperUtil.setObj6(taskDeductionService.findByTaskIdAndToPersonId(task.getId(), personId).size());
+                wrapperUtil.setObj7(DateConverter.getHijriStringFromDateRTLWithTime(task.getEndDate()));
+                list.add(wrapperUtil);
+            }
+        });
+        return list;
     }
 }

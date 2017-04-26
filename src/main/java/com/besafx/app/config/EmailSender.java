@@ -147,7 +147,7 @@ public class EmailSender {
             transport.close();
             log.info("Sending email successfully to this destinations: " + email);
         } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
+            log.info(ex.getMessage());
         }
     }
 
