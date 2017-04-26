@@ -1,6 +1,7 @@
 package com.besafx.app.controller;
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Task;
+import com.besafx.app.rest.TaskOperationRest;
 import com.besafx.app.search.TaskSearch;
 import com.besafx.app.service.*;
 import com.besafx.app.util.DateConverter;
@@ -39,7 +40,7 @@ public class ReportTaskController {
     private TaskSearch taskSearch;
 
     @Autowired
-    private TaskOperationService taskOperationService;
+    private TaskOperationRest taskOperationRest;
 
     @Autowired
     private TaskWarnService taskWarnService;
@@ -53,15 +54,12 @@ public class ReportTaskController {
     @RequestMapping(value = "/report/TaskOperations", method = RequestMethod.GET, produces = "application/pdf")
     @ResponseBody
     public void ReportTaskOperationsByTask(@RequestParam("tasksList") List<Long> tasksList, @RequestParam(value = "startDate", required = false) Long startDate, @RequestParam(value = "endDate", required = false) Long endDate, HttpServletResponse response) throws JRException, IOException {
-
         if (tasksList.isEmpty()) {
             throw new CustomException("عفواً، فضلاً اختر على الأقل مهمة واحدة للطباعة");
         }
-
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "inline; filename=TaskOperationsByTask.pdf");
         final OutputStream outStream = response.getOutputStream();
-
         /**
          * Insert Parameters
          */
@@ -78,7 +76,6 @@ public class ReportTaskController {
             param1.append("تقرير عن حركات المهام حسب الفترة من: " + DateConverter.getHijriStringFromDateLTR(startDate) + " إلى الفترة: " + DateConverter.getHijriStringFromDateLTR(endDate));
         }
         map.put("title", param1.toString());
-
         List<WrapperUtil> list = new ArrayList<>();
         ListIterator<Long> listIterator = tasksList.listIterator();
         while (listIterator.hasNext()) {
@@ -100,26 +97,21 @@ public class ReportTaskController {
             wrapperUtil.setObj2(task.getTaskTos().stream().map(to -> to.getPerson().getName()).collect(Collectors.toList()).toString());
             list.add(wrapperUtil);
         }
-
         ClassPathResource jrxmlFile = new ClassPathResource("/report/task/TaskOperations.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(list));
-
         JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
     }
 
     @RequestMapping(value = "/report/Tasks", method = RequestMethod.GET, produces = "application/pdf")
     @ResponseBody
     public void ReportTasks(@RequestParam("tasksList") List<Long> tasksList, HttpServletResponse response) throws JRException, IOException {
-
         if (tasksList.isEmpty()) {
             throw new CustomException("عفواً، فضلاً اختر على الأقل مهمة واحدة للطباعة");
         }
-
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "inline; filename=Tasks.pdf");
         final OutputStream outStream = response.getOutputStream();
-
         /**
          * Insert Parameters
          */
@@ -132,26 +124,21 @@ public class ReportTaskController {
         param1.append("تقرير مختصر عن المهام");
         map.put("title", param1.toString());
         map.put("tasks", tasksList.stream().map(value -> taskService.findOne(value)).collect(Collectors.toList()));
-
         ClassPathResource jrxmlFile = new ClassPathResource("/report/task/Tasks.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
-
         JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
     }
 
     @RequestMapping(value = "/report/TaskTosCheck", method = RequestMethod.GET, produces = "application/pdf")
     @ResponseBody
     public void ReportTaskTosCheck(@RequestParam("tasksList") List<Long> tasksList, HttpServletResponse response) throws JRException, IOException {
-
         if (tasksList.isEmpty()) {
             throw new CustomException("عفواً، فضلاً اختر على الأقل مهمة واحدة للطباعة");
         }
-
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "inline; filename=TaskOperationsByTask.pdf");
         final OutputStream outStream = response.getOutputStream();
-
         /**
          * Insert Parameters
          */
@@ -163,14 +150,11 @@ public class ReportTaskController {
         param1.append("\n");
         param1.append("تقرير متابعة مهام إدارية");
         map.put("title", param1.toString());
-
         List<WrapperUtil> list = new ArrayList<>();
         initTaskTosCheckList(tasksList, list);
-
         ClassPathResource jrxmlFile = new ClassPathResource("/report/task/TaskTosCheck.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(list));
-
         JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
     }
 
@@ -187,10 +171,8 @@ public class ReportTaskController {
         param1.append("\n");
         param1.append("تقرير متابعة مهام إدارية");
         map.put("title", param1.toString());
-
         List<WrapperUtil> list = new ArrayList<>();
         initTaskTosCheckList(tasksList, list);
-
         try {
             ClassPathResource jrxmlFile = new ClassPathResource("/report/task/TaskTosCheck.jrxml");
             JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
@@ -231,12 +213,40 @@ public class ReportTaskController {
         }
     }
 
+    @Async("threadPoolReportGenerator")
+    public Future<byte[]> ReportTasksOperationsToday(Long personId) {
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        StringBuilder param1 = new StringBuilder();
+        param1.append("المعهد الأهلي العالي للتدريب");
+        param1.append("\n");
+        param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
+        param1.append("\n");
+        param1.append("تقرير عن حركات الموظفين على المهام الإدارية");
+        map.put("title", param1.toString());
+        List<WrapperUtil> list = initTasksOperationsTodayList(personId);
+        map.put("list", list);
+        if (list.isEmpty()) {
+            return null;
+        }
+        try {
+            ClassPathResource jrxmlFile = new ClassPathResource("/report/task/TasksOperationsToday.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+            return new AsyncResult<>(JasperExportManager.exportReportToPdf(jasperPrint));
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            return null;
+        }
+    }
+
     private void initTaskTosCheckList(@RequestParam("tasksList") List<Long> tasksList, List<WrapperUtil> list) {
         tasksList.stream().forEach(id -> {
             Task task = taskService.findOne(id);
             WrapperUtil wrapperUtil = new WrapperUtil();
             wrapperUtil.setObj1(task);
-
             List<WrapperUtil> tempList = new ArrayList<>();
             taskToService.findByTask(task).stream().forEach(to -> {
                 WrapperUtil tempWrapperUtil = new WrapperUtil();
@@ -251,7 +261,6 @@ public class ReportTaskController {
                 Optional.ofNullable(to.getCloseDate()).ifPresent(value -> tempWrapperUtil.setObj7(DateConverter.getHijriStringFromDateRTL(value)));
                 tempList.add(tempWrapperUtil);
             });
-
             wrapperUtil.setObj2(tempList);
             list.add(wrapperUtil);
         });
@@ -281,6 +290,25 @@ public class ReportTaskController {
                 wrapperUtil.setObj7(DateConverter.getHijriStringFromDateRTLWithTime(task.getEndDate()));
                 list.add(wrapperUtil);
             }
+        });
+        return list;
+    }
+
+    private List<WrapperUtil> initTasksOperationsTodayList(@RequestParam("personId") Long personId) {
+        log.info("قراءة كل المهام الصادرة من هذا المستخدم...");
+        List<Task> tasks = taskSearch.search(null, null, Task.CloseType.Pending, null, null, null, null, null, null, false, true, "All", personId);
+        log.info("عدد المهام الصادرة منه = " + tasks.size());
+        List<WrapperUtil> list = new ArrayList<>();
+        log.info("تجميع حركات المهام فى قائمة واحدة للعرض...");
+        taskOperationRest.getTaskOperations("Day", tasks).stream().forEach(taskOperation -> {
+            WrapperUtil wrapperUtil = new WrapperUtil();
+            wrapperUtil.setObj1(taskOperation.getCode());
+            wrapperUtil.setObj2(taskOperation.getTask().getCode());
+            wrapperUtil.setObj3(taskOperation.getTask().getTitle());
+            wrapperUtil.setObj4(taskOperation.getSender().getNickname() + " / " + taskOperation.getSender().getName());
+            wrapperUtil.setObj5(DateConverter.getHijriStringFromDateRTLWithTime(taskOperation.getDate()));
+            wrapperUtil.setObj6(taskOperation.getContent());
+            list.add(wrapperUtil);
         });
         return list;
     }

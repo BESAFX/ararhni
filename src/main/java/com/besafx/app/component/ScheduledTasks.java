@@ -345,5 +345,35 @@ public class ScheduledTasks {
                 log.info(ex.getMessage(), ex);
             }
         }
+        log.info("نهاية الفحص بنجاح.");
+    }
+
+    @Scheduled(cron = "0 0 21 * * *")
+    public void notifyManagersAboutTasksOperationsToday() {
+        log.info("فحص كل المسخدمين");
+        Iterator<Person> iterator = personService.findAll().iterator();
+        while (iterator.hasNext()) {
+            Person person = iterator.next();
+            try {
+                log.info("جاري العمل على مهام: " + person.getName());
+                Future<byte[]> work = reportTaskController.ReportTasksOperationsToday(person.getId());
+                byte[] fileBytes = work.get();
+                if (fileBytes == null) {
+                    continue;
+                }
+                String randomFileName = "TasksOperationsToday-" + ThreadLocalRandom.current().nextInt(1, 50000);
+                log.info("جاري إنشاء ملف التقرير: " + randomFileName);
+                File reportFile = File.createTempFile(randomFileName, ".pdf");
+                FileUtils.writeByteArrayToFile(reportFile, fileBytes);
+                log.info("جاري تحويل الملف");
+                Thread.sleep(10000);
+                Future<Boolean> mail = emailSender.send("تقرير حركات الموظفين اليوم - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(new FileSystemResource(reportFile)));
+                mail.get();
+                log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
+            } catch (Exception ex) {
+                log.info(ex.getMessage(), ex);
+            }
+        }
+        log.info("نهاية الفحص بنجاح.");
     }
 }

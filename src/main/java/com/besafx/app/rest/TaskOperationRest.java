@@ -185,7 +185,7 @@ public class TaskOperationRest {
         return getTaskOperations(timeType, tasks);
     }
 
-    private List<TaskOperation> getTaskOperations(String timeType, List<Task> tasks) {
+    public List<TaskOperation> getTaskOperations(String timeType, List<Task> tasks) {
         List<TaskOperation> taskOperations = new ArrayList<>();
         DateTime today = new DateTime().withTimeAtStartOfDay();
         DateTime tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay();
