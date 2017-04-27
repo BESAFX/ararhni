@@ -28,6 +28,8 @@ public interface TaskDeductionService extends PagingAndSortingRepository<TaskDed
     List<TaskDeduction> findByTaskAndType(Task task, TaskDeduction.TaskDeductionType type);
 
     List<TaskDeduction> findByTaskIdAndType(Long task, TaskDeduction.TaskDeductionType type);
+    List<TaskDeduction> findByTaskAndToPerson(Task task, Person person);
+
     List<TaskDeduction> findByTaskIdAndToPersonId(Long task, Long person);
 
     List<TaskDeduction> findByTaskIdAndToPersonIdAndType(Long task, Long person, TaskDeduction.TaskDeductionType type);

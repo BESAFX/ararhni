@@ -128,14 +128,14 @@ public class TaskAction {
                         .icon("fa-battery")
                         .build(), principal.getName());
                 log.info("ارسال رسالة الى المكلفين بالمهمة بشأن تمديد استلام المهمة والتاريخ الجديد.");
-                ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/ExtendTask.html");
-                String email = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
-                email = email.replaceAll("TASK_CODE", task.getCode().toString());
-                email = email.replaceAll("TASK_TITLE", task.getTitle());
-                email = email.replaceAll("TASK_CONTENT", task.getContent());
-                email = email.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
-                email = email.replaceAll("TASK_PERSON", task.getPerson().getName());
-                emailSender.send("تمديد تاريخ إستلام المهمة رقم: " + "(" + task.getCode() + ")", email, task.getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()));
+//                ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/ExtendTask.html");
+//                String email = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+//                email = email.replaceAll("TASK_CODE", task.getCode().toString());
+//                email = email.replaceAll("TASK_TITLE", task.getTitle());
+//                email = email.replaceAll("TASK_CONTENT", task.getContent());
+//                email = email.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
+//                email = email.replaceAll("TASK_PERSON", task.getPerson().getName());
+//                emailSender.send("تمديد تاريخ إستلام المهمة رقم: " + "(" + task.getCode() + ")", email, task.getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()));
                 log.info("تسجيل حركة جديدة عن تمديد تاريخ استلام المهمة وفتحها.");
                 TaskOperation taskOperation = new TaskOperation();
                 TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskId);
@@ -186,14 +186,14 @@ public class TaskAction {
                         .type("success")
                         .icon("fa-battery")
                         .build(), principal.getName());
-                ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/ExtendTask.html");
-                String email = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
-                email = email.replaceAll("TASK_CODE", task.getCode().toString());
-                email = email.replaceAll("TASK_TITLE", task.getTitle());
-                email = email.replaceAll("TASK_CONTENT", task.getContent());
-                email = email.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
-                email = email.replaceAll("TASK_PERSON", task.getPerson().getName());
-                emailSender.send("تعجيل تاريخ إستلام المهمة رقم: " + "(" + task.getCode() + ")", email, task.getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()));
+//                ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/ExtendTask.html");
+//                String email = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+//                email = email.replaceAll("TASK_CODE", task.getCode().toString());
+//                email = email.replaceAll("TASK_TITLE", task.getTitle());
+//                email = email.replaceAll("TASK_CONTENT", task.getContent());
+//                email = email.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
+//                email = email.replaceAll("TASK_PERSON", task.getPerson().getName());
+//                emailSender.send("تعجيل تاريخ إستلام المهمة رقم: " + "(" + task.getCode() + ")", email, task.getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()));
                 TaskOperation taskOperation = new TaskOperation();
                 TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskId);
                 if (tempTaskOperation == null) {

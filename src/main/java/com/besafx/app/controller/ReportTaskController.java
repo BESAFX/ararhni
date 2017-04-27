@@ -1,6 +1,7 @@
 package com.besafx.app.controller;
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Task;
+import com.besafx.app.entity.TaskDeduction;
 import com.besafx.app.rest.TaskOperationRest;
 import com.besafx.app.search.TaskSearch;
 import com.besafx.app.service.*;
@@ -242,6 +243,35 @@ public class ReportTaskController {
         }
     }
 
+    @Async("threadPoolReportGenerator")
+    public Future<byte[]> ReportTasksDeductionsSummery(Long personId) {
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        StringBuilder param1 = new StringBuilder();
+        param1.append("المعهد الأهلي العالي للتدريب");
+        param1.append("\n");
+        param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
+        param1.append("\n");
+        param1.append("تقرير مختصر بإجمالي الخصومات الموقعة على الموظفين المكلفين");
+        map.put("title", param1.toString());
+        List<WrapperUtil> list = initTasksDeductionsSummeryList(personId);
+        map.put("list", list);
+        if (list.isEmpty()) {
+            return null;
+        }
+        try {
+            ClassPathResource jrxmlFile = new ClassPathResource("/report/task/TasksDeductionsSummery.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+            return new AsyncResult<>(JasperExportManager.exportReportToPdf(jasperPrint));
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            return null;
+        }
+    }
+
     private void initTaskTosCheckList(@RequestParam("tasksList") List<Long> tasksList, List<WrapperUtil> list) {
         tasksList.stream().forEach(id -> {
             Task task = taskService.findOne(id);
@@ -310,6 +340,59 @@ public class ReportTaskController {
             wrapperUtil.setObj6(taskOperation.getContent());
             list.add(wrapperUtil);
         });
+        return list;
+    }
+
+    private List<WrapperUtil> initTasksDeductionsSummeryList(@RequestParam("personId") Long personId) {
+        log.info("قراءة كل المهام الصادرة من هذا المستخدم...");
+        List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, null, null, false, true, "All", personId);
+        log.info("عدد المهام الصادرة منه = " + tasks.size());
+        List<WrapperUtil> list = new ArrayList<>();
+        log.info("تجميع البيانات...");
+        ListIterator<Task> listIterator = tasks.listIterator();
+        while (listIterator.hasNext()) {
+            Task task = listIterator.next();
+            log.info("فحص كل المكلفين بهذة المهمة");
+            taskToService.findByTask(task).stream().forEach(taskTo -> {
+                WrapperUtil wrapperUtil = new WrapperUtil();
+                List<TaskDeduction> allDeduction = taskDeductionService.findByTaskAndToPerson(task, taskTo.getPerson());
+                if (!allDeduction.isEmpty()) {
+                    wrapperUtil.setObj1(taskTo.getPerson().getNickname() + " / " + taskTo.getPerson().getName());
+                    wrapperUtil.setObj2(task.getCode());
+                    wrapperUtil.setObj3(allDeduction
+                            .stream()
+                            .filter(taskDeduction -> taskDeduction.getType().equals(TaskDeduction.TaskDeductionType.Auto))
+                            .mapToDouble(TaskDeduction::getDeduction).sum());
+                    wrapperUtil.setObj4(allDeduction
+                            .stream()
+                            .filter(taskDeduction -> taskDeduction.getType().equals(TaskDeduction.TaskDeductionType.Manual))
+                            .mapToDouble(TaskDeduction::getDeduction).sum());
+                    if (Optional.ofNullable(taskTo.getDegree()).isPresent()) {
+                        switch (taskTo.getDegree()) {
+                            case A:
+                                wrapperUtil.setObj5("ممتاز");
+                                break;
+                            case B:
+                                wrapperUtil.setObj5("جيد جداً");
+                                break;
+                            case C:
+                                wrapperUtil.setObj5("جيد");
+                                break;
+                            case D:
+                                wrapperUtil.setObj5("مقبول");
+                                break;
+                            case F:
+                                wrapperUtil.setObj5("سيء");
+                                break;
+                        }
+                    } else {
+                        wrapperUtil.setObj5("غير محدد");
+                    }
+                    list.add(wrapperUtil);
+                }
+
+            });
+        }
         return list;
     }
 }

@@ -12,14 +12,12 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -166,11 +164,11 @@ public class ScheduledTasks {
             taskWarnService.save(taskWarn);
             log.info("تم حفظ التحذير الآلي باسم الموظف");
         }
-        ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
-        String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
-        message = message.replaceAll("MESSAGE", content.toString());
-        String title = "تحذير يومي بشأن عدم التعامل مع المهام";
-        emailSender.send(title, message, to.getEmail());
+//        ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
+//        String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+//        message = message.replaceAll("MESSAGE", content.toString());
+//        String title = "تحذير يومي بشأن عدم التعامل مع المهام";
+//        emailSender.send(title, message, to.getEmail());
     }
 
     private void createDeductionEmail(List<Task> tasks, String content, Person to) throws IOException {
@@ -195,11 +193,11 @@ public class ScheduledTasks {
             taskDeductionService.save(taskDeduction);
             log.info("تم حفظ الخصم الآلي باسم الموظف");
         }
-        ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
-        String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
-        message = message.replaceAll("MESSAGE", content.toString());
-        String title = "خصم يومي بشأن عدم التعامل مع المهام";
-        emailSender.send(title, message, to.getEmail());
+//        ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
+//        String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+//        message = message.replaceAll("MESSAGE", content.toString());
+//        String title = "خصم يومي بشأن عدم التعامل مع المهام";
+//        emailSender.send(title, message, to.getEmail());
     }
 
     @Scheduled(cron = "0 0 9 * * SUN,MON,TUE,WED,THU")
@@ -265,11 +263,11 @@ public class ScheduledTasks {
                         taskDeduction.setDate(new Date());
                         taskDeduction.setDeduction(task.getDeductionOnAutoClose());
                         taskDeductionService.save(taskDeduction);
-                        ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
-                        String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
-                        message = message.replaceAll("MESSAGE", "خصم إلكتروني بسبب إغلاق المهمة رقم / " + task.getCode() + " عليك تلقائي دون إرسال اى طلبات إغلاق طوال فترة حياة المهمة.");
-                        String title = "خصم إلكتروني يومي بسبب إغلاق المهمة تلقائي بمقدار / " + task.getDeductionOnAutoClose() + " ريال سعودي.";
-                        emailSender.send(title, message, taskDeduction.getToPerson().getEmail());
+//                        ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NoTaskOperationsWarning.html");
+//                        String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+//                        message = message.replaceAll("MESSAGE", "خصم إلكتروني بسبب إغلاق المهمة رقم / " + task.getCode() + " عليك تلقائي دون إرسال اى طلبات إغلاق طوال فترة حياة المهمة.");
+//                        String title = "خصم إلكتروني يومي بسبب إغلاق المهمة تلقائي بمقدار / " + task.getDeductionOnAutoClose() + " ريال سعودي.";
+//                        emailSender.send(title, message, taskDeduction.getToPerson().getEmail());
                         log.info("تم إرسال الخصم بنجاح إلى الموظف / " + taskTo.getPerson().getName());
                     }
                     log.info("إغلاق المهمة على هذا الموظف بتاريخ وقت الفحص");
@@ -368,6 +366,35 @@ public class ScheduledTasks {
                 log.info("جاري تحويل الملف");
                 Thread.sleep(10000);
                 Future<Boolean> mail = emailSender.send("تقرير حركات الموظفين اليوم - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(new FileSystemResource(reportFile)));
+                mail.get();
+                log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
+            } catch (Exception ex) {
+                log.info(ex.getMessage(), ex);
+            }
+        }
+        log.info("نهاية الفحص بنجاح.");
+    }
+
+    @Scheduled(cron = "0 0 20 * * SUN,MON,TUE,WED,THU")
+    public void notifyManagersAboutTasksDeductionsSummery() {
+        log.info("فحص كل المسخدمين");
+        Iterator<Person> iterator = personService.findAll().iterator();
+        while (iterator.hasNext()) {
+            Person person = iterator.next();
+            try {
+                log.info("جاري العمل على مهام: " + person.getName());
+                Future<byte[]> work = reportTaskController.ReportTasksDeductionsSummery(person.getId());
+                byte[] fileBytes = work.get();
+                if (fileBytes == null) {
+                    continue;
+                }
+                String randomFileName = "TasksDeductionsSummery-" + ThreadLocalRandom.current().nextInt(1, 50000);
+                log.info("جاري إنشاء ملف التقرير: " + randomFileName);
+                File reportFile = File.createTempFile(randomFileName, ".pdf");
+                FileUtils.writeByteArrayToFile(reportFile, fileBytes);
+                log.info("جاري تحويل الملف");
+                Thread.sleep(10000);
+                Future<Boolean> mail = emailSender.send("تقرير مختصر لحسومات المكلفين - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(new FileSystemResource(reportFile)));
                 mail.get();
                 log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
             } catch (Exception ex) {
