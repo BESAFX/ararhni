@@ -282,9 +282,9 @@ public class TaskAction {
         if (taskCloseRequest == null) {
             throw new CustomException("عفواً ، لا يوجد هذا الطلب");
         } else {
-            if (taskCloseRequest.getTask().getCloseType().equals(Task.CloseType.Manual)) {
-                throw new CustomException("لا يمكن القيام بأي عمليات على مهام الارشيف.");
-            }
+//            if (taskCloseRequest.getTask().getCloseType().equals(Task.CloseType.Manual)) {
+//                throw new CustomException("لا يمكن القيام بأي عمليات على مهام الارشيف.");
+//            }
             if (!personRest.getPersonManager(taskCloseRequest.getTask().getPerson()).getEmail().equals(principal.getName())) {
                 if (!taskCloseRequest.getTask().getPerson().getEmail().equals(principal.getName())) {
                     throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط جهة التكليف مصرح له بذلك.");
@@ -363,12 +363,8 @@ public class TaskAction {
                         .icon("fa-power-off")
                         .build(), principal.getName());
                 log.info("إنهاء العمل على تحديث بيانات المهمة");
-                log.info("فى حال كان الموظفون المكلفين تم إغلاق مهامهم");
-                if (task.getTaskTos().stream().filter(to -> !to.getClosed()).collect(Collectors.toList()).isEmpty()) {
-                    task.setEndDate(new Date());
-                    task.setCloseType(Task.CloseType.Auto);
-                    taskService.save(task);
-                    log.info("اضافة حركة جديدة لإغلاق المهمة تلقائي");
+                {
+                    log.info("انشاء حركة لإغلاق المهمة على الموظف");
                     TaskOperation taskOperation = new TaskOperation();
                     TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskId);
                     if (tempTaskOperation == null) {
@@ -379,8 +375,30 @@ public class TaskAction {
                     taskOperation.setDate(new Date());
                     taskOperation.setSender(task.getPerson());
                     taskOperation.setTask(task);
-                    taskOperation.setType(TaskOperation.OperationType.CloseTaskAuto);
-                    taskOperation.setContent("تم إغلاق المهمة تلقائي نظراً لإغلاق المهمة على الموظف الوحيد المكلف.");
+                    taskOperation.setType(TaskOperation.OperationType.CloseTaskOnPerson);
+                    taskOperation.setContent(message);
+                    taskOperationService.save(taskOperation);
+                    log.info("إنهاء العمل على الحركة");
+                }
+
+                log.info("فى حال كان الموظفون المكلفين تم إغلاق مهامهم");
+                if (task.getTaskTos().stream().filter(to -> !to.getClosed()).collect(Collectors.toList()).isEmpty()) {
+                    task.setEndDate(new Date());
+                    task.setCloseType(Task.CloseType.Manual);
+                    taskService.save(task);
+                    log.info("اضافة حركة جديدة لإغلاق المهمة ونقلها إلى الارشيف");
+                    TaskOperation taskOperation = new TaskOperation();
+                    TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskId);
+                    if (tempTaskOperation == null) {
+                        taskOperation.setCode(1);
+                    } else {
+                        taskOperation.setCode(tempTaskOperation.getCode() + 1);
+                    }
+                    taskOperation.setDate(new Date());
+                    taskOperation.setSender(task.getPerson());
+                    taskOperation.setTask(task);
+                    taskOperation.setType(TaskOperation.OperationType.CloseTaskCompletely);
+                    taskOperation.setContent("تم نقل المهمة إلى الارشيف نظراً لإغلاق المهمة على كل الموظفين.");
                     taskOperationService.save(taskOperation);
                     log.info("إنهاء العمل على الحركة");
                 }
@@ -388,27 +406,14 @@ public class TaskAction {
                 taskCloseRequestService.findByTaskIdAndPersonIdAndTypeAndApprovedIsNull(taskId, personId, true).stream().forEach(taskCloseRequest -> {
                     taskCloseRequest.setApproved(true);
                     taskCloseRequest.setApprovedDate(new Date());
+                    taskCloseRequestService.save(taskCloseRequest);
                 });
                 log.info("البحث عن طلبات التمديد المعلقة ورفضها...");
                 taskCloseRequestService.findByTaskIdAndPersonIdAndTypeAndApprovedIsNull(taskId, personId, false).stream().forEach(taskCloseRequest -> {
                     taskCloseRequest.setApproved(false);
                     taskCloseRequest.setApprovedDate(new Date());
+                    taskCloseRequestService.save(taskCloseRequest);
                 });
-                log.info("العمل على الحركة");
-                TaskOperation taskOperation = new TaskOperation();
-                TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskId);
-                if (tempTaskOperation == null) {
-                    taskOperation.setCode(1);
-                } else {
-                    taskOperation.setCode(tempTaskOperation.getCode() + 1);
-                }
-                taskOperation.setDate(new Date());
-                taskOperation.setSender(task.getPerson());
-                taskOperation.setTask(task);
-                taskOperation.setType(TaskOperation.OperationType.CloseTaskOnPerson);
-                taskOperation.setContent(message);
-                taskOperationService.save(taskOperation);
-                log.info("إنهاء العمل على الحركة");
                 return task;
             } catch (Exception ex) {
                 log.error(ex.getMessage(), ex);
