@@ -741,17 +741,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
 
                     $scope.items.push({'id': 2, 'type': 'title', 'name': 'المهام الواردة'});
 
-                    switch ($scope.buffer.closeType) {
-                        case 'Pending':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تحت التنفيذ'});
-                            break;
-                        case 'Auto':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تلقائي'});
-                            break;
-                        case 'Manual':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'ارشيف'});
-                            break;
-                    }
+                    $scope.items.push({'id': 3, 'type': 'title', 'name': 'تحت التنفيذ'});
 
                     $scope.items.push(
                         {'id': 4, 'type': 'title', 'name': $scope.buffer.person.nickname},
@@ -852,17 +842,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
 
                     $scope.items.push({'id': 2, 'type': 'title', 'name': 'المهام الواردة'});
 
-                    switch ($scope.buffer.closeType) {
-                        case 'Pending':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تحت التنفيذ'});
-                            break;
-                        case 'Auto':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تلقائي'});
-                            break;
-                        case 'Manual':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'ارشيف'});
-                            break;
-                    }
+                    $scope.items.push({'id': 3, 'type': 'title', 'name': 'تلقائي'});
 
                     $scope.items.push(
                         {'id': 4, 'type': 'title', 'name': $scope.buffer.person.nickname},
@@ -963,17 +943,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
 
                     $scope.items.push({'id': 2, 'type': 'title', 'name': 'المهام الواردة'});
 
-                    switch ($scope.buffer.closeType) {
-                        case 'Pending':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تحت التنفيذ'});
-                            break;
-                        case 'Auto':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تلقائي'});
-                            break;
-                        case 'Manual':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'ارشيف'});
-                            break;
-                    }
+                    $scope.items.push({'id': 3, 'type': 'title', 'name': 'ارشيف'});
 
                     $scope.items.push(
                         {'id': 4, 'type': 'title', 'name': $scope.buffer.person.nickname},
@@ -1187,17 +1157,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
 
                     $scope.items.push({'id': 2, 'type': 'title', 'name': 'المهام الصادرة'});
 
-                    switch ($scope.buffer.closeType) {
-                        case 'Pending':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تحت التنفيذ'});
-                            break;
-                        case 'Auto':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تلقائي'});
-                            break;
-                        case 'Manual':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'ارشيف'});
-                            break;
-                    }
+                    $scope.items.push({'id': 3, 'type': 'title', 'name': 'تحت التنفيذ'});
 
                     $scope.items.push(
                         {'id': 4, 'type': 'title', 'name': $scope.buffer.person.nickname},
@@ -1296,17 +1256,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
 
                     $scope.items.push({'id': 2, 'type': 'title', 'name': 'المهام الصادرة'});
 
-                    switch ($scope.buffer.closeType) {
-                        case 'Pending':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تحت التنفيذ'});
-                            break;
-                        case 'Auto':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تلقائي'});
-                            break;
-                        case 'Manual':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'ارشيف'});
-                            break;
-                    }
+                    $scope.items.push({'id': 3, 'type': 'title', 'name': 'تلقائي'});
 
                     $scope.items.push(
                         {'id': 4, 'type': 'title', 'name': $scope.buffer.person.nickname},
@@ -1405,17 +1355,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
 
                     $scope.items.push({'id': 2, 'type': 'title', 'name': 'المهام الصادرة'});
 
-                    switch ($scope.buffer.closeType) {
-                        case 'Pending':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تحت التنفيذ'});
-                            break;
-                        case 'Auto':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تلقائي'});
-                            break;
-                        case 'Manual':
-                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'ارشيف'});
-                            break;
-                    }
+                    $scope.items.push({'id': 3, 'type': 'title', 'name': 'ارشيف'});
 
                     $scope.items.push(
                         {'id': 4, 'type': 'title', 'name': $scope.buffer.person.nickname},
