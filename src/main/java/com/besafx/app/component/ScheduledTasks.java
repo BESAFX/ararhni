@@ -317,7 +317,7 @@ public class ScheduledTasks {
 
     }
 
-    @Scheduled(cron = "0 0/10 10 * * *")
+    @Scheduled(cron = "0 0 10 * * *")
     public void notifyPeopleAboutClosedSoonTasks() {
         log.info("فحص كل المسخدمين");
         Iterator<Person> iterator = personService.findAll().iterator();
