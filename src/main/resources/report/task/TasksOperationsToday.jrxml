@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2017-04-26T22:07:05 -->
+<jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="TasksOperationsToday" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail"
+              columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20"
+              isSummaryWithPageHeaderAndFooter="true" uuid="d667083a-5ee3-46f8-b604-36494df2d410">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <property name="com.jaspersoft.studio.unit." value="pixel"/>
+    <style name="BODER_FIELD" mode="Transparent" forecolor="#000000" backcolor="#FFFFFF">
+        <pen lineWidth="0.3"/>
+        <box>
+            <topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+            <leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+            <bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+            <rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="COLUMN_HEADER" mode="Opaque" forecolor="#000000" backcolor="#BABABA" fontName="SansSerif">
+        <pen lineWidth="0.3" lineColor="#000000"/>
+        <box>
+            <topPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+            <leftPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+            <bottomPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+            <rightPen lineWidth="0.3" lineStyle="Solid" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+        <box>
+            <pen lineWidth="0.5" lineColor="#000000"/>
+            <topPen lineWidth="0.5" lineColor="#000000"/>
+            <leftPen lineWidth="0.5" lineColor="#000000"/>
+            <bottomPen lineWidth="0.5" lineColor="#000000"/>
+            <rightPen lineWidth="0.5" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="Table_CH" mode="Opaque" backcolor="#BABABA">
+        <box>
+            <pen lineWidth="0.5" lineColor="#000000"/>
+            <topPen lineWidth="0.5" lineColor="#000000"/>
+            <leftPen lineWidth="0.5" lineColor="#000000"/>
+            <bottomPen lineWidth="0.5" lineColor="#000000"/>
+            <rightPen lineWidth="0.5" lineColor="#000000"/>
+        </box>
+    </style>
+    <style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+        <box>
+            <pen lineWidth="0.5" lineColor="#000000"/>
+            <topPen lineWidth="0.5" lineColor="#000000"/>
+            <leftPen lineWidth="0.5" lineColor="#000000"/>
+            <bottomPen lineWidth="0.5" lineColor="#000000"/>
+            <rightPen lineWidth="0.5" lineColor="#000000"/>
+        </box>
+    </style>
+    <subDataset name="ItemDataset" uuid="5974632c-b16f-44b0-90c7-39acd02fca30">
+        <queryString>
+            <![CDATA[]]>
+        </queryString>
+        <field name="obj1" class="java.lang.Object"/>
+        <field name="obj2" class="java.lang.Object"/>
+        <field name="obj3" class="java.lang.Object"/>
+        <field name="obj4" class="java.lang.Object"/>
+        <field name="obj5" class="java.lang.Object"/>
+        <field name="obj6" class="java.lang.Object"/>
+        <field name="obj7" class="java.lang.Object"/>
+        <sortField name="obj2"/>
+    </subDataset>
+    <parameter name="title" class="java.lang.String"/>
+    <parameter name="list" class="java.util.List"/>
+    <background>
+        <band height="802">
+            <rectangle radius="10">
+                <reportElement mode="Transparent" x="0" y="0" width="555" height="802" backcolor="#754C29"
+                               uuid="e95f6d82-5ede-41de-a8a2-e4325b59c680"/>
+                <graphicElement>
+                    <pen lineWidth="2.0" lineColor="#754C29"/>
+                </graphicElement>
+            </rectangle>
+        </band>
+    </background>
+    <pageHeader>
+        <band height="48">
+            <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+            <frame>
+                <reportElement x="0" y="0" width="555" height="48" uuid="f8905662-eeb9-439c-bfd7-ff33632b194b"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#754C29"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textField>
+                    <reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="555" height="48"
+                                   uuid="29f3b374-3b2b-433a-a4ef-3f79b6ceb0c3"/>
+                    <box padding="5">
+                        <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#754C29"/>
+                        <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#754C29"/>
+                        <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#754C29"/>
+                        <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#754C29"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Top" rotation="None">
+                        <font fontName="Arial" size="9" isUnderline="false"/>
+                        <paragraph lineSpacing="Single" lineSpacingSize="1.0" spacingBefore="0" spacingAfter="0"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+                </textField>
+                <image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" isUsingCache="true">
+                    <reportElement x="5" y="5" width="73" height="30" uuid="1a77595b-7f90-4d6f-8168-b5bf8950312c"/>
+                    <imageExpression><![CDATA["src/main/resources/report/img/LOGO.bmp"]]></imageExpression>
+                </image>
+            </frame>
+        </band>
+    </pageHeader>
+    <pageFooter>
+        <band height="43" splitType="Stretch">
+            <frame>
+                <reportElement x="0" y="6" width="555" height="37" uuid="3eb51b39-6342-44b0-b2fb-abd1d79f11c5"/>
+                <staticText>
+                    <reportElement mode="Transparent" x="430" y="4" width="125" height="10" backcolor="#754C29"
+                                   uuid="c29805a2-a3c2-4b17-a8b9-e521e870ff29"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial" size="8" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[منطقة الحدود الشمالية ـ عرعر]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement mode="Transparent" x="360" y="4" width="70" height="10" backcolor="#754C29"
+                                   uuid="b8d948aa-5460-442b-ba0b-cb80d586d327"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial" size="8" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[هاتف: 046620392]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement mode="Transparent" x="280" y="4" width="80" height="10" backcolor="#754C29"
+                                   uuid="d05bcb57-f11e-43da-9c00-ccc692bf7612"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial" size="8" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[فاكس: 046611627]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement mode="Transparent" x="181" y="4" width="99" height="10" backcolor="#754C29"
+                                   uuid="6c1491a6-4913-4771-960d-02b396b16442"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial" size="8" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[جوال: 0504975344]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement mode="Transparent" x="109" y="4" width="72" height="10" backcolor="#754C29"
+                                   uuid="6ab73f7f-f902-42f1-8b83-a9f469129e71"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial" size="8" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[هاتف: 04663655]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement mode="Transparent" x="0" y="4" width="108" height="10" backcolor="#754C29"
+                                   uuid="cff82c26-d47d-43d5-b138-930f0234b73e"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial" size="8" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[ص . ب 1175]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement mode="Transparent" x="0" y="14" width="108" height="10" backcolor="#754C29"
+                                   uuid="3f105883-3469-49bd-ae0e-bd7af0afce5f"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Agency FB" size="8" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[Northen Border Region (ARAR)]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement mode="Transparent" x="181" y="14" width="99" height="10" backcolor="#754C29"
+                                   uuid="c2a15960-6182-4b6e-a043-db9e362e5f67"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Agency FB" size="8" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[Fax. 046611627]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement mode="Transparent" x="109" y="14" width="72" height="10" backcolor="#754C29"
+                                   uuid="76ea5cb1-f3a4-436c-89a6-dd921aad8802"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Agency FB" size="8" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[Tel. 046620392]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement mode="Transparent" x="280" y="14" width="80" height="10" backcolor="#754C29"
+                                   uuid="9ba20802-8e95-4350-8f63-27c9c9d2c11a"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Agency FB" size="8" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[Mobile. 0504975344]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement mode="Transparent" x="360" y="14" width="70" height="10" backcolor="#754C29"
+                                   uuid="e84d70e4-3220-48dc-bd81-fc2e1d1d79d1"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Agency FB" size="8" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[Tel. 04663655]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement mode="Transparent" x="430" y="14" width="125" height="10" backcolor="#754C29"
+                                   uuid="0851ceec-e315-48c0-880a-90d62cd73abc">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Agency FB" size="8" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[P.O.Box 1175]]></text>
+                </staticText>
+                <line>
+                    <reportElement x="0" y="0" width="555" height="1" backcolor="#754C29"
+                                   uuid="52fbed4a-b44c-4a94-8b25-830f2f2858c1">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                    </reportElement>
+                </line>
+                <textField isStretchWithOverflow="true" evaluationTime="Report">
+                    <reportElement stretchType="RelativeToTallestObject" x="0" y="24" width="35" height="13"
+                                   uuid="d8e0d32d-dde0-4899-a02b-683beed361d5"/>
+                    <textElement textAlignment="Right" verticalAlignment="Middle">
+                        <font fontName="GE SS Text Light" size="9"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[" (" + $V{PAGE_NUMBER} + ")"]]></textFieldExpression>
+                </textField>
+                <textField isStretchWithOverflow="true">
+                    <reportElement stretchType="RelativeToTallestObject" x="85" y="24" width="30" height="13"
+                                   uuid="88af1267-c2aa-4d21-b44e-f4f1bfe25130"/>
+                    <textElement textAlignment="Right" verticalAlignment="Middle">
+                        <font fontName="GE SS Text Light" size="9"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA["(" + $V{PAGE_NUMBER} + ")"]]></textFieldExpression>
+                </textField>
+                <staticText>
+                    <reportElement mode="Transparent" x="35" y="24" width="50" height="13" backcolor="#754C29"
+                                   uuid="63dfe498-9c1c-41dc-b99e-6e5d0b3eef64"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="GE SS Text Light" size="9" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[عدد الصفحات]]></text>
+                </staticText>
+                <textField isStretchWithOverflow="true">
+                    <reportElement stretchType="RelativeToTallestObject" x="430" y="24" width="125" height="13"
+                                   uuid="571102ea-f4d0-4faf-a529-ce3cd8a46399"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="Arial" size="9"/>
+                    </textElement>
+                    <textFieldExpression>
+                        <![CDATA["تاريخ الطباعة" + " " + com.besafx.app.util.DateConverter.getHijriStringFromDateLTR(new Date())]]></textFieldExpression>
+                </textField>
+                <staticText>
+                    <reportElement mode="Transparent" x="115" y="24" width="59" height="13" backcolor="#754C29"
+                                   uuid="ed54ce9c-7d64-4575-b4ba-39fdc51b6bae"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font fontName="GE SS Text Light" size="9" isBold="false"/>
+                    </textElement>
+                    <text><![CDATA[رقم الصفحة]]></text>
+                </staticText>
+            </frame>
+        </band>
+    </pageFooter>
+    <summary>
+        <band height="62">
+            <componentElement>
+                <reportElement x="7" y="11" width="540" height="40" uuid="2cd17ca2-fd9f-4e86-95bc-8d4260dba30a">
+                    <property name="com.jaspersoft.studio.layout"
+                              value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+                    <property name="net.sf.jasperreports.export.headertoolbar.table.name" value=""/>
+                    <property name="com.jaspersoft.studio.components.autoresize.next" value="true"/>
+                    <property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
+                </reportElement>
+                <jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components"
+                          xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd"
+                          whenNoDataType="AllSectionsNoDetail">
+                    <datasetRun subDataset="ItemDataset" uuid="efb9b859-26c3-4d87-b9e3-dafefe1bcacc">
+                        <dataSourceExpression>
+                            <![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list})]]></dataSourceExpression>
+                    </datasetRun>
+                    <jr:column width="239" uuid="3d9ed690-2737-487e-bb72-de278d399efb">
+                        <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+                        <jr:tableHeader height="0" rowSpan="1"/>
+                        <jr:columnHeader height="20" rowSpan="1">
+                            <staticText>
+                                <reportElement style="Table_TH" x="0" y="0" width="239" height="20"
+                                               uuid="0482e36b-f217-4549-8b4f-5e1145bf6b33"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="9"/>
+                                </textElement>
+                                <text><![CDATA[التعليق]]></text>
+                            </staticText>
+                        </jr:columnHeader>
+                        <jr:detailCell height="20">
+                            <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                                <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
+                                               width="239" height="20" uuid="4264d4fc-3177-4a2d-a567-589512b6fdd2"/>
+                                <box padding="5"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="8" isBold="false"/>
+                                    <paragraph rightIndent="0"/>
+                                </textElement>
+                                <textFieldExpression><![CDATA[$F{obj6}]]></textFieldExpression>
+                            </textField>
+                        </jr:detailCell>
+                    </jr:column>
+                    <jr:column width="75" uuid="7b8d20d3-5dcc-45b1-aea8-e5b3c76af83e">
+                        <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                        <jr:tableHeader height="0" rowSpan="1"/>
+                        <jr:columnHeader height="20" rowSpan="1">
+                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                            <staticText>
+                                <reportElement style="Table_TH" x="0" y="0" width="75" height="20"
+                                               uuid="5a873ef9-a319-4958-bdc3-7901ca7f056e"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="9"/>
+                                </textElement>
+                                <text><![CDATA[التاريخ والوقت]]></text>
+                            </staticText>
+                        </jr:columnHeader>
+                        <jr:detailCell height="20">
+                            <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                                <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
+                                               width="75" height="20" uuid="33a2045b-3d7b-4cdf-a043-55b82815ddc6"/>
+                                <box padding="5"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="8" isBold="false"/>
+                                    <paragraph rightIndent="0"/>
+                                </textElement>
+                                <textFieldExpression><![CDATA[$F{obj5}]]></textFieldExpression>
+                            </textField>
+                        </jr:detailCell>
+                    </jr:column>
+                    <jr:column width="75" uuid="2e1e1458-4467-4896-a375-724c1689ee64">
+                        <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                        <jr:tableHeader height="0" rowSpan="1"/>
+                        <jr:columnHeader height="20" rowSpan="1">
+                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                            <staticText>
+                                <reportElement style="Table_TH" x="0" y="0" width="75" height="20"
+                                               uuid="487b154f-e47a-4eb1-9de3-336aa34ccf0b"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="9"/>
+                                </textElement>
+                                <text><![CDATA[المرسل]]></text>
+                            </staticText>
+                        </jr:columnHeader>
+                        <jr:detailCell height="20">
+                            <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                                <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
+                                               width="75" height="20" uuid="4c29248c-ab9b-486a-b5d6-553708b80b97"/>
+                                <box padding="5"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="8" isBold="false"/>
+                                    <paragraph rightIndent="0"/>
+                                </textElement>
+                                <textFieldExpression><![CDATA[$F{obj4}]]></textFieldExpression>
+                            </textField>
+                        </jr:detailCell>
+                    </jr:column>
+                    <jr:column width="77" uuid="d0bcac0b-1f75-4206-aeaa-aafaa6c3b20a">
+                        <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                        <jr:tableHeader height="0" rowSpan="1"/>
+                        <jr:columnHeader height="20" rowSpan="1">
+                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                            <staticText>
+                                <reportElement style="Table_TH" x="0" y="0" width="77" height="20"
+                                               uuid="fd106533-623f-41ff-8393-09ebfb607932"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="9"/>
+                                </textElement>
+                                <text><![CDATA[عنوان المهمة]]></text>
+                            </staticText>
+                        </jr:columnHeader>
+                        <jr:detailCell height="20">
+                            <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                                <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
+                                               width="77" height="20" uuid="e6f675f9-358d-4b1c-b397-9b13cbe2fbba"/>
+                                <box padding="5"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="8" isBold="false"/>
+                                    <paragraph rightIndent="0"/>
+                                </textElement>
+                                <textFieldExpression><![CDATA[$F{obj3}]]></textFieldExpression>
+                            </textField>
+                        </jr:detailCell>
+                    </jr:column>
+                    <jr:column width="37" uuid="0b5a4e67-64c8-48fb-adaa-1247f1fc6e78">
+                        <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+                        <jr:tableHeader height="0" rowSpan="1"/>
+                        <jr:columnHeader height="20" rowSpan="1">
+                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                            <staticText>
+                                <reportElement style="Table_TH" x="0" y="0" width="37" height="20"
+                                               uuid="9e19c98c-0ae2-4c7a-8966-4f7d18079b5e"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="9"/>
+                                </textElement>
+                                <text><![CDATA[رقم المهمة]]></text>
+                            </staticText>
+                        </jr:columnHeader>
+                        <jr:detailCell height="20">
+                            <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                                <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
+                                               width="37" height="20" uuid="62238a0b-b174-4512-855a-c0e756bb126b"/>
+                                <box padding="5"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="8" isBold="false"/>
+                                    <paragraph rightIndent="0"/>
+                                </textElement>
+                                <textFieldExpression><![CDATA[$F{obj2}]]></textFieldExpression>
+                            </textField>
+                        </jr:detailCell>
+                    </jr:column>
+                    <jr:column width="37" uuid="7dda1e6c-4347-471e-98e3-dc254626f1bd">
+                        <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                        <jr:tableHeader height="0" rowSpan="1"/>
+                        <jr:columnHeader height="20" rowSpan="1">
+                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                            <staticText>
+                                <reportElement style="Table_TH" x="0" y="0" width="37" height="20"
+                                               uuid="374d9b6c-6775-40ce-9a4c-70768836c4ab"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="9"/>
+                                </textElement>
+                                <text><![CDATA[رقم الحركة]]></text>
+                            </staticText>
+                        </jr:columnHeader>
+                        <jr:detailCell height="20">
+                            <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                                <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
+                                               width="37" height="20" uuid="a11f36e6-31a9-4ae0-85fe-b34fba9ca9a2"/>
+                                <box padding="5"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                    <font fontName="Arial" size="8" isBold="false"/>
+                                    <paragraph rightIndent="0"/>
+                                </textElement>
+                                <textFieldExpression><![CDATA[$F{obj1}]]></textFieldExpression>
+                            </textField>
+                        </jr:detailCell>
+                    </jr:column>
+                </jr:table>
+            </componentElement>
+        </band>
+    </summary>
+</jasperReport>
