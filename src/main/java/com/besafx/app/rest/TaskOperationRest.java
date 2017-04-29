@@ -181,7 +181,9 @@ public class TaskOperationRest {
     @RequestMapping(value = "findOutgoingOperationsForMe/{timeType}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<TaskOperation> findOutgoingOperationsForMe(@PathVariable(value = "timeType") String timeType, Principal principal) {
-        List<Task> tasks = taskSearch.getOutgoingOpenedTasks("All", personService.findByEmail(principal.getName()).getId());
+        Person person = personService.findByEmail(principal.getName());
+        List<Task> tasks = taskSearch.getOutgoingOpenedTasks("All", person.getId());
+        log.info("عدد المهام الصادرة من " + person.getNickname() + " / " + person.getName() + " تساوي " + tasks.size());
         return getTaskOperations(timeType, tasks);
     }
 
@@ -191,6 +193,9 @@ public class TaskOperationRest {
         DateTime tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay();
         switch (timeType) {
             case "Day":
+                log.info("البحث عن حركات مهام اليوم");
+                log.info(DateConverter.getDateInFormatWithTime(today.toDate()));
+                log.info(DateConverter.getDateInFormatWithTime(tomorrow.toDate()));
                 tasks.stream().forEach(task -> taskOperations.addAll(taskOperationService.findByTaskAndDateBetween(task, today.toDate(), tomorrow.toDate())));
                 break;
             case "Week":

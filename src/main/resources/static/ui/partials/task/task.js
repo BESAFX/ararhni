@@ -652,12 +652,8 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
                 }
             });
 
-        $timeout(function () {
-            window.componentHandler.upgradeAllRegistered();
-        }, 1500);
 
-
-        $scope.openFetchIncoming = function () {
+        $scope.openFetchIncomingPending = function () {
             var modalInstance = $uibModal.open({
                 animation: true,
                 ariaLabelledBy: 'modal-title',
@@ -669,7 +665,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
                 keyboard: false,
                 resolve: {
                     title: function () {
-                        return 'المهام الواردة';
+                        return 'المهام الواردة / تحت التنفيذ';
                     },
                     taskType: function () {
                         return true;
@@ -689,11 +685,6 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
                 if (buffer.importance) {
                     search.push('importance=');
                     search.push(buffer.importance);
-                    search.push('&');
-                }
-                if (buffer.closeType) {
-                    search.push('closeType=');
-                    search.push(buffer.closeType);
                     search.push('&');
                 }
                 if (buffer.codeFrom) {
@@ -727,6 +718,231 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
                     search.push('&');
                 }
 
+                search.push('closeType=');
+                search.push('Pending');
+                search.push('&');
+                search.push('taskType=');
+                search.push(true);
+                search.push('&');
+                search.push('person=');
+                search.push(buffer.person.id);
+                search.push('&');
+                search.push('timeType=');
+                search.push('All');
+                search.push('&');
+                TaskService.filter(search.join("")).then(function (data) {
+                    $scope.tasks = data;
+                    $scope.setSelected(data[0]);
+                    $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الواردة بنجاح", "success", "fa-black-tie");
+
+                    $scope.items = [];
+
+                    $scope.items.push({'id': 1, 'type': 'link', 'name': 'البرامج', 'link': 'menu'});
+
+                    $scope.items.push({'id': 2, 'type': 'title', 'name': 'المهام الواردة'});
+
+                    switch ($scope.buffer.closeType) {
+                        case 'Pending':
+                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تحت التنفيذ'});
+                            break;
+                        case 'Auto':
+                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تلقائي'});
+                            break;
+                        case 'Manual':
+                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'ارشيف'});
+                            break;
+                    }
+
+                    $scope.items.push(
+                        {'id': 4, 'type': 'title', 'name': $scope.buffer.person.nickname},
+                        {'id': 5, 'type': 'title', 'name': $scope.buffer.person.name}
+                    );
+
+                });
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+
+        $scope.openFetchIncomingAuto = function () {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: '/ui/partials/task/taskFilter.html',
+                controller: 'taskFilterCtrl',
+                scope: $scope,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    title: function () {
+                        return 'المهام الواردة / المغلقة تلقائي';
+                    },
+                    taskType: function () {
+                        return true;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (buffer) {
+                $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الواردة، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
+                var search = [];
+
+                if (buffer.title) {
+                    search.push('title=');
+                    search.push(buffer.title);
+                    search.push('&');
+                }
+                if (buffer.importance) {
+                    search.push('importance=');
+                    search.push(buffer.importance);
+                    search.push('&');
+                }
+                if (buffer.codeFrom) {
+                    search.push('codeFrom=');
+                    search.push(buffer.codeFrom);
+                    search.push('&');
+                }
+                if (buffer.codeTo) {
+                    search.push('codeTo=');
+                    search.push(buffer.codeTo);
+                    search.push('&');
+                }
+                if (buffer.startDateTo) {
+                    search.push('startDateTo=');
+                    search.push(buffer.startDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.startDateFrom) {
+                    search.push('startDateFrom=');
+                    search.push(buffer.startDateFrom.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateTo) {
+                    search.push('endDateTo=');
+                    search.push(buffer.endDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateFrom) {
+                    search.push('endDateFrom=');
+                    search.push(buffer.endDateFrom.getTime());
+                    search.push('&');
+                }
+
+                search.push('closeType=');
+                search.push('Auto');
+                search.push('&');
+                search.push('taskType=');
+                search.push(true);
+                search.push('&');
+                search.push('person=');
+                search.push(buffer.person.id);
+                search.push('&');
+                search.push('timeType=');
+                search.push('All');
+                search.push('&');
+                TaskService.filter(search.join("")).then(function (data) {
+                    $scope.tasks = data;
+                    $scope.setSelected(data[0]);
+                    $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الواردة بنجاح", "success", "fa-black-tie");
+
+                    $scope.items = [];
+
+                    $scope.items.push({'id': 1, 'type': 'link', 'name': 'البرامج', 'link': 'menu'});
+
+                    $scope.items.push({'id': 2, 'type': 'title', 'name': 'المهام الواردة'});
+
+                    switch ($scope.buffer.closeType) {
+                        case 'Pending':
+                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تحت التنفيذ'});
+                            break;
+                        case 'Auto':
+                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تلقائي'});
+                            break;
+                        case 'Manual':
+                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'ارشيف'});
+                            break;
+                    }
+
+                    $scope.items.push(
+                        {'id': 4, 'type': 'title', 'name': $scope.buffer.person.nickname},
+                        {'id': 5, 'type': 'title', 'name': $scope.buffer.person.name}
+                    );
+
+                });
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+
+        $scope.openFetchIncomingManual = function () {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: '/ui/partials/task/taskFilter.html',
+                controller: 'taskFilterCtrl',
+                scope: $scope,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    title: function () {
+                        return 'المهام الواردة / الارشيف';
+                    },
+                    taskType: function () {
+                        return true;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (buffer) {
+                $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الواردة، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
+                var search = [];
+
+                if (buffer.title) {
+                    search.push('title=');
+                    search.push(buffer.title);
+                    search.push('&');
+                }
+                if (buffer.importance) {
+                    search.push('importance=');
+                    search.push(buffer.importance);
+                    search.push('&');
+                }
+                if (buffer.codeFrom) {
+                    search.push('codeFrom=');
+                    search.push(buffer.codeFrom);
+                    search.push('&');
+                }
+                if (buffer.codeTo) {
+                    search.push('codeTo=');
+                    search.push(buffer.codeTo);
+                    search.push('&');
+                }
+                if (buffer.startDateTo) {
+                    search.push('startDateTo=');
+                    search.push(buffer.startDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.startDateFrom) {
+                    search.push('startDateFrom=');
+                    search.push(buffer.startDateFrom.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateTo) {
+                    search.push('endDateTo=');
+                    search.push(buffer.endDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateFrom) {
+                    search.push('endDateFrom=');
+                    search.push(buffer.endDateFrom.getTime());
+                    search.push('&');
+                }
+
+                search.push('closeType=');
+                search.push('Manual');
+                search.push('&');
                 search.push('taskType=');
                 search.push(true);
                 search.push('&');
@@ -884,7 +1100,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
             });
         };
 
-        $scope.openFetchOutgoing = function () {
+        $scope.openFetchOutgoingPending = function () {
             var modalInstance = $uibModal.open({
                 animation: true,
                 ariaLabelledBy: 'modal-title',
@@ -896,7 +1112,7 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
                 keyboard: false,
                 resolve: {
                     title: function () {
-                        return 'المهام الصادرة';
+                        return 'المهام الصادرة / تحت التنفيذ';
                     },
                     taskType: function () {
                         return false;
@@ -916,11 +1132,6 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
                 if (buffer.importance) {
                     search.push('importance=');
                     search.push(buffer.importance);
-                    search.push('&');
-                }
-                if (buffer.closeType) {
-                    search.push('closeType=');
-                    search.push(buffer.closeType);
                     search.push('&');
                 }
                 if (buffer.codeFrom) {
@@ -954,6 +1165,227 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
                     search.push('&');
                 }
 
+                search.push('closeType=');
+                search.push('Pending');
+                search.push('&');
+                search.push('taskType=');
+                search.push(false);
+                search.push('&');
+                search.push('person=');
+                search.push(buffer.person.id);
+                search.push('&');
+                search.push('timeType=');
+                search.push('All');
+                search.push('&');
+                TaskService.filter(search.join("")).then(function (data) {
+                    $scope.tasks = data;
+                    $scope.setSelected(data[0]);
+                    $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الصادرة بنجاح", "success", "fa-black-tie");
+
+                    $scope.items = [];
+                    $scope.items.push({'id': 1, 'type': 'link', 'name': 'البرامج', 'link': 'menu'});
+
+                    $scope.items.push({'id': 2, 'type': 'title', 'name': 'المهام الصادرة'});
+
+                    switch ($scope.buffer.closeType) {
+                        case 'Pending':
+                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تحت التنفيذ'});
+                            break;
+                        case 'Auto':
+                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تلقائي'});
+                            break;
+                        case 'Manual':
+                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'ارشيف'});
+                            break;
+                    }
+
+                    $scope.items.push(
+                        {'id': 4, 'type': 'title', 'name': $scope.buffer.person.nickname},
+                        {'id': 5, 'type': 'title', 'name': $scope.buffer.person.name}
+                    );
+                });
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+
+        $scope.openFetchOutgoingAuto = function () {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: '/ui/partials/task/taskFilter.html',
+                controller: 'taskFilterCtrl',
+                scope: $scope,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    title: function () {
+                        return 'المهام الصادرة / المغلقة تلقائي';
+                    },
+                    taskType: function () {
+                        return false;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (buffer) {
+                $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الصادرة، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
+                var search = [];
+
+                if (buffer.title) {
+                    search.push('title=');
+                    search.push(buffer.title);
+                    search.push('&');
+                }
+                if (buffer.importance) {
+                    search.push('importance=');
+                    search.push(buffer.importance);
+                    search.push('&');
+                }
+                if (buffer.codeFrom) {
+                    search.push('codeFrom=');
+                    search.push(buffer.codeFrom);
+                    search.push('&');
+                }
+                if (buffer.codeTo) {
+                    search.push('codeTo=');
+                    search.push(buffer.codeTo);
+                    search.push('&');
+                }
+                if (buffer.startDateTo) {
+                    search.push('startDateTo=');
+                    search.push(buffer.startDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.startDateFrom) {
+                    search.push('startDateFrom=');
+                    search.push(buffer.startDateFrom.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateTo) {
+                    search.push('endDateTo=');
+                    search.push(buffer.endDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateFrom) {
+                    search.push('endDateFrom=');
+                    search.push(buffer.endDateFrom.getTime());
+                    search.push('&');
+                }
+
+                search.push('closeType=');
+                search.push('Auto');
+                search.push('&');
+                search.push('taskType=');
+                search.push(false);
+                search.push('&');
+                search.push('person=');
+                search.push(buffer.person.id);
+                search.push('&');
+                search.push('timeType=');
+                search.push('All');
+                search.push('&');
+                TaskService.filter(search.join("")).then(function (data) {
+                    $scope.tasks = data;
+                    $scope.setSelected(data[0]);
+                    $rootScope.showNotify("ادارة المهام", "تم تحميل جميع المهام الصادرة بنجاح", "success", "fa-black-tie");
+
+                    $scope.items = [];
+                    $scope.items.push({'id': 1, 'type': 'link', 'name': 'البرامج', 'link': 'menu'});
+
+                    $scope.items.push({'id': 2, 'type': 'title', 'name': 'المهام الصادرة'});
+
+                    switch ($scope.buffer.closeType) {
+                        case 'Pending':
+                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تحت التنفيذ'});
+                            break;
+                        case 'Auto':
+                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'تلقائي'});
+                            break;
+                        case 'Manual':
+                            $scope.items.push({'id': 3, 'type': 'title', 'name': 'ارشيف'});
+                            break;
+                    }
+
+                    $scope.items.push(
+                        {'id': 4, 'type': 'title', 'name': $scope.buffer.person.nickname},
+                        {'id': 5, 'type': 'title', 'name': $scope.buffer.person.name}
+                    );
+                });
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+
+        $scope.openFetchOutgoingManual = function () {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: '/ui/partials/task/taskFilter.html',
+                controller: 'taskFilterCtrl',
+                scope: $scope,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    title: function () {
+                        return 'المهام الصادرة / الارشيف';
+                    },
+                    taskType: function () {
+                        return false;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (buffer) {
+                $rootScope.showNotify("ادارة المهام", "جاري تحميل جميع المهام الصادرة، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
+                var search = [];
+
+                if (buffer.title) {
+                    search.push('title=');
+                    search.push(buffer.title);
+                    search.push('&');
+                }
+                if (buffer.importance) {
+                    search.push('importance=');
+                    search.push(buffer.importance);
+                    search.push('&');
+                }
+                if (buffer.codeFrom) {
+                    search.push('codeFrom=');
+                    search.push(buffer.codeFrom);
+                    search.push('&');
+                }
+                if (buffer.codeTo) {
+                    search.push('codeTo=');
+                    search.push(buffer.codeTo);
+                    search.push('&');
+                }
+                if (buffer.startDateTo) {
+                    search.push('startDateTo=');
+                    search.push(buffer.startDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.startDateFrom) {
+                    search.push('startDateFrom=');
+                    search.push(buffer.startDateFrom.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateTo) {
+                    search.push('endDateTo=');
+                    search.push(buffer.endDateTo.getTime());
+                    search.push('&');
+                }
+                if (buffer.endDateFrom) {
+                    search.push('endDateFrom=');
+                    search.push(buffer.endDateFrom.getTime());
+                    search.push('&');
+                }
+
+                search.push('closeType=');
+                search.push('Manual');
+                search.push('&');
                 search.push('taskType=');
                 search.push(false);
                 search.push('&');
@@ -1156,5 +1588,9 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
         $scope.openClearWarnsAndDeductionsModel = function () {
             ModalProvider.openClearCountersModel($scope.selected);
         };
+
+        $timeout(function () {
+            window.componentHandler.upgradeAllRegistered();
+        }, 1500);
 
     }]);

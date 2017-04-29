@@ -31,7 +31,7 @@
                     <ul dir="rtl" class="breadcrumb">
                         <li ng-repeat="item in items | orderBy:'id' track by item.id">
                             <a ng-if="item.type==='link'" href="" ui-sref="{{item.link}}">{{item.name}}</a>
-                            <span ng-if=item.type==='title'>{{item.name}}</span>
+                            <span ng-if="item.type==='title'">{{item.name}}</span>
                         </li>
                     </ul>
                 </div>
@@ -43,17 +43,33 @@
                         </button>
                         <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
                             for="view-menu-lower-right">
-                            <li class="mdl-menu__item"
+                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
                                 ng-click="showSlideOperation()">
                                 <span>لوحة التحكم</span>
                             </li>
                             <li class="mdl-menu__item"
-                                ng-click="openFetchOutgoing()">
-                                <span>المهام الصادرة</span>
+                                ng-click="openFetchOutgoingPending()">
+                                <span>المهام الصادرة / تحت التنفيذ</span>
+                            </li>
+                            <li class="mdl-menu__item"
+                                ng-click="openFetchOutgoingAuto()">
+                                <span>المهام الصادرة / المغلقة تلقائي</span>
                             </li>
                             <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
-                                ng-click="openFetchIncoming()">
-                                <span>المهام الواردة</span>
+                                ng-click="openFetchOutgoingManual()">
+                                <span>المهام الصادرة / الارشيف</span>
+                            </li>
+                            <li class="mdl-menu__item"
+                                ng-click="openFetchIncomingPending()">
+                                <span>المهام الواردة / تحت التنفيذ</span>
+                            </li>
+                            <li class="mdl-menu__item"
+                                ng-click="openFetchIncomingAuto()">
+                                <span>المهام الواردة / المغلقة تلقائي</span>
+                            </li>
+                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
+                                ng-click="openFetchIncomingManual()">
+                                <span>المهام الواردة / الارشيف</span>
                             </li>
                             <li class="mdl-menu__item" ng-click="showSlideFilter()">
                                 <span>بحث تفصيلي</span>
