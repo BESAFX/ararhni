@@ -69,7 +69,7 @@ public class ScheduledTasks {
         check(yesterday, today);
     }
 
-    private void check(DateTime startLast12Hour, DateTime endLast12Hour) {
+    private void check(DateTime startInterval, DateTime endInterval) {
         personService.findAll().forEach(person -> {
             log.info("////////////////////////////////" + person.getName() + "////////////////////////////////////////");
             log.info("فحص المهام الواردة السارية للموظف / " + person.getName());
@@ -84,9 +84,24 @@ public class ScheduledTasks {
                     .filter(task -> nowCheckDate.isAfter(new DateTime(task.getStartDate()).plusHours(24)))
                     .forEach(task -> {
                         log.info("البحث عن عدد حركات الموظف " + person.getName() + " على المهمة رقم " + task.getCode());
-                        log.info("من الفترة: " + DateConverter.getDateInFormatWithTime(startLast12Hour.toDate()));
-                        log.info("إلى الفترة: " + DateConverter.getDateInFormatWithTime(endLast12Hour.toDate()));
-                        long numberOfOperations = taskOperationService.countByTaskAndSenderAndDateBetween(task, person, startLast12Hour.toDate(), endLast12Hour.toDate());
+                        DateTime startTempInterval = new DateTime();
+                        switch (task.getCommentType()) {
+                            case Day:
+                                startTempInterval = startInterval.minusDays(task.getCommentTypeCount());
+                                break;
+                            case Week:
+                                startTempInterval = startInterval.minusWeeks(task.getCommentTypeCount());
+                                break;
+                            case Month:
+                                startTempInterval = startInterval.minusMonths(task.getCommentTypeCount());
+                                break;
+                            default:
+                                startTempInterval = startInterval.minusDays(task.getCommentTypeCount());
+                                break;
+                        }
+                        log.info("من الفترة: " + DateConverter.getDateInFormatWithTime(startTempInterval.toDate()));
+                        log.info("إلى الفترة: " + DateConverter.getDateInFormatWithTime(endInterval.toDate()));
+                        long numberOfOperations = taskOperationService.countByTaskAndSenderAndDateBetween(task, person, startTempInterval.toDate(), endInterval.toDate());
                         log.info("عدد الحركات فى الفترة = " + numberOfOperations);
                         if (numberOfOperations == 0) {
                             long numberOfWarns = taskWarnService.countByTaskAndToPersonAndType(task, person, TaskWarn.TaskWarnType.Auto);
@@ -110,9 +125,9 @@ public class ScheduledTasks {
                     builder.append(" ");
                     builder.append("للموظف / " + person.getName());
                     builder.append(" ");
-                    builder.append("من الفترة " + "(" + DateConverter.getHijriStringFromDateRTLWithTime(startLast12Hour.toDate()) + ")");
+                    builder.append("من الفترة " + "(" + DateConverter.getHijriStringFromDateRTLWithTime(startInterval.toDate()) + ")");
                     builder.append(" ");
-                    builder.append("إلى الفترة " + "(" + DateConverter.getHijriStringFromDateRTLWithTime(endLast12Hour.toDate()) + ")");
+                    builder.append("إلى الفترة " + "(" + DateConverter.getHijriStringFromDateRTLWithTime(endInterval.toDate()) + ")");
                     builder.append(" ");
                     builder.append("نأمل الإلتزام بالتعليق فى خلال مدة لا تزيد عن 24 ساعة.");
                     log.info("جاري إرسال التحذير...");

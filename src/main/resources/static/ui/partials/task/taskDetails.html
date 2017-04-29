@@ -48,6 +48,19 @@
                                 <td>{{task.content}}</td>
                             </tr>
                             <tr>
+                                <td>فترة السماح للتعليق</td>
+                                <td>{{task.commentType==='Day' ? 'يومياً' : (task.commentType==='Week' ? 'اسبوعياً' :
+                                    'شهرياً')}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{task.commentType==='Day' ? 'الحد الأقصى لعدد الأيام دون تعليق' :
+                                    (task.commentType==='Week' ? 'الحد الأقصى لعدد الاسابيع دون تعليق' : 'الحد الأقصى
+                                    لعدد الشهور دون تعليق')}}
+                                </td>
+                                <td>{{task.commentTypeCount}}</td>
+                            </tr>
+                            <tr>
                                 <td>الحد الأقصى للتحذيرات</td>
                                 <td>{{task.warn}}</td>
                             </tr>

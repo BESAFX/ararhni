@@ -72,7 +72,44 @@
             </div>
 
             <div class="form-group row">
-                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6">
+
+                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6"
+                     ng-init="action==='create' ? (task.commentType='Day') : ''">
+                    <label for="commentType" class="control-label">
+                        <span>فترة السماح للتعليق</span>
+                    </label>
+                    <select id="commentType"
+                            placeholder="اختر نوع الفترة المسموح بها لإرسال التعليقات"
+                            class="form-control text-right"
+                            required="required"
+                            disable-validation-message=""
+                            ng-model="task.commentType"
+                            focus-index="4">
+                        <option value="Day">يومياً</option>
+                        <option value="Week">اسبوعياً</option>
+                        <option value="Month">شهرياً</option>
+                    </select>
+                </div>
+
+                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6"
+                     ng-init="action==='create' ? (task.commentTypeCount = 1) : ''">
+                    <label for="commentTypeCount" class="control-label">{{task.commentType==='Day' ? 'الحد الأقصى لعدد
+                        الأيام دون تعليق' : (task.commentType==='Week' ? 'الحد الأقصى لعدد الاسابيع دون تعليق' : 'الحد
+                        الأقصى لعدد الشهور دون تعليق')}}</label>
+                    <input id="commentTypeCount"
+                           focus-index="5"
+                           type="number"
+                           ng-min="1"
+                           class="form-control text-right"
+                           ng-required="required"
+                           disable-validation-message=""
+                           ng-model="task.commentTypeCount">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6"
+                     ng-init="action==='create' ? (task.importance='Regular') : ''">
                     <label for="importance" class="control-label">
                         <span>درجة الأهمية</span>
                     </label>
@@ -166,7 +203,7 @@
                     tooltip-append-to-body="true"
                     focus-index="8"
                     type="submit"
-                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-6 col-sm-6 col-md-6">
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
                 <i class="material-icons">add</i>
             </button>
             <button ng-if="action=='update'"
@@ -174,15 +211,22 @@
                     tooltip-append-to-body="true"
                     focus-index="9"
                     type="submit"
-                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-6 col-sm-6 col-md-6">
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
                 <i class="material-icons">edit</i>
+            </button>
+            <button uib-tooltip="مسح الحقول"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
             </button>
             <button uib-tooltip="خروج"
                     tooltip-append-to-body="true"
                     focus-index="11"
                     type="button"
                     ng-click="cancel()"
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-6 col-sm-6 col-md-6">
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
                 <i class="material-icons">power_settings_new</i>
             </button>
         </div>

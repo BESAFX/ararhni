@@ -1,5 +1,4 @@
 package com.besafx.app.entity;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -49,6 +48,15 @@ public class Task implements Serializable {
     @Column(length = 32, columnDefinition = "varchar(32) default 'Regular'")
     @JsonView(Views.Summery.class)
     private Importance importance;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 32, columnDefinition = "varchar(32) default 'Day'")
+    @JsonView(Views.Summery.class)
+    private CommentType commentType;
+
+    @JsonView(Views.Summery.class)
+    @Column(length = 5, columnDefinition = "int default 1")
+    private Integer commentTypeCount;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
@@ -107,5 +115,9 @@ public class Task implements Serializable {
 
     public enum CloseType {
         Pending, Auto, Manual
+    }
+
+    public enum CommentType {
+        Day, Week, Month
     }
 }
