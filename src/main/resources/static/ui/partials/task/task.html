@@ -12,7 +12,7 @@
                 <i class="material-icons">more_vert</i>
             </button>
             <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="menu-lower-left">
-                <li class="mdl-menu__item">
+                <li class="mdl-menu__item" ng-click="goToHelp()">
                     <span>المساعدة</span>
                 </li>
                 <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">
@@ -148,7 +148,16 @@
                             </li>
                             <li class="mdl-menu__item" ng-click="openTaskTosReportModel()" ng-if="toggleList===1"
                                 ng-hide="!tasks || tasks.length==0">
-                                <span>تقرير متابعة مكلفين</span>
+                                <span>تقرير متابعة الموظفين</span>
+                            </li>
+                            <li class="mdl-menu__item">
+                                <span>تقرير المهام المغلقة قريباً</span>
+                            </li>
+                            <li class="mdl-menu__item">
+                                <span>تقرير مختصر حركات الموظفين</span>
+                            </li>
+                            <li class="mdl-menu__item" ng-click="openIncomingTasksDeductionsReportModel()">
+                                <span>تقرير مختصر بخصومات الموظفين</span>
                             </li>
                         </ul>
                     </div>
@@ -744,7 +753,7 @@
                                                     </div>
 
                                                     <div class="form-group text-right col-md-6">
-                                                        <label for="importance" class="control-label">
+                                                        <label for="closeType" class="control-label">
                                                             <span>حالة الإغلاق</span>
                                                         </label>
                                                         <select id="closeType"

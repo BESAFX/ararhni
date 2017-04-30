@@ -1,0 +1,116 @@
+<form dir="rtl" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack="" focus-group-head="loop"
+      focus-group-tail="loop">
+
+    <div class="modal-header">
+        <h3 class="modal-title text-center">تقرير مختصر بخصومات الموظفين</h3>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row">
+
+
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12">
+                <label for="master" class="control-label">
+                    <span>الموظفون</span>
+                </label>
+                <select id="master"
+                        data-placeholder="ابحث عن البريد الإلكتروني"
+                        no-results-text="'لا توجد بيانات توافق بحثك'"
+                        placeholder-text-multiple="'اختر الحساب الشخصي'"
+                        class="form-control text-right"
+                        chosen=""
+                        multiple
+                        ng-model="buffer.personList"
+                        required="required"
+                        disable-validation-message=""
+                        focus-index="1"
+                        ng-options="person.name for person in persons track by person.id">
+                </select>
+            </div>
+
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12">
+                <label for="closeType" class="control-label">
+                    <span>حالة الإغلاق</span>
+                </label>
+                <select id="closeType"
+                        placeholder="اختر درجة الأهمية للمساعدة فى التصنيف"
+                        class="form-control text-right"
+                        ng-model="buffer.closeType"
+                        focus-index="2">
+                    <option value="Pending">تحت التنفيذ</option>
+                    <option value="Auto">تلقائي</option>
+                    <option value="Manual">ارشيف</option>
+                </select>
+            </div>
+
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-6">
+                <label for="startDate" class="control-label">تاريخ الخصم من</label>
+                <div dir="ltr" class="input-group">
+                    <input dir="rtl"
+                           id="startDate"
+                           type="text"
+                           class="form-control text-right is-calendarPicker"
+                           ng-model="buffer.startDate"
+                           calendarType="ummalqura"
+                           language="en"
+                           dateFormat="yyyy/mm/dd"
+                           showOnFocus="false"
+                           readonly="readonly"
+                           kdatepicker>
+                </div>
+            </div>
+
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-6">
+                <label for="endDate" class="control-label">تاريخ الخصم إلى</label>
+                <div dir="ltr" class="input-group">
+                    <input dir="rtl"
+                           id="endDate"
+                           type="text"
+                           class="form-control text-right is-calendarPicker"
+                           ng-model="buffer.endDate"
+                           calendarType="ummalqura"
+                           language="en"
+                           dateFormat="yyyy/mm/dd"
+                           showOnFocus="false"
+                           readonly="readonly"
+                           kdatepicker>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="طباعة"
+                    tooltip-append-to-body="true"
+                    focus-index="3"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">print</i>
+            </button>
+            <button uib-tooltip="مسح الحقول"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    focus-index="4"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="خروج"
+                    tooltip-append-to-body="true"
+                    focus-index="5"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>

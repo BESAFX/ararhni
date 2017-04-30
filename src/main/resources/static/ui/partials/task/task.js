@@ -424,6 +424,10 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
             ModalProvider.openTaskOperationsReportModel($scope.tasks);
         };
 
+        $scope.openIncomingTasksDeductionsReportModel = function () {
+            ModalProvider.openIncomingTasksDeductionsModel($scope.tasks);
+        };
+
         $scope.openTaskTosReportModel = function () {
             ModalProvider.openTaskTosReportModel($scope.tasks);
         };

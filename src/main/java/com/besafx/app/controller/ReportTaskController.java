@@ -1,7 +1,9 @@
 package com.besafx.app.controller;
 import com.besafx.app.config.CustomException;
+import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskDeduction;
+import com.besafx.app.entity.TaskTo;
 import com.besafx.app.rest.TaskOperationRest;
 import com.besafx.app.search.TaskSearch;
 import com.besafx.app.service.*;
@@ -30,6 +32,9 @@ import java.util.stream.Collectors;
 public class ReportTaskController {
 
     private final Logger log = LoggerFactory.getLogger(ReportTaskController.class);
+
+    @Autowired
+    private PersonService personService;
 
     @Autowired
     private TaskService taskService;
@@ -156,6 +161,48 @@ public class ReportTaskController {
         ClassPathResource jrxmlFile = new ClassPathResource("/report/task/TaskTosCheck.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map, new JRBeanCollectionDataSource(list));
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+    }
+
+    @RequestMapping(value = "/report/IncomingTasksDeductions", method = RequestMethod.GET, produces = "application/pdf")
+    @ResponseBody
+    public void ReportIncomingTasksDeductions(
+            @RequestParam(value = "personList") List<Long> personList,
+            @RequestParam(value = "closeType", required = false) Task.CloseType closeType,
+            @RequestParam(value = "startDate", required = false) Long startDate,
+            @RequestParam(value = "endDate", required = false) Long endDate,
+            HttpServletResponse response) throws JRException, IOException {
+        if (personList.isEmpty()) {
+            throw new CustomException("فضلاً اختر موظف واحد على الاقل.");
+        }
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=IncomingTasksDeductions.pdf");
+        final OutputStream outStream = response.getOutputStream();
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        StringBuilder param1 = new StringBuilder();
+        param1.append("المعهد الأهلي العالي للتدريب");
+        param1.append("\n");
+        param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
+        param1.append("\n");
+        if (startDate != null && endDate != null) {
+            param1.append("تقرير مختصر بخصومات الموظفين");
+            param1.append(" ");
+            param1.append("من الفترة " + " ( " + DateConverter.getHijriStringFromDateLTR(startDate) + " ) ");
+            param1.append(" ");
+            param1.append("إلى الفترة " + " ( " + DateConverter.getHijriStringFromDateLTR(endDate) + " ) ");
+        } else {
+            param1.append("تقرير مختصر بخصومات الموظفين");
+        }
+        map.put("title", param1.toString());
+        List<WrapperUtil> list = initIncomingTasksDeductions(personList, closeType, startDate, endDate);
+        map.put("list", list);
+        log.info("عدد العناصر يساوي: " + list.size());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/task/IncomingTasksDeductions.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
         JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
     }
 
@@ -296,7 +343,7 @@ public class ReportTaskController {
         });
     }
 
-    private List<WrapperUtil> initTasksClosedSoonNotifyList(@RequestParam("personId") Long personId) {
+    private List<WrapperUtil> initTasksClosedSoonNotifyList(Long personId) {
         log.info("قراءة كل المهام الواردة لهذا المستخدم...");
         List<Task> tasks = taskSearch.search(null, null, Task.CloseType.Pending, null, null, null, null, null, null, true, true, "All", personId);
         log.info("عدد المهام المكلف بها = " + tasks.size());
@@ -324,7 +371,7 @@ public class ReportTaskController {
         return list;
     }
 
-    private List<WrapperUtil> initTasksOperationsTodayList(@RequestParam("personId") Long personId) {
+    private List<WrapperUtil> initTasksOperationsTodayList(Long personId) {
         log.info("قراءة كل المهام الصادرة من هذا المستخدم...");
         List<Task> tasks = taskSearch.search(null, null, Task.CloseType.Pending, null, null, null, null, null, null, false, true, "All", personId);
         log.info("عدد المهام الصادرة منه = " + tasks.size());
@@ -343,7 +390,7 @@ public class ReportTaskController {
         return list;
     }
 
-    private List<WrapperUtil> initTasksDeductionsSummeryList(@RequestParam("personId") Long personId) {
+    private List<WrapperUtil> initTasksDeductionsSummeryList(Long personId) {
         log.info("قراءة كل المهام الصادرة من هذا المستخدم...");
         List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, null, null, false, true, "All", personId);
         log.info("عدد المهام الصادرة منه = " + tasks.size());
@@ -393,6 +440,81 @@ public class ReportTaskController {
 
             });
         }
+        return list;
+    }
+
+    private List<WrapperUtil> initIncomingTasksDeductions(List<Long> persons, Task.CloseType closeType, Long startDate, Long endDate) {
+        List<WrapperUtil> list = new ArrayList<>();
+        persons.stream().forEach(personId -> {
+            Person person = personService.findOne(personId);
+            log.info("قراءة كل المهام الواردة إلى " + person.getNickname() + " / " + person.getName());
+            List<Task> tasks = taskSearch.search(null, null, closeType, null, null, null, null, null, null, true, null, "All", personId);
+            log.info("عدد المهام الواردة إليه = " + tasks.size());
+            log.info("تجميع البيانات...");
+            ListIterator<Task> listIterator = tasks.listIterator();
+            while (listIterator.hasNext()) {
+                Task task = listIterator.next();
+                log.info("TaskCloseType: " + task.getCloseType());
+                log.info("فحص الخصومات للمهمة رقم : " + task.getCode());
+                WrapperUtil wrapperUtil = new WrapperUtil();
+                List<TaskDeduction> allDeduction = new ArrayList<>();
+                if (startDate != null && endDate != null) {
+                    allDeduction = taskDeductionService.findByTaskAndToPersonAndDateBetween(task, person, new Date(startDate), new Date(endDate));
+                } else {
+                    allDeduction = taskDeductionService.findByTaskAndToPerson(task, person);
+                }
+                log.info("عدد الخصومات على هذة المهمة يساوي : " + allDeduction.size());
+                if (!allDeduction.isEmpty()) {
+                    wrapperUtil.setObj1(person.getNickname() + " / " + person.getName());
+                    wrapperUtil.setObj2(task.getCode());
+                    wrapperUtil.setObj3(task.getPerson().getNickname() + " / " + task.getPerson().getName());
+                    wrapperUtil.setObj4(DateConverter.getHijriStringFromDateRTLWithTime(task.getEndDate()));
+                    switch (task.getCloseType()) {
+                        case Pending:
+                            wrapperUtil.setObj5("تحت التنفيذ");
+                            break;
+                        case Auto:
+                            wrapperUtil.setObj5("مغلقة تلقائي");
+                            break;
+                        case Manual:
+                            wrapperUtil.setObj5("ارشيف");
+                            break;
+                    }
+                    wrapperUtil.setObj6(allDeduction
+                            .stream()
+                            .filter(taskDeduction -> taskDeduction.getType().equals(TaskDeduction.TaskDeductionType.Auto))
+                            .mapToDouble(TaskDeduction::getDeduction).sum());
+                    wrapperUtil.setObj7(allDeduction
+                            .stream()
+                            .filter(taskDeduction -> taskDeduction.getType().equals(TaskDeduction.TaskDeductionType.Manual))
+                            .mapToDouble(TaskDeduction::getDeduction).sum());
+                    log.info("Getting TaskTo Object for this person.");
+                    TaskTo taskTo = taskToService.findByTaskAndPerson(task, person);
+                    if (Optional.ofNullable(taskTo.getDegree()).isPresent()) {
+                        switch (taskTo.getDegree()) {
+                            case A:
+                                wrapperUtil.setObj8("ممتاز");
+                                break;
+                            case B:
+                                wrapperUtil.setObj8("جيد جداً");
+                                break;
+                            case C:
+                                wrapperUtil.setObj8("جيد");
+                                break;
+                            case D:
+                                wrapperUtil.setObj8("مقبول");
+                                break;
+                            case F:
+                                wrapperUtil.setObj8("سيء");
+                                break;
+                        }
+                    } else {
+                        wrapperUtil.setObj8("غير محدد");
+                    }
+                    list.add(wrapperUtil);
+                }
+            }
+        });
         return list;
     }
 }

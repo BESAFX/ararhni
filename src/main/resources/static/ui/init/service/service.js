@@ -537,6 +537,18 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
         });
     };
 
+    this.openIncomingTasksDeductionsModel = function (tasks) {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/report/task/incomingTasksDeductions.html',
+            controller: 'incomingTasksDeductionsCtrl',
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * Task Operation Model                                       *

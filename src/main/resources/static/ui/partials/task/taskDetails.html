@@ -74,12 +74,16 @@
                             </tr>
                             <tr>
                                 <td>تاريخ الإنشاء</td>
-                                <td>{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                <td>
+                                    {{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                    <span class="label label-success">{{task.startDate ? (task.startDate | date:'h:m a') : ''}}</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>تاريخ التسليم</td>
-                                <td>{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                <td>
+                                    {{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                    <span class="label label-success">{{task.endDate ? (task.endDate | date:'h:m a') : ''}}</span>
                                 </td>
                             </tr>
                             <tr>
