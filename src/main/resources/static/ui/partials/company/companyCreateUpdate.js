@@ -2,7 +2,6 @@ app.controller('companyCreateUpdateCtrl', ['CompanyService', 'PersonService', 'F
     function (CompanyService, PersonService, FileUploader, FileService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, company) {
 
         $timeout(function () {
-            $rootScope.showNotify("الشركات", "جاري تحميل بيانات المستخدمين، فضلاَ انتظر قليلاً", "warning", "fa-bank");
             $scope.fetchPersonData();
         }, 1500);
 
@@ -47,7 +46,6 @@ app.controller('companyCreateUpdateCtrl', ['CompanyService', 'PersonService', 'F
         $scope.fetchPersonData = function () {
             PersonService.findAllSummery().then(function (data) {
                 $scope.persons = data;
-                $rootScope.showNotify("الشركات", "تم تحميل بيانات المستخدمين بنجاح", "success", "fa-bank");
             })
         };
 

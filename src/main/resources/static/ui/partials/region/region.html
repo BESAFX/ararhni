@@ -34,10 +34,7 @@
                     </button>
                     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
                         for="region-menu-lower-right">
-                        <li class="mdl-menu__item" ng-click="reload()">
-                            <span>تحديث</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="fetchTableData()">
+                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="fetchTableData()">
                             <span>عرض</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="openCreateModel()"
@@ -86,7 +83,7 @@
             <div class="col-md-12" ng-show="toggleList===1">
                 <div class="panel panel-body">
                     <div class="table-responsive">
-                        <table st-table="collection" st-default-value="1" st-safe-src="regions"
+                        <table st-table="collection" st-safe-src="regions"
                                class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                             <thead>
                             <tr>
@@ -111,6 +108,10 @@
                                     <span> مدير المنطقة</span>
                                 </th>
 
+                                <th st-sort="branches.length" class="text-right">
+                                    <span>عدد الفروع</span>
+                                </th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -126,11 +127,12 @@
                                 <td st-select-row-custom="region">{{region.name}}</td>
                                 <td st-select-row-custom="region">{{region.company.name}}</td>
                                 <td st-select-row-custom="region">{{region.manager.name}}</td>
+                                <td st-select-row-custom="region">{{region.branches.length}}</td>
                             </tr>
                             <tr class="blank_row"
                                 style="height: 10px !important; background-color: #FFFFFF;"
                                 ng-show="!collection || collection.length ==0">
-                                <td colspan="5">لا توجد بيانات</td>
+                                <td colspan="6">لا توجد بيانات</td>
                             </tr>
                             </tbody>
                         </table>
@@ -139,26 +141,7 @@
             </div>
 
             <div class="col-md-12" ng-show="toggleList===2">
-                <div st-table="collection" st-default-value="1" st-safe-src="regions">
-                    <div class="form-group col-md-3" ng-repeat="region in collection">
-                        <div class="card-square mdl-card mdl-shadow--2dp">
-                            <div class="mdl-card__title mdl-card--expand title-card">
-                                <h2 class="mdl-card__title-text">{{region.name}}</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                <strong>المدير / {{region.manager.name}}</strong>
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="openUpdateModel(region)" ng-if="contains(authorities, ['ROLE_REGION_UPDATE'])" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>تعديل</span>
-                                </button>
-                                <button ng-click="delete(region)" ng-if="contains(authorities, ['ROLE_REGION_DELETE'])" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>حذف</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
 
         </div>
