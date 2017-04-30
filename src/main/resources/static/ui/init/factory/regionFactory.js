@@ -38,6 +38,11 @@ app.factory("RegionService",
                 return $http.get("/api/region/fetchTableData").then(function (response) {
                     return response.data;
                 });
+            },
+            fetchTableDataSummery: function () {
+                return $http.get("/api/region/fetchTableDataSummery").then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);

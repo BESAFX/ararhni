@@ -33,6 +33,11 @@ app.factory("DepartmentService",
                 return $http.get("/api/department/fetchTableData").then(function (response) {
                     return response.data;
                 });
+            },
+            fetchTableDataSummery: function () {
+                return $http.get("/api/department/fetchTableDataSummery").then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);

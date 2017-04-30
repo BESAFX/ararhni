@@ -9,13 +9,6 @@ app.controller("branchCtrl", ['BranchService', 'PersonService', 'ModalProvider',
                 $scope.branches = data;
                 $scope.setSelected(data[0]);
                 $rootScope.showNotify("الفروع", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-cubes");
-                angular.forEach(data, function (branch) {
-                    if(branch.logo){
-                        FileService.getSharedLink(branch.logo).then(function (data) {
-                            return branch.branchLogo = data;
-                        });
-                    }
-                })
             });
         };
 
@@ -48,12 +41,36 @@ app.controller("branchCtrl", ['BranchService', 'PersonService', 'ModalProvider',
             ModalProvider.openBranchUpdateModel($scope.selected);
         };
 
+        $scope.removeRow = function (id) {
+            var index = -1;
+            var branchesArr = eval($scope.branches);
+            for (var i = 0; i < branchesArr.length; i++) {
+                if (branchesArr[i].id === id) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index === -1) {
+                alert("Something gone wrong");
+            }
+            $scope.branches.splice(index, 1);
+        };
+
         $scope.delete = function (branch) {
             if (branch) {
-                BranchService.remove(branch);
+                $rootScope.showConfirmNotify("المهام", "هل تود حذف الفرع فعلاً؟", "error", "fa-database", function () {
+                    BranchService.remove(branch.id).then(function () {
+                        $scope.removeRow(branch.id);
+                    });
+                });
                 return;
             }
-            BranchService.remove($scope.selected);
+
+            $rootScope.showConfirmNotify("المهام", "هل تود حذف الفرع فعلاً؟", "error", "fa-database", function () {
+                BranchService.remove($scope.selected.id).then(function () {
+                    $scope.removeRow(branch.id);
+                });
+            });
         };
 
         $scope.rowMenu = [

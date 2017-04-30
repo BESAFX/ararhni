@@ -34,10 +34,7 @@
                     </button>
                     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
                         for="branch-menu-lower-right">
-                        <li class="mdl-menu__item" ng-click="reload()">
-                            <span>تحديث</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="fetchTableData()">
+                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="fetchTableData()">
                             <span>عرض</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="openCreateModel()"
@@ -49,7 +46,7 @@
                             ng-hide="!branches || branches.length==0">
                             <span>تعديل</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="remove()"
+                        <li class="mdl-menu__item" ng-click="delete()"
                             ng-if="contains(authorities, ['ROLE_BRANCH_DELETE']) && toggleList===1"
                             ng-hide="!branches || branches.length==0">
                             <span>حذف</span>
@@ -111,6 +108,10 @@
                                     <span> مدير الفرع</span>
                                 </th>
 
+                                <th st-sort="departments.length" class="text-right">
+                                    <span>عدد الأقسام</span>
+                                </th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -126,11 +127,12 @@
                                 <td st-select-row-custom="branch">{{branch.name}}</td>
                                 <td st-select-row-custom="branch">{{branch.region.name}}</td>
                                 <td st-select-row-custom="branch">{{branch.manager.name}}</td>
+                                <td st-select-row-custom="branch">{{branch.departments.length}}</td>
                             </tr>
                             <tr class="blank_row"
                                 style="height: 10px !important; background-color: #FFFFFF;"
                                 ng-show="!collection || collection.length ==0">
-                                <td colspan="5">لا توجد بيانات</td>
+                                <td colspan="6">لا توجد بيانات</td>
                             </tr>
                             </tbody>
                         </table>

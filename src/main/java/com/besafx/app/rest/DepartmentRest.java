@@ -1,11 +1,13 @@
 package com.besafx.app.rest;
-
+import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Department;
 import com.besafx.app.entity.Person;
+import com.besafx.app.entity.Views;
 import com.besafx.app.service.DepartmentService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -48,19 +50,13 @@ public class DepartmentRest {
                 .type("success")
                 .icon("fa-sitemap")
                 .build(), principal.getName());
-//        notificationService.notifyAllExceptMe(Notification
-//                .builder()
-//                .title("العمليات على الأقسام")
-//                .message("تم اضافة قسم جديد بواسطة " +  personService.findByEmail(principal.getName()).getName())
-//                .type("warning")
-//                .icon("fa-sitemap")
-//                .build());
         return department;
     }
 
     @RequestMapping(value = "update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_DEPARTMENT_UPDATE')")
+    @JsonView(Views.Summery.class)
     public Department update(@RequestBody Department department, Principal principal) {
         Department object = departmentService.findOne(department.getId());
         if (object != null) {
@@ -72,13 +68,6 @@ public class DepartmentRest {
                     .type("success")
                     .icon("fa-sitemap")
                     .build(), principal.getName());
-//            notificationService.notifyAllExceptMe(Notification
-//                    .builder()
-//                    .title("العمليات على الأقسام")
-//                    .message("تم تعديل بيانات القسم رقم " + department.getCode() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
-//                    .type("warning")
-//                    .icon("fa-sitemap")
-//                    .build());
             return department;
         } else {
             return null;
@@ -91,6 +80,9 @@ public class DepartmentRest {
     public void delete(@PathVariable Long id) {
         Department object = departmentService.findOne(id);
         if (object != null) {
+            if (!object.getEmployees().isEmpty()) {
+                throw new CustomException("لا يمكنك حذف هذا القسم، حيث انه مرتبط بالموظفين.");
+            }
             departmentService.delete(id);
         }
     }
@@ -125,6 +117,13 @@ public class DepartmentRest {
         person.getEmployees().stream().forEach(employee -> list.add(employee.getDepartment()));
         list.addAll(person.getDepartments());
         return list.stream().distinct().collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "fetchTableDataSummery", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @JsonView(Views.Summery.class)
+    public List<Department> fetchTableDataSummery(Principal principal) {
+        return fetchTableData(principal);
     }
 
 }

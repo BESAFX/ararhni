@@ -1,15 +1,18 @@
 package com.besafx.app.rest;
-
+import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Branch;
 import com.besafx.app.entity.Person;
+import com.besafx.app.entity.Views;
 import com.besafx.app.service.BranchService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -54,6 +57,7 @@ public class BranchRest {
     @RequestMapping(value = "update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_BRANCH_UPDATE')")
+    @JsonView(Views.Summery.class)
     public Branch update(@RequestBody Branch branch, Principal principal) {
         Branch object = branchService.findOne(branch.getId());
         if (object != null) {
@@ -65,13 +69,6 @@ public class BranchRest {
                     .type("success")
                     .icon("fa-cubes")
                     .build(), principal.getName());
-//            notificationService.notifyAllExceptMe(Notification
-//                    .builder()
-//                    .title("العمليات على الفروع")
-//                    .message("تم تعديل بيانات الفرع رقم " + branch.getCode() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
-//                    .type("warning")
-//                    .icon("fa-cubes")
-//                    .build());
             return branch;
         } else {
             return null;
@@ -81,9 +78,13 @@ public class BranchRest {
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_BRANCH_DELETE')")
+    @Transactional
     public void delete(@PathVariable Long id) {
         Branch object = branchService.findOne(id);
         if (object != null) {
+            if (!object.getDepartments().isEmpty()) {
+                throw new CustomException("لا يمكن حذف هذا الفرع، حيث انه مستخدم من الاقسام.");
+            }
             branchService.delete(id);
         }
     }
@@ -129,6 +130,13 @@ public class BranchRest {
         person.getEmployees().stream().forEach(employee -> list.add(employee.getDepartment().getBranch()));
         list.addAll(person.getBranches());
         return list.stream().distinct().collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "fetchTableDataSummery", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @JsonView(Views.Summery.class)
+    public List<Branch> fetchTableDataSummery(Principal principal) {
+        return fetchTableData(principal);
     }
 
 }

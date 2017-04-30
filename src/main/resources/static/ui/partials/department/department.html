@@ -34,10 +34,7 @@
                     </button>
                     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
                         for="department-menu-lower-right">
-                        <li class="mdl-menu__item" ng-click="reload()">
-                            <span>تحديث</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="fetchTableData()">
+                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="fetchTableData()">
                             <span>عرض</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="openCreateModel()"
@@ -49,7 +46,7 @@
                             ng-hide="!departments || departments.length==0">
                             <span>تعديل</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="remove()"
+                        <li class="mdl-menu__item" ng-click="delete()"
                             ng-if="contains(authorities, ['ROLE_DEPARTMENT_DELETE']) && toggleList===1"
                             ng-hide="!departments || departments.length==0">
                             <span>حذف</span>
@@ -115,6 +112,10 @@
                                     <span>مسئول القسم</span>
                                 </th>
 
+                                <th st-sort="employees.length" class="text-right">
+                                    <span>عدد الموظفين</span>
+                                </th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -131,12 +132,12 @@
                                 <td st-select-row-custom="department">{{department.branch.name}}</td>
                                 <td st-select-row-custom="department">{{department.branch.region.name}}</td>
                                 <td st-select-row-custom="department">{{department.manager.name}}</td>
-
+                                <td st-select-row-custom="department">{{department.employees.length}}</td>
                             </tr>
                             <tr class="blank_row"
                                 style="height: 10px !important; background-color: #FFFFFF;"
                                 ng-show="!collection || collection.length ==0">
-                                <td colspan="6">لا توجد بيانات</td>
+                                <td colspan="7">لا توجد بيانات</td>
                             </tr>
                             </tbody>
                         </table>

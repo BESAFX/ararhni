@@ -9,13 +9,6 @@ app.controller("employeeCtrl", ['EmployeeService', 'ModalProvider', 'FileService
                 $scope.employees = data;
                 $scope.setSelected(data[0]);
                 $rootScope.showNotify("الموظفين", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-user-circle");
-                // angular.forEach(data, function (employee) {
-                //     if(employee.person.photo){
-                //         FileService.getSharedLink(employee.person.photo).then(function (data) {
-                //             return employee.employeeLogo = data;
-                //         });
-                //     }
-                // });
             })
         };
 

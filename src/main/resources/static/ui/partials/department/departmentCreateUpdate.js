@@ -2,21 +2,18 @@ app.controller('departmentCreateUpdateCtrl', ['DepartmentService', 'BranchServic
     function (DepartmentService, BranchService, PersonService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, department) {
 
         $scope.fetchBranchData = function () {
-            BranchService.fetchTableData().then(function (data) {
+            BranchService.fetchTableDataSummery().then(function (data) {
                 $scope.branches = data;
-                $rootScope.showNotify("الاقسام", "تم تحميل بيانات الفروع بنجاح", "success", "fa-sitemap");
             });
         };
 
         $scope.fetchPersonData = function () {
-            PersonService.findAll().then(function (data) {
+            PersonService.findAllSummery().then(function (data) {
                 $scope.persons = data;
-                $rootScope.showNotify("الاقسام", "تم تحميل بيانات المستخدمين بنجاح", "success", "fa-sitemap");
             });
         };
 
         $timeout(function () {
-            $rootScope.showNotify("الاقسام", "جاري تحميل بيانات الفروع والمستخدمين، فضلاَ انتظر قليلاً", "warning", "fa-sitemap");
             $scope.fetchBranchData();
             $scope.fetchPersonData();
         }, 1500);

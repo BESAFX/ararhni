@@ -2,21 +2,18 @@ app.controller('employeeCreateUpdateCtrl', ['EmployeeService', 'DepartmentServic
     function (EmployeeService, DepartmentService, PersonService, FileService, FileUploader, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, employee) {
 
         $scope.fetchDepartmentData = function () {
-            DepartmentService.fetchTableData().then(function (data) {
+            DepartmentService.fetchTableDataSummery().then(function (data) {
                 $scope.departments = data;
-                $rootScope.showNotify("الموظفين", "تم تحميل بيانات الأقسام بنجاح", "success", "fa-user-circle");
             });
         };
 
         $scope.fetchPersonData = function () {
-            PersonService.findAll().then(function (data) {
+            PersonService.findAllSummery().then(function (data) {
                 $scope.persons = data;
-                $rootScope.showNotify("الموظفين", "تم تحميل بيانات المستخدمين بنجاح", "success", "fa-user-circle");
             });
         };
 
         $timeout(function () {
-            $rootScope.showNotify("الموظفين", "جاري تحميل بيانات الأقسام والمستخدمين، فضلاَ انتظر قليلاً", "warning", "fa-user-circle");
             $scope.fetchDepartmentData();
             $scope.fetchPersonData();
         }, 1500);

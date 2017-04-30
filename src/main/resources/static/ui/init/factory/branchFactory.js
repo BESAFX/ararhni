@@ -38,6 +38,11 @@ app.factory("BranchService",
                 return $http.get("/api/branch/fetchTableData").then(function (response) {
                     return response.data;
                 });
+            },
+            fetchTableDataSummery: function () {
+                return $http.get("/api/branch/fetchTableDataSummery").then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);

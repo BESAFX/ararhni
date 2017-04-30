@@ -2,6 +2,7 @@ package com.besafx.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
@@ -19,20 +20,25 @@ public class Department implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @JsonView(Views.Summery.class)
     private Long id;
 
+    @JsonView(Views.Summery.class)
     private Integer code;
 
+    @JsonView(Views.Summery.class)
     private String name;
 
     @ManyToOne
     @JoinColumn(name = "Manager")
     @JsonIgnoreProperties(value = {"companies", "regions", "branches", "departments", "employees"}, allowSetters = true)
+    @JsonView(Views.Summery.class)
     private Person manager;
 
     @ManyToOne
     @JoinColumn(name = "Branch")
     @JsonIgnoreProperties(value = {"departments"}, allowSetters = true)
+    @JsonView(Views.Summery.class)
     private Branch branch;
 
     @OneToMany(mappedBy = "department")

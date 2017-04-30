@@ -114,6 +114,13 @@ public class PersonRest {
         return Lists.newArrayList(personService.findAll());
     }
 
+    @RequestMapping(value = "findAllSummery", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @JsonView(Views.Summery.class)
+    public List<Person> findAllSummery() {
+        return Lists.newArrayList(personService.findAll());
+    }
+
     @RequestMapping(value = "findOne/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Person findOne(@PathVariable Long id) {

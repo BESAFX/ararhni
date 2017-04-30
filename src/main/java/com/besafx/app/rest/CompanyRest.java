@@ -2,10 +2,12 @@ package com.besafx.app.rest;
 
 import com.besafx.app.entity.Company;
 import com.besafx.app.entity.Person;
+import com.besafx.app.entity.Views;
 import com.besafx.app.service.CompanyService;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -48,19 +50,13 @@ public class CompanyRest {
                 .type("success")
                 .icon("fa-fort-awesome")
                 .build(), principal.getName());
-//        notificationService.notifyAllExceptMe(Notification
-//                .builder()
-//                .title("العمليات على الشركات")
-//                .message("تم اضافة شركة جديدة بواسطة " +  personService.findByEmail(principal.getName()).getName())
-//                .type("warning")
-//                .icon("fa-fort-awesome")
-//                .build());
         return company;
     }
 
     @RequestMapping(value = "update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_COMPANY_UPDATE')")
+    @JsonView(Views.Summery.class)
     public Company update(@RequestBody Company company, Principal principal) {
         Company object = companyService.findOne(company.getId());
         if (object != null) {
@@ -72,13 +68,6 @@ public class CompanyRest {
                     .type("success")
                     .icon("fa-fort-awesome")
                     .build(), principal.getName());
-//            notificationService.notifyAllExceptMe(Notification
-//                    .builder()
-//                    .title("العمليات على الشركات")
-//                    .message("تم تعديل بيانات الشركة رقم " + company.getCode() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
-//                    .type("warning")
-//                    .icon("fa-fort-awesome")
-//                    .build());
             return company;
         } else {
             return null;
@@ -122,6 +111,13 @@ public class CompanyRest {
         person.getDepartments().stream().forEach(department -> list.add(department.getBranch().getRegion().getCompany()));
         person.getEmployees().stream().forEach(employee -> list.add(employee.getDepartment().getBranch().getRegion().getCompany()));
         return list.stream().distinct().collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "fetchTableDataSummery", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @JsonView(Views.Summery.class)
+    public List<Company> fetchTableDataSummery(Principal principal) {
+        return fetchTableData(principal);
     }
 
 }

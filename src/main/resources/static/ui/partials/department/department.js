@@ -6,7 +6,6 @@ app.controller("departmentCtrl", ['DepartmentService', 'ModalProvider', '$scope'
         $scope.fetchTableData = function () {
             $rootScope.showNotify("الاقسام", "فضلاً انتظر قليلاً حتى الانتهاء من تحميل الأقسام", "warning", "fa-sitemap");
             DepartmentService.fetchTableData().then(function (data) {
-                console.info(data);
                 $scope.departments = data;
                 $scope.setSelected(data[0]);
                 $rootScope.showNotify("الاقسام", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-sitemap");
@@ -42,12 +41,35 @@ app.controller("departmentCtrl", ['DepartmentService', 'ModalProvider', '$scope'
             ModalProvider.openDepartmentUpdateModel($scope.selected);
         };
 
+        $scope.removeRow = function (id) {
+            var index = -1;
+            var departmentsArr = eval($scope.departments);
+            for (var i = 0; i < departmentsArr.length; i++) {
+                if (departmentsArr[i].id === id) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index === -1) {
+                alert("Something gone wrong");
+            }
+            $scope.departments.splice(index, 1);
+        };
+
         $scope.delete = function (department) {
             if (department) {
-                DepartmentService.remove(department);
+                $rootScope.showConfirmNotify("المهام", "هل تود حذف القسم فعلاً؟", "error", "fa-database", function () {
+                    DepartmentService.remove(department.id).then(function () {
+                        $scope.removeRow(department.id);
+                    });
+                });
                 return;
             }
-            DepartmentService.remove($scope.selected);
+            $rootScope.showConfirmNotify("المهام", "هل تود حذف القسم فعلاً؟", "error", "fa-database", function () {
+                DepartmentService.remove($scope.selected.id).then(function () {
+                    $scope.removeRow(department.id);
+                });
+            });
         };
 
         $scope.rowMenu = [

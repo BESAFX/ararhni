@@ -2,21 +2,18 @@ app.controller('regionCreateUpdateCtrl', ['RegionService', 'PersonService', 'Com
     function (RegionService, PersonService, CompanyService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, region) {
 
         $scope.fetchPersonData = function () {
-            PersonService.findAll().then(function (data) {
+            PersonService.findAllSummery().then(function (data) {
                 $scope.persons = data;
-                $rootScope.showNotify("المناطق", "تم تحميل بيانات المستخدمين بنجاح", "success", "fa-map-marker");
             });
         };
 
         $scope.fetchCompaniesData = function () {
-            CompanyService.fetchTableData().then(function (data) {
+            CompanyService.fetchTableDataSummery().then(function (data) {
                 $scope.companies = data;
-                $rootScope.showNotify("المناطق", "تم تحميل بيانات الشركات بنجاح", "success", "fa-map-marker");
             });
         };
 
         $timeout(function () {
-            $rootScope.showNotify("المناطق", "جاري تحميل بيانات الشركات والمستخدمين، فضلاَ انتظر قليلاً", "warning", "fa-map-marker");
             $scope.fetchCompaniesData();
             $scope.fetchPersonData();
         }, 1500);

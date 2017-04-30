@@ -34,10 +34,7 @@
                     </button>
                     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
                         for="demo-menu-lower-right">
-                        <li class="mdl-menu__item" ng-click="reload()">
-                            <span>تحديث</span>
-                        </li>
-                        <li class="mdl-menu__item" ng-click="fetchTableData()">
+                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="fetchTableData()">
                             <span>عرض</span>
                         </li>
                         <li class="mdl-menu__item" ng-click="openCreateModel()"
@@ -49,7 +46,7 @@
                             ng-hide="!employees || employees.length==0">
                             <span>تعديل</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="remove()"
+                        <li class="mdl-menu__item" ng-click="delete()"
                             ng-if="contains(authorities, ['ROLE_EMPLOYEE_DELETE']) && toggleList===1"
                             ng-hide="!employees || employees.length==0">
                             <span>حذف</span>

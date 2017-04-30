@@ -33,6 +33,11 @@ app.factory("CompanyService",
                 return $http.get("/api/company/fetchTableData").then(function (response) {
                     return response.data;
                 });
+            },
+            fetchTableDataSummery: function () {
+                return $http.get("/api/company/fetchTableDataSummery").then(function (response) {
+                    return response.data;
+                });
             }
         };
     }]);

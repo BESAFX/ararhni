@@ -6,6 +6,11 @@ app.factory("PersonService",
                     return response.data;
                 });
             },
+            findAllSummery: function () {
+                return $http.get("/api/person/findAllSummery").then(function (response) {
+                    return response.data;
+                });
+            },
             findOne: function (id) {
                 return $http.get("/api/person/findOne/" + id).then(function (response) {
                     return response.data;

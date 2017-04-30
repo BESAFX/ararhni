@@ -45,7 +45,7 @@ app.controller('companyCreateUpdateCtrl', ['CompanyService', 'PersonService', 'F
         };
 
         $scope.fetchPersonData = function () {
-            PersonService.findAll().then(function (data) {
+            PersonService.findAllSummery().then(function (data) {
                 $scope.persons = data;
                 $rootScope.showNotify("الشركات", "تم تحميل بيانات المستخدمين بنجاح", "success", "fa-bank");
             })

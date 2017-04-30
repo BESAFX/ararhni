@@ -2,10 +2,12 @@ package com.besafx.app.rest;
 
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Region;
+import com.besafx.app.entity.Views;
 import com.besafx.app.service.PersonService;
 import com.besafx.app.service.RegionService;
 import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -48,19 +50,13 @@ public class RegionRest {
                 .type("success")
                 .icon("fa-map-marker")
                 .build(), principal.getName());
-//        notificationService.notifyAllExceptMe(Notification
-//                .builder()
-//                .title("العمليات على المناطق")
-//                .message("تم اضافة منطقة جديدة بواسطة " + personService.findByEmail(principal.getName()).getName())
-//                .type("warning")
-//                .icon("fa-map-marker")
-//                .build());
         return region;
     }
 
     @RequestMapping(value = "update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_REGION_UPDATE')")
+    @JsonView(Views.Summery.class)
     public Region update(@RequestBody Region region, Principal principal) {
         Region object = regionService.findOne(region.getId());
         if (object != null) {
@@ -72,13 +68,6 @@ public class RegionRest {
                     .type("success")
                     .icon("fa-map-marker")
                     .build(), principal.getName());
-//            notificationService.notifyAllExceptMe(Notification
-//                    .builder()
-//                    .title("العمليات على المناطق")
-//                    .message("تم تعديل بيانات المنطقة رقم " + region.getCode() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
-//                    .type("warning")
-//                    .icon("fa-map-marker")
-//                    .build());
             return region;
         } else {
             return null;
@@ -136,6 +125,13 @@ public class RegionRest {
         person.getEmployees().stream().forEach(employee -> list.add(employee.getDepartment().getBranch().getRegion()));
         list.addAll(person.getRegions());
         return list.stream().distinct().collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "fetchTableDataSummery", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    @JsonView(Views.Summery.class)
+    public List<Region> fetchTableDataSummery(Principal principal) {
+        return fetchTableData(principal);
     }
 
 }

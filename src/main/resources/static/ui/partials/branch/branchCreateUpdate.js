@@ -2,21 +2,18 @@ app.controller('branchCreateUpdateCtrl', ['BranchService', 'PersonService', 'Reg
     function (BranchService, PersonService, RegionService, FileUploader, FileService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, branch) {
 
         $scope.fetchPersonData = function () {
-            PersonService.findAll().then(function (data) {
+            PersonService.findAllSummery().then(function (data) {
                 $scope.persons = data;
-                $rootScope.showNotify("الفروع", "تم تحميل بيانات المستخدمين بنجاح", "success", "fa-cubes");
             });
         };
 
         $scope.fetchRegionsData = function () {
-            RegionService.fetchTableData().then(function (data) {
+            RegionService.fetchTableDataSummery().then(function (data) {
                 $scope.regions = data;
-                $rootScope.showNotify("الفروع", "تم تحميل بيانات المناطق بنجاح", "success", "fa-cubes");
             });
         };
 
         $timeout(function () {
-            $rootScope.showNotify("الفروع", "جاري تحميل بيانات المناطق والمستخدمين، فضلاَ انتظر قليلاً", "warning", "fa-cubes");
             $scope.fetchRegionsData();
             $scope.fetchPersonData();
         }, 1500);
