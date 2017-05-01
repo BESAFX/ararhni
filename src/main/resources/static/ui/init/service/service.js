@@ -537,13 +537,25 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
         });
     };
 
-    this.openIncomingTasksDeductionsModel = function (tasks) {
+    this.openIncomingTasksDeductionsModel = function () {
         $uibModal.open({
             animation: true,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             templateUrl: '/ui/partials/report/task/incomingTasksDeductions.html',
             controller: 'incomingTasksDeductionsCtrl',
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
+    this.openTasksClosedSoonModel = function () {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/report/task/tasksClosedSoon.html',
+            controller: 'tasksClosedSoonCtrl',
             backdrop: 'static',
             keyboard: false
         });

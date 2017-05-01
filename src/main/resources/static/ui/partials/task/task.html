@@ -150,13 +150,14 @@
                                 ng-hide="!tasks || tasks.length==0">
                                 <span>تقرير متابعة الموظفين</span>
                             </li>
-                            <li class="mdl-menu__item">
+                            <li class="mdl-menu__item" ng-click="openTasksClosedSoonReportModel()">
                                 <span>تقرير المهام المغلقة قريباً</span>
-                                <span class="label label-danger">قريباً</span>
                             </li>
                             <li class="mdl-menu__item">
-                                <span>تقرير مختصر حركات الموظفين</span>
-                                <span class="label label-danger">قريباً</span>
+                                <span>تقرير بحركات المهام الصادرة</span>
+                            </li>
+                            <li class="mdl-menu__item">
+                                <span>تقرير بحركات المهام الواردة</span>
                             </li>
                             <li class="mdl-menu__item" ng-click="openIncomingTasksDeductionsReportModel()">
                                 <span>تقرير مختصر بخصومات الموظفين</span>

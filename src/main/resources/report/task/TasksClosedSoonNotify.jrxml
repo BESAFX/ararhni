@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2017-04-26T21:58:47 -->
+<!-- 2017-05-01T11:01:01 -->
 <jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
@@ -268,6 +268,15 @@
     </pageFooter>
     <summary>
         <band height="62">
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="62" uuid="cc04adeb-6e7a-4dd7-a4f3-791d3a313521">
+                    <printWhenExpression><![CDATA[$P{list}.isEmpty()]]></printWhenExpression>
+                </reportElement>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" size="20" isBold="true"/>
+                </textElement>
+                <text><![CDATA[لا توجد مهام]]></text>
+            </staticText>
             <componentElement>
                 <reportElement x="7" y="11" width="540" height="40" uuid="2cd17ca2-fd9f-4e86-95bc-8d4260dba30a">
                     <property name="com.jaspersoft.studio.layout"
@@ -275,6 +284,7 @@
                     <property name="net.sf.jasperreports.export.headertoolbar.table.name" value=""/>
                     <property name="com.jaspersoft.studio.components.autoresize.next" value="true"/>
                     <property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
+                    <printWhenExpression><![CDATA[!$P{list}.isEmpty()]]></printWhenExpression>
                 </reportElement>
                 <jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components"
                           xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd"

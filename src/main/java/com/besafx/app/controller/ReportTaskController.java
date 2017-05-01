@@ -59,7 +59,11 @@ public class ReportTaskController {
 
     @RequestMapping(value = "/report/TaskOperations", method = RequestMethod.GET, produces = "application/pdf")
     @ResponseBody
-    public void ReportTaskOperationsByTask(@RequestParam("tasksList") List<Long> tasksList, @RequestParam(value = "startDate", required = false) Long startDate, @RequestParam(value = "endDate", required = false) Long endDate, HttpServletResponse response) throws JRException, IOException {
+    public void ReportTaskOperationsByTask(
+            @RequestParam("tasksList") List<Long> tasksList,
+            @RequestParam(value = "startDate", required = false) Long startDate,
+            @RequestParam(value = "endDate", required = false) Long endDate, HttpServletResponse response)
+            throws JRException, IOException {
         if (tasksList.isEmpty()) {
             throw new CustomException("عفواً، فضلاً اختر على الأقل مهمة واحدة للطباعة");
         }
@@ -111,7 +115,10 @@ public class ReportTaskController {
 
     @RequestMapping(value = "/report/Tasks", method = RequestMethod.GET, produces = "application/pdf")
     @ResponseBody
-    public void ReportTasks(@RequestParam("tasksList") List<Long> tasksList, HttpServletResponse response) throws JRException, IOException {
+    public void ReportTasks(
+            @RequestParam("tasksList") List<Long> tasksList,
+            HttpServletResponse response)
+            throws JRException, IOException {
         if (tasksList.isEmpty()) {
             throw new CustomException("عفواً، فضلاً اختر على الأقل مهمة واحدة للطباعة");
         }
@@ -138,7 +145,10 @@ public class ReportTaskController {
 
     @RequestMapping(value = "/report/TaskTosCheck", method = RequestMethod.GET, produces = "application/pdf")
     @ResponseBody
-    public void ReportTaskTosCheck(@RequestParam("tasksList") List<Long> tasksList, HttpServletResponse response) throws JRException, IOException {
+    public void ReportTaskTosCheck(
+            @RequestParam("tasksList") List<Long> tasksList,
+            HttpServletResponse response)
+            throws JRException, IOException {
         if (tasksList.isEmpty()) {
             throw new CustomException("عفواً، فضلاً اختر على الأقل مهمة واحدة للطباعة");
         }
@@ -171,7 +181,8 @@ public class ReportTaskController {
             @RequestParam(value = "closeType", required = false) Task.CloseType closeType,
             @RequestParam(value = "startDate", required = false) Long startDate,
             @RequestParam(value = "endDate", required = false) Long endDate,
-            HttpServletResponse response) throws JRException, IOException {
+            HttpServletResponse response)
+            throws JRException, IOException {
         if (personList.isEmpty()) {
             throw new CustomException("فضلاً اختر موظف واحد على الاقل.");
         }
@@ -201,6 +212,36 @@ public class ReportTaskController {
         map.put("list", list);
         log.info("عدد العناصر يساوي: " + list.size());
         ClassPathResource jrxmlFile = new ClassPathResource("/report/task/IncomingTasksDeductions.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+    }
+
+    @RequestMapping(value = "/report/TasksClosedSoon", method = RequestMethod.GET, produces = "application/pdf")
+    @ResponseBody
+    public void ReportTasksClosedSoon(
+            @RequestParam(value = "personId") Long personId,
+            HttpServletResponse response)
+            throws JRException, IOException {
+        Person person = personService.findOne(personId);
+        Optional.ofNullable(person).orElseThrow(() -> new CustomException("فضلاً اختر الموظف اولاً."));
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=IncomingTasksDeductions.pdf");
+        final OutputStream outStream = response.getOutputStream();
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        StringBuilder param1 = new StringBuilder();
+        param1.append("المعهد الأهلي العالي للتدريب");
+        param1.append("\n");
+        param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
+        param1.append("\n");
+        param1.append("تقرير عن المهام الباقي على تاريخ إغلاقها أقل من 125 ساعة (خمس أيام) من تاريخ اليوم للموظف / " + person.getName());
+        map.put("title", param1.toString());
+        List<WrapperUtil> list = initTasksClosedSoonNotifyList(personId);
+        map.put("list", list);
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/task/TasksClosedSoonNotify.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
         JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);

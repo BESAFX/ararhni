@@ -121,7 +121,7 @@ public class ScheduledTasks {
                 //Send Warn
                 try {
                     StringBuilder builder = new StringBuilder();
-                    builder.append("تحذير بالخصم بشأن عدم التعامل مع المهام رقم " + "(" + warningTasks.stream().map(task -> task.getCode()).collect(Collectors.toList()) + ")");
+                    builder.append("تحذير بالخصم بشأن عدم التعامل مع المهمة");
                     builder.append(" ");
                     builder.append("للموظف / " + person.getName());
                     builder.append(" ");
@@ -141,7 +141,7 @@ public class ScheduledTasks {
                 //Send Discount
                 try {
                     StringBuilder builder = new StringBuilder();
-                    builder.append("خصم بشأن عدم التعامل مع المهام رقم " + "(" + deductionTasks.stream().map(task -> task.getCode()).collect(Collectors.toList()) + ")");
+                    builder.append("خصم بشأن عدم التعامل مع المهمة");
                     builder.append(" ");
                     builder.append("للموظف / " + person.getName());
                     builder.append(" ");
