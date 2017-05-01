@@ -61,8 +61,7 @@ public class EmailSender {
             message = new MimeMessage(mailSession);
             message.setSubject(title, "UTF-8");
             message.setText(content, "UTF-8", "html");
-            Address[] from = InternetAddress.parse("admin@ararhni.com");
-            message.addFrom(from);
+            message.setFrom(new InternetAddress("admin@ararhni.com", "المدير الذكي", "UTF-8"));
             toEmailList.stream().forEach(email -> {
                 try {
                     message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
@@ -90,8 +89,7 @@ public class EmailSender {
             log.info("Trying sending email to this destinations: " + toEmailList);
             transport = mailSession.getTransport();
             message = new MimeMessage(mailSession);
-            Address[] from = InternetAddress.parse("admin@ararhni.com");
-            message.addFrom(from);
+            message.setFrom(new InternetAddress("admin@ararhni.com", "المدير الذكي", "UTF-8"));
             message.setSubject(title, "UTF-8");
             toEmailList.stream().forEach(email -> {
                 try {
@@ -136,8 +134,7 @@ public class EmailSender {
             message = new MimeMessage(mailSession);
             message.setSubject(title, "UTF-8");
             message.setText(content, "UTF-8", "html");
-            Address[] from = InternetAddress.parse("admin@ararhni.com");
-            message.addFrom(from);
+            message.setFrom(new InternetAddress("admin@ararhni.com", "المدير الذكي", "UTF-8"));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             /////
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
@@ -159,8 +156,7 @@ public class EmailSender {
             log.info("Trying sending email to this destinations: " + email);
             transport = mailSession.getTransport();
             message = new MimeMessage(mailSession);
-            Address[] from = InternetAddress.parse("admin@ararhni.com");
-            message.addFrom(from);
+            message.setFrom(new InternetAddress("admin@ararhni.com", "المدير الذكي", "UTF-8"));
             message.setSubject(title, "UTF-8");
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             /////

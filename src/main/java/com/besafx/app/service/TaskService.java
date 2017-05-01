@@ -21,6 +21,6 @@ public interface TaskService extends PagingAndSortingRepository<Task, Long>, Jpa
     Integer findMaxCode();
 
     List<Task> findByPerson(Person person);
-
-    List<Task> findByEndDateBetween(@Temporal(TemporalType.TIMESTAMP) Date date1, @Temporal(TemporalType.TIMESTAMP) Date date2);
+    List<Task> findByEndDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+    List<Task> findByCloseTypeAndEndDateBetween(Task.CloseType closeType, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 }

@@ -245,7 +245,7 @@ public class ScheduledTasks {
         log.info("جاري البحث عن المهام التى تم إغلاقها خلال 24 السابقة");
         log.info("سيتم إغلاق المهمة على الافراد المكلفين");
         log.info("سيتم إرسال خصومات إلى الافراد الذين لم يرسلوا طلب إغلاق على الأقل طوال حياة المهمة");
-        List<Task> tasks = taskService.findByEndDateBetween(yesterday.toDate(), today.toDate());
+        List<Task> tasks = taskService.findByCloseTypeAndEndDateBetween(Task.CloseType.Pending, yesterday.toDate(), today.toDate());
         log.info("عدد المهام التى أغلقت خلال 24 ساعة الماضية: " + tasks.size());
         ListIterator<Task> listIterator = tasks.listIterator();
         while (listIterator.hasNext()) {

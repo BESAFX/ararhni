@@ -245,7 +245,9 @@
                                 st-select-mode="single"
                                 ng-class="{'mdl-color--blue-grey-100':task.isSelected}">
                                 <td st-select-row-custom="task">{{$index+1}}</td>
-                                <td st-select-row-custom="task">{{task.code}}</td>
+                                <td st-select-row-custom="task">
+                                    {{task.code}}
+                                </td>
                                 <td st-select-row-custom="task">
                                     <strong><a href="" ng-click="openDetailsModel(task)">{{task.title}}</a></strong>
                                     <span class="fa fa-info-circle" uib-tooltip="{{task.content}}"></span>
