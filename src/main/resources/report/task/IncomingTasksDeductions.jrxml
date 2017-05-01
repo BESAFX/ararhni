@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2017-04-30T20:27:34 -->
+<!-- 2017-05-01T18:17:06 -->
 <jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
@@ -80,7 +80,7 @@
                   calculation="Count">
             <variableExpression><![CDATA[$F{obj1}]]></variableExpression>
         </variable>
-        <group name="GROUP_BY_PERSON">
+        <group name="GROUP_BY_PERSON" isReprintHeaderOnEachPage="true" keepTogether="true">
             <groupExpression><![CDATA[$F{obj1}]]></groupExpression>
         </group>
     </subDataset>
@@ -285,13 +285,23 @@
     </pageFooter>
     <summary>
         <band height="115">
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="115" uuid="da4c07c6-02fa-462c-b9cc-1f79bd085adb">
+                    <printWhenExpression><![CDATA[$P{list}.isEmpty()]]></printWhenExpression>
+                </reportElement>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" size="20" isBold="true"/>
+                </textElement>
+                <text><![CDATA[لا توجد بيانات للعرض]]></text>
+            </staticText>
             <componentElement>
-                <reportElement x="12" y="12" width="530" height="80" uuid="2cd17ca2-fd9f-4e86-95bc-8d4260dba30a">
+                <reportElement x="8" y="17" width="538" height="80" uuid="2cd17ca2-fd9f-4e86-95bc-8d4260dba30a">
                     <property name="com.jaspersoft.studio.layout"
                               value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
                     <property name="net.sf.jasperreports.export.headertoolbar.table.name" value=""/>
                     <property name="com.jaspersoft.studio.components.autoresize.next" value="true"/>
                     <property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
+                    <printWhenExpression><![CDATA[!$P{list}.isEmpty()]]></printWhenExpression>
                 </reportElement>
                 <jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components"
                           xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd"
@@ -300,17 +310,17 @@
                         <dataSourceExpression>
                             <![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list})]]></dataSourceExpression>
                     </datasetRun>
-                    <jr:columnGroup width="530" uuid="8f783d4d-899a-4ef1-a43b-10d44866832b">
+                    <jr:columnGroup width="538" uuid="8f783d4d-899a-4ef1-a43b-10d44866832b">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [7]"/>
                         <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
                         <jr:groupHeader groupName="GROUP_BY_PERSON">
                             <jr:cell height="20" rowSpan="1">
                                 <frame>
-                                    <reportElement x="0" y="0" width="530" height="20"
+                                    <reportElement x="0" y="0" width="538" height="20"
                                                    uuid="e305e965-1b1e-4ada-96af-c1d1857a3f9e"/>
                                     <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
                                         <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0"
-                                                       y="0" width="530" height="20" forecolor="#FFFFFF"
+                                                       y="0" width="538" height="20" forecolor="#FFFFFF"
                                                        backcolor="#18AD47" uuid="a11f36e6-31a9-4ae0-85fe-b34fba9ca9a2"/>
                                         <box padding="5"/>
                                         <textElement textAlignment="Center" verticalAlignment="Middle">
@@ -326,13 +336,13 @@
                             <jr:cell height="20" rowSpan="1">
                                 <property name="com.jaspersoft.studio.unit.height" value="px"/>
                                 <frame>
-                                    <reportElement mode="Opaque" x="0" y="0" width="530" height="20" backcolor="#D6D6D6"
+                                    <reportElement mode="Opaque" x="0" y="0" width="538" height="20" backcolor="#D6D6D6"
                                                    uuid="eb51aa9a-f5f9-4070-8440-8c158228d4bf"/>
                                     <textField isStretchWithOverflow="true" evaluationTime="Group"
                                                evaluationGroup="GROUP_BY_PERSON" pattern="SAR #,##0.##;SAR -#,##0.##"
                                                isBlankWhenNull="true">
                                         <reportElement style="Table_TD" stretchType="RelativeToTallestObject"
-                                                       mode="Opaque" x="150" y="0" width="99" height="20"
+                                                       mode="Opaque" x="155" y="0" width="102" height="20"
                                                        forecolor="#000000" backcolor="#FF9896"
                                                        uuid="28ee1987-1a8e-4f73-b271-ea382251a41e"/>
                                         <box padding="5"/>
@@ -346,7 +356,7 @@
                                                evaluationGroup="GROUP_BY_PERSON" pattern="SAR #,##0.##;SAR -#,##0.##"
                                                isBlankWhenNull="true">
                                         <reportElement style="Table_TD" stretchType="RelativeToTallestObject"
-                                                       mode="Opaque" x="40" y="0" width="110" height="20"
+                                                       mode="Opaque" x="42" y="0" width="113" height="20"
                                                        forecolor="#000000" backcolor="#FF9896"
                                                        uuid="3181740f-4f71-4790-9594-49983e8c2d61"/>
                                         <box padding="5"/>
@@ -358,7 +368,7 @@
                                     </textField>
                                     <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
                                         <reportElement style="Table_TD" stretchType="RelativeToTallestObject"
-                                                       mode="Opaque" x="381" y="0" width="149" height="20"
+                                                       mode="Opaque" x="390" y="0" width="148" height="20"
                                                        forecolor="#000000" backcolor="#FF9896"
                                                        uuid="0fc15bbb-403f-4ddf-a58b-5c7d216094a3"/>
                                         <box padding="5"/>
@@ -372,14 +382,14 @@
                                 </frame>
                             </jr:cell>
                         </jr:groupFooter>
-                        <jr:column width="40" uuid="7b8d20d3-5dcc-45b1-aea8-e5b3c76af83e">
+                        <jr:column width="42" uuid="7b8d20d3-5dcc-45b1-aea8-e5b3c76af83e">
                             <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
                             <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
                             <jr:tableHeader height="0" rowSpan="1"/>
                             <jr:columnHeader height="20" rowSpan="1">
                                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
                                 <staticText>
-                                    <reportElement style="Table_TH" x="0" y="0" width="40" height="20"
+                                    <reportElement style="Table_TH" x="0" y="0" width="42" height="20"
                                                    uuid="5a873ef9-a319-4958-bdc3-7901ca7f056e"/>
                                     <textElement textAlignment="Center" verticalAlignment="Middle">
                                         <font fontName="Arial" size="9"/>
@@ -390,7 +400,7 @@
                             <jr:detailCell height="20">
                                 <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
                                     <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                                   width="40" height="20" uuid="33a2045b-3d7b-4cdf-a043-55b82815ddc6"/>
+                                                   width="42" height="20" uuid="33a2045b-3d7b-4cdf-a043-55b82815ddc6"/>
                                     <box padding="5"/>
                                     <textElement textAlignment="Center" verticalAlignment="Middle">
                                         <font fontName="Arial" size="8" isBold="false"/>
@@ -400,14 +410,14 @@
                                 </textField>
                             </jr:detailCell>
                         </jr:column>
-                        <jr:column width="110" uuid="2e1e1458-4467-4896-a375-724c1689ee64">
+                        <jr:column width="113" uuid="2e1e1458-4467-4896-a375-724c1689ee64">
                             <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
                             <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
                             <jr:tableHeader height="0" rowSpan="1"/>
                             <jr:columnHeader height="20" rowSpan="1">
                                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
                                 <staticText>
-                                    <reportElement style="Table_TH" x="0" y="0" width="110" height="20"
+                                    <reportElement style="Table_TH" x="0" y="0" width="113" height="20"
                                                    uuid="487b154f-e47a-4eb1-9de3-336aa34ccf0b"/>
                                     <textElement textAlignment="Center" verticalAlignment="Middle">
                                         <font fontName="Arial" size="9"/>
@@ -419,7 +429,7 @@
                                 <textField isStretchWithOverflow="true" pattern="SAR #,##0.##;SAR -#,##0.##"
                                            isBlankWhenNull="true">
                                     <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                                   width="110" height="20" uuid="4c29248c-ab9b-486a-b5d6-553708b80b97"/>
+                                                   width="113" height="20" uuid="4c29248c-ab9b-486a-b5d6-553708b80b97"/>
                                     <box padding="5"/>
                                     <textElement textAlignment="Center" verticalAlignment="Middle">
                                         <font fontName="Arial" size="8" isBold="false"/>
@@ -429,14 +439,14 @@
                                 </textField>
                             </jr:detailCell>
                         </jr:column>
-                        <jr:column width="99" uuid="d0bcac0b-1f75-4206-aeaa-aafaa6c3b20a">
+                        <jr:column width="102" uuid="d0bcac0b-1f75-4206-aeaa-aafaa6c3b20a">
                             <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
                             <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
                             <jr:tableHeader height="0" rowSpan="1"/>
                             <jr:columnHeader height="20" rowSpan="1">
                                 <property name="com.jaspersoft.studio.unit.width" value="px"/>
                                 <staticText>
-                                    <reportElement style="Table_TH" x="0" y="0" width="99" height="20"
+                                    <reportElement style="Table_TH" x="0" y="0" width="102" height="20"
                                                    uuid="fd106533-623f-41ff-8393-09ebfb607932"/>
                                     <textElement textAlignment="Center" verticalAlignment="Middle">
                                         <font fontName="Arial" size="9"/>
@@ -448,7 +458,7 @@
                                 <textField isStretchWithOverflow="true" pattern="SAR #,##0.##;SAR -#,##0.##"
                                            isBlankWhenNull="true">
                                     <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                                   width="99" height="20" uuid="e6f675f9-358d-4b1c-b397-9b13cbe2fbba"/>
+                                                   width="102" height="20" uuid="e6f675f9-358d-4b1c-b397-9b13cbe2fbba"/>
                                     <box padding="5"/>
                                     <textElement textAlignment="Center" verticalAlignment="Middle">
                                         <font fontName="Arial" size="8" isBold="false"/>
@@ -458,12 +468,12 @@
                                 </textField>
                             </jr:detailCell>
                         </jr:column>
-                        <jr:column width="41" uuid="5bbbdd3b-1047-4e60-91c6-70119f0c2013">
+                        <jr:column width="42" uuid="5bbbdd3b-1047-4e60-91c6-70119f0c2013">
                             <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
                             <jr:tableHeader height="0" rowSpan="1"/>
                             <jr:columnHeader height="20" rowSpan="1">
                                 <staticText>
-                                    <reportElement style="Table_TH" x="0" y="0" width="41" height="20"
+                                    <reportElement style="Table_TH" x="0" y="0" width="42" height="20"
                                                    uuid="e958d26d-31f4-4542-89fd-0766e45c45bb"/>
                                     <textElement textAlignment="Center" verticalAlignment="Middle">
                                         <font fontName="Arial" size="9"/>
@@ -474,7 +484,7 @@
                             <jr:detailCell height="20">
                                 <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
                                     <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                                   width="41" height="20" uuid="d8cad96b-c0be-43a9-a5ca-82a5aaa32368"/>
+                                                   width="42" height="20" uuid="d8cad96b-c0be-43a9-a5ca-82a5aaa32368"/>
                                     <box padding="5"/>
                                     <textElement textAlignment="Center" verticalAlignment="Middle">
                                         <font fontName="Arial" size="8" isBold="false"/>
@@ -494,7 +504,7 @@
                                     <textElement textAlignment="Center" verticalAlignment="Middle">
                                         <font fontName="Arial" size="9"/>
                                     </textElement>
-                                    <text><![CDATA[تاريخ التسليم]]></text>
+                                    <text><![CDATA[تاريخ الإغلاق]]></text>
                                 </staticText>
                             </jr:columnHeader>
                             <jr:detailCell height="20">
@@ -536,12 +546,12 @@
                                 </textField>
                             </jr:detailCell>
                         </jr:column>
-                        <jr:column width="40" uuid="27f981b9-2813-4dce-a5e5-04ef6aff19f7">
+                        <jr:column width="39" uuid="27f981b9-2813-4dce-a5e5-04ef6aff19f7">
                             <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
                             <jr:tableHeader height="0" rowSpan="1"/>
                             <jr:columnHeader height="20" rowSpan="1">
                                 <staticText>
-                                    <reportElement style="Table_TH" x="0" y="0" width="40" height="20"
+                                    <reportElement style="Table_TH" x="0" y="0" width="39" height="20"
                                                    uuid="9e19c98c-0ae2-4c7a-8966-4f7d18079b5e"/>
                                     <textElement textAlignment="Center" verticalAlignment="Middle">
                                         <font fontName="Arial" size="9"/>
@@ -552,7 +562,7 @@
                             <jr:detailCell height="20">
                                 <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
                                     <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                                   width="40" height="20" uuid="62238a0b-b174-4512-855a-c0e756bb126b"/>
+                                                   width="39" height="20" uuid="62238a0b-b174-4512-855a-c0e756bb126b"/>
                                     <box padding="5"/>
                                     <textElement textAlignment="Center" verticalAlignment="Middle">
                                         <font fontName="Arial" size="8" isBold="false"/>

@@ -142,7 +142,8 @@
                                 ng-hide="!tasks || tasks.length==0">
                                 <span>تقرير الحركات</span>
                             </li>
-                            <li class="mdl-menu__item" ng-click="openReportTasksModel()" ng-if="toggleList===1"
+                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
+                                ng-click="openReportTasksModel()" ng-if="toggleList===1"
                                 ng-hide="!tasks || tasks.length==0">
                                 <span>تقرير مهام مختصر</span>
                             </li>
@@ -150,17 +151,21 @@
                                 ng-hide="!tasks || tasks.length==0">
                                 <span>تقرير متابعة الموظفين</span>
                             </li>
-                            <li class="mdl-menu__item" ng-click="openTasksClosedSoonReportModel()">
+                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"
+                                ng-click="openTasksClosedSoonReportModel()">
                                 <span>تقرير المهام المغلقة قريباً</span>
                             </li>
                             <li class="mdl-menu__item">
                                 <span>تقرير بحركات المهام الصادرة</span>
                             </li>
-                            <li class="mdl-menu__item">
+                            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">
                                 <span>تقرير بحركات المهام الواردة</span>
                             </li>
+                            <li class="mdl-menu__item" ng-click="openOutgoingTasksDeductionsReportModel()">
+                                <span>تقرير بخصومات المهام الصادرة</span>
+                            </li>
                             <li class="mdl-menu__item" ng-click="openIncomingTasksDeductionsReportModel()">
-                                <span>تقرير مختصر بخصومات الموظفين</span>
+                                <span>تقرير بخصومات المهام الواردة</span>
                             </li>
                         </ul>
                     </div>

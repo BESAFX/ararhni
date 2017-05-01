@@ -174,6 +174,47 @@ public class ReportTaskController {
         JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
     }
 
+    @RequestMapping(value = "/report/OutgoingTasksDeductions", method = RequestMethod.GET, produces = "application/pdf")
+    @ResponseBody
+    public void ReportOutgoingTasksDeductions(
+            @RequestParam(value = "personId") Long personId,
+            @RequestParam(value = "closeType", required = false) Task.CloseType closeType,
+            @RequestParam(value = "startDate", required = false) Long startDate,
+            @RequestParam(value = "endDate", required = false) Long endDate,
+            HttpServletResponse response)
+            throws JRException, IOException {
+        Person person = personService.findOne(personId);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=OutgoingTasksDeductions.pdf");
+        final OutputStream outStream = response.getOutputStream();
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        StringBuilder param1 = new StringBuilder();
+        param1.append("المعهد الأهلي العالي للتدريب");
+        param1.append("\n");
+        param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
+        param1.append("\n");
+        if (startDate != null && endDate != null) {
+            param1.append("تقرير مختصر بخصومات المهام الصادرة من " + person.getNickname() + " / " + person.getName());
+            param1.append("\n");
+            param1.append("من الفترة " + " ( " + DateConverter.getHijriStringFromDateLTR(startDate) + " ) ");
+            param1.append(" ");
+            param1.append("إلى الفترة " + " ( " + DateConverter.getHijriStringFromDateLTR(endDate) + " ) ");
+        } else {
+            param1.append("تقرير مختصر بخصومات المهام الصادرة من " + person.getNickname() + " / " + person.getName());
+        }
+        map.put("title", param1.toString());
+        List<WrapperUtil> list = initOutgoingTasksDeductionsList(personId, closeType, startDate, endDate);
+        map.put("list", list);
+        log.info("عدد العناصر يساوي: " + list.size());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/task/OutgoingTasksDeductions.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+    }
+
     @RequestMapping(value = "/report/IncomingTasksDeductions", method = RequestMethod.GET, produces = "application/pdf")
     @ResponseBody
     public void ReportIncomingTasksDeductions(
@@ -199,16 +240,16 @@ public class ReportTaskController {
         param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
         param1.append("\n");
         if (startDate != null && endDate != null) {
-            param1.append("تقرير مختصر بخصومات الموظفين");
+            param1.append("تقرير مختصر بخصومات المهام الواردة إلى الموظفين");
             param1.append(" ");
             param1.append("من الفترة " + " ( " + DateConverter.getHijriStringFromDateLTR(startDate) + " ) ");
             param1.append(" ");
             param1.append("إلى الفترة " + " ( " + DateConverter.getHijriStringFromDateLTR(endDate) + " ) ");
         } else {
-            param1.append("تقرير مختصر بخصومات الموظفين");
+            param1.append("تقرير مختصر بخصومات المهام الواردة إلى الموظفين");
         }
         map.put("title", param1.toString());
-        List<WrapperUtil> list = initIncomingTasksDeductions(personList, closeType, startDate, endDate);
+        List<WrapperUtil> list = initIncomingTasksDeductionsList(personList, closeType, startDate, endDate);
         map.put("list", list);
         log.info("عدد العناصر يساوي: " + list.size());
         ClassPathResource jrxmlFile = new ClassPathResource("/report/task/IncomingTasksDeductions.jrxml");
@@ -332,7 +373,8 @@ public class ReportTaskController {
     }
 
     @Async("threadPoolReportGenerator")
-    public Future<byte[]> ReportTasksDeductionsSummery(Long personId) {
+    public Future<byte[]> ReportOutgoingTasksDeductions(Long personId) {
+        Person person = personService.findOne(personId);
         /**
          * Insert Parameters
          */
@@ -342,15 +384,15 @@ public class ReportTaskController {
         param1.append("\n");
         param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
         param1.append("\n");
-        param1.append("تقرير مختصر بإجمالي الخصومات الموقعة على الموظفين المكلفين");
+        param1.append("تقرير مختصر بإجمالي خصومات المهام الصادرة من " + person.getNickname() + " / " + person.getName());
         map.put("title", param1.toString());
-        List<WrapperUtil> list = initTasksDeductionsSummeryList(personId);
+        List<WrapperUtil> list = initOutgoingTasksDeductionsList(personId, null, null, null);
         map.put("list", list);
         if (list.isEmpty()) {
             return null;
         }
         try {
-            ClassPathResource jrxmlFile = new ClassPathResource("/report/task/TasksDeductionsSummery.jrxml");
+            ClassPathResource jrxmlFile = new ClassPathResource("/report/task/OutgoingTasksDeductions.jrxml");
             JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
             return new AsyncResult<>(JasperExportManager.exportReportToPdf(jasperPrint));
@@ -431,9 +473,10 @@ public class ReportTaskController {
         return list;
     }
 
-    private List<WrapperUtil> initTasksDeductionsSummeryList(Long personId) {
-        log.info("قراءة كل المهام الصادرة من هذا المستخدم...");
-        List<Task> tasks = taskSearch.search(null, null, null, null, null, null, null, null, null, false, true, "All", personId);
+    private List<WrapperUtil> initOutgoingTasksDeductionsList(Long personId, Task.CloseType closeType, Long startDate, Long endDate) {
+        Person person = personService.findOne(personId);
+        log.info("قراءة كل المهام الصادرة من " + person.getNickname() + " / " + person.getName());
+        List<Task> tasks = taskSearch.search(null, null, closeType, null, null, null, null, null, null, false, true, "All", personId);
         log.info("عدد المهام الصادرة منه = " + tasks.size());
         List<WrapperUtil> list = new ArrayList<>();
         log.info("تجميع البيانات...");
@@ -443,38 +486,56 @@ public class ReportTaskController {
             log.info("فحص كل المكلفين بهذة المهمة");
             taskToService.findByTask(task).stream().forEach(taskTo -> {
                 WrapperUtil wrapperUtil = new WrapperUtil();
-                List<TaskDeduction> allDeduction = taskDeductionService.findByTaskAndToPerson(task, taskTo.getPerson());
+                List<TaskDeduction> allDeduction = new ArrayList<>();
+                if (startDate != null && endDate != null) {
+                    allDeduction = taskDeductionService.findByTaskAndToPersonAndDateBetween(task, taskTo.getPerson(), new Date(startDate), new Date(endDate));
+                } else {
+                    allDeduction = taskDeductionService.findByTaskAndToPerson(task, taskTo.getPerson());
+                }
+                log.info("عدد الخصومات على هذة المهمة يساوي : " + allDeduction.size());
                 if (!allDeduction.isEmpty()) {
                     wrapperUtil.setObj1(taskTo.getPerson().getNickname() + " / " + taskTo.getPerson().getName());
                     wrapperUtil.setObj2(task.getCode());
-                    wrapperUtil.setObj3(allDeduction
+                    wrapperUtil.setObj3(DateConverter.getHijriStringFromDateRTLWithTime(task.getEndDate()));
+                    switch (task.getCloseType()) {
+                        case Pending:
+                            wrapperUtil.setObj4("تحت التنفيذ");
+                            break;
+                        case Auto:
+                            wrapperUtil.setObj4("مغلقة تلقائي");
+                            break;
+                        case Manual:
+                            wrapperUtil.setObj4("ارشيف");
+                            break;
+                    }
+                    wrapperUtil.setObj5(allDeduction
                             .stream()
                             .filter(taskDeduction -> taskDeduction.getType().equals(TaskDeduction.TaskDeductionType.Auto))
                             .mapToDouble(TaskDeduction::getDeduction).sum());
-                    wrapperUtil.setObj4(allDeduction
+                    wrapperUtil.setObj6(allDeduction
                             .stream()
                             .filter(taskDeduction -> taskDeduction.getType().equals(TaskDeduction.TaskDeductionType.Manual))
                             .mapToDouble(TaskDeduction::getDeduction).sum());
                     if (Optional.ofNullable(taskTo.getDegree()).isPresent()) {
                         switch (taskTo.getDegree()) {
                             case A:
-                                wrapperUtil.setObj5("ممتاز");
+                                wrapperUtil.setObj7("ممتاز");
                                 break;
                             case B:
-                                wrapperUtil.setObj5("جيد جداً");
+                                wrapperUtil.setObj7("جيد جداً");
                                 break;
                             case C:
-                                wrapperUtil.setObj5("جيد");
+                                wrapperUtil.setObj7("جيد");
                                 break;
                             case D:
-                                wrapperUtil.setObj5("مقبول");
+                                wrapperUtil.setObj7("مقبول");
                                 break;
                             case F:
-                                wrapperUtil.setObj5("سيء");
+                                wrapperUtil.setObj7("سيء");
                                 break;
                         }
                     } else {
-                        wrapperUtil.setObj5("غير محدد");
+                        wrapperUtil.setObj7("غير محدد");
                     }
                     list.add(wrapperUtil);
                 }
@@ -484,7 +545,7 @@ public class ReportTaskController {
         return list;
     }
 
-    private List<WrapperUtil> initIncomingTasksDeductions(List<Long> persons, Task.CloseType closeType, Long startDate, Long endDate) {
+    private List<WrapperUtil> initIncomingTasksDeductionsList(List<Long> persons, Task.CloseType closeType, Long startDate, Long endDate) {
         List<WrapperUtil> list = new ArrayList<>();
         persons.stream().forEach(personId -> {
             Person person = personService.findOne(personId);

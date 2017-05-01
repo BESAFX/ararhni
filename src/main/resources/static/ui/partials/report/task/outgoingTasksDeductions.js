@@ -1,20 +1,14 @@
-app.controller('incomingTasksDeductionsCtrl', ['$scope', '$rootScope', '$timeout', '$uibModalInstance', 'PersonService',
+app.controller('outgoingTasksDeductionsCtrl', ['$scope', '$rootScope', '$timeout', '$uibModalInstance', 'PersonService',
     function ($scope, $rootScope, $timeout, $uibModalInstance, PersonService) {
 
         $scope.buffer = {};
 
-        $scope.personList = [];
-
         $scope.submit = function () {
-            var listId = [];
-            for (var i = 0; i < $scope.buffer.personList.length; i++) {
-                listId[i] = $scope.buffer.personList[i].id;
-            }
 
             var search = [];
 
-            search.push('personList=');
-            search.push(listId);
+            search.push('personId=');
+            search.push($scope.buffer.person.id);
             search.push('&');
 
             if ($scope.buffer.closeType) {
@@ -33,7 +27,7 @@ app.controller('incomingTasksDeductionsCtrl', ['$scope', '$rootScope', '$timeout
                 search.push('&');
             }
 
-            window.open('/report/IncomingTasksDeductions?' + search.join(""));
+            window.open('/report/OutgoingTasksDeductions?' + search.join(""));
         };
 
 

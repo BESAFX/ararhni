@@ -392,14 +392,14 @@ public class ScheduledTasks {
     }
 
     @Scheduled(cron = "0 0 20 * * SUN,MON,TUE,WED,THU")
-    public void notifyManagersAboutTasksDeductionsSummery() {
+    public void notifyManagersAboutOutgoingTasksDeductions() {
         log.info("فحص كل المسخدمين");
         Iterator<Person> iterator = personService.findAll().iterator();
         while (iterator.hasNext()) {
             Person person = iterator.next();
             try {
                 log.info("جاري العمل على مهام: " + person.getName());
-                Future<byte[]> work = reportTaskController.ReportTasksDeductionsSummery(person.getId());
+                Future<byte[]> work = reportTaskController.ReportOutgoingTasksDeductions(person.getId());
                 byte[] fileBytes = work.get();
                 if (fileBytes == null) {
                     continue;

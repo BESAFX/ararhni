@@ -549,6 +549,18 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
         });
     };
 
+    this.openOutgoingTasksDeductionsModel = function () {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/report/task/outgoingTasksDeductions.html',
+            controller: 'outgoingTasksDeductionsCtrl',
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
     this.openTasksClosedSoonModel = function () {
         $uibModal.open({
             animation: true,

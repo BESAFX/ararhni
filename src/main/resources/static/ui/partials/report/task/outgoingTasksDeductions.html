@@ -3,7 +3,7 @@
       focus-group-tail="loop">
 
     <div class="modal-header">
-        <h3 class="modal-title text-center">تقرير مختصر بخصومات المهام الواردة إلى الموظفين</h3>
+        <h3 class="modal-title text-center">تقرير مختصر بخصومات المهام الصادرة من جهات التكليف</h3>
     </div>
 
     <div class="modal-body">
@@ -18,16 +18,15 @@
 
             <div class="form-group text-right col-xs-12 col-sm-12 col-md-12">
                 <label for="master" class="control-label">
-                    <span>الموظفون</span>
+                    <span>جهة التكليف</span>
                 </label>
                 <select id="master"
                         data-placeholder="ابحث عن البريد الإلكتروني"
                         no-results-text="'لا توجد بيانات توافق بحثك'"
-                        placeholder-text-multiple="'اختر الحساب الشخصي'"
+                        placeholder-text-single="'اختر الحساب الشخصي'"
                         class="form-control text-right"
                         chosen=""
-                        multiple
-                        ng-model="buffer.personList"
+                        ng-model="buffer.person"
                         required="required"
                         disable-validation-message=""
                         focus-index="1"
