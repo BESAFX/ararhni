@@ -59,10 +59,6 @@ input, .btn {
     height: 40px !important;
 }
 
-/*textarea.form-control {*/
-/*height: auto !important;*/
-/*}*/
-
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
     background-color: white !important;
 }
@@ -183,8 +179,36 @@ input[type=checkbox] {
     font-weight: bold;
 }
 
-.mdl-menu__item {
+.mdl-menu {
+    width: 310px;
+}
+
+.mdl-list__item--two-line .mdl-list__item-primary-content {
+    text-align: right !important;
+}
+
+.mdl-list__item--two-line .mdl-list__item-primary-content .mdl-list__item-avatar {
+    float: right;
+}
+
+.mdl-list__item .mdl-list__item-primary-content .mdl-list__item-avatar {
+    margin-right: 0px !important;
+    margin-left: 16px !important;
+    background-size: cover;
+}
+
+.mdl-badge {
+    cursor: pointer;
+}
+
+.mdl-menu, .mdl-menu__item {
     text-align: right;
+    direction: rtl;
+}
+
+.mdl-list__item .mdl-list__item-primary-content .mdl-list__item-icon {
+    margin-left: 10px !important;
+    margin-right: 0px !important;
 }
 
 .mdl-data-table {
