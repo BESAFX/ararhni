@@ -2,7 +2,7 @@
       focus-group-tail="loop">
 
     <div class="modal-header">
-        <h3 class="modal-title text-center">تقرير عن المهام الباقي على تاريخ إغلاقها أقل من 125 ساعة (خمس أيام) من تاريخ
+        <h3 class="modal-title text-center">تقرير عن المهام الباقي على تاريخ إغلاقها أقل من 72 ساعة (ثلاث أيام) من تاريخ
             اليوم</h3>
     </div>
 
@@ -25,7 +25,7 @@
                         required="required"
                         disable-validation-message=""
                         focus-index="1"
-                        ng-options="person.name for person in persons track by person.id">
+                        ng-options="(person.nickname + ' / ' + person.name) for person in persons | orderBy:'name' track by person.id">
                 </select>
             </div>
 

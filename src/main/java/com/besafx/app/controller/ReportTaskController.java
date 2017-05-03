@@ -278,7 +278,7 @@ public class ReportTaskController {
         param1.append("\n");
         param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
         param1.append("\n");
-        param1.append("تقرير عن المهام الباقي على تاريخ إغلاقها أقل من 125 ساعة (خمس أيام) من تاريخ اليوم للموظف / " + person.getName());
+        param1.append("تقرير عن المهام الباقي على تاريخ إغلاقها أقل من 72 ساعة (ثلاث أيام) من تاريخ اليوم للموظف / " + person.getName());
         map.put("title", param1.toString());
         List<WrapperUtil> list = initTasksClosedSoonNotifyList(personId);
         map.put("list", list);
@@ -325,7 +325,7 @@ public class ReportTaskController {
         param1.append("\n");
         param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
         param1.append("\n");
-        param1.append("تقرير عن المهام الباقي على تاريخ إغلاقها أقل من 125 ساعة (خمس أيام) من تاريخ اليوم");
+        param1.append("تقرير عن المهام الباقي على تاريخ إغلاقها أقل من 72 ساعة (ثلاث أيام) من تاريخ اليوم");
         map.put("title", param1.toString());
         List<WrapperUtil> list = initTasksClosedSoonNotifyList(personId);
         map.put("list", list);
@@ -438,10 +438,10 @@ public class ReportTaskController {
             DateTime taskEndDate = new DateTime(task.getEndDate());
             int hours = Hours.hoursBetween(now.withTimeAtStartOfDay(), taskEndDate).getHours();
             log.info("عدد الساعات بين تاريخ نهاية المهمة والآن: " + hours);
-            log.info("فحص إذا كانت الساعات المتبقية أقل من 5 * 24 ساعة (خمس أيام)");
-            if (hours < 120) {
+            log.info("فحص إذا كانت الساعات المتبقية أقل من 3 * 24 ساعة (ثلاث أيام)");
+            if (hours < 72) {
                 WrapperUtil wrapperUtil = new WrapperUtil();
-                wrapperUtil.setObj1(task.getCode());
+                wrapperUtil.setObj1("[" + task.getCode() + "]" + " " + task.getTitle());
                 wrapperUtil.setObj2(hours + " ساعة");
                 wrapperUtil.setObj3(taskCloseRequestService.findByTaskIdAndPersonIdAndTypeAndApprovedIsNull(task.getId(), personId, false).size());
                 wrapperUtil.setObj4(taskCloseRequestService.findByTaskIdAndPersonIdAndTypeAndApprovedIsNull(task.getId(), personId, false).size());
