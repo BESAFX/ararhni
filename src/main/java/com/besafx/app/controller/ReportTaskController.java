@@ -495,7 +495,7 @@ public class ReportTaskController {
                 log.info("عدد الخصومات على هذة المهمة يساوي : " + allDeduction.size());
                 if (!allDeduction.isEmpty()) {
                     wrapperUtil.setObj1(taskTo.getPerson().getNickname() + " / " + taskTo.getPerson().getName());
-                    wrapperUtil.setObj2(task.getCode());
+                    wrapperUtil.setObj2("[" + task.getCode() + "]" + " " + task.getTitle());
                     wrapperUtil.setObj3(DateConverter.getHijriStringFromDateRTLWithTime(task.getEndDate()));
                     switch (task.getCloseType()) {
                         case Pending:
@@ -568,7 +568,7 @@ public class ReportTaskController {
                 log.info("عدد الخصومات على هذة المهمة يساوي : " + allDeduction.size());
                 if (!allDeduction.isEmpty()) {
                     wrapperUtil.setObj1(person.getNickname() + " / " + person.getName());
-                    wrapperUtil.setObj2(task.getCode());
+                    wrapperUtil.setObj2("[" + task.getCode() + "]" + " " + task.getTitle());
                     wrapperUtil.setObj3(task.getPerson().getNickname() + " / " + task.getPerson().getName());
                     wrapperUtil.setObj4(DateConverter.getHijriStringFromDateRTLWithTime(task.getEndDate()));
                     switch (task.getCloseType()) {
