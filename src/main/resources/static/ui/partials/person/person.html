@@ -112,6 +112,14 @@
                                     <span>الموقع</span>
                                 </th>
 
+                                <th st-sort="ipAddress" class="text-right">
+                                    <span>أخر عنوان دخول</span>
+                                </th>
+
+                                <th st-sort="hostName" class="text-right">
+                                    <span>أخر اسم مستضيف</span>
+                                </th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -132,10 +140,12 @@
                                     <span class="label label-success">{{person.lastLoginDate | date:'h:m a'}}</span>
                                 </td>
                                 <td st-select-row-custom="person">{{person.lastLoginLocation}}</td>
+                                <td st-select-row-custom="person">{{person.idAddress}}</td>
+                                <td st-select-row-custom="person">{{person.hostName}}</td>
                             </tr>
                             <tr class="blank_row" style="height: 10px !important; background-color: #FFFFFF;"
                                 ng-show="!collection || collection.length ==0">
-                                <td colspan="7">لا توجد بيانات</td>
+                                <td colspan="9">لا توجد بيانات</td>
                             </tr>
                             </tbody>
                         </table>

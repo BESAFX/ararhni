@@ -29,6 +29,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSessionEvent;
 import java.util.ArrayList;
 import java.util.Date;
@@ -98,7 +99,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher() {
             @Override
             public void sessionCreated(HttpSessionEvent event) {
-                String ipAddr = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getRemoteAddr();
+                HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+                log.info("RemoteUser " + request.getRemoteUser());
+                log.info("RequestURI " + request.getRequestURI());
+                log.info("LocalAddr " + request.getLocalAddr());
+                log.info("LocalName " + request.getLocalName());
+                log.info("RemoteAddr " + request.getRemoteAddr());
+                log.info("RemoteHost " + request.getRemoteHost());
+                log.info("ServerName " + request.getServerName());
+                log.info("RemotePort " + request.getRemotePort());
                 super.sessionCreated(event);
             }
 
@@ -109,6 +118,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     UserDetails userDetails = (UserDetails) securityContext.getAuthentication().getPrincipal();
                     Person person = personService.findByEmail(userDetails.getUsername());
                     person.setActive(false);
+                    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+                    person.setIpAddress(request.getRemoteAddr());
+                    person.setHostName(request.getRemoteHost());
                     personService.save(person);
                 }
                 super.sessionDestroyed(event);
@@ -125,14 +137,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         if (person == null) {
                             throw new UsernameNotFoundException(email);
                         }
-                        String ipAddr = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getRemoteAddr();
+                        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
                         person.setLastLoginLocation(
-                                (Optional.ofNullable(locationFinder.getCountry(ipAddr)).isPresent() ? (locationFinder.getCountry(ipAddr).getName() + "، ") : "")
-                                        + (Optional.ofNullable(locationFinder.getCity(ipAddr)).isPresent() ? (locationFinder.getCity(ipAddr).getName() + "، ") : "")
-                                        + (Optional.ofNullable(locationFinder.getMostSpecificSubdivision(ipAddr)).isPresent() ? locationFinder.getMostSpecificSubdivision(ipAddr).getName() : ""));
+                                (Optional.ofNullable(locationFinder.getCountry(request.getRemoteAddr())).isPresent() ? (locationFinder.getCountry(request.getRemoteAddr()).getName() + "، ") : "")
+                                        + (Optional.ofNullable(locationFinder.getCity(request.getRemoteAddr())).isPresent() ? (locationFinder.getCity(request.getRemoteAddr()).getName() + "، ") : "")
+                                        + (Optional.ofNullable(locationFinder.getMostSpecificSubdivision(request.getRemoteAddr())).isPresent() ? locationFinder.getMostSpecificSubdivision(request.getRemoteAddr()).getName() : ""));
                         person.setLastLoginDate(new Date());
                         person.setLastUpdate(new Date());
                         person.setActive(true);
+                        person.setIpAddress(request.getRemoteAddr());
+                        person.setHostName(request.getRemoteHost());
                         personService.save(person);
                         authorities.add(new SimpleGrantedAuthority("ROLE_PROFILE_UPDATE"));
                         roleService.findByTeam(person.getTeam()).stream().forEach(role -> {

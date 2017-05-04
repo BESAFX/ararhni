@@ -63,6 +63,10 @@ public class Person implements Serializable {
 
     private String lastLoginLocation;
 
+    private String ipAddress;
+
+    private String hostName;
+
     @ManyToOne
     @JoinColumn(name = "Team")
     @JsonIgnoreProperties(value = {"persons"}, allowSetters = true)
