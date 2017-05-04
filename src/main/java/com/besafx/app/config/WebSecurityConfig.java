@@ -158,7 +158,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         person.setLastUpdate(new Date());
                         person.setActive(true);
                         person.setIpAddress(request.getRemoteAddr());
-                        person.setHostName(request.getRemoteHost());
+                        try {
+                            InetAddress inetAddress = InetAddress.getByName(request.getRemoteAddr());
+                            person.setHostName(getHostName(inetAddress));
+                        } catch (UnknownHostException e) {
+                            e.printStackTrace();
+                        }
                         personService.save(person);
                         authorities.add(new SimpleGrantedAuthority("ROLE_PROFILE_UPDATE"));
                         roleService.findByTeam(person.getTeam()).stream().forEach(role -> {
