@@ -31,6 +31,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSessionEvent;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -105,6 +111,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 log.info("LocalAddr " + request.getLocalAddr());
                 log.info("LocalName " + request.getLocalName());
                 log.info("RemoteAddr " + request.getRemoteAddr());
+                try {
+                    InetAddress inetAddress = InetAddress.getByName(request.getRemoteAddr());
+                    log.info("PC Name: " + getHostName(inetAddress));
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
                 log.info("RemoteHost " + request.getRemoteHost());
                 log.info("ServerName " + request.getServerName());
                 log.info("RemotePort " + request.getRemotePort());
@@ -174,5 +186,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 }
         ).passwordEncoder(passwordEncoder);
 
+    }
+
+    private String getHostName(InetAddress inaHost) throws UnknownHostException {
+        try {
+            Class clazz = Class.forName("java.net.InetAddress");
+            Constructor[] constructors = clazz.getDeclaredConstructors();
+            constructors[0].setAccessible(true);
+            InetAddress ina = (InetAddress) constructors[0].newInstance();
+            Field[] fields = ina.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                if (field.getName().equals("nameService")) {
+                    field.setAccessible(true);
+                    Method[] methods = field.get(null).getClass().getDeclaredMethods();
+                    for (Method method : methods) {
+                        if (method.getName().equals("getHostByAddr")) {
+                            method.setAccessible(true);
+                            return (String) method.invoke(field.get(null), inaHost.getAddress());
+                        }
+                    }
+                }
+            }
+        } catch (ClassNotFoundException cnfe) {
+        } catch (IllegalAccessException iae) {
+        } catch (InstantiationException ie) {
+        } catch (InvocationTargetException ite) {
+            throw (UnknownHostException) ite.getCause();
+        }
+        return null;
     }
 }
