@@ -106,8 +106,8 @@
                     </ul>
                 </div>
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 pull-right">
-                        <button style="width:100%" id="view-menu-lower-right" style="width: 100%;"
+                    <div class="col-xs-4 col-sm-2 col-md-2 col-lg-1 pull-right">
+                        <button id="view-menu-lower-right" style="width: 100%;"
                                 class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
                             <span>عرض البيانات</span>
                         </button>
@@ -167,7 +167,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 pull-right">
+                    <div class="col-xs-4 col-sm-2 col-md-2 col-lg-1 pull-right">
                         <button style="width:100%" id="menu-lower-right" style="width: 100%;"
                                 class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
                             <span>العمليات</span>
@@ -245,7 +245,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 pull-right">
+                    <div class="col-xs-4 col-sm-2 col-md-2 col-lg-1 pull-right">
                         <button style="width:100%" id="report-menu-lower-right" style="width: 100%;"
                                 class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
                             <span>التقارير</span>
@@ -342,7 +342,7 @@
 
     <main class="mdl-layout__content">
 
-        <div dir="rtl" style="margin-top: 10px">
+        <div dir="rtl" class="row" style="margin-top: 10px">
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===1">
                 <div class="panel panel-body">
@@ -444,8 +444,8 @@
             </div>
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===2">
-                <div class="col-md-12" st-table="collection" st-safe-src="tasks">
-                    <div class="col-md-3" ng-repeat="task in collection">
+                <div st-table="collection" st-safe-src="tasks">
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="task in collection">
                         <!-- CONTACT ITEM -->
                         <div class="panel panel-default">
                             <div class="panel-body profile">
@@ -528,7 +528,7 @@
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="toggleList===3">
 
-                <div class="col-md-4">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                     <div class="panel panel-success">
 
                         <div class="panel-heading">
@@ -538,89 +538,92 @@
                             </h3>
                         </div>
 
-                        <div class="panel-body">
+                        <div class="panel-body" style="padding: 0px;">
 
-                            <div class="form-group row">
-
-                                <div class="form-group col-md-12">
-
-                                    <div class="table-responsive">
-                                        <table st-table="collection" st-safe-src="tasks" class="table table-bordered">
-                                            <tbody>
-                                            <tr class="text-right"
-                                                ng-repeat="task in collection"
-                                                context-menu="rowMenu"
-                                                ng-click="setSelected(task)"
-                                                ng-dblclick="openDetailsModel(task)"
-                                                ng-right-click="setSelected(task)"
-                                                st-select-mode="single"
-                                                ng-class="{'animated flash':task.isSelected}">
-                                                <td st-select-row-custom="task">
-                                                    <table width="100%">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td colspan="1" class="text-right"><span
-                                                                    class="label label-danger">{{task.person.nickname}} / {{task.person.name}}</span>
-                                                            </td>
-                                                            <td colspan="1" class="text-left">
-                                                    <span class="label label-success">
-                                                        <timer interval="60000" start-time="task.startDate"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span> {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
-                                                    </span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2" class="text-right" style="padding: 5px;">
-                                                                <span>{{task.title}}</span>
-                                                                <a href="" uib-tooltip="{{task.content}}"
-                                                                   tooltip-append-to-body="true"><i
-                                                                        class="fa fa-info-circle fa-lg"></i></a>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2">
-                                                                <timer end-time="task.endDate" interval="60000">
-                                                                    <div class="progress progress-small">
-                                                                        <div class="progress-bar progress-bar-striped {{displayProgressActive}}"
-                                                                             style="width: {{progressBar}}%">
-                                                                            {{progressBar}}
-                                                                        </div>
-                                                                    </div>
+                            <div class="Container" style="padding-bottom: 0px !important;">
+                                <div class="Middle">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive">
+                                                <table st-table="collection" st-safe-src="tasks"
+                                                       class="table table-bordered">
+                                                    <tbody>
+                                                    <tr class="text-right"
+                                                        ng-repeat="task in collection"
+                                                        context-menu="rowMenu"
+                                                        ng-click="setSelected(task)"
+                                                        ng-dblclick="openDetailsModel(task)"
+                                                        ng-right-click="setSelected(task)"
+                                                        st-select-mode="single"
+                                                        ng-class="{'animated flash':task.isSelected}">
+                                                        <td st-select-row-custom="task">
+                                                            <table width="100%">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td colspan="1" class="text-right"><span
+                                                                            class="label label-danger">{{task.person.nickname}} / {{task.person.name}}</span>
+                                                                    </td>
+                                                                    <td colspan="1" class="text-left">
+                                                            <span class="label label-success">
+                                                                <timer interval="60000"
+                                                                       start-time="task.startDate"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span> {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
+                                                            </span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" class="text-right"
+                                                                        style="padding: 5px;">
+                                                                        <span>{{task.title}}</span>
+                                                                        <a href="" uib-tooltip="{{task.content}}"
+                                                                           tooltip-append-to-body="true"><i
+                                                                                class="fa fa-info-circle fa-lg"></i></a>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2">
+                                                                        <timer end-time="task.endDate" interval="60000">
+                                                                            <div class="progress progress-small">
+                                                                                <div class="progress-bar progress-bar-striped {{displayProgressActive}}"
+                                                                                     style="width: {{progressBar}}%">
+                                                                                    {{progressBar}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </timer>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="1" class="text-right">
+                                                            <span class="label label-primary">
+                                                                <timer interval="60000" end-time="task.endDate">
+                                                                    <span> {{(minutes < 1 && hours < 1 && days < 1 )? 'تم إغلاق المهمة' : 'باقي من الزمن'}} </span>
+                                                                    {{days > 0 ? days : ''}}
+                                                                    {{days > 0 ? 'يوم' : ''}}
+                                                                    {{hours > 0 ? hours : ''}}
+                                                                    {{hours > 0 ? 'ساعة' : ''}}
+                                                                    {{minutes > 0 ? minutes : ''}}
+                                                                    {{minutes > 0 ? 'دقيقة' : ''}}
                                                                 </timer>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="1" class="text-right">
-                                                    <span class="label label-primary">
-                                                        <timer interval="60000" end-time="task.endDate">
-                                                            <span> {{(minutes < 1 && hours < 1 && days < 1 )? 'تم إغلاق المهمة' : 'باقي من الزمن'}} </span>
-                                                            {{days > 0 ? days : ''}}
-                                                            {{days > 0 ? 'يوم' : ''}}
-                                                            {{hours > 0 ? hours : ''}}
-                                                            {{hours > 0 ? 'ساعة' : ''}}
-                                                            {{minutes > 0 ? minutes : ''}}
-                                                            {{minutes > 0 ? 'دقيقة' : ''}}
-                                                        </timer>
-                                                    </span>
-                                                            </td>
-                                                            <td colspan="1" class="text-left"><a href=""
-                                                                                                 ng-click="openDetailsModel(task)">المزيد...</a>
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr class="blank_row"
-                                                style="height: 10px !important; background-color: #FFFFFF;"
-                                                ng-show="!collection || collection.length ==0">
-                                                <td colspan="1">لا توجد مهام</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                                            </span>
+                                                                    </td>
+                                                                    <td colspan="1" class="text-left"><a href=""
+                                                                                                         ng-click="openDetailsModel(task)">المزيد...</a>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="blank_row"
+                                                        style="height: 10px !important; background-color: #FFFFFF;"
+                                                        ng-show="!collection || collection.length ==0">
+                                                        <td colspan="1">لا توجد مهام</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
-
                                 </div>
-
                             </div>
 
                         </div>
@@ -628,7 +631,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                     <div class="panel panel-warning">
 
                         <div class="panel-heading">
@@ -645,73 +648,72 @@
                             </h3>
                         </div>
 
-                        <div class="panel-body">
-
-                            <div class="form-group row">
-
-                                <div class="form-group col-md-12">
-
-                                    <div class="table-responsive">
-                                        <table st-table="collection2" st-safe-src="selected.taskOperations"
-                                               class="table table-bordered">
-                                            <tbody>
-                                            <tr ng-click="setSelectedOperation(taskOperation)"
-                                                ng-right-click="setSelectedOperation(taskOperation)"
-                                                st-select-mode="single"
-                                                ng-class="{'animated flash':taskOperation.isSelected}"
-                                                ng-repeat="taskOperation in collection2">
-                                                <td st-select-row-custom="taskOperation">
-                                                    <table width="100%">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td colspan="1" class="text-right">
-                                                                <span ng-class="(taskOperation.sender.id===me.manager.id) ? 'label label-danger' : 'label label-info'">{{taskOperation.sender.nickname}} / {{taskOperation.sender.name}}</span>
-                                                            </td>
-                                                            <td colspan="1" class="text-left">
+                        <div class="panel-body" style="padding: 0px;">
+                            <div class="Container" style="padding-bottom: 0px !important;">
+                                <div class="Middle">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive">
+                                                <table st-table="collection2" st-safe-src="selected.taskOperations"
+                                                       class="table table-bordered">
+                                                    <tbody>
+                                                    <tr ng-click="setSelectedOperation(taskOperation)"
+                                                        ng-right-click="setSelectedOperation(taskOperation)"
+                                                        st-select-mode="single"
+                                                        ng-class="{'animated flash':taskOperation.isSelected}"
+                                                        ng-repeat="taskOperation in collection2">
+                                                        <td st-select-row-custom="taskOperation">
+                                                            <table width="100%">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td colspan="1" class="text-right">
+                                                                        <span ng-class="(taskOperation.sender.id===me.manager.id) ? 'label label-danger' : 'label label-info'">{{taskOperation.sender.nickname}} / {{taskOperation.sender.name}}</span>
+                                                                    </td>
+                                                                    <td colspan="1" class="text-left">
                                                                 <span class="label label-success">
                                                                     <timer interval="60000"
                                                                            start-time="taskOperation.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span> {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
                                                                 </span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2" class="text-right" style="padding: 5px;">
-                                                                <span>{{taskOperation.content}}</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2" class="text-right">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" class="text-right"
+                                                                        style="padding: 5px;">
+                                                                        <span>{{taskOperation.content}}</span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" class="text-right">
                                                     <span ng-repeat="taskOperationAttach in taskOperation.taskOperationAttaches">
                                                         <a uib-tooltip="{{taskOperationAttach.name}}"
                                                            tooltip-append-to-body="true" href=""
                                                            ng-href="{{taskOperationAttach.link}}" target="_blank"><i
                                                                 class="fa fa-link fa-lg"></i></a>
                                                     </span>
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr class="blank_row"
-                                                style="height: 10px !important; background-color: #FFFFFF;"
-                                                ng-show="!collection2 || collection2.length ==0">
-                                                <td colspan="1">لا توجد حركات</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="blank_row"
+                                                        style="height: 10px !important; background-color: #FFFFFF;"
+                                                        ng-show="!collection2 || collection2.length ==0">
+                                                        <td colspan="1">لا توجد حركات</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
-
                                 </div>
-
                             </div>
-
                         </div>
 
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                     <div class="panel panel-danger">
 
                         <div class="panel-heading">
@@ -729,55 +731,54 @@
                         </div>
 
                         <div class="panel-body">
-
-                            <div class="form-group row">
-
-                                <div class="form-group col-md-12">
-
-                                    <div class="table-responsive">
-                                        <table st-table="collectionCloseRequests"
-                                               st-safe-src="selected.taskCloseRequests"
-                                               class="table table-bordered">
-                                            <tbody>
-                                            <tr st-select-mode="single"
-                                                ng-class="{'animated flash':taskOperation.isSelected}"
-                                                ng-repeat="taskCloseRequest in collectionCloseRequests">
-                                                <td st-select-row-custom="taskCloseRequest">
-                                                    <table width="100%">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td colspan="1" class="text-right"><span
-                                                                    class="label label-info">{{taskCloseRequest.person.name}}</span>
-                                                            </td>
-                                                            <td colspan="1" class="text-left">
+                            <div class="Container" style="padding-bottom: 0px !important;">
+                                <div class="Middle">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive">
+                                                <table st-table="collectionCloseRequests"
+                                                       st-safe-src="selected.taskCloseRequests"
+                                                       class="table table-bordered">
+                                                    <tbody>
+                                                    <tr st-select-mode="single"
+                                                        ng-class="{'animated flash':taskOperation.isSelected}"
+                                                        ng-repeat="taskCloseRequest in collectionCloseRequests">
+                                                        <td st-select-row-custom="taskCloseRequest">
+                                                            <table width="100%">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td colspan="1" class="text-right"><span
+                                                                            class="label label-info">{{taskCloseRequest.person.name}}</span>
+                                                                    </td>
+                                                                    <td colspan="1" class="text-left">
                                                                 <span class="label label-success">
                                                                     <timer interval="60000"
                                                                            start-time="taskCloseRequest.date"><span> {{(minutes < 1 && hours < 1 && days < 1 )? 'الآن' : 'منذ'}} </span> {{days > 0 ? days : ''}} {{days > 0 ? 'يوم' : ''}} {{hours > 0 ? hours : ''}} {{hours > 0 ? 'ساعة' : ''}} {{minutes > 0 ? minutes : ''}} {{minutes > 0 ? 'دقيقة' : ''}}</timer>
                                                                 </span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2" class="text-right" style="padding: 5px;">
-                                                                <span>{{taskCloseRequest.note}}</span>
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr class="blank_row"
-                                                style="height: 10px !important; background-color: #FFFFFF;"
-                                                ng-show="!collectionCloseRequests || collectionCloseRequests.length ==0">
-                                                <td colspan="1">لا توجد طلبات إغلاق</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" class="text-right"
+                                                                        style="padding: 5px;">
+                                                                        <span>{{taskCloseRequest.note}}</span>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="blank_row"
+                                                        style="height: 10px !important; background-color: #FFFFFF;"
+                                                        ng-show="!collectionCloseRequests || collectionCloseRequests.length ==0">
+                                                        <td colspan="1">لا توجد طلبات إغلاق</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
-
                                 </div>
-
                             </div>
-
                         </div>
 
                     </div>
@@ -817,12 +818,12 @@
                     height: auto;
                     padding: .5rem;
                     -webkit-overflow-scrolling: touch;
-                    -ms-overflow-style: none;
+                    -ms-overflow-style: auto;
                 }
 
                 /*Entirely optional – just wanted to remove the scrollbar on WebKit browsers as I find them ugly*/
                 .Middle::-webkit-scrollbar {
-                    display: none;
+                    /*display: none;*/
                 }
 
                 .Middle {

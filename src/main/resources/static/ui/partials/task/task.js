@@ -114,7 +114,6 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
 
             ReportModelService.findAll().then(function (data) {
                 $scope.reportModels = data;
-                $rootScope.showNotify("المهام", "تم تحميل نماذج الطباعة بنجاح", "success", "fa-black-tie");
             });
 
             PersonService.findPersonUnderMeSummery().then(function (data) {
