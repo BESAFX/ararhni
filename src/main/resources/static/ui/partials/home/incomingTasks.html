@@ -197,14 +197,16 @@
                                                     </tr>
                                                     <tr>
                                                         <td>تاريخ الإنشاء</td>
-                                                        <td>{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' :
-                                                            'ummalqura'}}
+                                                        <td>
+                                                            <span ng-show="dateType==='H'">{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                                            <span ng-show="dateType==='G'">{{task.startDate | date: 'yyyy-MM-dd'}}</span>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>تاريخ التسليم</td>
-                                                        <td>{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' :
-                                                            'ummalqura'}}
+                                                        <td>
+                                                            <span ng-show="dateType==='H'">{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                                            <span ng-show="dateType==='G'">{{task.endDate | date: 'yyyy-MM-dd'}}</span>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -315,8 +317,8 @@
                                                                 {{taskWarn.content}}
                                                             </td>
                                                             <td class="fit">
-                                                                {{taskWarn.date ? (taskWarn.date | kdate: 'yyyy-mm-dd' :
-                                                                'ar' :'ummalqura') : '---'}}
+                                                                <span ng-show="dateType==='H'">{{taskWarn.date ? (taskWarn.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura') : '---'}}</span>
+                                                                <span ng-show="dateType==='G'">{{taskWarn.date ? (taskWarn.date | date: 'yyyy-MM-dd') : '---'}}</span>
                                                                 <span class="label label-success">{{taskWarn.date ? (taskWarn.date | date:'h:m a') : ''}}</span>
                                                             </td>
                                                         </tr>
@@ -346,8 +348,8 @@
                                                                 {{taskDeduction.content}}
                                                             </td>
                                                             <td class="fit">
-                                                                {{taskDeduction.date ? (taskDeduction.date |
-                                                                kdate:'yyyy-mm-dd' : 'ar' :'ummalqura') : '---'}}
+                                                                <span ng-show="dateType==='H'">{{taskDeduction.date ? (taskDeduction.date | kdate:'yyyy-mm-dd' : 'ar' :'ummalqura') : '---'}}</span>
+                                                                <span ng-show="dateType==='G'">{{taskDeduction.date ? (taskDeduction.date | date:'yyyy-mm-dd') : '---'}}</span>
                                                                 <span class="label label-success">{{taskDeduction.date ? (taskDeduction.date | date:'h:m a') : ''}}</span>
                                                             </td>
                                                         </tr>

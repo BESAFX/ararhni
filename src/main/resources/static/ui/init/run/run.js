@@ -86,6 +86,12 @@ app.run(['$http', '$location', '$state', '$window', 'PersonService', 'FileServic
             $window.location.href = '/logout';
         };
 
+        $rootScope.dateType = 'H';
+
+        $rootScope.switchDateType = function () {
+            $rootScope.dateType === 'H' ? $rootScope.dateType = 'G' : $rootScope.dateType = 'H';
+        };
+
         $rootScope.ModalProvider = ModalProvider;
 
         $rootScope.fetchTasksClosedThisWeek = function () {

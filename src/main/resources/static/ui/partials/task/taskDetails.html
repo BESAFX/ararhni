@@ -75,14 +75,16 @@
                             <tr>
                                 <td>تاريخ الإنشاء</td>
                                 <td>
-                                    {{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                    <span ng-show="dateType==='H'">{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                    <span ng-show="dateType==='G'">{{task.startDate | date: 'yyyy-MM-dd'}}</span>
                                     <span class="label label-success">{{task.startDate ? (task.startDate | date:'h:m a') : ''}}</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>تاريخ التسليم</td>
                                 <td>
-                                    {{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                    <span ng-show="dateType==='H'">{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                    <span ng-show="dateType==='G'">{{task.endDate | date: 'yyyy-MM-dd'}}</span>
                                     <span class="label label-success">{{task.endDate ? (task.endDate | date:'h:m a') : ''}}</span>
                                 </td>
                             </tr>
@@ -172,8 +174,8 @@
                                         {{taskTo.degree==='F' ? 'سيئ' : ''}}
                                     </td>
                                     <td class="fit">
-                                        {{taskTo.closeDate ? (taskTo.closeDate | kdate: 'yyyy-mm-dd' : 'ar'
-                                        :'ummalqura') : '---'}}
+                                        <span ng-show="dateType==='H'">{{taskTo.closeDate ? (taskTo.closeDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura') : '---'}}</span>
+                                        <span ng-show="dateType==='G'">{{taskTo.closeDate ? (taskTo.closeDate | date: 'yyyy-MM-dd') : '---'}}</span>
                                         <span class="label label-success">{{taskTo.closeDate ? (taskTo.closeDate | date:'h:m a') : ''}}</span>
                                     </td>
                                 </tr>
@@ -241,7 +243,8 @@
                                         {{taskCloseRequest.person.nickname}} / {{taskCloseRequest.person.name}}
                                     </td>
                                     <td class="fit">
-                                        {{taskCloseRequest.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}
+                                        <span ng-show="dateType==='H'">{{taskCloseRequest.date | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{taskCloseRequest.date | date: 'yyyy-MM-dd'}}</span>
                                         <span class="label label-success">{{taskCloseRequest.date | date:'h:m a'}}</span>
                                     </td>
                                     <td>
@@ -259,8 +262,8 @@
                                         {{taskCloseRequest.approved === false ? 'مرفوض' : ''}}
                                     </td>
                                     <td class="fit">
-                                        {{taskCloseRequest.approvedDate ? (taskCloseRequest.approvedDate | kdate:
-                                        'yyyy-mm-dd' : 'ar' :'ummalqura') : '---'}}
+                                        <span ng-show="dateType==='H'">{{taskCloseRequest.approvedDate ? (taskCloseRequest.approvedDate | kdate: 'yyyy-mm-dd' : 'ar' :'ummalqura') : '---'}}</span>
+                                        <span ng-show="dateType==='G'">{{taskCloseRequest.approvedDate ? (taskCloseRequest.approvedDate | date: 'yyyy-MM-dd') : '---'}}</span>
                                         <span class="label label-success">{{taskCloseRequest.approvedDate ? (taskCloseRequest.approvedDate | date:'h:m a') : ''}}</span>
                                     </td>
                                 </tr>
@@ -327,7 +330,8 @@
                                         {{taskWarn.toPerson.name}}
                                     </td>
                                     <td>
-                                        {{taskWarn.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                        <span ng-show="dateType==='H'">{{taskWarn.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{taskWarn.date | date: 'yyyy-MM-dd'}}</span>
                                         <span class="label label-success">{{taskWarn.date | date:'h:m a'}}</span>
                                     </td>
                                     <td>
@@ -401,7 +405,8 @@
                                         {{taskDeduction.toPerson.name}}
                                     </td>
                                     <td>
-                                        {{taskDeduction.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                        <span ng-show="dateType==='H'">{{taskDeduction.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{taskDeduction.date | date: 'yyyy-MM-dd'}}</span>
                                         <span class="label label-success">{{taskDeduction.date | date:'h:m a'}}</span>
                                     </td>
                                     <td>{{taskDeduction.content}}</td>
@@ -472,7 +477,8 @@
                                         {{taskOperation.sender.nickname}} / {{taskOperation.sender.name}}
                                     </td>
                                     <td>
-                                        {{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                        <span ng-show="dateType==='H'">{{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{taskOperation.date | date: 'yyyy-MM-dd'}}</span>
                                         <span class="label label-success">{{taskOperation.date | date:'h:m a'}}</span>
                                     </td>
                                     <td>

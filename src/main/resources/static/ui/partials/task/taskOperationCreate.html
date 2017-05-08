@@ -45,12 +45,16 @@
                             </tr>
                             <tr>
                                 <td>تاريخ الإنشاء</td>
-                                <td>{{taskOperation.task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                <td>
+                                    <span ng-show="dateType==='H'">{{taskOperation.task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                    <span ng-show="dateType==='G'">{{taskOperation.task.startDate | date: 'yyyy-MM-dd'}}</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>تاريخ التسليم</td>
-                                <td>{{taskOperation.task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                <td>
+                                    <span ng-show="dateType==='H'">{{taskOperation.task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                    <span ng-show="dateType==='G'">{{taskOperation.task.endDate | date: 'yyyy-MM-dd'}}</span>
                                 </td>
                             </tr>
                             <tr>

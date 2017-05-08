@@ -47,12 +47,16 @@
                             </tr>
                             <tr>
                                 <td>تاريخ الإنشاء</td>
-                                <td>{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                <td>
+                                    <span ng-show="dateType==='H'">{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                    <span ng-show="dateType==='G'">{{task.startDate | date: 'yyyy-MM-dd'}}</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>تاريخ التسليم</td>
-                                <td>{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                <td>
+                                    <span ng-show="dateType==='H'">{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                    <span ng-show="dateType==='G'">{{task.endDate | date: 'yyyy-MM-dd'}}</span>
                                 </td>
                             </tr>
                             <tr>
@@ -116,7 +120,8 @@
                                         {{taskWarn.toPerson.name}}
                                     </td>
                                     <td st-select-row-custom="taskWarn">
-                                        {{taskWarn.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                        <span ng-show="dateType==='H'">{{taskWarn.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{taskWarn.date | date: 'yyyy-MM-dd'}}</span>
                                         <span class="label label-success">{{taskWarn.date | date:'h:m a'}}</span>
                                     </td>
                                     <td>

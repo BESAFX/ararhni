@@ -47,12 +47,16 @@
                             </tr>
                             <tr>
                                 <td>تاريخ الإنشاء</td>
-                                <td>{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                <td>
+                                    <span ng-show="dateType==='H'">{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                    <span ng-show="dateType==='G'">{{task.startDate | date: 'yyyy-MM-dd'}}</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>تاريخ التسليم</td>
-                                <td>{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                <td>
+                                    <span ng-show="dateType==='H'">{{task.enDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                    <span ng-show="dateType==='G'">{{task.enDate | date: 'yyyy-MM-dd'}}</span>
                                 </td>
                             </tr>
                             <tr>
@@ -118,7 +122,8 @@
                                         {{taskDeduction.toPerson.name}}
                                     </td>
                                     <td st-select-row-custom="taskDeduction">
-                                        {{taskDeduction.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                        <span ng-show="dateType==='H'">{{taskDeduction.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{taskDeduction.date | date: 'yyyy-MM-dd'}}</span>
                                         <span class="label label-success">{{taskDeduction.date | date:'h:m a'}}</span>
                                     </td>
                                     <td>{{taskDeduction.content}}</td>

@@ -58,7 +58,8 @@
                                 {{taskOperation.task.title}}</a></td>
                             <td class="fit">{{taskOperation.sender.nickname}} / {{taskOperation.sender.name}}</td>
                             <td st-select-row-custom="taskOperation">
-                                {{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                <span ng-show="dateType==='H'">{{taskOperation.date | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                <span ng-show="dateType==='G'">{{taskOperation.date | date: 'yyyy-MM-dd'}}</span>
                                 <span class="label label-success">{{taskOperation.date | date:'h:m a'}}</span>
                             </td>
                             <td>

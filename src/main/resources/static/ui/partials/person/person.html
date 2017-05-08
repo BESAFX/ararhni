@@ -97,7 +97,8 @@
             <div class="col-md-12" ng-show="toggleList===1">
                 <div class="panel panel-body">
                     <div class="table-responsive">
-                        <table st-table="collection" st-default-value="1" st-safe-src="persons" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                        <table st-table="collection" st-safe-src="persons"
+                               class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
 
                             <thead>
                             <tr>
@@ -154,7 +155,8 @@
                                 <td st-select-row-custom="person">{{person.mobile}}</td>
                                 <td st-select-row-custom="person">{{person.qualification}}</td>
                                 <td st-select-row-custom="person">
-                                    {{person.lastLoginDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}
+                                    <span ng-show="dateType==='H'">{{person.lastLoginDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                    <span ng-show="dateType==='G'">{{person.lastLoginDate | date: 'yyyy-MM-dd'}}</span>
                                     <span class="label label-success">{{person.lastLoginDate | date:'h:m a'}}</span>
                                 </td>
                                 <td st-select-row-custom="person">{{person.lastLoginLocation}}</td>
@@ -172,28 +174,7 @@
             </div>
 
             <div class="col-md-12" ng-show="toggleList===2">
-                <div st-table="collection" st-default-value="1" st-safe-src="persons">
-                    <div class="form-group col-md-3" ng-repeat="person in collection">
-                        <div class="card-square mdl-card mdl-shadow--2dp">
-                            <div class="mdl-card__title mdl-card--expand title-card">
-                                <h2 class="mdl-card__title-text">{{person.name}}</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                <strong>المؤهل / {{person.qualification}}</strong><br/>
-                                <strong>البريد الإلكتروني / {{person.email}}</strong><br/>
-                                <strong>الجوال / {{person.mobile}}</strong>
-                            </div>
-                            <div class="mdl-card__actions mdl-card--border">
-                                <button ng-click="openUpdateModel(person)" ng-if="contains(authorities, ['ROLE_PERSON_UPDATE'])" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>تعديل</span>
-                                </button>
-                                <button ng-click="delete(person)" ng-if="contains(authorities, ['ROLE_PERSON_DELETE'])" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                                    <span>حذف</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
 
         </div>

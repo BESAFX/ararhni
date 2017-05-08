@@ -8,7 +8,8 @@
             </a>
         </div>
         <div class="mdl-layout__header-row">
-            <button id="menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
+
+            <button id="menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon" style="margin-right: 15px">
                 <i class="material-icons">more_vert</i>
             </button>
             <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
@@ -40,8 +41,59 @@
                     </span>
                 </li>
             </ul>
+
+            <button id="options-menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon"
+                    style="margin-right: 15px">
+                <i class="material-icons">settings_applications</i>
+            </button>
+            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
+                for="options-menu-lower-left">
+                <li class="mdl-list__item mdl-menu__item--full-bleed-divider">
+                    <span>خيارات البرنامج</span>
+                </li>
+                <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                    ng-click="dateType==='H' ? dateType='G' : dateType='H'">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">timer</i>
+                        <span ng-if="dateType==='H'">تطبيق التاريخ الميلادي</span>
+                        <span ng-if="dateType==='G'">تطبيق التاريخ الهجري</span>
+                    </span>
+                </li>
+                <li class="mdl-list__item">
+                    <button href=""
+                            ng-click=""
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">المزيد من الخيارات
+                    </button>
+                </li>
+            </ul>
+
+            <div id="tasks-closed-menu-lower-left" class="material-icons mdl-badge mdl-badge--overlap"
+                 style="margin-right: 15px" data-badge="{{me.tasksClosedThisWeek.length}}">alarm
+            </div>
+            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp"
+                for="tasks-closed-menu-lower-left">
+                <li class="mdl-list__item mdl-menu__item--full-bleed-divider">
+                    <span>لديك {{me.tasksClosedThisWeek.length}} مهمة مغلقة هذا الاسبوع</span>
+                </li>
+                <li ng-repeat="taskClosed in me.tasksClosedThisWeek"
+                    class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                    ng-click="ModalProvider.openTaskDetailsModel(taskClosed)">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">assignment</i>
+                        <span style="text-overflow: ellipsis;white-space: nowrap;width: 200px; overflow: hidden">[{{taskClosed.code}}] {{taskClosed.title}}</span>
+                    </span>
+                </li>
+                <li class="mdl-list__item">
+                    <button href="" ng-click="ModalProvider.openTasksClosedSoonModel()"
+                            class="mdl-button mdl-js-button mdl-js-ripple-effect">طباعة تقرير
+                    </button>
+                </li>
+            </ul>
+
             <div class="mdl-layout-spacer"></div>
+
             <span class="mdl-layout__title">{{pageTitle}}</span>
+
         </div>
         <div class="mdl-layout__header-row" style="height: auto!important;padding: 0px !important;">
             <div class="panel panel-body" style="width: 100%; margin-bottom: 0px !important;">
