@@ -41,7 +41,7 @@
                                     required="required"
                                     ng-disabled="action=='update'"
                                     disable-validation-message=""
-                                    ng-options="(' [ ' + branch.code + ' ] ' + branch.name) group by branch.company.name for branch in branches | orderBy:'code' track by branch.id">
+                                    ng-options="(' [ ' + branch.code + ' ] ' + branch.name) group by branch.region.company.name for branch in branches | orderBy:'code' track by branch.id">
                             </select>
                         </div>
 

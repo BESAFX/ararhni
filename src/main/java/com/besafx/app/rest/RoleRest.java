@@ -6,6 +6,7 @@ import com.besafx.app.entity.Team;
 import com.besafx.app.service.PermissionService;
 import com.besafx.app.service.RoleService;
 import com.besafx.app.service.TeamService;
+import com.besafx.app.ws.Notification;
 import com.besafx.app.ws.NotificationService;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +110,13 @@ public class RoleRest {
             roleService.save(role);
 
         });
+        notificationService.notifyOne(Notification
+                .builder()
+                .title("العمليات على الصلاحيات")
+                .message("تم تهيئة مجموعة الصلاحيات بنجاح")
+                .type("success")
+                .icon("fa-save")
+                .build(), principal.getName());
 
         return roles;
     }

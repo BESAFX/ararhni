@@ -68,7 +68,6 @@ app.controller('teamCreateUpdateCtrl',
             }, 500);
 
             $scope.submit = function () {
-                $rootScope.showNotify("المجموعات", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-shield");
                 for (var i = 0; i < $scope.roles.length; i++) {
                     $scope.roles[i].team = $scope.team;
                 }
@@ -91,14 +90,12 @@ app.controller('teamCreateUpdateCtrl',
                                 }
                             });
                             $scope.from.$setPristine();
-                            $rootScope.showNotify("المجموعات", "تم القيام بالعملية بنجاح، يمكنك اضافة مجموعة اخرى الآن", "success", "fa-shield");
                         });
                         break;
                     case 'update' :
                         RoleService.setUpRoles($scope.roles).then(function (data) {
                             $scope.team = data[0].team;
                             $scope.roles = data;
-                            $rootScope.showNotify("المجموعات", "تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن", "success", "fa-shield");
                         });
                         break;
                 }

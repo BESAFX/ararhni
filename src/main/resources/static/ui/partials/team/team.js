@@ -4,11 +4,9 @@ app.controller("teamCtrl", ['TeamService', 'ModalProvider', '$rootScope', '$scop
         $scope.selected = {};
 
         $scope.fetchTableData = function () {
-            $rootScope.showNotify("المجموعات", "فضلاً انتظر قليلاً حتى الانتهاء من تحميل المجموعات", "warning", "fa-shield");
             TeamService.findAll().then(function (data) {
                 $scope.teams = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showNotify("المجموعات", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-shield");
             });
         };
 
