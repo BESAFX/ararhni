@@ -108,14 +108,14 @@
                             ng-click="fetchTableData()">
                             <span class="mdl-list__item-primary-content">
                                 <i class="material-icons mdl-list__item-icon">visibility</i>
-                                <span>عرض</span>
+                                <span>عرض البيانات</span>
                             </span>
                         </li>
                         <li class="mdl-menu__item mdl-list__item" ng-click="openCreateModel()"
                             ng-if="contains(authorities, ['ROLE_BRANCH_CREATE'])">
                             <span class="mdl-list__item-primary-content">
                                 <i class="material-icons mdl-list__item-icon">add</i>
-                                <span>اضافة</span>
+                                <span>انشاء فرع جديد</span>
                             </span>
                         </li>
                         <li class="mdl-menu__item mdl-list__item" ng-click="openUpdateModel()"
@@ -123,7 +123,7 @@
                             ng-hide="!branches || branches.length==0">
                             <span class="mdl-list__item-primary-content">
                                 <i class="material-icons mdl-list__item-icon">edit</i>
-                                <span>تعديل</span>
+                                <span>تعديل بيانات الفرع</span>
                             </span>
                         </li>
                         <li class="mdl-menu__item mdl-list__item" ng-click="delete()"
@@ -131,7 +131,7 @@
                             ng-hide="!branches || branches.length==0">
                             <span class="mdl-list__item-primary-content">
                                 <i class="material-icons mdl-list__item-icon">delete</i>
-                                <span>حذف</span>
+                                <span>حذف الفرع</span>
                             </span>
                         </li>
                     </ul>

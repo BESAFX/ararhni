@@ -13,7 +13,8 @@
                             ng-click="showBody=='true' ? showBody='false' : showBody='true'">
                             <span>{{showBody=='true' ? 'اخفاء' : 'اظهار'}}</span>
                         </li>
-                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="hideWidget='true'">
+                        <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                            ng-click="hideWidget='true'">
                             <span>حذف</span>
                         </li>
                         <li class="mdl-menu__item mdl-list__item" ng-click="fetchThisDay()">
@@ -25,7 +26,8 @@
                         <li class="mdl-menu__item mdl-list__item" ng-click="fetchThisMonth()">
                             <span>حركات المهام الصادرة هذا الشهر</span>
                         </li>
-                        <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="fetchThisYear()">
+                        <li class="mdl-menu__item mdl-list__item mdl-menu__item--full-bleed-divider"
+                            ng-click="fetchThisYear()">
                             <span>حركات المهام الصادرة هذا العام</span>
                         </li>
                         <li class="mdl-menu__item mdl-list__item" ng-click="refresh()">

@@ -135,7 +135,7 @@
                                     ng-model="company.manager"
                                     required="required"
                                     disable-validation-message=""
-                                    ng-options="person.name for person in persons track by person.id">
+                                    ng-options="person.nickname + ' / ' + person.name for person in persons | orderBy:'name' track by person.id">
                             </select>
                         </div>
 
@@ -147,8 +147,14 @@
                 <div class="panel panel-info">
                     <div class="panel-heading">الشعار الرسمي</div>
                     <div class="panel-body">
-                        <input type="file" nv-file-select="" uploader="uploader"/>
-                        <img ng-src="{{logoLink}}" style="width: 100%; height: 400px"/>
+                        <input type="file" nv-file-select="" uploader="uploader" accept="image/*"/>
+                        <img ng-src="{{logoLink}}" style="width: 100%; height: 100%"/>
+                        <div ng-show="uploader.queue.length > 0" ng-hide="uploader.queue[0].isSuccess">
+                            <div class="progress" style="margin-bottom: 0;">
+                                <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                     ng-style="{ 'width': uploader.queue[0].progress + '%' }"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

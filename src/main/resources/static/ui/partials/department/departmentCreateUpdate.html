@@ -29,7 +29,7 @@
                     <div class="panel-body">
 
                         <div class="form-group text-right col-xs-12 col-sm-6 col-md-12 col-lg-12">
-                            <label for="branch" class="control-label">الفرع</label>
+                            <label for="branch" class="control-label">[{قم الفرع] اسم الفرع</label>
                             <select id="branch"
                                     data-placeholder="ابحث عن الفرع"
                                     no-results-text="'لا توجد بيانات توافق بحثك'"
@@ -41,7 +41,7 @@
                                     required="required"
                                     ng-disabled="action=='update'"
                                     disable-validation-message=""
-                                    ng-options="branch.name group by branch.company.name for branch in branches track by branch.id">
+                                    ng-options="(' [ ' + branch.code + ' ] ' + branch.name) group by branch.company.name for branch in branches | orderBy:'code' track by branch.id">
                             </select>
                         </div>
 
@@ -56,7 +56,7 @@
                                     ng-model="department.manager"
                                     required="required"
                                     disable-validation-message=""
-                                    ng-options="person.name for person in persons track by person.id">
+                                    ng-options="person.nickname + ' / ' + person.name for person in persons | orderBy:'name' track by person.id">
                             </select>
                         </div>
 
