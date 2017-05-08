@@ -101,7 +101,7 @@ public class TaskRest {
                 .title("العمليات على المهام")
                 .message("تم اضافة مهمة جديدة رقم " + task.getCode() + " بنجاح")
                 .type("success")
-                .icon("fa-black-tie")
+                .icon("fa-plus-circle")
                 .build(), principal.getName());
         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewTask.html");
         String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
@@ -136,7 +136,7 @@ public class TaskRest {
                     .title("العمليات على المهام")
                     .message("تم تعديل بيانات المهمة رقم " + task.getCode() + " بنجاح")
                     .type("success")
-                    .icon("fa-black-tie")
+                    .icon("fa-edit")
                     .build(), principal.getName());
             return task;
         }

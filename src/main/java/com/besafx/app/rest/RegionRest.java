@@ -48,7 +48,7 @@ public class RegionRest {
                 .title("العمليات على المناطق")
                 .message("تم اضافة منطقة جديدة بنجاح")
                 .type("success")
-                .icon("fa-map-marker")
+                .icon("fa-plus-circle")
                 .build(), principal.getName());
         return region;
     }
@@ -66,7 +66,7 @@ public class RegionRest {
                     .title("العمليات على المناطق")
                     .message("تم تعديل بيانات المنطقة بنجاح")
                     .type("success")
-                    .icon("fa-map-marker")
+                    .icon("fa-edit")
                     .build(), principal.getName());
             return region;
         } else {

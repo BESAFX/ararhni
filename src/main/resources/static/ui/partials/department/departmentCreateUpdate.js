@@ -29,19 +29,16 @@ app.controller('departmentCreateUpdateCtrl', ['DepartmentService', 'BranchServic
         $scope.action = action;
 
         $scope.submit = function () {
-            $rootScope.showNotify("الاقسام", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-sitemap");
             switch ($scope.action) {
                 case 'create' :
                     DepartmentService.create($scope.department).then(function (data) {
                         $scope.department = {};
                         $scope.form.$setPristine();
-                        $rootScope.showNotify("الاقسام", "تم القيام بالعملية بنجاح، يمكنك اضافة قسم آخر الآن", "success", "fa-sitemap");
                     });
                     break;
                 case 'update' :
                     DepartmentService.update($scope.department).then(function (data) {
                         $scope.department = data;
-                        $rootScope.showNotify("الاقسام", "تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن", "success", "fa-sitemap");
                     });
                     break;
             }

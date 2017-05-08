@@ -49,7 +49,7 @@ public class BranchRest {
                 .title("العمليات على الفروع")
                 .message("تم اضافة فرع جديد بنجاح")
                 .type("success")
-                .icon("fa-cubes")
+                .icon("fa-plus-circle")
                 .build(), principal.getName());
         return branch;
     }
@@ -67,7 +67,7 @@ public class BranchRest {
                     .title("العمليات على الفروع")
                     .message("تم تعديل بيانات الفرع بنجاح")
                     .type("success")
-                    .icon("fa-cubes")
+                    .icon("fa-edit")
                     .build(), principal.getName());
             return branch;
         } else {

@@ -42,15 +42,8 @@ public class ReportModelRest {
                 .title("العمليات على نماذج الطباعة")
                 .message("تم اضافة النموذج الجديد بنجاح")
                 .type("success")
-                .icon("fa-print")
+                .icon("fa-plus-circle")
                 .build(), me.getEmail());
-//        notificationService.notifyAllExceptMe(Notification
-//                .builder()
-//                .title("العمليات على نماذج الطباعة")
-//                .message("تم اضافة نموذج جديد بواسطة " +  personService.findByEmail(principal.getName()).getName())
-//                .type("warning")
-//                .icon("fa-print")
-//                .build());
         return reportModel;
     }
 
@@ -67,15 +60,8 @@ public class ReportModelRest {
                     .title("العمليات على نماذج الطباعة")
                     .message("تم تعديل بيانات النموذج بنجاح")
                     .type("success")
-                    .icon("fa-print")
+                    .icon("fa-edit")
                     .build(), principal.getName());
-//            notificationService.notifyAllExceptMe(Notification
-//                    .builder()
-//                    .title("العمليات على نماذج الطباعة")
-//                    .message("تم تعديل بيانات نموذج"  +  " بواسطة " + me.getName())
-//                    .type("warning")
-//                    .icon("fa-print")
-//                    .build());
             return reportModel;
         } else {
             return null;

@@ -4,11 +4,9 @@ app.controller("employeeCtrl", ['EmployeeService', 'ModalProvider', 'FileService
         $scope.selected = {};
 
         $scope.fetchTableData = function () {
-            $rootScope.showNotify("الموظفين", "فضلاً انتظر قليلاً حتى الانتهاء من تحميل الموظفين", "warning", "fa-user-circle");
             EmployeeService.fetchTableData().then(function (data) {
                 $scope.employees = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showNotify("الموظفين", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-user-circle");
             })
         };
 

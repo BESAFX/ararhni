@@ -21,19 +21,16 @@ app.controller('companyCreateUpdateCtrl', ['CompanyService', 'PersonService', 'F
         $scope.action = action;
 
         $scope.submit = function () {
-            $rootScope.showNotify("الشركات", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-bank");
             switch ($scope.action) {
                 case 'create' :
                     CompanyService.create($scope.company).then(function (data) {
                         $scope.company = {};
                         $scope.form.$setPristine();
-                        $rootScope.showNotify("الشركات", "تم القيام بالعملية بنجاح، يمكنك اضافة شركة آخرى الآن", "success", "fa-bank");
                     });
                     break;
                 case 'update' :
                     CompanyService.update($scope.company).then(function (data) {
                         $scope.company = data;
-                        $rootScope.showNotify("الشركات", "تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن", "success", "fa-bank");
                     });
                     break;
             }

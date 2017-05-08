@@ -60,7 +60,7 @@ public class TaskToRest {
                 .title("العمليات على المهام")
                 .message("تم اضافة التكليف الجديد بنجاح")
                 .type("success")
-                .icon("fa-black-tie")
+                .icon("fa-plus-circle")
                 .build(), principal.getName());
         ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewTask.html");
         String email = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
@@ -101,7 +101,7 @@ public class TaskToRest {
                 .title("العمليات على المهام")
                 .message("تمت العملية بنجاح.")
                 .type("success")
-                .icon("fa-hourglass-2")
+                .icon("fa-edit")
                 .build(), principal.getName());
         return taskTo;
     }

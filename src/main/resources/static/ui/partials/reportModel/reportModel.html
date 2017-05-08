@@ -45,25 +45,25 @@
         </div>
         <div class="mdl-layout__header-row" style="height: auto!important;padding: 0px !important;">
             <div class="panel panel-body" style="width: 100%; margin-bottom: 0px !important;">
-                <div class="col-md-2 full-width-menu pull-right">
+                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 pull-right">
                     <button id="menu-lower-right" style="width: 100%;" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
                         <span>العمليات</span>
                     </button>
                     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="menu-lower-right">
-                        <li class="mdl-menu__item" ng-click="reload()">
+                        <li class="mdl-menu__item mdl-list__item" ng-click="reload()">
                             <span>تحديث</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="fetchTableData()">
+                        <li class="mdl-menu__item mdl-list__item" ng-click="fetchTableData()">
                             <span>عرض</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="openCreateModel()">
+                        <li class="mdl-menu__item mdl-list__item" ng-click="openCreateModel()">
                             <span>اضافة</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="openUpdateModel()"
+                        <li class="mdl-menu__item mdl-list__item" ng-click="openUpdateModel()"
                             ng-hide="!reportModels || reportModels.length==0">
                             <span>تعديل</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="remove()"
+                        <li class="mdl-menu__item mdl-list__item" ng-click="remove()"
                             ng-hide="!reportModels || reportModels.length==0">
                             <span>حذف</span>
                         </li>
@@ -80,7 +80,7 @@
             <div class="col-md-12">
                 <div class="panel panel-body">
                     <div class="table-responsive">
-                        <table st-table="collection" st-default-value="1" st-safe-src="reportModels"
+                        <table st-table="collection" st-safe-src="reportModels"
                                class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                             <thead>
                             <tr>

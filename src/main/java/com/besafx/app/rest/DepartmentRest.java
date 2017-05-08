@@ -48,7 +48,7 @@ public class DepartmentRest {
                 .title("العمليات على الأقسام")
                 .message("تم اضافة قسم جديد بنجاح")
                 .type("success")
-                .icon("fa-sitemap")
+                .icon("fa-plus-circle")
                 .build(), principal.getName());
         return department;
     }
@@ -66,7 +66,7 @@ public class DepartmentRest {
                     .title("العمليات على الأقسام")
                     .message("تم تعديل بيانات القسم بنجاح")
                     .type("success")
-                    .icon("fa-sitemap")
+                    .icon("fa-edit")
                     .build(), principal.getName());
             return department;
         } else {

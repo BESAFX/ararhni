@@ -9,28 +9,29 @@
                     </button>
                     <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
                         for="close-requests-menu-lower-left">
-                        <li class="mdl-menu__item" ng-click="showBody=='true' ? showBody='false' : showBody='true'">
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="showBody=='true' ? showBody='false' : showBody='true'">
                             <span>{{showBody=='true' ? 'اخفاء' : 'اظهار'}}</span>
                         </li>
                         <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="hideWidget='true'">
                             <span>حذف</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="fetchThisDay()">
+                        <li class="mdl-menu__item mdl-list__item" ng-click="fetchThisDay()">
                             <span>طلبات اليوم</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="fetchThisWeek()">
+                        <li class="mdl-menu__item mdl-list__item" ng-click="fetchThisWeek()">
                             <span>طلبات الاسبوع</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="fetchThisMonth()">
+                        <li class="mdl-menu__item mdl-list__item" ng-click="fetchThisMonth()">
                             <span>طلبات الشهر</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="fetchThisYear()">
+                        <li class="mdl-menu__item mdl-list__item" ng-click="fetchThisYear()">
                             <span>طلبات العام</span>
                         </li>
                         <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="fetchAllTime()">
                             <span>كل الطلبات</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="refresh()">
+                        <li class="mdl-menu__item mdl-list__item" ng-click="refresh()">
                             <span>تحديث البيانات</span>
                         </li>
                     </ul>

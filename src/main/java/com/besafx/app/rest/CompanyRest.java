@@ -48,7 +48,7 @@ public class CompanyRest {
                 .title("العمليات على الشركات")
                 .message("تم اضافة شركة جديدة بنجاح")
                 .type("success")
-                .icon("fa-fort-awesome")
+                .icon("fa-plus-circle")
                 .build(), principal.getName());
         return company;
     }
@@ -66,7 +66,7 @@ public class CompanyRest {
                     .title("العمليات على الشركات")
                     .message("تم تعديل بيانات الشركة بنجاح")
                     .type("success")
-                    .icon("fa-fort-awesome")
+                    .icon("fa-edit")
                     .build(), principal.getName());
             return company;
         } else {

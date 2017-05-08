@@ -41,15 +41,8 @@ public class TeamRest {
                 .title("العمليات على المجموعات")
                 .message("تم اضافة مجموعة صلاحيات جديدة بنجاح")
                 .type("success")
-                .icon("fa-shield")
+                .icon("fa-plus-circle")
                 .build(), principal.getName());
-//        notificationService.notifyAllExceptMe(Notification
-//                .builder()
-//                .title("العمليات على المجموعات")
-//                .message("تم اضافة مجموعة صلاحيات جديدة بواسطة " +  personService.findByEmail(principal.getName()).getName())
-//                .type("warning")
-//                .icon("fa-shield")
-//                .build());
         return team;
     }
 
@@ -65,15 +58,8 @@ public class TeamRest {
                     .title("العمليات على مجموعات المستخدمين")
                     .message("تم تعديل بيانات المجموعة بنجاح")
                     .type("success")
-                    .icon("fa-shield")
+                    .icon("fa-edit")
                     .build(), principal.getName());
-//            notificationService.notifyAllExceptMe(Notification
-//                    .builder()
-//                    .title("العمليات على مجموعات المستخدمين")
-//                    .message("تم تعديل بيانات المجموعة " + team.getName() +  " بواسطة " + personService.findByEmail(principal.getName()).getName())
-//                    .type("warning")
-//                    .icon("fa-shield")
-//                    .build());
             return team;
         } else {
             return null;

@@ -7,25 +7,26 @@
                         <i class="material-icons">more_vert</i>
                     </button>
                     <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="incoming-tasks-menu-lower-left">
-                        <li class="mdl-menu__item" ng-click="showBody=='true' ? showBody='false' : showBody='true'">
+                        <li class="mdl-menu__item mdl-list__item"
+                            ng-click="showBody=='true' ? showBody='false' : showBody='true'">
                             <span>{{showBody=='true' ? 'اخفاء' : 'اظهار'}}</span>
                         </li>
                         <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="hideWidget='true'">
                             <span>حذف</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="fetchOpened()">
+                        <li class="mdl-menu__item mdl-list__item" ng-click="fetchOpened()">
                             <span>جميع الواردة السارية</span>
                         </li>
                         <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="fetchClosed()">
                             <span>جميع الواردة المغلقة</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="openTasksOperationsReportModel()">
+                        <li class="mdl-menu__item mdl-list__item" ng-click="openTasksOperationsReportModel()">
                             <span>تقرير عن الحركات</span>
                         </li>
                         <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" ng-click="openReportTasksModel()">
                             <span>تقرير مختصر عن المهام</span>
                         </li>
-                        <li class="mdl-menu__item" ng-click="refresh()">
+                        <li class="mdl-menu__item mdl-list__item" ng-click="refresh()">
                             <span>تحديث البيانات</span>
                         </li>
                     </ul>

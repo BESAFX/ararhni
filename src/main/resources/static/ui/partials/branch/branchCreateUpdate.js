@@ -34,19 +34,16 @@ app.controller('branchCreateUpdateCtrl', ['BranchService', 'PersonService', 'Reg
         $scope.action = action;
 
         $scope.submit = function () {
-            $rootScope.showNotify("الفروع", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-cubes");
             switch ($scope.action) {
                 case 'create' :
                     BranchService.create($scope.branch).then(function (data) {
                         $scope.branch = {};
                         $scope.form.$setPristine();
-                        $rootScope.showNotify("الفروع", "تم القيام بالعملية بنجاح، يمكنك اضافة فرع آخر الآن", "success", "fa-cubes");
                     });
                     break;
                 case 'update' :
                     BranchService.update($scope.branch).then(function (data) {
                         $scope.branch = data;
-                        $rootScope.showNotify("الفروع", "تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن", "success", "fa-cubes");
                     });
                     break;
             }

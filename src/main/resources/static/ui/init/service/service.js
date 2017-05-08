@@ -13,7 +13,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'companyCreateUpdateCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 title: function () {
                     return 'اضافة شركة جديدة';
@@ -37,7 +37,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'companyCreateUpdateCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 title: function () {
                     return 'تعديل بيانات شركة';
@@ -117,7 +117,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'branchCreateUpdateCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 title: function () {
                     return 'اضافة فرع جديد';
@@ -141,7 +141,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'branchCreateUpdateCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 title: function () {
                     return 'تعديل بيانات فرع';
@@ -272,7 +272,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'personCreateUpdateCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 title: function () {
                     return 'اضافة مستخدم جديد';
@@ -296,7 +296,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'personCreateUpdateCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 title: function () {
                     return 'تعديل بيانات مستخدم';
@@ -325,7 +325,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'teamCreateUpdateCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 title: function () {
                     return 'اضافة مجموعة جديدة';
@@ -349,7 +349,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'teamCreateUpdateCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 title: function () {
                     return 'تعديل بيانات مجموعة';
@@ -424,7 +424,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'taskDetailsCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 task: function () {
                     return task;
@@ -442,7 +442,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'taskWarnsCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 task: function () {
                     return task;
@@ -460,7 +460,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'taskDeductionsCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 task: function () {
                     return task;
@@ -587,7 +587,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'taskOperationCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 task: function () {
                     return task;
@@ -814,7 +814,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'reportModelCreateUpdateCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 title: function () {
                     return 'اضافة نموذج طباعة جديد';
@@ -838,7 +838,7 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
             controller: 'reportModelCreateUpdateCtrl',
             backdrop: 'static',
             keyboard: false,
-            windowClass: 'xlg',
+            size: 'lg',
             resolve: {
                 title: function () {
                     return 'تعديل بيانات نموذج طباعة';

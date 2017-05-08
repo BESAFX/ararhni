@@ -2,35 +2,33 @@
       focus-group-head="loop" focus-group-tail="loop">
 
     <div class="modal-header">
-        <h3 class="modal-title text-center" id="modal-title">{{title}}</h3>
+        <a class="pull-left" href="" ng-click="cancel()">
+            <span class="fa fa-close fa-2x"></span>
+        </a>
+        <h3 class="panel-title mdl-list__item pull-right">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">{{action==='create' ? 'add' : 'edit'}}</i>
+                <strong>{{title}}</strong>
+            </span>
+        </h3>
     </div>
 
     <div class="modal-body" id="modal-body">
 
         <div class="row">
 
-            <div class="form-group text-right col-md-12" ng-show="form.$invalid && form.$submitted">
+            <div class="text-right col-xs-12 col-sm-6 col-md-12 col-lg-12" ng-show="form.$invalid && form.$submitted">
                 <div class="alert alert-danger" role="alert">
                     <strong>فضلاً اكمل الحقول المطلوبة</strong>
                 </div>
             </div>
 
-            <div class="col-sm-6">
-                <div class="panel panel-info">
-                    <div class="panel-heading">الشعار الرسمي</div>
-                    <div class="panel-body">
-                        <input type="file" nv-file-select="" uploader="uploader"/>
-                        <img ng-src="{{logoLink}}" style="width: 100%; height: 400px"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                 <div class="panel panel-info">
                     <div class="panel-heading">البيانات الاساسية</div>
                     <div class="panel-body">
 
-                        <div class="form-group text-right col-md-12">
+                        <div class="form-group text-right col-xs-12 col-sm-6 col-md-12 col-lg-12">
                             <label for="name" class="control-label">اسم الشركة</label>
                             <input id="name"
                                    type="text"
@@ -42,7 +40,7 @@
                                    ng-model="company.name">
                         </div>
 
-                        <div class="form-group text-right col-md-12">
+                        <div class="form-group text-right col-xs-12 col-sm-6 col-md-12 col-lg-12">
                             <label for="address" class="control-label">العنوان</label>
                             <input id="address"
                                    type="text"
@@ -54,7 +52,7 @@
                                    ng-model="company.address">
                         </div>
 
-                        <div class="form-group text-right col-md-12">
+                        <div class="form-group text-right col-xs-12 col-sm-6 col-md-12 col-lg-12">
                             <label for="phone" class="control-label">الهاتف</label>
                             <input id="phone"
                                    type="text"
@@ -66,7 +64,7 @@
                                    ng-model="company.phone">
                         </div>
 
-                        <div class="form-group text-right col-md-12">
+                        <div class="form-group text-right col-xs-12 col-sm-6 col-md-12 col-lg-12">
                             <label for="mobile" class="control-label">الجوال</label>
                             <input id="mobile"
                                    type="text"
@@ -78,7 +76,7 @@
                                    ng-model="company.mobile">
                         </div>
 
-                        <div class="form-group text-right col-md-12">
+                        <div class="form-group text-right col-xs-12 col-sm-6 col-md-12 col-lg-12">
                             <label for="fax" class="control-label">الفاكس</label>
                             <input id="fax"
                                    type="text"
@@ -90,7 +88,7 @@
                                    ng-model="company.fax">
                         </div>
 
-                        <div class="form-group text-right col-md-12">
+                        <div class="form-group text-right col-xs-12 col-sm-6 col-md-12 col-lg-12">
                             <label for="email" class="control-label">البريد الإلكتروني</label>
                             <input id="email"
                                    type="email"
@@ -102,7 +100,7 @@
                                    ng-model="company.email">
                         </div>
 
-                        <div class="form-group text-right col-md-12">
+                        <div class="form-group text-right col-xs-12 col-sm-6 col-md-12 col-lg-12">
                             <label for="website" class="control-label">الموقع الرسمي</label>
                             <input id="website"
                                    type="text"
@@ -114,7 +112,7 @@
                                    ng-model="company.website">
                         </div>
 
-                        <div class="form-group text-right col-md-12">
+                        <div class="form-group text-right col-xs-12 col-sm-6 col-md-12 col-lg-12">
                             <label for="commericalRegisteration" class="control-label">السجل التجاري</label>
                             <input id="commericalRegisteration"
                                    type="text"
@@ -126,7 +124,7 @@
                                    ng-model="company.commericalRegisteration">
                         </div>
 
-                        <div class="form-group text-right col-md-12">
+                        <div class="form-group text-right col-xs-12 col-sm-6 col-md-12 col-lg-12">
                             <label for="person" class="control-label"> المدير</label>
                             <select id="person"
                                     data-placeholder="ابحث عن حساب المستخدم من خلال الاسم"
@@ -145,39 +143,53 @@
                 </div>
             </div>
 
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="panel panel-info">
+                    <div class="panel-heading">الشعار الرسمي</div>
+                    <div class="panel-body">
+                        <input type="file" nv-file-select="" uploader="uploader"/>
+                        <img ng-src="{{logoLink}}" style="width: 100%; height: 400px"/>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>
 
     <div class="modal-footer">
 
-        <div class="form-group col-md-12" role="group">
-            <button type="button"
-                    focus-index="5"
+        <div class="row">
+            <button ng-if="action=='create'"
+                    uib-tooltip="اضافة"
+                    tooltip-append-to-body="true"
+                    focus-index="8"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">add</i>
+            </button>
+            <button ng-if="action=='update'"
+                    uib-tooltip="تعديل"
+                    tooltip-append-to-body="true"
+                    focus-index="9"
+                    type="submit"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">edit</i>
+            </button>
+            <button uib-tooltip="مسح الحقول"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine()"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="خروج"
+                    tooltip-append-to-body="true"
+                    focus-index="11"
+                    type="button"
                     ng-click="cancel()"
-                    class="btn btn-danger pull-left">
-                <span>خروج</span>
-                <i class="fa fa-power-off  fa-lg"></i>
-            </button>
-            <button type="reset"
-                    focus-index="4"
-                    class="btn btn-info pull-left">
-                <span>مسح الحقول</span>
-                <i class="fa fa-recycle  fa-lg"></i>
-            </button>
-            <button ng-show="action=='update'"
-                    type="submit"
-                    focus-index="3"
-                    class="btn btn-warning pull-right">
-                <span>تعديل</span>
-                <i class="fa fa-edit fa-lg"></i>
-            </button>
-            <button ng-show="action=='create'"
-                    type="submit"
-                    focus-index="2"
-                    class="btn btn-success pull-right">
-                <span>اضافة</span>
-                <i class="fa fa-plus-square fa-lg"></i>
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
             </button>
         </div>
 

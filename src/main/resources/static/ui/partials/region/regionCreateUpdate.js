@@ -29,19 +29,16 @@ app.controller('regionCreateUpdateCtrl', ['RegionService', 'PersonService', 'Com
         $scope.action = action;
 
         $scope.submit = function () {
-            $rootScope.showNotify("المناطق", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-map-marker");
             switch ($scope.action) {
                 case 'create' :
                     RegionService.create($scope.region).then(function (data) {
                         $scope.region = {};
                         $scope.form.$setPristine();
-                        $rootScope.showNotify("المناطق", "تم القيام بالعملية بنجاح، يمكنك اضافة فرع آخر الآن", "success", "fa-map-marker");
                     });
                     break;
                 case 'update' :
                     RegionService.update($scope.region).then(function (data) {
                         $scope.region = data;
-                        $rootScope.showNotify("المناطق", "تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن", "success", "fa-map-marker");
                     });
                     break;
             }

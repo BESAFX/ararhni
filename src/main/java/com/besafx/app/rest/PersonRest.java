@@ -67,7 +67,7 @@ public class PersonRest {
                 .title("العمليات على حسابات المستخدمين")
                 .message("تم اضافة مستخدم جديد بنجاح")
                 .type("success")
-                .icon("fa-user")
+                .icon("fa-plus-circle")
                 .build(), principal.getName());
         return person;
     }
@@ -90,7 +90,7 @@ public class PersonRest {
                     .title("العمليات على حسابات المستخدمين")
                     .message("تم تعديل بيانات الحساب بنجاح")
                     .type("success")
-                    .icon("fa-user")
+                    .icon("fa-edit")
                     .build(), principal.getName());
             return person;
         } else {

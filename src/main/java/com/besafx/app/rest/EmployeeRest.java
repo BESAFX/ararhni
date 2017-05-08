@@ -53,7 +53,7 @@ public class EmployeeRest {
                 .title("العمليات على الموظفين")
                 .message("تم اضافة موظف جديد بنجاح")
                 .type("success")
-                .icon("fa-user-circle")
+                .icon("fa-plus-circle")
                 .build(), principal.getName());
         return employee;
     }
@@ -76,7 +76,7 @@ public class EmployeeRest {
                     .title("العمليات على الموظفين")
                     .message("تم تعديل بيانات الموظف بنجاح")
                     .type("success")
-                    .icon("fa-user-circle")
+                    .icon("fa-edit")
                     .build(), principal.getName());
             return employee;
         } else {
