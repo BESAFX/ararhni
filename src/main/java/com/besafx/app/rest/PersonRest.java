@@ -182,7 +182,7 @@ public class PersonRest {
         return authentication.getAuthorities().stream().map(item -> item.getAuthority()).collect(Collectors.toList());
     }
 
-    @RequestMapping("findHiddenPassword/{email}")
+    @RequestMapping("findHiddenPassword/{email:.+}")
     @ResponseBody
     public String findHiddenPassword(@PathVariable(value = "email") String email, Authentication authentication) {
         if (authentication.isAuthenticated()) {
