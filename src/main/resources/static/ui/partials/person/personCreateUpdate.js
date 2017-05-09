@@ -1,16 +1,10 @@
 app.controller('personCreateUpdateCtrl', ['TeamService', 'PersonService', 'FileUploader', 'FileService', '$scope', '$rootScope', '$timeout', '$log', '$uibModalInstance', 'title', 'action', 'person',
     function (TeamService, PersonService, FileUploader, FileService, $scope, $rootScope, $timeout, $log, $uibModalInstance, title, action, person) {
 
-        $scope.fetchTeamData = function () {
-            TeamService.findAll().then(function (data) {
-                $scope.teams = data;
-                $rootScope.showNotify("حسابات المستخدمين", "تم تحميل بيانات المجموعات بنجاح", "success", "fa-user");
-            });
-        };
-
         $timeout(function () {
-            $rootScope.showNotify("حسابات المستخدمين", "جاري تحميل بيانات المجموعات، فضلاَ انتظر قليلاً", "warning", "fa-user");
-            $scope.fetchTeamData();
+            TeamService.findAllSummery().then(function (data) {
+                $scope.teams = data;
+            });
         }, 2000);
 
         if (person) {
@@ -29,19 +23,16 @@ app.controller('personCreateUpdateCtrl', ['TeamService', 'PersonService', 'FileU
         $scope.action = action;
 
         $scope.submit = function () {
-            $rootScope.showNotify("حسابات المستخدمين", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-user");
             switch ($scope.action) {
                 case 'create' :
                     PersonService.create($scope.person).then(function (data) {
                         $scope.person = {};
                         $scope.from.$setPristine();
-                        $rootScope.showNotify("حسابات المستخدمين", "تم القيام بالعملية بنجاح، يمكنك اضافة حساب مستخدم آخر الآن", "success", "fa-user");
                     });
                     break;
                 case 'update' :
                     PersonService.update($scope.person).then(function (data) {
                         $scope.person = data;
-                        $rootScope.showNotify("حسابات المستخدمين", "تم القيام بالعملية بنجاح، يمكنك متابعة عملك الآن", "success", "fa-user");
                     });
                     break;
             }
@@ -58,7 +49,6 @@ app.controller('personCreateUpdateCtrl', ['TeamService', 'PersonService', 'FileU
         uploader.filters.push({
             name: 'syncFilter',
             fn: function (item, options) {
-                console.log('syncFilter');
                 return this.queue.length < 10;
             }
         });
@@ -66,7 +56,6 @@ app.controller('personCreateUpdateCtrl', ['TeamService', 'PersonService', 'FileU
         uploader.filters.push({
             name: 'asyncFilter',
             fn: function (item, options, deferred) {
-                console.log('asyncFilter');
                 setTimeout(deferred.resolve, 1e3);
             }
         });

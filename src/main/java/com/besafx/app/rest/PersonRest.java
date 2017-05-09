@@ -75,6 +75,7 @@ public class PersonRest {
     @RequestMapping(value = "update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_PERSON_UPDATE') or hasRole('ROLE_PROFILE_UPDATE')")
+    @JsonView(Views.Summery.class)
     public Person update(@RequestBody Person person, Principal principal) {
         Person object = personService.findOne(person.getId());
         if (object != null) {

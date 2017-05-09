@@ -31,45 +31,61 @@ public class Person implements Serializable {
     @JsonView(Views.Summery.class)
     private String nickname;
 
+    @JsonView(Views.Summery.class)
     private String address;
 
+    @JsonView(Views.Summery.class)
     private String mobile;
 
+    @JsonView(Views.Summery.class)
     private String nationality;
 
+    @JsonView(Views.Summery.class)
     private String identityNumber;
 
+    @JsonView(Views.Summery.class)
     private String photo;
 
+    @JsonView(Views.Summery.class)
     private String qualification;
 
     @JsonView(Views.Summery.class)
     private String email;
 
+    @JsonView(Views.Summery.class)
     private String password;
 
+    @JsonView(Views.Summery.class)
     private Boolean enabled;
 
+    @JsonView(Views.Summery.class)
     private Boolean tokenExpired;
 
+    @JsonView(Views.Summery.class)
     private String optionThemeName;
 
+    @JsonView(Views.Summery.class)
     private Boolean active;
 
     @JsonIgnore
     private String hiddenPassword;
 
+    @JsonView(Views.Summery.class)
     private Date lastLoginDate;
 
+    @JsonView(Views.Summery.class)
     private String lastLoginLocation;
 
+    @JsonView(Views.Summery.class)
     private String ipAddress;
 
+    @JsonView(Views.Summery.class)
     private String hostName;
 
     @ManyToOne
     @JoinColumn(name = "Team")
     @JsonIgnoreProperties(value = {"persons"}, allowSetters = true)
+    @JsonView(Views.Summery.class)
     private Team team;
 
     @OneToMany(mappedBy = "manager", fetch = FetchType.LAZY)
@@ -88,6 +104,7 @@ public class Person implements Serializable {
     private List<Employee> employees = new ArrayList<>();
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonView(Views.Summery.class)
     private Date lastUpdate;
 
     @JsonCreator

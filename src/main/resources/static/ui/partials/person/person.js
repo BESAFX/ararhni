@@ -4,11 +4,9 @@ app.controller("personCtrl", ['PersonService', 'ModalProvider', 'FileService', '
         $scope.selected = {};
 
         $scope.fetchTableData = function () {
-            $rootScope.showNotify("حسابات المستخدمين", "فضلاً انتظر قليلاً حتى الانتهاء من تحميل حسابات المستخدمين", "warning", "fa-user");
-            PersonService.findAll().then(function (data) {
+            PersonService.findAllSummery().then(function (data) {
                 $scope.persons = data;
                 $scope.setSelected(data[0]);
-                $rootScope.showNotify("حسابات المستخدمين", "تم الانتهاء من تحميل البيانات المطلوبة بنجاح، يمكنك متابعة عملك الآن", "success", "fa-user");
             });
         };
 
