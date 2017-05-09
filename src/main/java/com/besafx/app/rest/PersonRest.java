@@ -182,6 +182,21 @@ public class PersonRest {
         return authentication.getAuthorities().stream().map(item -> item.getAuthority()).collect(Collectors.toList());
     }
 
+    @RequestMapping("findHiddenPassword/{email}")
+    @ResponseBody
+    public String findHiddenPassword(@PathVariable(value = "email") String email, Authentication authentication) {
+        if (authentication.isAuthenticated()) {
+            Person person = personService.findByEmail(email);
+            if (person != null) {
+                return person.getHiddenPassword();
+            } else {
+                return "تأكد من البريد الإلكتروني، يجب أن يكون مسجلاً";
+            }
+        } else {
+            return "غير مصرح لك";
+        }
+    }
+
     @RequestMapping(value = "countPersonsByTeam/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Integer countPersonsByTeam(@PathVariable(value = "id") Long id) {
