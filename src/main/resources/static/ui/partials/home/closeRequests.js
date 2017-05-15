@@ -139,7 +139,7 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
                     ModalProvider.openTaskClosedModel(data).result.then(function (data) {
                         if (data) {
                             TaskService.acceptRequest(taskCloseRequest.id).then(function (data) {
-                                $scope.fetchThisDay();
+                                $scope.refresh();
                             });
                         }
                     });
@@ -149,7 +149,7 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
                     ModalProvider.openTaskExtensionModel(data).result.then(function (data) {
                         if (data) {
                             TaskService.acceptRequest(taskCloseRequest.id).then(function (data) {
-                                $scope.fetchThisDay();
+                                $scope.refresh();
                             });
                         }
                     });
@@ -161,16 +161,24 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
             if (taskCloseRequest.type) {
                 $rootScope.showConfirmNotify("المهام", "هل تود رفض طلب الإغلاق فعلاً؟", "error", "fa-black-tie", function () {
                     TaskService.declineRequest(taskCloseRequest.id).then(function (data) {
-                        $scope.fetchThisDay();
+                        $scope.refresh();
                     });
                 });
             } else {
                 $rootScope.showConfirmNotify("المهام", "هل تود رفض طلب التمديد فعلاً؟", "error", "fa-black-tie", function () {
                     TaskService.declineRequest(taskCloseRequest.id).then(function (data) {
-                        $scope.fetchThisDay();
+                        $scope.refresh();
                     });
                 });
             }
+        };
+
+        $scope.closeTaskCompletely = function (taskCloseRequest) {
+            $rootScope.showConfirmNotify("المهام", "هل تود إغلاق المهمة نهائياً ونقلها إلى الارشيف فعلاً؟", "error", "fa-black-tie", function () {
+                TaskService.closeTaskCompletely(taskCloseRequest.task.id).then(function (data) {
+                    $scope.refresh();
+                });
+            });
         };
 
         $scope.refresh = function () {
