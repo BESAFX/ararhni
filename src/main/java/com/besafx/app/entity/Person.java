@@ -101,6 +101,7 @@ public class Person implements Serializable {
     private List<Department> departments = new ArrayList<>();
 
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+    @JsonView(Views.Summery.class)
     private List<Employee> employees = new ArrayList<>();
 
     @Temporal(TemporalType.TIMESTAMP)

@@ -87,10 +87,17 @@ public class EmployeeRest {
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_EMPLOYEE_DELETE')")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id, Principal principal) {
         Employee object = employeeService.findOne(id);
         if (object != null) {
-            throw new CustomException("لا يمكنك حذف هذا الموظف");
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title("العمليات على الأقسام")
+                    .message("تم حذف الموظف بنجاح")
+                    .type("success")
+                    .icon("fa-trash")
+                    .build(), principal.getName());
+            employeeService.delete(object);
         }
     }
 

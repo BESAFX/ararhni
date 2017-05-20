@@ -77,12 +77,19 @@ public class DepartmentRest {
     @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_DEPARTMENT_DELETE')")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id, Principal principal) {
         Department object = departmentService.findOne(id);
         if (object != null) {
             if (!object.getEmployees().isEmpty()) {
                 throw new CustomException("لا يمكنك حذف هذا القسم، حيث انه مرتبط بالموظفين.");
             }
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title("العمليات على الأقسام")
+                    .message("تم حذف القسم بنجاح")
+                    .type("success")
+                    .icon("fa-trash")
+                    .build(), principal.getName());
             departmentService.delete(id);
         }
     }

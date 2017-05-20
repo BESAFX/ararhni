@@ -40,7 +40,7 @@
                         ng-required="action=='create'"
                         disable-validation-message=""
                         focus-autofocus="1"
-                        ng-options="person.name for person in persons track by person.id">
+                        ng-options="'فرع ' + ' [ ' + person.employees[0].department.branch.name + ' ] ' + ' قسم ' + ' [ ' + person.employees[0].department.name + ' ] ' + person.nickname + ' / ' + person.name for person in persons track by person.id">
                 </select>
             </div>
 
