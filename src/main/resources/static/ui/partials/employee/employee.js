@@ -41,10 +41,10 @@ app.controller("employeeCtrl", ['EmployeeService', 'ModalProvider', 'FileService
 
         $scope.delete = function (employee) {
             if (employee) {
-                EmployeeService.remove(employee);
+                EmployeeService.remove(employee.id);
                 return;
             }
-            EmployeeService.remove($scope.selected);
+            EmployeeService.remove($scope.selected.id);
         };
 
         $scope.rowMenu = [
