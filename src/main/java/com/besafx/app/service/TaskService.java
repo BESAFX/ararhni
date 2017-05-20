@@ -1,9 +1,7 @@
 package com.besafx.app.service;
-
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Temporal;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
@@ -17,9 +15,7 @@ import java.util.List;
 @Transactional
 public interface TaskService extends PagingAndSortingRepository<Task, Long>, JpaSpecificationExecutor<Task> {
 
-    @Query("select max(code) from Task")
-    Integer findMaxCode();
-
+    Task findTopByOrderByCodeDesc();
     List<Task> findByPerson(Person person);
     List<Task> findByEndDateBetween(@Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
     List<Task> findByCloseTypeAndEndDateBetween(Task.CloseType closeType, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);

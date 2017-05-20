@@ -80,7 +80,6 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
 
         $scope.fetchAllTime = function () {
             $scope.viewType = 'جميع طلبات الإغلاق/التمديد';
-            // $rootScope.showNotify("الرئيسية", "جاري تحميل جميع طلبات الإغلاق/التمديد، فضلاً انتظر قليلاً", "warning", "fa-dashboard");
             var search = [];
             search.push('taskPersonId=');
             search.push($scope.me.id);
@@ -90,7 +89,6 @@ app.controller("closeRequestsCtrl", ['$scope', '$rootScope', '$timeout', 'TaskSe
             search.push('&');
             TaskCloseRequestService.filter(search.join("")).then(function (data) {
                 $scope.closeRequests = data;
-                // $rootScope.showNotify("الرئيسية", "تم تحميل جميع طلبات الإغلاق/التمديد بنجاح", "success", "fa-dashboard");
                 $timeout(function () {
                     window.componentHandler.upgradeAllRegistered();
                 }, 500);

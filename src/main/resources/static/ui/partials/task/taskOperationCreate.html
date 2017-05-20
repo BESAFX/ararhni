@@ -166,10 +166,9 @@
                                         </div>
                                     </td>
                                     <td class="text-center">
-                                        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                                        <span ng-show="item.isCancel"><i
-                                                class="glyphicon glyphicon-ban-circle"></i></span>
-                                        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                        <span ng-show="item.isSuccess"><i class="fa fa-check-square-o"></i></span>
+                                        <span ng-show="item.isCancel"><i class="fa fa-ban"></i></span>
+                                        <span ng-show="item.isError"><i class="fa fa-times"></i></span>
                                     </td>
                                     <td class="fit">
                                         <button type="button"
@@ -177,18 +176,18 @@
                                                 ng-click="item.upload()"
                                                 ng-disabled="item.isReady || item.isUploading || item.isSuccess">
                                             <span>رفع</span>
-                                            <span class="glyphicon glyphicon-upload"></span>
+                                            <i class="fa fa-upload"></i>
                                         </button>
                                         <button type="button"
                                                 class="btn btn-warning btn-xs"
                                                 ng-click="item.cancel()"
                                                 ng-disabled="!item.isUploading">
                                             <span>إلغاء</span>
-                                            <span class="glyphicon glyphicon-ban-circle"></span>
+                                            <i class="fa fa-ban"></i>
                                         </button>
                                         <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
                                             <span>حذف</span>
-                                            <span class="glyphicon glyphicon-trash"></span>
+                                            <i class="fa fa-trash"></i>
                                         </button>
                                     </td>
                                 </tr>

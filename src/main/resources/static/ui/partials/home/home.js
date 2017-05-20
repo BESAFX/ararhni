@@ -7,7 +7,6 @@ app.controller("homeCtrl", ['$scope', '$rootScope', '$timeout', 'TaskService', '
 
         ReportModelService.findAll().then(function (data) {
             $scope.reportModels = data;
-            // $rootScope.showNotify("الرئيسية", "تم تحميل نماذج الطباعة بنجاح", "success", "fa-dashboard");
         });
 
         $scope.delete = function (task) {

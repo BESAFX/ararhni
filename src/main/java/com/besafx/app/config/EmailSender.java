@@ -102,7 +102,7 @@ public class EmailSender {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
             /////
             BodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setContent(content, "text/html");
+            messageBodyPart.setContent(content, "text/html; charset=UTF-8");
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
             ListIterator<FileSystemResource> fileSystemResourceListIterator = files.listIterator();
@@ -163,7 +163,7 @@ public class EmailSender {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
             /////
             BodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setContent(content, "text/html");
+            messageBodyPart.setContent(content, "text/html; charset=UTF-8");
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
             ListIterator<FileSystemResource> fileSystemResourceListIterator = files.listIterator();

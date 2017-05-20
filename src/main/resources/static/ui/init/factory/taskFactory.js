@@ -11,8 +11,8 @@ app.factory("TaskService",
                     return response.data;
                 });
             },
-            create: function (task) {
-                return $http.post("/api/task/create", task).then(function (response) {
+            create: function (task, personsList, single) {
+                return $http.post("/api/task/create?personsList=" + personsList + "&single=" + single, task).then(function (response) {
                     return response.data;
                 });
             },

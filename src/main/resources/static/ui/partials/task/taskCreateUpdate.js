@@ -9,45 +9,35 @@ app.controller('taskCreateUpdateCtrl', ['TaskService', 'PersonService', '$scope'
 
         $scope.buffer = {};
 
-        $scope.toPersonList = [];
+        $scope.buffer.structure = {};
 
-        $scope.fetchPersonData = function () {
-            $rootScope.showNotify("المهام", "جاري تحميل حسابات الموظفين، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
-            PersonService.findPersonUnderMeSummery().then(function (data) {
-                $scope.persons = data;
-                $rootScope.showNotify("المهام", "تم التحميل بنجاح، يمكنك متابعة عملك الآن", "success", "fa-black-tie");
-            })
-        };
+        $scope.buffer.toPersonList = [];
 
         if (action === 'create') {
             $timeout(function () {
-                $scope.fetchPersonData();
+                PersonService.findPersonUnderMeSummery().then(function (data) {
+                    $scope.persons = data;
+                })
             }, 1500);
         }
 
         $scope.submit = function () {
-            $rootScope.showNotify("المهام", "جاري القيام بالعملية، فضلاً انتظر قليلاً", "warning", "fa-black-tie");
             switch ($scope.action) {
                 case 'create' :
-                    var taskTos = [];
-                    for (var i = 0; i < $scope.toPersonList.length; i++) {
-                        var taskTo = {};
-                        taskTo.person = $scope.toPersonList[i];
-                        taskTos.push(taskTo);
+                    var personsList = [];
+                    for (var i = 0; i < $scope.buffer.toPersonList.length; i++) {
+                        personsList[i] = $scope.buffer.toPersonList[i].id;
                     }
-                    $scope.task.taskTos = taskTos;
-                    TaskService.create($scope.task).then(function (data) {
+                    TaskService.create($scope.task, personsList, $scope.buffer.structure).then(function (data) {
                         $scope.task = {};
                         if ($scope.form) {
                             $scope.form.$setPristine();
                         }
-                        $rootScope.showNotify("المهام", "تم اضافة المهمة بنجاح، يمكنك القيام بعملية آخرى الآن", "success", "fa-black-tie");
                     });
                     break;
                 case 'update' :
                     TaskService.update($scope.task).then(function (data) {
                         $scope.task = data;
-                        $rootScope.showNotify("المهام", "تم تعديل بيانات المهمة بنجاح، يمكنك القيام بعملية آخرى الآن", "success", "fa-black-tie");
                     });
                     break;
             }

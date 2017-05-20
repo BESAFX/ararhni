@@ -89,8 +89,8 @@ public class TaskCloseRequestRest {
 
             ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/TaskCloseRequest.html");
             String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
-            message = message.replaceAll("TASK_CODE", taskCloseRequest.getTask().getCode().toString());
-            message = message.replaceAll("TASK_CLOSE_REQUEST_PERSON", person.getName());
+            message = message.replaceAll("TASK_CODE", " [ " + taskCloseRequest.getTask().getCode() + " ] " + taskCloseRequest.getTask().getTitle());
+            message = message.replaceAll("TASK_CLOSE_REQUEST_PERSON", person.getNickname() + " / " + person.getName());
             message = message.replaceAll("TASK_CLOSE_REQUEST_NOTE", taskCloseRequest.getNote());
             emailSender.send((taskCloseRequest.getType() ? "طلب إغلاق إلى المهمة رقم: " : "طلب تمديد للمهمة رقم: ") + "(" + taskCloseRequest.getTask().getCode() + ")" + " - " + person.getName(), message, taskCloseRequest.getTask().getPerson().getEmail());
 

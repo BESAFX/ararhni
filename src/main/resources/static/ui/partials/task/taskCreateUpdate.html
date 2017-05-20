@@ -36,10 +36,10 @@
                         class="form-control text-right"
                         chosen=""
                         multiple
-                        ng-model="toPersonList"
+                        ng-model="buffer.toPersonList"
                         ng-required="action=='create'"
                         disable-validation-message=""
-                        focus-index="1"
+                        focus-autofocus="1"
                         ng-options="person.name for person in persons track by person.id">
                 </select>
             </div>
@@ -47,17 +47,33 @@
             <div class="form-group text-right col-xs-12 col-sm-12 col-md-12" ng-if="action==='update'">
                 <label for="code" class="control-label"> رقم المهمة </label>
                 <input id="code"
-                       focus-index="2"
                        type="text"
                        class="form-control text-right"
                        readonly
                        ng-model="task.code">
             </div>
 
-            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="structure" class="control-label">
+                    <span>نوع المهمة</span>
+                    <span class="fa fa-info-circle" tooltip-append-to-body="true"
+                          uib-tooltip="المقصود بالمشتركة هو ان المهمة ستكون واحدة برقم موحد لكل المكلفين، اما المنفردة فسيتم فيها انشاء مهمة لكل موظف برقم مختلف"></span>
+                </label>
+                <select id="structure"
+                        placeholder="اختر نوع المهمة"
+                        class="form-control text-right"
+                        required="required"
+                        disable-validation-message=""
+                        ng-model="buffer.structure">
+                    <option value="true">منفردة</option>
+                    <option value="false">مشتركة</option>
+                </select>
+            </div>
+
+
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <label for="title" class="control-label"> عنوان المهمة </label>
                 <input id="title"
-                       focus-index="2"
                        type="text"
                        class="form-control text-right"
                        required="required"
@@ -65,11 +81,10 @@
                        ng-model="task.title">
             </div>
 
-            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12">
-                <label for="note" class="control-label">تفاصيل المهمة</label>
-                <textarea id="note"
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label for="content" class="control-label">تفاصيل المهمة</label>
+                <textarea id="content"
                           type="text"
-                          focus-index="3"
                           msd-elastic="\n"
                           required="required"
                           class="form-control text-right"
@@ -81,7 +96,7 @@
 
             <div class="form-group row">
 
-                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6"
+                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6 col-lg-6"
                      ng-init="action==='create' ? (task.commentType='Day') : ''">
                     <label for="commentType" class="control-label">
                         <span>فترة السماح للتعليق</span>
@@ -91,21 +106,19 @@
                             class="form-control text-right"
                             required="required"
                             disable-validation-message=""
-                            ng-model="task.commentType"
-                            focus-index="4">
+                            ng-model="task.commentType">
                         <option value="Day">يومياً</option>
                         <option value="Week">اسبوعياً</option>
                         <option value="Month">شهرياً</option>
                     </select>
                 </div>
 
-                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6"
+                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6 col-lg-6"
                      ng-init="action==='create' ? (task.commentTypeCount = 1) : ''">
                     <label for="commentTypeCount" class="control-label">{{task.commentType==='Day' ? 'الحد الأقصى لعدد
                         الأيام دون تعليق' : (task.commentType==='Week' ? 'الحد الأقصى لعدد الاسابيع دون تعليق' : 'الحد
                         الأقصى لعدد الشهور دون تعليق')}}</label>
                     <input id="commentTypeCount"
-                           focus-index="5"
                            type="number"
                            ng-min="1"
                            class="form-control text-right"
@@ -113,10 +126,11 @@
                            disable-validation-message=""
                            ng-model="task.commentTypeCount">
                 </div>
+
             </div>
 
             <div class="form-group row">
-                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6"
+                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6 col-lg-6"
                      ng-init="action==='create' ? (task.importance='Regular') : ''">
                     <label for="importance" class="control-label">
                         <span>درجة الأهمية</span>
@@ -126,18 +140,16 @@
                             class="form-control text-right"
                             required="required"
                             disable-validation-message=""
-                            ng-model="task.importance"
-                            focus-index="4">
+                            ng-model="task.importance">
                         <option value="Regular">عادية</option>
                         <option value="Important">متوسطة</option>
                         <option value="Critical">عاجلة</option>
                     </select>
                 </div>
 
-                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6">
+                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6 col-lg-6">
                     <label for="warn" class="control-label"> الحد الأقصى للتحذيرات </label>
                     <input id="warn"
-                           focus-index="5"
                            type="number"
                            min="0"
                            class="form-control text-right"
@@ -145,15 +157,16 @@
                            disable-validation-message=""
                            ng-model="task.warn">
                 </div>
+
             </div>
 
-            <div class="form-group row">
-                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6">
+            <div class="row">
+
+                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6 col-lg-6">
                     <label for="deduction" class="control-label"> مقدار الحسم عند الوصول للحد الاقصي للتحذيرات </label>
                     <div dir="ltr" class="input-group" id="deduction">
                         <span class="input-group-addon">ريال</span>
-                        <input focus-index="6"
-                               dir="rtl"
+                        <input dir="rtl"
                                type="number"
                                min="0"
                                required="required"
@@ -163,13 +176,13 @@
                     </div>
                 </div>
 
-                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6">
+
+                <div class="form-group text-right col-xs-12 col-sm-12 col-md-6 col-lg-6">
                     <label for="deductionOnAutoClose" class="control-label"> مقدار الحسم عند إغلاق المهمة
                         تلقائياً </label>
                     <div dir="ltr" class="input-group" id="deductionOnAutoClose">
                         <span class="input-group-addon">ريال</span>
-                        <input focus-index="7"
-                               dir="rtl"
+                        <input dir="rtl"
                                type="number"
                                min="0"
                                required="required"
@@ -178,25 +191,30 @@
                                ng-model="task.deductionOnAutoClose">
                     </div>
                 </div>
+
             </div>
 
-            <div class="form-group text-right col-xs-12 col-sm-12 col-sm-12" ng-if="action==='create'">
-                <label for="endDate" class="control-label">تاريخ التسليم</label>
-                <div dir="ltr" class="input-group">
-                    <input dir="rtl"
-                           id="endDate"
-                           type="text"
-                           class="form-control text-right is-calendarPicker"
-                           ng-model="task.endDate"
-                           required="required"
-                           calendarType="ummalqura"
-                           language="en"
-                           dateFormat="yyyy/mm/dd"
-                           showOnFocus="false"
-                           readonly="readonly"
-                           kdatepicker
-                           disable-validation-message="">
+            <div class="row">
+
+                <div class="form-group text-right col-xs-12 col-sm-12 col-sm-12" ng-if="action==='create'">
+                    <label for="endDate" class="control-label">تاريخ التسليم</label>
+                    <div dir="ltr" class="input-group">
+                        <input dir="rtl"
+                               id="endDate"
+                               type="text"
+                               class="form-control text-right is-calendarPicker"
+                               ng-model="task.endDate"
+                               required="required"
+                               calendarType="ummalqura"
+                               language="en"
+                               dateFormat="yyyy/mm/dd"
+                               showOnFocus="false"
+                               readonly="readonly"
+                               kdatepicker
+                               disable-validation-message="">
+                    </div>
                 </div>
+
             </div>
 
         </div>
@@ -209,7 +227,6 @@
             <button ng-if="action=='create'"
                     uib-tooltip="اضافة"
                     tooltip-append-to-body="true"
-                    focus-index="8"
                     type="submit"
                     class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
                 <i class="material-icons">add</i>
@@ -217,7 +234,6 @@
             <button ng-if="action=='update'"
                     uib-tooltip="تعديل"
                     tooltip-append-to-body="true"
-                    focus-index="9"
                     type="submit"
                     class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
                 <i class="material-icons">edit</i>
@@ -231,7 +247,6 @@
             </button>
             <button uib-tooltip="خروج"
                     tooltip-append-to-body="true"
-                    focus-index="11"
                     type="button"
                     ng-click="cancel()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">

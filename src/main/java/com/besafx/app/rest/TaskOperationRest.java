@@ -18,15 +18,18 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/taskOperation/")
@@ -97,19 +100,21 @@ public class TaskOperationRest {
                 .type("success")
                 .icon("fa-black-tie")
                 .build(), person.getName());
-//        ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewOperation.html");
-//        String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
-//        message = message.replaceAll("OPERATION_SENDER", taskOperation.getSender().getName());
-//        message = message.replaceAll("OPERATION_CODE", taskOperation.getCode().toString());
-//        message = message.replaceAll("OPERATION_DATE", DateConverter.getHijriStringFromDateRTL(taskOperation.getDate()));
-//        message = message.replaceAll("OPERATION_CONTENT", taskOperation.getContent());
-//        message = message.replaceAll("TASK_CODE", taskOperation.getTask().getCode().toString());
-//        message = message.replaceAll("TASK_TITLE", taskOperation.getTask().getTitle());
-//        message = message.replaceAll("TASK_PERSON", taskOperation.getTask().getPerson().getName());
-//
-//        if (taskOperation.getSender().getId().longValue() != taskOperation.getTask().getPerson().getId().longValue()) {
-//            emailSender.send("حركة جديدة على المهمة رقم: " + "(" + taskOperation.getTask().getCode() + ")", message, taskOperation.getTask().getPerson().getEmail());
-//        }
+        ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewOperation.html");
+        String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+        message = message.replaceAll("OPERATION_SENDER", taskOperation.getSender().getName());
+        message = message.replaceAll("OPERATION_CODE", taskOperation.getCode().toString());
+        message = message.replaceAll("OPERATION_DATE", DateConverter.getHijriStringFromDateRTL(taskOperation.getDate()));
+        message = message.replaceAll("OPERATION_CONTENT", taskOperation.getContent());
+        message = message.replaceAll("TASK_CODE", taskOperation.getTask().getCode().toString());
+        message = message.replaceAll("TASK_TITLE", taskOperation.getTask().getTitle());
+        message = message.replaceAll("TASK_PERSON", taskOperation.getTask().getPerson().getName());
+        log.info("إرسال حركة جهة التكليف إلى كل المكلفين...");
+        if (taskOperation.getSender().getId().longValue() == taskOperation.getTask().getPerson().getId().longValue()) {
+            emailSender.send("تعليق من جهة التكليف على المهمة المكلف بها رقم" + " [ " + taskOperation.getTask().getCode() + " ] ",
+                    message,
+                    taskOperation.getTask().getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()));
+        }
         return taskOperation;
     }
 

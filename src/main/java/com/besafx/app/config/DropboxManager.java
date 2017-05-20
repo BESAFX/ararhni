@@ -3,6 +3,7 @@ package com.besafx.app.config;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.sharing.SharedLinkMetadata;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -22,6 +23,7 @@ public class DropboxManager {
     private final Logger log = LoggerFactory.getLogger(DropboxManager.class);
     private DbxRequestConfig config;
 
+    @Getter
     private DbxClientV2 client;
 
     @PostConstruct
@@ -90,15 +92,15 @@ public class DropboxManager {
         try {
             log.info("Trying to share file from path: " + path);
             log.info("Sleeping for 5 seconds...");
-            Thread.sleep(5000);
+            //Thread.sleep(5000);
             metadata = client.sharing().createSharedLinkWithSettings(path);
             link = metadata.getUrl().replaceAll("dl=0", "raw=1");
         } catch (Exception ex) {
-            log.error(ex.getMessage(), ex);
+            log.info(ex.getMessage());
             try {
                 link = client.sharing().listSharedLinksBuilder().withPath(path).withDirectOnly(true).start().getLinks().get(0).getUrl().replaceAll("dl=0", "raw=1");
             } catch (Exception ex_) {
-                log.error(ex_.getMessage(), ex_);
+                log.info(ex_.getMessage());
             }
         }
         return new AsyncResult<>(link);

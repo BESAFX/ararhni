@@ -23,7 +23,7 @@ var app = angular.module('Application',
         'ui.bootstrap.contextMenu',
         'kdate',
         'ui.sortable',
-        'timer'
+        'timer',
     ]);
 
 app.factory('errorInterceptor', ['$q', '$rootScope', '$location', '$log',

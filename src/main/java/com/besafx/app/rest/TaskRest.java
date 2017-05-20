@@ -22,13 +22,14 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/task/")
@@ -72,30 +73,38 @@ public class TaskRest {
     @Autowired
     private PersonRest personRest;
 
-    @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_TASK_CREATE')")
-    public Task create(@RequestBody Task task, Principal principal) throws IOException {
+    public synchronized void create(
+            @RequestBody Task task,
+            @RequestParam(value = "personsList") List<Long> personsList,
+            @RequestParam(value = "single") Boolean single,
+            Principal principal) throws IOException {
         Person person = personService.findByEmail(principal.getName());
-        Integer maxCode = taskService.findMaxCode();
-        if (maxCode == null) {
+        if (single) {
+            createSingle(task, personsList, principal, person);
+        } else {
+            createShare(task, personsList, principal, person);
+        }
+    }
+
+    private void createShare(Task task, List<Long> personsList, Principal principal, Person person) throws IOException {
+        log.info("المهمة المشتركة هي التى تجمع بين عدة موظفين");
+        Task topTask = taskService.findTopByOrderByCodeDesc();
+        if (topTask == null) {
             task.setCode(1);
         } else {
-            task.setCode(maxCode + 1);
+            task.setCode(topTask.getCode() + 1);
         }
         task.setStartDate(new Date());
         task.setEndDate(new DateTime(task.getEndDate()).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(59).toDate());
         task.setCloseType(Task.CloseType.Pending);
         task.setPerson(person);
         task = taskService.save(task);
-        ListIterator<TaskTo> listIterator = task.getTaskTos().listIterator();
-        while (listIterator.hasNext()) {
-            TaskTo taskTo = listIterator.next();
-            taskTo.setTask(task);
-            taskTo.setProgress(0);
-            taskTo.setClosed(false);
-            taskToService.save(taskTo);
-        }
         notificationService.notifyOne(Notification
                 .builder()
                 .title("العمليات على المهام")
@@ -103,15 +112,81 @@ public class TaskRest {
                 .type("success")
                 .icon("fa-plus-circle")
                 .build(), principal.getName());
-        ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewTask.html");
-        String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
-        message = message.replaceAll("TASK_CODE", task.getCode().toString());
-        message = message.replaceAll("TASK_TITLE", task.getTitle());
-        message = message.replaceAll("TASK_CONTENT", task.getContent());
-        message = message.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
-        message = message.replaceAll("TASK_PERSON", task.getPerson().getName());
-        emailSender.send("مهمة جديدة رقم: " + "(" + task.getCode() + ")", message, task.getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()));
-        return task;
+        ListIterator<Long> listIterator = personsList.listIterator();
+        while (listIterator.hasNext()) {
+            Person toPerson = personService.findOne(listIterator.next());
+            TaskTo taskTo = new TaskTo();
+            taskTo.setTask(task);
+            taskTo.setProgress(0);
+            taskTo.setClosed(false);
+            taskTo.setPerson(toPerson);
+            taskToService.save(taskTo);
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title("العمليات على المهام")
+                    .message("تم إرسال التكليف الى الموظف  / " + toPerson.getName() + " بنجاح")
+                    .type("success")
+                    .icon("fa-plus-circle")
+                    .build(), principal.getName());
+            ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewTask.html");
+            String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+            message = message.replaceAll("TASK_CODE", task.getCode().toString());
+            message = message.replaceAll("TASK_TITLE", task.getTitle());
+            message = message.replaceAll("TASK_CONTENT", task.getContent());
+            message = message.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
+            message = message.replaceAll("TASK_PERSON", task.getPerson().getName());
+            emailSender.send("مهمة جديدة رقم: " + "(" + task.getCode() + ")", message, toPerson.getEmail());
+        }
+    }
+
+    private void createSingle(Task task, List<Long> personsList, Principal principal, Person person) throws IOException {
+        log.info("المهمة المنفردة تعني انشاء كل مهمة لكل فرد على حدا بارقام مختلفة");
+        ListIterator<Long> listIterator = personsList.listIterator();
+        while (listIterator.hasNext()) {
+            Person toPerson = personService.findOne(listIterator.next());
+            Task topTask = taskService.findTopByOrderByCodeDesc();
+            if (topTask == null) {
+                task.setCode(1);
+            } else {
+                task.setCode(topTask.getCode() + 1);
+            }
+            entityManager.detach(task);
+            task.setId(null);
+            task.setStartDate(new Date());
+            task.setEndDate(new DateTime(task.getEndDate()).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(59).toDate());
+            task.setCloseType(Task.CloseType.Pending);
+            task.setPerson(person);
+            task = taskService.save(task);
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title("العمليات على المهام")
+                    .message("تم اضافة مهمة جديدة رقم " + task.getCode() + " بنجاح")
+                    .type("success")
+                    .icon("fa-plus-circle")
+                    .build(), principal.getName());
+            log.info("توجية المهمة الى الموظف");
+            TaskTo taskTo = new TaskTo();
+            taskTo.setTask(task);
+            taskTo.setProgress(0);
+            taskTo.setClosed(false);
+            taskTo.setPerson(toPerson);
+            taskToService.save(taskTo);
+            notificationService.notifyOne(Notification
+                    .builder()
+                    .title("العمليات على المهام")
+                    .message("تم إرسال التكليف الى الموظف  / " + toPerson.getName() + " بنجاح")
+                    .type("success")
+                    .icon("fa-plus-circle")
+                    .build(), principal.getName());
+            ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/NewTask.html");
+            String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
+            message = message.replaceAll("TASK_CODE", task.getCode().toString());
+            message = message.replaceAll("TASK_TITLE", task.getTitle());
+            message = message.replaceAll("TASK_CONTENT", task.getContent());
+            message = message.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
+            message = message.replaceAll("TASK_PERSON", task.getPerson().getName());
+            emailSender.send("مهمة جديدة رقم: " + "(" + task.getCode() + ")", message, toPerson.getEmail());
+        }
     }
 
     @RequestMapping(value = "update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

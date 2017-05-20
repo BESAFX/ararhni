@@ -1,5 +1,6 @@
 package com.besafx.app.controller;
 import com.besafx.app.config.CustomException;
+import com.besafx.app.config.EmailSender;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskDeduction;
@@ -9,23 +10,29 @@ import com.besafx.app.search.TaskSearch;
 import com.besafx.app.service.*;
 import com.besafx.app.util.DateConverter;
 import com.besafx.app.util.WrapperUtil;
+import com.google.common.collect.Lists;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @RestController
@@ -56,6 +63,9 @@ public class ReportTaskController {
 
     @Autowired
     private TaskCloseRequestService taskCloseRequestService;
+
+    @Autowired
+    private EmailSender emailSender;
 
     @RequestMapping(value = "/report/TaskOperations", method = RequestMethod.GET, produces = "application/pdf")
     @ResponseBody
@@ -256,6 +266,54 @@ public class ReportTaskController {
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
         JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+    }
+
+    @RequestMapping(value = "/report/email/IncomingTasksDeductions", method = RequestMethod.GET, produces = "application/pdf")
+    @ResponseBody
+    public void EmailIncomingTasksDeductions(
+            @RequestParam(value = "personList") List<Long> personList,
+            @RequestParam(value = "closeType", required = false) Task.CloseType closeType,
+            @RequestParam(value = "startDate", required = false) Long startDate,
+            @RequestParam(value = "endDate", required = false) Long endDate,
+            @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "message", required = false) String message) throws JRException, IOException, ExecutionException, InterruptedException {
+        if (personList.isEmpty()) {
+            throw new CustomException("فضلاً اختر موظف واحد على الاقل.");
+        }
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        StringBuilder param1 = new StringBuilder();
+        param1.append("المعهد الأهلي العالي للتدريب");
+        param1.append("\n");
+        param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
+        param1.append("\n");
+        if (startDate != null && endDate != null) {
+            param1.append("تقرير مختصر بخصومات المهام الواردة إلى الموظفين");
+            param1.append(" ");
+            param1.append("من الفترة " + " ( " + DateConverter.getHijriStringFromDateLTR(startDate) + " ) ");
+            param1.append(" ");
+            param1.append("إلى الفترة " + " ( " + DateConverter.getHijriStringFromDateLTR(endDate) + " ) ");
+        } else {
+            param1.append("تقرير مختصر بخصومات المهام الواردة إلى الموظفين");
+        }
+        map.put("title", param1.toString());
+        List<WrapperUtil> list = initIncomingTasksDeductionsList(personList, closeType, startDate, endDate);
+        map.put("list", list);
+        log.info("عدد العناصر يساوي: " + list.size());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/task/IncomingTasksDeductions.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+        String randomFileName = "IncomingTasksDeductions-" + ThreadLocalRandom.current().nextInt(1, 50000);
+        log.info("جاري إنشاء ملف التقرير: " + randomFileName);
+        File reportFile = File.createTempFile(randomFileName, ".pdf");
+        FileUtils.writeByteArrayToFile(reportFile, bytes);
+        Future<Boolean> mail = emailSender.send(title, "<strong dir=\"rtl\" style=\"text-align: center; color: red\">" + message + "</strong>", email, Lists.newArrayList(new FileSystemResource(reportFile)));
+        mail.get();
+        log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
     }
 
     @RequestMapping(value = "/report/TasksClosedSoon", method = RequestMethod.GET, produces = "application/pdf")

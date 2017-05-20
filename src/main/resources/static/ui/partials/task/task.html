@@ -532,6 +532,30 @@
                     <div class="panel panel-success">
 
                         <div class="panel-heading">
+                            <ul class="panel-controls pull-left" style="margin-top: 2px;">
+                                <li>
+                                    <a href="" ng-click="openCreateWarnModel()"
+                                       ng-show="tasks.length > 0"
+                                       ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                       tooltip-append-to-body="true"
+                                       uib-tooltip="ارسال تحذير">
+                                        <span class="fa fa-bell-o"></span>
+                                    </a>
+                                    <a href="" ng-click="openCreateDeductionModel()"
+                                       ng-show="tasks.length > 0"
+                                       ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                       tooltip-append-to-body="true"
+                                       uib-tooltip="ارسال خصم">
+                                        <span class="fa fa-bomb"></span>
+                                    </a>
+                                    <a href="" ng-click="openExtensionModel()" tooltip-append-to-body="true"
+                                       ng-show="tasks.length > 0"
+                                       ng-if="task.person.id===me.id || me.id===me.manager.id"
+                                       uib-tooltip="تمديد المهمة">
+                                        <span class="fa fa-battery-full"></span>
+                                    </a>
+                                </li>
+                            </ul>
                             <h3 class="panel-title pull-right">
                                 <span class="fa fa-tasks"></span>
                                 <span>المهام</span>
@@ -637,8 +661,19 @@
                         <div class="panel-heading">
                             <ul class="panel-controls pull-left" style="margin-top: 2px;">
                                 <li>
-                                    <a href="" ng-click="findTaskOperations()" uib-tooltip="تحديث">
+                                    <a href=""
+                                       ng-show="tasks.length > 0"
+                                       ng-click="findTaskOperations()"
+                                       tooltip-append-to-body="true"
+                                       uib-tooltip="تحديث">
                                         <span class="fa fa-refresh fa-lg"></span>
+                                    </a>
+                                    <a href=""
+                                       ng-show="tasks.length > 0"
+                                       ng-click="openCreateOperationModel()"
+                                       tooltip-append-to-body="true"
+                                       uib-tooltip="اضافة حركة">
+                                        <span class="fa fa-clock-o"></span>
                                     </a>
                                 </li>
                             </ul>
@@ -719,7 +754,11 @@
                         <div class="panel-heading">
                             <ul class="panel-controls pull-left" style="margin-top: 2px;">
                                 <li>
-                                    <a href="" ng-click="findTaskCloseRequests()" uib-tooltip="تحديث">
+                                    <a href=""
+                                       ng-show="tasks.length > 0"
+                                       ng-click="findTaskCloseRequests()"
+                                       tooltip-append-to-body="true"
+                                       uib-tooltip="تحديث">
                                         <span class="fa fa-refresh fa-lg"></span>
                                     </a>
                                 </li>
@@ -730,7 +769,7 @@
                             </h3>
                         </div>
 
-                        <div class="panel-body">
+                        <div class="panel-body" style="padding: 0px;">
                             <div class="Container" style="padding-bottom: 0px !important;">
                                 <div class="Middle">
                                     <div class="row">

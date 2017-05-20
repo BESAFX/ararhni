@@ -1,5 +1,5 @@
-app.controller('incomingTasksDeductionsCtrl', ['$scope', '$rootScope', '$timeout', '$uibModalInstance', 'PersonService',
-    function ($scope, $rootScope, $timeout, $uibModalInstance, PersonService) {
+app.controller('incomingTasksDeductionsCtrl', ['$scope', '$rootScope', '$timeout', '$uibModalInstance', 'PersonService', '$http',
+    function ($scope, $rootScope, $timeout, $uibModalInstance, PersonService, $http) {
 
         $scope.buffer = {};
 
@@ -33,7 +33,38 @@ app.controller('incomingTasksDeductionsCtrl', ['$scope', '$rootScope', '$timeout
                 search.push('&');
             }
 
-            window.open('/report/IncomingTasksDeductions?' + search.join(""));
+            switch ($scope.action) {
+                case 'view':
+                    window.open('/report/IncomingTasksDeductions?' + search.join(""));
+                    break;
+                case 'download':
+                    $http.get('/report/IncomingTasksDeductions?' + search.join(""), {responseType: 'arraybuffer'}).then(function (response) {
+                        var blob = new Blob([response.data], {type: 'application/pdf'});
+                        saveAs(blob, 'Report.pdf');
+                    });
+                    break;
+                case 'send':
+                    if ($scope.buffer.email) {
+                        search.push('email=');
+                        search.push($scope.buffer.email);
+                        search.push('&');
+                    }
+                    if ($scope.buffer.title) {
+                        search.push('title=');
+                        search.push($scope.buffer.title);
+                        search.push('&');
+                    }
+                    if ($scope.buffer.message) {
+                        search.push('message=');
+                        search.push($scope.buffer.message);
+                        search.push('&');
+                    }
+                    $rootScope.showNotify("المهام", "فضلاً انتظر قليلا حتى يتم اعداد التقرير وارساله الى البريد المدخل...", "warning", "fa-black-tie");
+                    $http.get('/report/email/IncomingTasksDeductions?' + search.join("")).then(function (response) {
+                        $rootScope.showNotify("المهام", "تم ارسال المهمة بنجاح", "success", "fa-black-tie");
+                    });
+                    break;
+            }
         };
 
 
