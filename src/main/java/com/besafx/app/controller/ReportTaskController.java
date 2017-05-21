@@ -1,10 +1,7 @@
 package com.besafx.app.controller;
 import com.besafx.app.config.CustomException;
 import com.besafx.app.config.EmailSender;
-import com.besafx.app.entity.Person;
-import com.besafx.app.entity.Task;
-import com.besafx.app.entity.TaskDeduction;
-import com.besafx.app.entity.TaskTo;
+import com.besafx.app.entity.*;
 import com.besafx.app.rest.TaskOperationRest;
 import com.besafx.app.search.TaskSearch;
 import com.besafx.app.service.*;
@@ -16,6 +13,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +52,9 @@ public class ReportTaskController {
 
     @Autowired
     private TaskOperationRest taskOperationRest;
+
+    @Autowired
+    private TaskOperationService taskOperationService;
 
     @Autowired
     private TaskWarnService taskWarnService;
@@ -263,6 +264,41 @@ public class ReportTaskController {
         map.put("list", list);
         log.info("عدد العناصر يساوي: " + list.size());
         ClassPathResource jrxmlFile = new ClassPathResource("/report/task/IncomingTasksDeductions.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+    }
+
+    @RequestMapping(value = "/report/WatchTasksOperations", method = RequestMethod.GET, produces = "application/pdf")
+    @ResponseBody
+    public void ReportWatchTasksOperations(
+            @RequestParam(value = "personList") List<Long> personList,
+            @RequestParam(value = "closeType", required = false) Task.CloseType closeType,
+            HttpServletResponse response)
+            throws JRException, IOException {
+        log.info("قراءة كل المهام الواردة لهؤلاء الموظفين");
+        if (personList.isEmpty()) {
+            throw new CustomException("فضلاً اختر موظف واحد على الاقل.");
+        }
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=IncomingTasksDeductions.pdf");
+        final OutputStream outStream = response.getOutputStream();
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        StringBuilder param1 = new StringBuilder();
+        param1.append("المعهد الأهلي العالي للتدريب");
+        param1.append("\n");
+        param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
+        param1.append("\n");
+        param1.append("تقرير مختصر لمراقبة حركة العمل على المهام للمكلفين");
+        //
+        map.put("title", param1.toString());
+        List<WrapperUtil> list = initWatchTasksOperationsList(personList, closeType);
+        map.put("list", list);
+        log.info("عدد العناصر يساوي: " + list.size());
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/task/WatchTasksOperations.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
         JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
@@ -705,6 +741,48 @@ public class ReportTaskController {
                     }
                     list.add(wrapperUtil);
                 }
+            }
+        });
+        return list;
+    }
+
+    private List<WrapperUtil> initWatchTasksOperationsList(List<Long> persons, Task.CloseType closeType) {
+        List<WrapperUtil> list = new ArrayList<>();
+        LocalDate today = new DateTime().withTimeAtStartOfDay().toLocalDate();
+        LocalDate tomorrow = new DateTime().plusDays(1).withTimeAtStartOfDay().toLocalDate();
+        persons.stream().forEach(personId -> {
+            Person person = personService.findOne(personId);
+            log.info("قراءة كل المهام الواردة إلى " + person.getNickname() + " / " + person.getName());
+            List<Task> tasks = taskSearch.search(null, null, closeType, null, null, null, null, null, null, true, null, "All", personId);
+            log.info("عدد المهام الواردة إليه = " + tasks.size());
+            log.info("تجميع البيانات...");
+            ListIterator<Task> listIterator = tasks.listIterator();
+            while (listIterator.hasNext()) {
+                Task task = listIterator.next();
+                WrapperUtil wrapperUtil = new WrapperUtil();
+                wrapperUtil.setObj1(person.getNickname() + " / " + person.getName());
+                wrapperUtil.setObj2(task.getTitle());
+                wrapperUtil.setObj3(task.getPerson().getNickname() + " / " + task.getPerson().getName());
+                wrapperUtil.setObj4(DateConverter.getHijriStringFromDateRTLWithTime(task.getEndDate()));
+                switch (task.getCloseType()) {
+                    case Pending:
+                        wrapperUtil.setObj5("تحت التنفيذ");
+                        break;
+                    case Auto:
+                        wrapperUtil.setObj5("مغلقة تلقائي");
+                        break;
+                    case Manual:
+                        wrapperUtil.setObj5("ارشيف");
+                        break;
+                }
+                long countToday = taskOperationService.countByTaskAndSenderAndDateBetween(task, person, today.toDate(), tomorrow.toDate());
+                long countAll = taskOperationService.countByTaskAndSender(task, person);
+                wrapperUtil.setObj6(countToday);
+                TaskOperation topOperation = taskOperationService.findTopByTaskAndSenderOrderByDateDesc(task, person);
+                wrapperUtil.setObj7(Optional.ofNullable(topOperation).isPresent() ? DateConverter.getHijriStringFromDateRTLWithTime(topOperation.getDate()) : "");
+                wrapperUtil.setObj8(countAll);
+                wrapperUtil.setObj9(task.getCode());
+                list.add(wrapperUtil);
             }
         });
         return list;

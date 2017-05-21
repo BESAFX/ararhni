@@ -23,6 +23,7 @@ public interface TaskOperationService extends PagingAndSortingRepository<TaskOpe
     Integer findLastCodeByTask(@Param("id") Long id);
 
     TaskOperation findTopByTaskOrderByCodeDesc(Task task);
+    TaskOperation findTopByTaskAndSenderOrderByDateDesc(Task task, Person person);
 
     TaskOperation findTopByTaskIdOrderByCodeDesc(Long taskId);
 
@@ -31,4 +32,5 @@ public interface TaskOperationService extends PagingAndSortingRepository<TaskOpe
     List<TaskOperation> findByTaskAndDateBetween(Task task, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
 
     long countByTaskAndSenderAndDateBetween(Task task, Person person, @Temporal(TemporalType.TIMESTAMP) Date startDate, @Temporal(TemporalType.TIMESTAMP) Date endDate);
+    long countByTaskAndSender(Task task, Person person);
 }

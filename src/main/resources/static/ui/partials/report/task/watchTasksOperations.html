@@ -1,0 +1,127 @@
+<form dir="rtl" name="form" ng-submit="submit()" novalidate="novalidate" focus-group="" focus-stack=""
+      focus-group-head="loop" focus-group-tail="loop">
+
+    <div class="modal-header">
+        <h3 class="modal-title text-center">تقرير مختصر بخصومات المهام الواردة إلى الموظفين</h3>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row">
+
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12" ng-show="form.$invalid && form.$submitted">
+                <div class="alert alert-danger" role="alert">
+                    <strong>فضلاً اكمل الحقول المطلوبة</strong>
+                </div>
+            </div>
+
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12">
+                <label for="master" class="control-label">
+                    <span>الموظفون</span>
+                </label>
+                <select id="master"
+                        data-placeholder="ابحث عن البريد الإلكتروني"
+                        no-results-text="'لا توجد بيانات توافق بحثك'"
+                        placeholder-text-multiple="'اختر الحساب الشخصي'"
+                        class="form-control text-right"
+                        chosen=""
+                        multiple
+                        focus-autofocus="1"
+                        ng-model="buffer.personList"
+                        required="required"
+                        disable-validation-message=""
+                        ng-options="(person.nickname + ' / ' + person.name) for person in persons | orderBy:'name' track by person.id">
+                </select>
+            </div>
+
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12">
+                <label for="closeType" class="control-label">
+                    <span>حالة الإغلاق</span>
+                </label>
+                <select id="closeType"
+                        placeholder="اختر درجة الأهمية للمساعدة فى التصنيف"
+                        class="form-control text-right"
+                        ng-model="buffer.closeType">
+                    <option value="">اختر الحالة...</option>
+                    <option value="Pending">تحت التنفيذ</option>
+                    <option value="Auto">تلقائي</option>
+                    <option value="Manual">ارشيف</option>
+                </select>
+            </div>
+
+            <div class="form-group text-right col-xs-12 col-sm-6 col-md-12 col-lg-12">
+                <label for="email" class="control-label">البريد الإلكتروني</label>
+                <input id="email"
+                       type="text"
+                       class="form-control text-right"
+                       placeholder="اذكر بريد المرسل إليه"
+                       ng-model="buffer.email">
+            </div>
+
+            <div class="form-group text-right col-xs-12 col-sm-6 col-md-12 col-lg-12">
+                <label for="title" class="control-label">عنوان الرسالة</label>
+                <input id="title"
+                       type="text"
+                       class="form-control text-right"
+                       placeholder="اذكر عنوان الرسالة"
+                       ng-model="buffer.title">
+            </div>
+
+            <div class="form-group text-right col-xs-12 col-sm-6 col-md-12 col-lg-12">
+                <label for="message" class="control-label">محتوى الرسالة</label>
+                <textarea id="message"
+                          type="text"
+                          msd-elastic="\n"
+                          class="form-control text-right"
+                          placeholder="تفاصيل المهمة"
+                          ng-model="buffer.message">
+                </textarea>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <div class="row">
+            <button uib-tooltip="عرض"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    ng-click="action='view'"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-2 col-sm-2 col-md-2">
+                <i class="material-icons">visibility</i>
+            </button>
+            <button uib-tooltip="تحميل"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    ng-click="action='download'"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-2 col-sm-2 col-md-2">
+                <i class="material-icons">file_download</i>
+            </button>
+            <button uib-tooltip="ارسال"
+                    tooltip-append-to-body="true"
+                    type="submit"
+                    ng-click="action='send'"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-2 col-sm-2 col-md-2">
+                <i class="material-icons">send</i>
+            </button>
+            <button uib-tooltip="مسح الحقول"
+                    tooltip-append-to-body="true"
+                    type="reset"
+                    ng-click="form.$setPristine();buffer={}"
+                    class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-2 col-sm-2 col-md-2">
+                <i class="material-icons">delete</i>
+            </button>
+            <button uib-tooltip="خروج"
+                    tooltip-append-to-body="true"
+                    type="button"
+                    ng-click="cancel()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
+                <i class="material-icons">power_settings_new</i>
+            </button>
+        </div>
+
+    </div>
+
+</form>
