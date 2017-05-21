@@ -70,7 +70,7 @@ public class EmailSender {
                 }
             });
             /////
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
+//            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
             /////
             transport.connect(SMTP_HOST_NAME, SMTP_HOST_PORT, SMTP_AUTH_USER, SMTP_AUTH_PWD);
             transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
@@ -99,7 +99,7 @@ public class EmailSender {
                 }
             });
             /////
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
+//            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
             /////
             BodyPart messageBodyPart = new MimeBodyPart();
             messageBodyPart.setContent(content, "text/html; charset=UTF-8");
@@ -137,7 +137,7 @@ public class EmailSender {
             message.setFrom(new InternetAddress("admin@ararhni.com", "المدير الذكي", "UTF-8"));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             /////
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
+//            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
             /////
             transport.connect(SMTP_HOST_NAME, SMTP_HOST_PORT, SMTP_AUTH_USER, SMTP_AUTH_PWD);
             transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
@@ -160,7 +160,7 @@ public class EmailSender {
             message.setSubject(title, "UTF-8");
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             /////
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
+//            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
             /////
             BodyPart messageBodyPart = new MimeBodyPart();
             messageBodyPart.setContent(content, "text/html; charset=UTF-8");

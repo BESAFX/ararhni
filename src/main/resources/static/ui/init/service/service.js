@@ -573,6 +573,18 @@ app.service('ModalProvider', ['$uibModal', '$log', function ($uibModal, $log) {
         });
     };
 
+    this.openOutgoingTasksOperationsTodayModel = function () {
+        $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: '/ui/partials/report/task/outgoingTasksOperationsToday.html',
+            controller: 'outgoingTasksOperationsTodayCtrl',
+            backdrop: 'static',
+            keyboard: false
+        });
+    };
+
     /**************************************************************
      *                                                            *
      * Task Operation Model                                       *

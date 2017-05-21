@@ -346,6 +346,38 @@ public class ReportTaskController {
         JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
     }
 
+    @RequestMapping(value = "/report/ReportOutgoingTasksOperationsToday", method = RequestMethod.GET, produces = "application/pdf")
+    @ResponseBody
+    public void ReportOutgoingTasksOperationsToday(
+            @RequestParam(value = "personId") Long personId,
+            @RequestParam(value = "title", required = false) String title,
+            HttpServletResponse response)
+            throws JRException, IOException {
+        Person person = personService.findOne(personId);
+        Optional.ofNullable(person).orElseThrow(() -> new CustomException("فضلاً اختر الموظف اولاً."));
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=IncomingTasksDeductions.pdf");
+        final OutputStream outStream = response.getOutputStream();
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        StringBuilder param1 = new StringBuilder();
+        param1.append("المعهد الأهلي العالي للتدريب");
+        param1.append("\n");
+        param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
+        param1.append("\n");
+        param1.append(Optional.ofNullable(title).isPresent() ? title : "تقرير عن حركات المهام الصادرة من " + person.getNickname() + " / " + person.getName());
+        map.put("title", param1.toString());
+        List<WrapperUtil> list = initTasksOperationsTodayList(personId);
+        map.put("list", list);
+        //
+        ClassPathResource jrxmlFile = new ClassPathResource("/report/task/TasksOperationsToday.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+    }
+
     @Async("threadPoolReportGenerator")
     public Future<byte[]> ReportTaskTosCheck(List<Long> tasksList) {
         /**

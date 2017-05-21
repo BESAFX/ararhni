@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2017-05-03T17:33:04 -->
+<!-- 2017-05-21T13:15:29 -->
 <jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
@@ -65,7 +65,10 @@
         <field name="obj5" class="java.lang.Object"/>
         <field name="obj6" class="java.lang.Object"/>
         <field name="obj7" class="java.lang.Object"/>
-        <sortField name="obj2"/>
+        <sortField name="obj3"/>
+        <group name="Group1">
+            <groupExpression><![CDATA[$F{obj2}]]></groupExpression>
+        </group>
     </subDataset>
     <parameter name="title" class="java.lang.String"/>
     <parameter name="list" class="java.util.List"/>
@@ -267,9 +270,9 @@
         </band>
     </pageFooter>
     <summary>
-        <band height="62">
+        <band height="71">
             <componentElement>
-                <reportElement x="7" y="11" width="540" height="40" uuid="2cd17ca2-fd9f-4e86-95bc-8d4260dba30a">
+                <reportElement x="7" y="17" width="540" height="39" uuid="2cd17ca2-fd9f-4e86-95bc-8d4260dba30a">
                     <property name="com.jaspersoft.studio.layout"
                               value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
                     <property name="net.sf.jasperreports.export.headertoolbar.table.name" value=""/>
@@ -283,169 +286,66 @@
                         <dataSourceExpression>
                             <![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list})]]></dataSourceExpression>
                     </datasetRun>
-                    <jr:column width="239" uuid="3d9ed690-2737-487e-bb72-de278d399efb">
+                    <jr:column width="540" uuid="3d9ed690-2737-487e-bb72-de278d399efb">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
-                        <jr:tableHeader height="0" rowSpan="1"/>
-                        <jr:columnHeader height="20" rowSpan="1">
-                            <staticText>
-                                <reportElement style="Table_TH" x="0" y="0" width="239" height="20"
-                                               uuid="0482e36b-f217-4549-8b4f-5e1145bf6b33"/>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="9"/>
-                                </textElement>
-                                <text><![CDATA[التعليق]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="20">
-                            <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-                                <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                               width="239" height="20" uuid="4264d4fc-3177-4a2d-a567-589512b6fdd2"/>
-                                <box padding="5"/>
-                                <textElement textAlignment="Right" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="8" isBold="false"/>
-                                    <paragraph rightIndent="0"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{obj6}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-                    <jr:column width="75" uuid="7b8d20d3-5dcc-45b1-aea8-e5b3c76af83e">
-                        <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
-                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-                        <jr:tableHeader height="0" rowSpan="1"/>
-                        <jr:columnHeader height="20" rowSpan="1">
-                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
-                            <staticText>
-                                <reportElement style="Table_TH" x="0" y="0" width="75" height="20"
-                                               uuid="5a873ef9-a319-4958-bdc3-7901ca7f056e"/>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="9"/>
-                                </textElement>
-                                <text><![CDATA[التاريخ والوقت]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="20">
-                            <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-                                <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                               width="75" height="20" uuid="33a2045b-3d7b-4cdf-a043-55b82815ddc6"/>
-                                <box padding="5"/>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="8" isBold="false"/>
-                                    <paragraph rightIndent="0"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{obj5}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-                    <jr:column width="75" uuid="2e1e1458-4467-4896-a375-724c1689ee64">
-                        <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
-                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-                        <jr:tableHeader height="0" rowSpan="1"/>
-                        <jr:columnHeader height="20" rowSpan="1">
-                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
-                            <staticText>
-                                <reportElement style="Table_TH" x="0" y="0" width="75" height="20"
-                                               uuid="487b154f-e47a-4eb1-9de3-336aa34ccf0b"/>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="9"/>
-                                </textElement>
-                                <text><![CDATA[المرسل]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="20">
-                            <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-                                <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                               width="75" height="20" uuid="4c29248c-ab9b-486a-b5d6-553708b80b97"/>
-                                <box padding="5"/>
-                                <textElement textAlignment="Right" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="8" isBold="false"/>
-                                    <paragraph rightIndent="0"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{obj4}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-                    <jr:column width="77" uuid="d0bcac0b-1f75-4206-aeaa-aafaa6c3b20a">
-                        <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
-                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-                        <jr:tableHeader height="0" rowSpan="1"/>
-                        <jr:columnHeader height="20" rowSpan="1">
-                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
-                            <staticText>
-                                <reportElement style="Table_TH" x="0" y="0" width="77" height="20"
-                                               uuid="fd106533-623f-41ff-8393-09ebfb607932"/>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="9"/>
-                                </textElement>
-                                <text><![CDATA[عنوان المهمة]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="20">
-                            <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-                                <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                               width="77" height="20" uuid="e6f675f9-358d-4b1c-b397-9b13cbe2fbba"/>
-                                <box padding="5"/>
-                                <textElement textAlignment="Right" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="8" isBold="false"/>
-                                    <paragraph rightIndent="0"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{obj3}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-                    <jr:column width="37" uuid="0b5a4e67-64c8-48fb-adaa-1247f1fc6e78">
-                        <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
-                        <jr:tableHeader height="0" rowSpan="1"/>
-                        <jr:columnHeader height="20" rowSpan="1">
-                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
-                            <staticText>
-                                <reportElement style="Table_TH" x="0" y="0" width="37" height="20"
-                                               uuid="9e19c98c-0ae2-4c7a-8966-4f7d18079b5e"/>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="9"/>
-                                </textElement>
-                                <text><![CDATA[رقم المهمة]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="20">
-                            <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-                                <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                               width="37" height="20" uuid="62238a0b-b174-4512-855a-c0e756bb126b"/>
-                                <box padding="5"/>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="8" isBold="false"/>
-                                    <paragraph rightIndent="0"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{obj2}]]></textFieldExpression>
-                            </textField>
-                        </jr:detailCell>
-                    </jr:column>
-                    <jr:column width="37" uuid="7dda1e6c-4347-471e-98e3-dc254626f1bd">
-                        <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
-                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-                        <jr:tableHeader height="0" rowSpan="1"/>
-                        <jr:columnHeader height="20" rowSpan="1">
-                            <property name="com.jaspersoft.studio.unit.width" value="px"/>
-                            <staticText>
-                                <reportElement style="Table_TH" x="0" y="0" width="37" height="20"
-                                               uuid="374d9b6c-6775-40ce-9a4c-70768836c4ab"/>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="9"/>
-                                </textElement>
-                                <text><![CDATA[رقم الحركة]]></text>
-                            </staticText>
-                        </jr:columnHeader>
-                        <jr:detailCell height="20">
-                            <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-                                <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="0"
-                                               width="37" height="20" uuid="a11f36e6-31a9-4ae0-85fe-b34fba9ca9a2"/>
-                                <box padding="5"/>
-                                <textElement textAlignment="Center" verticalAlignment="Middle">
-                                    <font fontName="Arial" size="8" isBold="false"/>
-                                    <paragraph rightIndent="0"/>
-                                </textElement>
-                                <textFieldExpression><![CDATA[$F{obj1}]]></textFieldExpression>
-                            </textField>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <jr:detailCell height="40">
+                            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                            <frame>
+                                <reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="540" height="40"
+                                               uuid="440766ca-eaa5-46e1-8eb8-a7d995455638"/>
+                                <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                                    <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="15"
+                                                   width="540" height="15" uuid="4264d4fc-3177-4a2d-a567-589512b6fdd2"/>
+                                    <box padding="5"/>
+                                    <textElement textAlignment="Right" verticalAlignment="Top">
+                                        <font fontName="Arial" size="6" isBold="false"/>
+                                        <paragraph rightIndent="0"/>
+                                    </textElement>
+                                    <textFieldExpression>
+                                        <![CDATA[" [ " + $F{obj1} +  " ] " +  $F{obj6}]]></textFieldExpression>
+                                </textField>
+                                <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                                    <reportElement style="Table_TD" mode="Opaque" x="421" y="0" width="119" height="15"
+                                                   forecolor="#FFFFFF" backcolor="#3DCC90"
+                                                   uuid="2a632d45-69e9-45ca-bb71-9f0e8e559449">
+                                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                                    </reportElement>
+                                    <box padding="5"/>
+                                    <textElement textAlignment="Right" verticalAlignment="Middle">
+                                        <font fontName="Arial" size="5" isBold="true"/>
+                                        <paragraph rightIndent="0"/>
+                                    </textElement>
+                                    <textFieldExpression><![CDATA[$F{obj4}]]></textFieldExpression>
+                                </textField>
+                                <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                                    <reportElement style="Table_TD" x="0" y="0" width="120" height="15"
+                                                   forecolor="#FFFFFF" backcolor="#DE9B9B"
+                                                   uuid="ee2b2d62-743f-42a4-82bf-95ae54c363a4">
+                                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                                    </reportElement>
+                                    <box padding="5"/>
+                                    <textElement textAlignment="Left" verticalAlignment="Middle">
+                                        <font fontName="Arial" size="5" isBold="true"/>
+                                        <paragraph rightIndent="0"/>
+                                    </textElement>
+                                    <textFieldExpression><![CDATA[$F{obj5}]]></textFieldExpression>
+                                </textField>
+                                <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+                                    <reportElement style="Table_TD" mode="Opaque" x="120" y="0" width="301" height="15"
+                                                   forecolor="#4F4D4D" backcolor="#EBEDEC"
+                                                   uuid="4aafe042-e940-4b6d-893a-91f26169c9d9">
+                                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                                    </reportElement>
+                                    <box padding="5"/>
+                                    <textElement textAlignment="Right" verticalAlignment="Middle">
+                                        <font fontName="Arial" size="5" isBold="true"/>
+                                        <paragraph rightIndent="0"/>
+                                    </textElement>
+                                    <textFieldExpression>
+                                        <![CDATA[" [ " + $F{obj2} + " ] " + $F{obj3}]]></textFieldExpression>
+                                </textField>
+                            </frame>
                         </jr:detailCell>
                     </jr:column>
                 </jr:table>
