@@ -1,6 +1,6 @@
 package com.besafx.app.rest;
 import com.besafx.app.config.CustomException;
-import com.besafx.app.config.EmailSender;
+import com.besafx.app.config.SendGridManager;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskTo;
@@ -65,7 +65,7 @@ public class TaskRest {
     private NotificationService notificationService;
 
     @Autowired
-    private EmailSender emailSender;
+    private SendGridManager sendGridManager;
 
     @Autowired
     private TaskSearch taskSearch;
@@ -135,7 +135,7 @@ public class TaskRest {
             message = message.replaceAll("TASK_CONTENT", task.getContent());
             message = message.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
             message = message.replaceAll("TASK_PERSON", task.getPerson().getName());
-            emailSender.send("مهمة جديدة رقم: " + "(" + task.getCode() + ")", message, toPerson.getEmail());
+            sendGridManager.send("مهمة جديدة رقم: " + "(" + task.getCode() + ")", message, toPerson.getEmail());
         }
     }
 
@@ -185,7 +185,7 @@ public class TaskRest {
             message = message.replaceAll("TASK_CONTENT", task.getContent());
             message = message.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
             message = message.replaceAll("TASK_PERSON", task.getPerson().getName());
-            emailSender.send("مهمة جديدة رقم: " + "(" + task.getCode() + ")", message, toPerson.getEmail());
+            sendGridManager.send("مهمة جديدة رقم: " + "(" + task.getCode() + ")", message, toPerson.getEmail());
         }
     }
 

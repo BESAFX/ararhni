@@ -1,6 +1,6 @@
 package com.besafx.app.rest;
 import com.besafx.app.config.CustomException;
-import com.besafx.app.config.EmailSender;
+import com.besafx.app.config.SendGridManager;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskOperation;
@@ -56,7 +56,7 @@ public class TaskOperationRest {
     private NotificationService notificationService;
 
     @Autowired
-    private EmailSender emailSender;
+    private SendGridManager sendGridManager;
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -109,11 +109,13 @@ public class TaskOperationRest {
         message = message.replaceAll("TASK_CODE", taskOperation.getTask().getCode().toString());
         message = message.replaceAll("TASK_TITLE", taskOperation.getTask().getTitle());
         message = message.replaceAll("TASK_PERSON", taskOperation.getTask().getPerson().getName());
-        log.info("إرسال حركة جهة التكليف إلى كل المكلفين...");
+        log.info("إرسال حركة جهة التكليف إلى كل المكلفين والعكس الصحيح...");
         if (taskOperation.getSender().getId().longValue() == taskOperation.getTask().getPerson().getId().longValue()) {
-            emailSender.send("تعليق من جهة التكليف على المهمة المكلف بها رقم" + " [ " + taskOperation.getTask().getCode() + " ] ",
+            sendGridManager.send("تعليق من جهة التكليف على المهمة المكلف بها رقم" + " [ " + taskOperation.getTask().getCode() + " ] ",
                     message,
                     taskOperation.getTask().getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()));
+        } else {
+            sendGridManager.send("حركة جديدة على المهمة رقم: " + "(" + taskOperation.getTask().getCode() + ")", message, taskOperation.getTask().getPerson().getEmail());
         }
         return taskOperation;
     }

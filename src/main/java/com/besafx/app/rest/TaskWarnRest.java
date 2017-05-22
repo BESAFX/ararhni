@@ -1,6 +1,6 @@
 package com.besafx.app.rest;
 import com.besafx.app.config.CustomException;
-import com.besafx.app.config.EmailSender;
+import com.besafx.app.config.SendGridManager;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskWarn;
 import com.besafx.app.search.TaskSearch;
@@ -45,7 +45,7 @@ public class TaskWarnRest {
     private NotificationService notificationService;
 
     @Autowired
-    private EmailSender emailSender;
+    private SendGridManager sendGridManager;
 
     @Autowired
     private PersonRest personRest;

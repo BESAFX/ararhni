@@ -1,6 +1,6 @@
 package com.besafx.app.controller;
 import com.besafx.app.config.CustomException;
-import com.besafx.app.config.EmailSender;
+import com.besafx.app.config.SendGridManager;
 import com.besafx.app.entity.*;
 import com.besafx.app.rest.TaskOperationRest;
 import com.besafx.app.search.TaskSearch;
@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.web.bind.annotation.*;
@@ -66,7 +65,7 @@ public class ReportTaskController {
     private TaskCloseRequestService taskCloseRequestService;
 
     @Autowired
-    private EmailSender emailSender;
+    private SendGridManager sendGridManager;
 
     @RequestMapping(value = "/report/TaskOperations", method = RequestMethod.GET, produces = "application/pdf")
     @ResponseBody
@@ -347,7 +346,7 @@ public class ReportTaskController {
         log.info("جاري إنشاء ملف التقرير: " + randomFileName);
         File reportFile = File.createTempFile(randomFileName, ".pdf");
         FileUtils.writeByteArrayToFile(reportFile, bytes);
-        Future<Boolean> mail = emailSender.send(title, "<strong dir=\"rtl\" style=\"text-align: center; color: red\">" + message + "</strong>", email, Lists.newArrayList(new FileSystemResource(reportFile)));
+        Future<Boolean> mail = sendGridManager.send(title, "<strong dir=\"rtl\" style=\"text-align: center; color: red\">" + message + "</strong>", email, Lists.newArrayList(reportFile));
         mail.get();
         log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
     }

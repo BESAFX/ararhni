@@ -1,7 +1,6 @@
 package com.besafx.app.rest;
-
 import com.besafx.app.config.CustomException;
-import com.besafx.app.config.EmailSender;
+import com.besafx.app.config.SendGridManager;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskCloseRequest;
@@ -53,7 +52,7 @@ public class TaskCloseRequestRest {
     private NotificationService notificationService;
 
     @Autowired
-    private EmailSender emailSender;
+    private SendGridManager sendGridManager;
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -92,7 +91,7 @@ public class TaskCloseRequestRest {
             message = message.replaceAll("TASK_CODE", " [ " + taskCloseRequest.getTask().getCode() + " ] " + taskCloseRequest.getTask().getTitle());
             message = message.replaceAll("TASK_CLOSE_REQUEST_PERSON", person.getNickname() + " / " + person.getName());
             message = message.replaceAll("TASK_CLOSE_REQUEST_NOTE", taskCloseRequest.getNote());
-            emailSender.send((taskCloseRequest.getType() ? "طلب إغلاق إلى المهمة رقم: " : "طلب تمديد للمهمة رقم: ") + "(" + taskCloseRequest.getTask().getCode() + ")" + " - " + person.getName(), message, taskCloseRequest.getTask().getPerson().getEmail());
+            sendGridManager.send((taskCloseRequest.getType() ? "طلب إغلاق إلى المهمة رقم: " : "طلب تمديد للمهمة رقم: ") + "(" + taskCloseRequest.getTask().getCode() + ")" + " - " + person.getName(), message, taskCloseRequest.getTask().getPerson().getEmail());
 
             return taskCloseRequest;
 

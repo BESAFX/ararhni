@@ -1,6 +1,6 @@
 package com.besafx.app.rest;
 import com.besafx.app.config.CustomException;
-import com.besafx.app.config.EmailSender;
+import com.besafx.app.config.SendGridManager;
 import com.besafx.app.entity.TaskOperation;
 import com.besafx.app.entity.TaskTo;
 import com.besafx.app.service.TaskOperationService;
@@ -39,7 +39,7 @@ public class TaskToRest {
     private NotificationService notificationService;
 
     @Autowired
-    private EmailSender emailSender;
+    private SendGridManager sendGridManager;
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -69,7 +69,7 @@ public class TaskToRest {
         email = email.replaceAll("TASK_CONTENT", taskTo.getTask().getContent());
         email = email.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(taskTo.getTask().getEndDate()));
         email = email.replaceAll("TASK_PERSON", taskTo.getTask().getPerson().getName());
-        emailSender.send("مهمة جديدة رقم: " + "(" + taskTo.getTask().getCode() + ")", email, taskTo.getPerson().getEmail());
+        sendGridManager.send("مهمة جديدة رقم: " + "(" + taskTo.getTask().getCode() + ")", email, taskTo.getPerson().getEmail());
         log.info("اضافة الحركة الخاصة بالتحويل الى موظف جديد");
         TaskOperation taskOperation = new TaskOperation();
         TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskTo.getTask().getId());
