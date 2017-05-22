@@ -30,6 +30,7 @@ public class SendGridManager {
         mail.setSubject(title);
         mail.addContent(new Content("text/html", content));
         Personalization personalization = new Personalization();
+        personalization.addTo(new Email("anni4ksa@gmail.com"));
         toEmailList.stream().forEach(e -> personalization.addTo(new Email(e)));
         mail.addPersonalization(personalization);
         SendGrid sg = new SendGrid(API_KEY);
@@ -46,6 +47,7 @@ public class SendGridManager {
             initMailFile(mail, file);
         });
         Personalization personalization = new Personalization();
+        personalization.addTo(new Email("anni4ksa@gmail.com"));
         toEmailList.stream().forEach(e -> personalization.addTo(new Email(e)));
         mail.addPersonalization(personalization);
         SendGrid sg = new SendGrid(API_KEY);
@@ -59,6 +61,7 @@ public class SendGridManager {
         mail.setSubject(title);
         mail.addContent(new Content("text/html", content));
         Personalization personalization = new Personalization();
+        personalization.addTo(new Email("anni4ksa@gmail.com"));
         personalization.addTo(new Email(email));
         mail.addPersonalization(personalization);
         SendGrid sg = new SendGrid(API_KEY);
@@ -75,6 +78,7 @@ public class SendGridManager {
             initMailFile(mail, file);
         });
         Personalization personalization = new Personalization();
+        personalization.addTo(new Email("anni4ksa@gmail.com"));
         personalization.addTo(new Email(email));
         mail.addPersonalization(personalization);
         SendGrid sg = new SendGrid(API_KEY);
