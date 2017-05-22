@@ -623,8 +623,10 @@ public class ReportTaskController {
             wrapperUtil.setObj4(taskOperation.getSender().getNickname() + " / " + taskOperation.getSender().getName());
             wrapperUtil.setObj5(DateConverter.getHijriStringFromDateRTLWithTime(taskOperation.getDate()));
             wrapperUtil.setObj6(taskOperation.getContent());
+            wrapperUtil.setObj7(taskOperation.getDate());//Hidden Field for Sorting
             list.add(wrapperUtil);
         });
+        list.sort((WrapperUtil w1, WrapperUtil w2) -> ((Date) w1.getObj7()).compareTo((Date) w2.getObj7()));
         return list;
     }
 

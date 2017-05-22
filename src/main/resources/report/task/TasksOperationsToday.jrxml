@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
-<!-- 2017-05-21T13:15:29 -->
+<!-- 2017-05-22T11:34:11 -->
 <jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
@@ -65,9 +65,9 @@
         <field name="obj5" class="java.lang.Object"/>
         <field name="obj6" class="java.lang.Object"/>
         <field name="obj7" class="java.lang.Object"/>
-        <sortField name="obj3"/>
-        <group name="Group1">
-            <groupExpression><![CDATA[$F{obj2}]]></groupExpression>
+        <sortField name="obj4"/>
+        <group name="GROUP_BY_SENDER">
+            <groupExpression><![CDATA[$F{obj4}]]></groupExpression>
         </group>
     </subDataset>
     <parameter name="title" class="java.lang.String"/>
@@ -289,57 +289,81 @@
                     <jr:column width="540" uuid="3d9ed690-2737-487e-bb72-de278d399efb">
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
                         <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-                        <jr:detailCell height="40">
+                        <jr:columnHeader height="20" rowSpan="1">
                             <property name="com.jaspersoft.studio.unit.height" value="px"/>
                             <frame>
-                                <reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="540" height="40"
+                                <reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="540" height="20"
+                                               uuid="cce60f17-aa66-4a77-98a5-76406ebf561a"/>
+                                <staticText>
+                                    <reportElement style="Table_TH" x="421" y="0" width="119" height="20"
+                                                   uuid="28a9ff4e-e826-4d23-98be-51d80635b8c5"/>
+                                    <textElement textAlignment="Right" verticalAlignment="Middle">
+                                        <font fontName="Arial" size="9" isBold="false"/>
+                                        <paragraph rightIndent="10"/>
+                                    </textElement>
+                                    <text><![CDATA[المرسل]]></text>
+                                </staticText>
+                                <staticText>
+                                    <reportElement style="Table_TH" x="0" y="0" width="120" height="20"
+                                                   uuid="3c1692d2-2e58-4751-9b0c-1236d6befd0b"/>
+                                    <textElement textAlignment="Left" verticalAlignment="Middle">
+                                        <font fontName="Arial" size="9" isBold="false"/>
+                                        <paragraph leftIndent="10" rightIndent="0"/>
+                                    </textElement>
+                                    <text><![CDATA[تاريخ الحركة]]></text>
+                                </staticText>
+                            </frame>
+                        </jr:columnHeader>
+                        <jr:detailCell height="50">
+                            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                            <frame>
+                                <reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="540" height="50"
                                                uuid="440766ca-eaa5-46e1-8eb8-a7d995455638"/>
                                 <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-                                    <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="15"
-                                                   width="540" height="15" uuid="4264d4fc-3177-4a2d-a567-589512b6fdd2"/>
+                                    <reportElement style="Table_TD" stretchType="RelativeToTallestObject" x="0" y="21"
+                                                   width="540" height="19" uuid="4264d4fc-3177-4a2d-a567-589512b6fdd2"/>
                                     <box padding="5"/>
                                     <textElement textAlignment="Right" verticalAlignment="Top">
-                                        <font fontName="Arial" size="6" isBold="false"/>
+                                        <font fontName="Arial" size="10" isBold="false"/>
                                         <paragraph rightIndent="0"/>
                                     </textElement>
                                     <textFieldExpression>
                                         <![CDATA[" [ " + $F{obj1} +  " ] " +  $F{obj6}]]></textFieldExpression>
                                 </textField>
                                 <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-                                    <reportElement style="Table_TD" mode="Opaque" x="421" y="0" width="119" height="15"
+                                    <reportElement style="Table_TD" mode="Opaque" x="421" y="0" width="119" height="21"
                                                    forecolor="#FFFFFF" backcolor="#3DCC90"
                                                    uuid="2a632d45-69e9-45ca-bb71-9f0e8e559449">
                                         <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
                                     </reportElement>
-                                    <box padding="5"/>
+                                    <box padding="0" leftPadding="0"/>
                                     <textElement textAlignment="Right" verticalAlignment="Middle">
-                                        <font fontName="Arial" size="5" isBold="true"/>
-                                        <paragraph rightIndent="0"/>
+                                        <font fontName="Arial" size="9" isBold="true"/>
+                                        <paragraph rightIndent="10"/>
                                     </textElement>
                                     <textFieldExpression><![CDATA[$F{obj4}]]></textFieldExpression>
                                 </textField>
                                 <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-                                    <reportElement style="Table_TD" x="0" y="0" width="120" height="15"
+                                    <reportElement style="Table_TD" x="0" y="0" width="120" height="21"
                                                    forecolor="#FFFFFF" backcolor="#DE9B9B"
                                                    uuid="ee2b2d62-743f-42a4-82bf-95ae54c363a4">
                                         <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
                                     </reportElement>
-                                    <box padding="5"/>
                                     <textElement textAlignment="Left" verticalAlignment="Middle">
-                                        <font fontName="Arial" size="5" isBold="true"/>
-                                        <paragraph rightIndent="0"/>
+                                        <font fontName="Arial" size="9" isBold="true"/>
+                                        <paragraph leftIndent="10" rightIndent="0"/>
                                     </textElement>
                                     <textFieldExpression><![CDATA[$F{obj5}]]></textFieldExpression>
                                 </textField>
                                 <textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-                                    <reportElement style="Table_TD" mode="Opaque" x="120" y="0" width="301" height="15"
+                                    <reportElement style="Table_TD" mode="Opaque" x="120" y="0" width="301" height="21"
                                                    forecolor="#4F4D4D" backcolor="#EBEDEC"
                                                    uuid="4aafe042-e940-4b6d-893a-91f26169c9d9">
                                         <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
                                     </reportElement>
                                     <box padding="5"/>
                                     <textElement textAlignment="Right" verticalAlignment="Middle">
-                                        <font fontName="Arial" size="5" isBold="true"/>
+                                        <font fontName="Arial" size="9" isBold="true"/>
                                         <paragraph rightIndent="0"/>
                                     </textElement>
                                     <textFieldExpression>
