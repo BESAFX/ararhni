@@ -2,6 +2,7 @@ package com.besafx.app.init;
 
 import com.besafx.app.entity.*;
 import com.besafx.app.service.*;
+import com.sendgrid.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.Iterator;
 
 @Component
@@ -38,6 +40,24 @@ public class Initializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if (personService.count() == 0) {
             runForFirstTimeOnly();
+        }
+        Email from = new Email("islamhaker@gmail.com");
+        String subject = "Hello World from the SendGrid Java Library!";
+        Email to = new Email("anni4ksa@gmail.com");
+        Content content = new Content("text/plain", "Hello, Email!");
+        Mail mail = new Mail(from, subject, to, content);
+        SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+        Request request = new Request();
+        try {
+            request.method = Method.POST;
+            request.endpoint = "mail/send";
+            request.body = mail.build();
+            Response response = sg.api(request);
+            System.out.println(response.statusCode);
+            System.out.println(response.body);
+            System.out.println(response.headers);
+        } catch (IOException ex) {
+            throw ex;
         }
     }
 

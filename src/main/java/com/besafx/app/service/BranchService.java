@@ -1,6 +1,7 @@
 package com.besafx.app.service;
 import com.besafx.app.entity.Branch;
 import com.besafx.app.entity.Person;
+import com.besafx.app.entity.Region;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -17,6 +18,7 @@ public interface BranchService extends PagingAndSortingRepository<Branch, Long>,
     Integer findMaxCode();
     Branch findByCode(Integer code);
     Branch findByName(String name);
+    List<Branch> findByRegion(Region region);
     List<Branch> findByManager(Person manager);
 
 }

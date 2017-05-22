@@ -1,4 +1,5 @@
 package com.besafx.app.service;
+import com.besafx.app.entity.Company;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Region;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -17,6 +18,7 @@ public interface RegionService extends PagingAndSortingRepository<Region, Long>,
     Integer findMaxCode();
     Region findByCode(Integer code);
     Region findByName(String name);
+    List<Region> findByCompany(Company company);
     List<Region> findByManager(Person manager);
 
 }

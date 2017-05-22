@@ -528,6 +528,35 @@ public class ReportTaskController {
         }
     }
 
+    @Async("threadPoolReportGenerator")
+    public Future<byte[]> ReportWatchTasksOperations(List<Long> personsList) {
+        /**
+         * Insert Parameters
+         */
+        Map<String, Object> map = new HashMap<>();
+        StringBuilder param1 = new StringBuilder();
+        param1.append("المعهد الأهلي العالي للتدريب");
+        param1.append("\n");
+        param1.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
+        param1.append("\n");
+        param1.append("تقرير مختصر لمراقبة حركة العمل على المهام للمكلفين");
+        map.put("title", param1.toString());
+        List<WrapperUtil> list = initWatchTasksOperationsList(personsList, Task.CloseType.Pending);
+        map.put("list", list);
+        if (list.isEmpty()) {
+            return null;
+        }
+        try {
+            ClassPathResource jrxmlFile = new ClassPathResource("/report/task/WatchTasksOperations.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlFile.getInputStream());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, map);
+            return new AsyncResult<>(JasperExportManager.exportReportToPdf(jasperPrint));
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            return null;
+        }
+    }
+
     private void initTaskTosCheckList(@RequestParam("tasksList") List<Long> tasksList, List<WrapperUtil> list) {
         tasksList.stream().forEach(id -> {
             Task task = taskService.findOne(id);
@@ -785,6 +814,7 @@ public class ReportTaskController {
                 list.add(wrapperUtil);
             }
         });
+        list.sort((WrapperUtil w1, WrapperUtil w2) -> ((Integer) w1.getObj9()).compareTo((Integer) w2.getObj9()));
         return list;
     }
 }

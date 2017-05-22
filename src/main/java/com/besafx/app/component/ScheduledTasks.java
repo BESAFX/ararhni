@@ -57,6 +57,21 @@ public class ScheduledTasks {
     private ReportTaskController reportTaskController;
 
     @Autowired
+    private CompanyService companyService;
+
+    @Autowired
+    private RegionService regionService;
+
+    @Autowired
+    private BranchService branchService;
+
+    @Autowired
+    private DepartmentService departmentService;
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @Autowired
     private EmailSender emailSender;
 
     @Scheduled(cron = "0 0 2 * * SUN,MON,TUE,WED,THU")
@@ -306,7 +321,6 @@ public class ScheduledTasks {
                     }
                 });
                 log.info("الانتهاء من فحص الطلبات المعلقة بنجاح.");
-
                 log.info("إرسال حركة إلى المهمة تفيد بأن المهمة أغلقت تلقائي");
                 TaskOperation taskOperation = new TaskOperation();
                 TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(task.getId());
@@ -389,6 +403,44 @@ public class ScheduledTasks {
             }
         }
         log.info("نهاية الفحص بنجاح.");
+    }
+
+    @Scheduled(cron = "0 0 22 * * *")
+    public void notifyBossAboutWatchingTasksOperations() {
+        log.info("ارسال التقرير لكل مدراء الشركات");
+        companyService.findAll().forEach(company -> {
+            regionService.findByCompany(company).forEach(region -> {
+                branchService.findByRegion(region).forEach(branch -> {
+                    try {
+                        log.info("جاري فحص موظفين الفرع / " + branch.getName());
+                        List<Person> personList = new ArrayList<>();
+                        log.info("تصفية كل الموظفين ما دون المستوي");
+                        personList.add(branch.getManager());
+                        departmentService.findByBranch(branch).forEach(department -> {
+                            personList.add(department.getManager());
+                            personList.addAll(employeeService.findByDepartment(department).stream().map(employee -> employee.getPerson()).collect(Collectors.toList()));
+                        });
+                        Future<byte[]> work = reportTaskController.ReportWatchTasksOperations(personList.stream().map(person -> person.getId()).distinct().collect(Collectors.toList()));
+                        byte[] fileBytes = work.get();
+                        if (fileBytes != null) {
+                            String randomFileName = "WatchTasksOperations-" + ThreadLocalRandom.current().nextInt(1, 50000);
+                            log.info("جاري إنشاء ملف التقرير: " + randomFileName);
+                            File reportFile = File.createTempFile(randomFileName, ".pdf");
+                            FileUtils.writeByteArrayToFile(reportFile, fileBytes);
+                            log.info("جاري تحويل الملف");
+                            Thread.sleep(10000);
+                            Future<Boolean> mail = emailSender.send("تقرير متابعة حركة العمل داخل فرع / " + branch.getName(), "التقرير بالمرفقات", company.getManager().getEmail(), Lists.newArrayList(new FileSystemResource(reportFile)));
+                            mail.get();
+                            log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
+                        } else {
+                            log.info("لا يوجد تقرير لهذا المدير.");
+                        }
+                    } catch (Exception ex) {
+                        log.info(ex.getMessage(), ex);
+                    }
+                });
+            });
+        });
     }
 
     @Scheduled(cron = "0 0 20 * * SUN,MON,TUE,WED,THU")
