@@ -1,5 +1,4 @@
 package com.besafx.app.rest;
-
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.ReportModel;
 import com.besafx.app.service.PersonService;
@@ -100,6 +99,5 @@ public class ReportModelRest {
     public List<ReportModel> findByScreen(@PathVariable(value = "id") Long id) {
         return reportModelService.findByScreen(screenService.findOne(id));
     }
-
 
 }

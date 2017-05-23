@@ -1,5 +1,4 @@
 package com.besafx.app.rest;
-
 import com.besafx.app.entity.Screen;
 import com.besafx.app.service.ScreenService;
 import com.google.common.collect.Lists;

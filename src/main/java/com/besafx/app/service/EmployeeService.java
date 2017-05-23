@@ -1,5 +1,4 @@
 package com.besafx.app.service;
-
 import com.besafx.app.entity.Department;
 import com.besafx.app.entity.Employee;
 import com.besafx.app.entity.Person;

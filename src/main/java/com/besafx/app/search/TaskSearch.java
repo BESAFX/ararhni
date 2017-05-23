@@ -40,7 +40,6 @@ public class TaskSearch {
             final String timeType,
             final Long person
     ) {
-
         if (!taskType) {
             //Search in Task Table (Outgoing Tasks)
             List<Specification> predicates = new ArrayList<>();
@@ -89,7 +88,6 @@ public class TaskSearch {
                     predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("endDate"), new Date()));
                 }
             });
-
             if (!predicates.isEmpty()) {
                 Specification result = predicates.get(0);
                 for (int i = 1; i < predicates.size(); i++) {
@@ -148,7 +146,6 @@ public class TaskSearch {
                     predicates.add((root, cq, cb) -> cb.lessThanOrEqualTo(root.get("task").get("endDate"), new Date()));
                 }
             });
-
             if (!predicates.isEmpty()) {
                 Specification result = predicates.get(0);
                 for (int i = 1; i < predicates.size(); i++) {

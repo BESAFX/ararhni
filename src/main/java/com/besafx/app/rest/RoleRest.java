@@ -1,5 +1,4 @@
 package com.besafx.app.rest;
-
 import com.besafx.app.entity.Permission;
 import com.besafx.app.entity.Role;
 import com.besafx.app.entity.Team;
@@ -83,9 +82,7 @@ public class RoleRest {
     @RequestMapping(value = "setUpRoles", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<Role> setUpRoles(@RequestBody List<Role> roles, Principal principal) {
-
         Team team = teamService.save(roles.get(0).getTeam());
-
         roles.stream().forEach(role -> {
             Permission permission = permissionService.findByCreateEntityAndUpdateEntityAndDeleteEntityAndReportEntityAndScreen(
                     role.getPermission().getCreateEntity(),
@@ -95,7 +92,6 @@ public class RoleRest {
                     role.getPermission().getScreen()
             );
             if (permission == null) {
-
                 permission = new Permission();
                 permission.setCreateEntity(role.getPermission().getCreateEntity());
                 permission.setUpdateEntity(role.getPermission().getUpdateEntity());
@@ -104,7 +100,6 @@ public class RoleRest {
                 permission.setScreen(role.getPermission().getScreen());
                 permissionService.save(permission);
             }
-
             role.setPermission(permission);
             role.setTeam(team);
             roleService.save(role);
@@ -117,7 +112,6 @@ public class RoleRest {
                 .type("success")
                 .icon("fa-save")
                 .build(), principal.getName());
-
         return roles;
     }
 }

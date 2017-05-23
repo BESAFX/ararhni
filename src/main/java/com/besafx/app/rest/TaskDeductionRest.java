@@ -1,6 +1,6 @@
 package com.besafx.app.rest;
 import com.besafx.app.config.CustomException;
-import com.besafx.app.config.SendGridManager;
+import com.besafx.app.config.EmailSender;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskDeduction;
 import com.besafx.app.search.TaskSearch;
@@ -45,7 +45,7 @@ public class TaskDeductionRest {
     private NotificationService notificationService;
 
     @Autowired
-    private SendGridManager sendGridManager;
+    private EmailSender emailSender;
 
     @Autowired
     private PersonRest personRest;

@@ -1,9 +1,9 @@
 package com.besafx.app.util;
-
 import java.io.*;
 import java.util.List;
 
 public class IOCopier {
+
     public static void joinFiles(File destination, List<File> sources) throws IOException {
         OutputStream output = null;
         try {

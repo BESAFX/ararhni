@@ -1,6 +1,6 @@
 package com.besafx.app.controller;
 import com.besafx.app.config.CustomException;
-import com.besafx.app.config.SendGridManager;
+import com.besafx.app.config.EmailSender;
 import com.besafx.app.entity.*;
 import com.besafx.app.rest.TaskOperationRest;
 import com.besafx.app.search.TaskSearch;
@@ -65,7 +65,7 @@ public class ReportTaskController {
     private TaskCloseRequestService taskCloseRequestService;
 
     @Autowired
-    private SendGridManager sendGridManager;
+    private EmailSender emailSender;
 
     @RequestMapping(value = "/report/TaskOperations", method = RequestMethod.GET, produces = "application/pdf")
     @ResponseBody
@@ -346,7 +346,7 @@ public class ReportTaskController {
         log.info("جاري إنشاء ملف التقرير: " + randomFileName);
         File reportFile = File.createTempFile(randomFileName, ".pdf");
         FileUtils.writeByteArrayToFile(reportFile, bytes);
-        Future<Boolean> mail = sendGridManager.send(title, "<strong dir=\"rtl\" style=\"text-align: center; color: red\">" + message + "</strong>", email, Lists.newArrayList(reportFile));
+        Future<Boolean> mail = emailSender.send(title, "<strong dir=\"rtl\" style=\"text-align: center; color: red\">" + message + "</strong>", email, Lists.newArrayList(reportFile));
         mail.get();
         log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
     }

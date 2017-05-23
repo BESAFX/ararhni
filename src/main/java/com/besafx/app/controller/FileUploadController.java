@@ -1,5 +1,4 @@
 package com.besafx.app.controller;
-
 import com.besafx.app.config.DropboxManager;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
@@ -23,37 +22,32 @@ import java.util.concurrent.Future;
 public class FileUploadController {
 
     private static final String ACCESS_TOKEN = "lwXbn73MQTAAAAAAAAAACtvJCtgSD7Rp5hwd7V8jM2V4O9I8c9javetzqM49b1-Y";
+
     private final Logger log = LoggerFactory.getLogger(FileUploadController.class);
+
     @Autowired
     private DropboxManager dropboxManager;
 
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public String uploadFile(@RequestParam("file") MultipartFile file) throws JRException, IOException {
-
         // Create Dropbox client
         DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").withUserLocale("en_US").build();
         DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
-
         try {
             client.files().uploadBuilder("/".concat(file.getOriginalFilename())).uploadAndFinish(file.getInputStream());
         } catch (DbxException e) {
             e.printStackTrace();
         }
-
         return getPathLower("/".concat(file.getOriginalFilename()));
     }
 
     @RequestMapping(value = "/uploadFileAndGetShared/{taskId}", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public String uploadFileAndGetShared(@PathVariable(value = "taskId") Long taskId, @RequestParam("file") MultipartFile file) throws Exception {
-
         SecureRandom random = new SecureRandom();
-
         String fileName = new BigInteger(130, random).toString(32) + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-
         Future<Boolean> task = dropboxManager.uploadFile(file, "/ararhni/tasks/" + taskId + "/" + fileName);
-
         if (task.get()) {
             Future<String> task11 = dropboxManager.shareFile("/ararhni/tasks/" + taskId + "/" + fileName);
             return task11.get();
@@ -65,11 +59,9 @@ public class FileUploadController {
     @RequestMapping(value = "/getSharedLink", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public String getSharedLink(@RequestParam(value = "path") String path) {
-
         // Create Dropbox client
         DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").withUserLocale("en_US").build();
         DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
-
         SharedLinkMetadata metadata = null;
         String link = null;
         try {
@@ -87,18 +79,15 @@ public class FileUploadController {
                 System.out.println(e.getMessage());
             }
         }
-
         return link;
     }
 
     @RequestMapping(value = "/getPathLower", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public String getPathLower(String url) {
-
         // Create Dropbox client
         DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/java-tutorial").withUserLocale("en_US").build();
         DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
-
         SharedLinkMetadata metadata = null;
         String link = null;
         try {
@@ -116,7 +105,6 @@ public class FileUploadController {
                 System.out.println(e.getMessage());
             }
         }
-
         return link;
     }
 }

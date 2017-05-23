@@ -1,5 +1,4 @@
 package com.besafx.app.rest;
-
 import com.besafx.app.entity.Team;
 import com.besafx.app.entity.Views;
 import com.besafx.app.service.PersonService;

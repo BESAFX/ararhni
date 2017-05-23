@@ -1,5 +1,4 @@
 package com.besafx.app.search;
-
 import com.besafx.app.entity.TaskCloseRequest;
 import com.besafx.app.service.TaskCloseRequestService;
 import com.besafx.app.service.TaskToService;
@@ -72,8 +71,6 @@ public class TaskCloseRequestSearch {
         Optional.ofNullable(taskId).ifPresent(value -> predicates.add((root, cq, cb) -> cb.equal(root.get("task").get("id"), value)));
         Optional.ofNullable(taskPersonId).ifPresent(value -> predicates.add((root, cq, cb) -> cb.equal(root.get("task").get("person").get("id"), value)));
         Optional.ofNullable(personId).ifPresent(value -> predicates.add((root, cq, cb) -> cb.equal(root.get("person").get("id"), value)));
-
-
         if (!predicates.isEmpty()) {
             Specification result = predicates.get(0);
             for (int i = 1; i < predicates.size(); i++) {

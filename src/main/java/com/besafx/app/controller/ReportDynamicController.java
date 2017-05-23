@@ -1,5 +1,4 @@
 package com.besafx.app.controller;
-
 import com.besafx.app.config.CustomException;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
@@ -60,7 +59,6 @@ public class ReportDynamicController {
     private JRDesignTextField textField = new JRDesignTextField();
 
     private JasperDesign getJasperDesign(String reportTitle, String orientation, List<Column> columns, List<Variable> groupVariablesList, List<Variable> tableVariablesList) throws JRException {
-
         jasperDesign = new JasperDesign();
         jasperDesign.setName("NoXmlDesignReport");
         jasperDesign.setOrientation(OrientationEnum.getByName(orientation));
@@ -73,17 +71,11 @@ public class ReportDynamicController {
         jasperDesign.setBottomMargin(20);
         jasperDesign.setColumnWidth(jasperDesign.getPageWidth() - jasperDesign.getLeftMargin() - jasperDesign.getRightMargin());
         jasperDesign.setWhenNoDataType(WhenNoDataTypeEnum.ALL_SECTIONS_NO_DETAIL);
-
         createStyle();
-
         createPageHeader(reportTitle);
-
         createBackground();
-
         createPageFooter();
-
         createTable(columns, groupVariablesList, tableVariablesList);
-
         return jasperDesign;
     }
 
@@ -91,28 +83,20 @@ public class ReportDynamicController {
         //Column Header
         JRDesignBand columnHeader = new JRDesignBand();
         columnHeader.setHeight(15);
-
         //Detail
         JRDesignBand detail = new JRDesignBand();
         detail.setHeight(15);
-
         Iterator<Column> iterator = list.iterator();
-
         List<Column> activeList = list.stream().filter(col -> col.isView()).collect(Collectors.toList());
-
         while (iterator.hasNext()) {
-
             Column column = iterator.next();
-
             if (!jasperDesign.getFieldsList().stream().filter(field -> field.getName().equals(column.getValue())).findAny().isPresent()) {
                 field = new JRDesignField();
                 field.setName(column.getValue());
                 field.setValueClassName(column.getValueClassName());
                 jasperDesign.addField(field);
             }
-
             if (column.isView()) {
-
                 staticText = new JRDesignStaticText();
                 staticText.setWidth(jasperDesign.getColumnWidth() / activeList.size());
                 staticText.setHeight(15);
@@ -127,7 +111,6 @@ public class ReportDynamicController {
                 staticText.setBackcolor(Color.LIGHT_GRAY);
                 staticText.setText(column.getName());
                 columnHeader.addElement(staticText);
-
                 textField = new JRDesignTextField();
                 textField.setWidth(jasperDesign.getColumnWidth() / activeList.size());
                 textField.setHeight(15);
@@ -143,25 +126,18 @@ public class ReportDynamicController {
                 textField.setStretchWithOverflow(true);
                 textField.setBlankWhenNull(true);
                 textField.setStretchType(StretchTypeEnum.ELEMENT_GROUP_HEIGHT);
-
                 detail.addElement(textField);
             }
-
             if (column.isGroupBy()) {
                 createGroupByBand(column, groupVariablesList);
             }
-
             if (column.isSortBy()) {
                 jasperDesign.getSortFieldsList().add(createSortField(column, SortOrderEnum.DESCENDING));
             }
 
         }
-
-
         jasperDesign.setColumnHeader(columnHeader);
-
         ((JRDesignSection) jasperDesign.getDetailSection()).addBand(detail);
-
         //START COLUMN FOOTER
         frame = new JRDesignFrame();
         frame.setWidth(jasperDesign.getColumnWidth());
@@ -169,7 +145,6 @@ public class ReportDynamicController {
         frame.getLineBox().getBottomPen().setLineColor(Color.BLACK);
         frame.getLineBox().getBottomPen().setLineWidth(1);
         frame.getLineBox().setPadding(0);
-
         //Create Variables that will depends on this table
         ListIterator<Variable> listIterator = tableVariablesList.listIterator();
         while (listIterator.hasNext()) {
@@ -182,7 +157,6 @@ public class ReportDynamicController {
             jrDesignVariable.setIncrementType(IncrementTypeEnum.NONE);
             jrDesignVariable.setResetType(ResetTypeEnum.REPORT);
             jasperDesign.addVariable(jrDesignVariable);
-
             textField = new JRDesignTextField();
             textField.setWidth(jasperDesign.getColumnWidth() / tableVariablesList.size());
             textField.setHeight(15);
@@ -199,7 +173,6 @@ public class ReportDynamicController {
             textField.setExpression(new JRDesignExpression("\" " + variable.getName() + " : \" " + "+" + "new java.text.DecimalFormat(\"#.##\").format($V{" + variable.getExpression().toUpperCase() + "_" + variable.getOperation().toUpperCase() + "_ALL" + "})"));
             frame.addElement(textField);
         }
-
 //        JRDesignVariable variable = new JRDesignVariable();
 //        variable.setName("AMOUNT_SUM_ALL");
 //        variable.setValueClassName(Double.class.getName());
@@ -208,36 +181,29 @@ public class ReportDynamicController {
 //        variable.setIncrementType(IncrementTypeEnum.NONE);
 //        variable.setResetType(ResetTypeEnum.REPORT);
 //        jasperDesign.addVariable(variable);
-
-
         JRDesignBand columnFooter = new JRDesignBand();
         columnFooter.setHeight(15);
         columnFooter.addElement(frame);
         //END COLUMN FOOTER
-
         jasperDesign.setColumnFooter(columnFooter);
     }
 
     private void createPageFooter() {
         band = new JRDesignBand();
         band.setHeight(60);
-
         frame = new JRDesignFrame();
         frame.setWidth(jasperDesign.getColumnWidth());
         frame.setHeight(band.getHeight());
         frame.getLineBox().getTopPen().setLineColor(Color.BLACK);
         frame.getLineBox().getTopPen().setLineWidth(1);
         frame.getLineBox().setPadding(0);
-
         band.addElement(frame);
-
         jasperDesign.setPageFooter(band);
     }
 
     private void createBackground() {
         band = new JRDesignBand();
         band.setHeight(jasperDesign.getPageHeight() - jasperDesign.getBottomMargin() - jasperDesign.getTopMargin());
-
         JRDesignRectangle rectangle = new JRDesignRectangle();
         rectangle.setWidth(jasperDesign.getColumnWidth());
         rectangle.setHeight(band.getHeight());
@@ -248,28 +214,24 @@ public class ReportDynamicController {
         rectangle.getLinePen().setLineColor(Color.BLACK);
         rectangle.getLinePen().setLineStyle(LineStyleEnum.SOLID);
         band.addElement(rectangle);
-
         jasperDesign.setBackground(band);
     }
 
     private void createPageHeader(String reportTitle) {
         band = new JRDesignBand();
         band.setHeight(60);
-
         frame = new JRDesignFrame();
         frame.setWidth(jasperDesign.getColumnWidth());
         frame.setHeight(band.getHeight());
         frame.getLineBox().getBottomPen().setLineColor(Color.BLACK);
         frame.getLineBox().getBottomPen().setLineWidth(1);
         frame.getLineBox().setPadding(0);
-
         StringBuilder builder = new StringBuilder();
         builder.append("المملكة العربية السعودية");
         builder.append("\n");
         builder.append("المعهد الأهلي العالي للتدريب");
         builder.append("\n");
         builder.append("تحت إشراف المؤسسة العامة للتدريب المهني والتقني");
-
         staticText = new JRDesignStaticText();
         staticText.setWidth(jasperDesign.getColumnWidth() / 2);
         staticText.setHeight(45);
@@ -279,7 +241,6 @@ public class ReportDynamicController {
         staticText.setStyle(style1);
         staticText.setText(builder.toString());
         frame.addElement(staticText);
-
         staticText = new JRDesignStaticText();
         staticText.setWidth(jasperDesign.getColumnWidth());
         staticText.setHeight(15);
@@ -289,7 +250,6 @@ public class ReportDynamicController {
         staticText.setStyle(style2);
         staticText.setText(reportTitle);
         frame.addElement(staticText);
-
         image = new JRDesignImage(jasperDesign);
         JRDesignExpression expression = new JRDesignExpression();
         expression.setText("\"https://www.dropbox.com/s/bwbavw793i1hejf/LOGO.bmp?raw=1\"");
@@ -305,9 +265,7 @@ public class ReportDynamicController {
         image.setX(5);
         image.setY(5);
         frame.addElement(image);
-
         band.addElement(frame);
-
         jasperDesign.setPageHeader(band);
     }
 
@@ -326,7 +284,6 @@ public class ReportDynamicController {
         style1.setBlankWhenNull(true);
         style1.getParagraph().setLineSpacing(LineSpacingEnum.SINGLE);
         jasperDesign.addStyle(style1);
-
         style2 = new JRDesignStyle();
         style2.setName("Style2");
         style2.setDefault(true);
@@ -343,7 +300,6 @@ public class ReportDynamicController {
     }
 
     private void createGroupByBand(Column column, List<Variable> variables) throws JRException {
-
         //START HEADER
         JRDesignFrame headerFrame = new JRDesignFrame();
         headerFrame.setWidth(jasperDesign.getColumnWidth());
@@ -354,7 +310,6 @@ public class ReportDynamicController {
         headerFrame.getLineBox().getRightPen().setLineWidth(2f);
         headerFrame.getLineBox().getRightPen().setLineColor(Color.black);
         headerFrame.setHeight(15);
-
         textField = new JRDesignTextField();
         textField.setWidth(jasperDesign.getColumnWidth());
         textField.setHeight(15);
@@ -367,12 +322,10 @@ public class ReportDynamicController {
         textField.setExpression(new JRDesignExpression("\" " + column.getName() + " : \" " + "+" + column.getExpression()));
         headerFrame.addElement(textField);
         //END HEADER
-
         //START FOOTER
         JRDesignFrame footerFrame = new JRDesignFrame();
         footerFrame.setWidth(jasperDesign.getColumnWidth());
         footerFrame.setHeight(15);
-
         ListIterator<Variable> listIterator = variables.listIterator();
         while (listIterator.hasNext()) {
             Variable variable = listIterator.next();
@@ -393,10 +346,8 @@ public class ReportDynamicController {
             footerFrame.addElement(textField);
         }
         //END FOOTER
-
         //Create Group
         JRDesignGroup group = new JRDesignGroup();
-
         //Create Variables that will depends on this group
         ListIterator<Variable> listIterator1 = variables.listIterator();
         while (listIterator1.hasNext()) {
@@ -411,12 +362,10 @@ public class ReportDynamicController {
             jrDesignVariable.setResetGroup(group);
             jasperDesign.addVariable(jrDesignVariable);
         }
-
         group.setName(column.getName());
         group.setKeepTogether(true);
         group.setMinHeightToStartNewPage(60);
         group.setExpression(new JRDesignExpression(column.getExpression()));
-
         //Create variable for count groups
         JRDesignVariable groupCountVariable = new JRDesignVariable();
         groupCountVariable.setName(group.getName() + "_COUNT_NUMBER");
@@ -427,7 +376,6 @@ public class ReportDynamicController {
         groupCountVariable.setIncrementGroup(group);
         groupCountVariable.setResetType(ResetTypeEnum.REPORT);
         jasperDesign.addVariable(groupCountVariable);
-
         //Create conditional style for this group
         JRDesignConditionalStyle conditionalStyle1 = new JRDesignConditionalStyle();
         conditionalStyle1.setConditionExpression(new JRDesignExpression("new Boolean($V{" + groupCountVariable.getName() + "}.intValue() % 2 ==0 ) == false"));
@@ -437,13 +385,11 @@ public class ReportDynamicController {
         conditionalStyle2.setConditionExpression(new JRDesignExpression("new Boolean($V{" + groupCountVariable.getName() + "}.intValue() % 2 ==0 ) == true"));
         conditionalStyle2.setMode(ModeEnum.OPAQUE);
         conditionalStyle2.setBackcolor(Color.GREEN);
-
         JRDesignStyle groupStyle = new JRDesignStyle();
         groupStyle.setName(group.getName() + "_STYLE");
         groupStyle.getConditionalStyleList().add(conditionalStyle1);
         groupStyle.getConditionalStyleList().add(conditionalStyle2);
         jasperDesign.addStyle(groupStyle);
-
 //        headerFrame.setStyle(groupStyle);
         JRDesignBand header = new JRDesignBand();
         header.setHeight(15);
@@ -473,7 +419,6 @@ public class ReportDynamicController {
         variable.setValueClassName(column.getValueClassName());
         variable.setExpression(new JRDesignExpression(column.getExpression()));
         jasperDesign.getVariablesList().add(variable);
-
         JRDesignSortField sortField = new JRDesignSortField();
         sortField.setName(variable.getName());
         sortField.setType(SortFieldTypeEnum.VARIABLE);
@@ -482,9 +427,7 @@ public class ReportDynamicController {
     }
 
     public void export(final String exportType, final HttpServletResponse response, final OutputStream ouputStream, final JasperPrint jasperPrint) throws JRException, IOException {
-
         Exporter exporter = null;
-
         switch (exportType) {
             case "pdf":
                 response.setContentType("application/pdf");
@@ -571,7 +514,6 @@ public class ReportDynamicController {
                 break;
 
         }
-
         exporter.exportReport();
         ouputStream.flush();
         ouputStream.close();
@@ -601,8 +543,8 @@ public class ReportDynamicController {
     ) throws Exception {
         List<TaskOperation> list = new ArrayList<>();
         taskSearch.search(title, importance, closeType, codeFrom, codeTo, startDateFrom, startDateTo, endDateFrom, endDateTo, taskType, isTaskOpen, timeType, person).stream().forEach(task -> list.addAll(task.getTaskOperations()));
-        if(list.isEmpty()){
-            throw  new CustomException("لا توجد حراكات او تعليقات على المهام المفلترة للطباعة");
+        if (list.isEmpty()) {
+            throw new CustomException("لا توجد حراكات او تعليقات على المهام المفلترة للطباعة");
         }
         initTasksTableColumns(reportProp);
         JasperDesign jasperDesign = getJasperDesign(reportProp.getTitle(), reportProp.getOrientation(), reportProp.getColumns(), new ArrayList<>(), new ArrayList<>());
@@ -623,7 +565,7 @@ public class ReportDynamicController {
     ) throws Exception {
         initTasksTableColumns(reportProp);
         List<TaskOperation> taskOperationList = taskService.findOne(id).getTaskOperations();
-        if(taskOperationList.isEmpty()){
+        if (taskOperationList.isEmpty()) {
             throw new CustomException("لا تحتوى هذة المهمة على حركات حتى الآن، فضلاً تأكد من وجود حركات أو تعليقات لطباعة التقارير");
         }
         JasperDesign jasperDesign = getJasperDesign(reportProp.getTitle(), reportProp.getOrientation(), reportProp.getColumns(), new ArrayList<>(), new ArrayList<>());

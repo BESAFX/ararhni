@@ -1,5 +1,4 @@
 package com.besafx.app.config;
-
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.sharing.SharedLinkMetadata;
@@ -20,7 +19,9 @@ import java.util.concurrent.Future;
 public class DropboxManager {
 
     private static final String ACCESS_TOKEN = "lwXbn73MQTAAAAAAAAAACtvJCtgSD7Rp5hwd7V8jM2V4O9I8c9javetzqM49b1-Y";
+
     private final Logger log = LoggerFactory.getLogger(DropboxManager.class);
+
     private DbxRequestConfig config;
 
     @Getter

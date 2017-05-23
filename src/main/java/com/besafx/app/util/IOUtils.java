@@ -1,12 +1,11 @@
 package com.besafx.app.util;
-
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 public class IOUtils {
+
     private static final int BUFFER_SIZE = 1024 * 4;
 
     public static long copy(InputStream input, OutputStream output)

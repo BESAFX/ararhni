@@ -1,6 +1,6 @@
 package com.besafx.app.rest;
 import com.besafx.app.config.CustomException;
-import com.besafx.app.config.SendGridManager;
+import com.besafx.app.config.EmailSender;
 import com.besafx.app.entity.Person;
 import com.besafx.app.entity.Task;
 import com.besafx.app.entity.TaskCloseRequest;
@@ -52,7 +52,7 @@ public class TaskCloseRequestRest {
     private NotificationService notificationService;
 
     @Autowired
-    private SendGridManager sendGridManager;
+    private EmailSender emailSender;
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -60,13 +60,10 @@ public class TaskCloseRequestRest {
         if (taskCloseRequest.getTask().getCloseType().equals(Task.CloseType.Manual)) {
             throw new CustomException("لا يمكن القيام بأي عمليات على مهام الارشيف.");
         }
-
         if (!taskCloseRequest.getTask().getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()).contains(principal.getName())) {
             throw new CustomException("غير مصرح لك القيام بهذة العملية، فقط الموظفين المكلفين بإمكانهم ذلك.");
         }
-
         try {
-
             Person person = personService.findByEmail(principal.getName());
             TaskCloseRequest tempTaskCloseRequest = taskCloseRequestService.findTopByTaskIdOrderByCodeDesc(taskCloseRequest.getTask().getId());
             if (tempTaskCloseRequest == null) {
@@ -74,7 +71,6 @@ public class TaskCloseRequestRest {
             } else {
                 taskCloseRequest.setCode(tempTaskCloseRequest.getCode() + 1);
             }
-
             taskCloseRequest.setDate(new Date());
             taskCloseRequest.setPerson(person);
             taskCloseRequestService.save(taskCloseRequest);
@@ -85,14 +81,12 @@ public class TaskCloseRequestRest {
                     .type("success")
                     .icon(taskCloseRequest.getType() ? "fa-power-off" : "fa-battery")
                     .build(), principal.getName());
-
             ClassPathResource classPathResource = new ClassPathResource("/mailTemplate/TaskCloseRequest.html");
             String message = IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
             message = message.replaceAll("TASK_CODE", " [ " + taskCloseRequest.getTask().getCode() + " ] " + taskCloseRequest.getTask().getTitle());
             message = message.replaceAll("TASK_CLOSE_REQUEST_PERSON", person.getNickname() + " / " + person.getName());
             message = message.replaceAll("TASK_CLOSE_REQUEST_NOTE", taskCloseRequest.getNote());
-            sendGridManager.send((taskCloseRequest.getType() ? "طلب إغلاق إلى المهمة رقم: " : "طلب تمديد للمهمة رقم: ") + "(" + taskCloseRequest.getTask().getCode() + ")" + " - " + person.getName(), message, taskCloseRequest.getTask().getPerson().getEmail());
-
+            emailSender.send((taskCloseRequest.getType() ? "طلب إغلاق إلى المهمة رقم: " : "طلب تمديد للمهمة رقم: ") + "(" + taskCloseRequest.getTask().getCode() + ")" + " - " + person.getName(), message, taskCloseRequest.getTask().getPerson().getEmail());
             return taskCloseRequest;
 
         } catch (Exception ex) {

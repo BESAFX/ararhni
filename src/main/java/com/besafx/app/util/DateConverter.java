@@ -1,5 +1,4 @@
 package com.besafx.app.util;
-
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -15,19 +14,12 @@ import java.util.Locale;
 public class DateConverter {
 
     public static Date now() {
-
         int year = Calendar.getInstance().get(Calendar.YEAR);
-
         int month = Calendar.getInstance().get(Calendar.MONTH);
-
         int day_of_month = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-
         int min = Calendar.getInstance().get(Calendar.MINUTE);
-
         int sec = Calendar.getInstance().get(Calendar.SECOND);
-
         return new GregorianCalendar(year, month, day_of_month, hour, min, sec).getTime();
     }
 
@@ -130,7 +122,6 @@ public class DateConverter {
         cal.clear(Calendar.MINUTE);
         cal.clear(Calendar.SECOND);
         cal.clear(Calendar.MILLISECOND);
-
         cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
         return cal.getTime();
     }

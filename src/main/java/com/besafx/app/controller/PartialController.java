@@ -1,5 +1,4 @@
 package com.besafx.app.controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -34,7 +33,6 @@ public class PartialController {
     public String navToLogin() {
         return "login";
     }
-
 
     @RequestMapping(value = "/getAllLoggedUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody

@@ -1,6 +1,6 @@
 package com.besafx.app.rest;
 import com.besafx.app.config.CustomException;
-import com.besafx.app.config.SendGridManager;
+import com.besafx.app.config.EmailSender;
 import com.besafx.app.entity.*;
 import com.besafx.app.service.*;
 import com.besafx.app.util.DateConverter;
@@ -58,7 +58,7 @@ public class TaskAction {
     private PersonRest personRest;
 
     @Autowired
-    private SendGridManager sendGridManager;
+    private EmailSender emailSender;
 
     @RequestMapping(value = "increaseEndDate", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -135,7 +135,7 @@ public class TaskAction {
 //                email = email.replaceAll("TASK_CONTENT", task.getContent());
 //                email = email.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
 //                email = email.replaceAll("TASK_PERSON", task.getPerson().getName());
-//                sendGridManager.send("تمديد تاريخ إستلام المهمة رقم: " + "(" + task.getCode() + ")", email, task.getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()));
+//                emailSender.send("تمديد تاريخ إستلام المهمة رقم: " + "(" + task.getCode() + ")", email, task.getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()));
                 log.info("تسجيل حركة جديدة عن تمديد تاريخ استلام المهمة وفتحها.");
                 TaskOperation taskOperation = new TaskOperation();
                 TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskId);
@@ -193,7 +193,7 @@ public class TaskAction {
 //                email = email.replaceAll("TASK_CONTENT", task.getContent());
 //                email = email.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
 //                email = email.replaceAll("TASK_PERSON", task.getPerson().getName());
-//                sendGridManager.send("تعجيل تاريخ إستلام المهمة رقم: " + "(" + task.getCode() + ")", email, task.getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()));
+//                emailSender.send("تعجيل تاريخ إستلام المهمة رقم: " + "(" + task.getCode() + ")", email, task.getTaskTos().stream().map(to -> to.getPerson().getEmail()).collect(Collectors.toList()));
                 TaskOperation taskOperation = new TaskOperation();
                 TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(taskId);
                 if (tempTaskOperation == null) {
@@ -380,7 +380,6 @@ public class TaskAction {
                     taskOperationService.save(taskOperation);
                     log.info("إنهاء العمل على الحركة");
                 }
-
                 log.info("فى حال كان الموظفون المكلفين تم إغلاق مهامهم");
                 if (task.getTaskTos().stream().filter(to -> !to.getClosed()).collect(Collectors.toList()).isEmpty()) {
                     task.setEndDate(new Date());
@@ -535,7 +534,7 @@ public class TaskAction {
             email = email.replaceAll("TASK_CONTENT", task.getContent());
             email = email.replaceAll("TASK_END_DATE", DateConverter.getHijriStringFromDateRTL(task.getEndDate()));
             email = email.replaceAll("TASK_PERSON", task.getPerson().getName());
-            sendGridManager.send("مهمة جديدة رقم: " + "(" + task.getCode() + ")", email, person.getEmail());
+            emailSender.send("مهمة جديدة رقم: " + "(" + task.getCode() + ")", email, person.getEmail());
             log.info("اضافة الحركة الخاصة بالتحويل الى موظف جديد");
             TaskOperation taskOperation = new TaskOperation();
             TaskOperation tempTaskOperation = taskOperationService.findTopByTaskIdOrderByCodeDesc(task.getId());
@@ -648,7 +647,7 @@ public class TaskAction {
             String mail = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
             mail = mail.replaceAll("MESSAGE", "تحذير من " + task.getPerson().getNickname() + " / " + task.getPerson().getName() + " بشأن المهمة رقم " + "(" + task.getCode() + ")" + " وفيما يلي محتوى التحذير" + "<br/>" + "<u>" + message + "</u>");
             String title = "تحذير من " + task.getPerson().getNickname() + " / " + task.getPerson().getName();
-            sendGridManager.send(title, mail, person.getEmail());
+            emailSender.send(title, mail, person.getEmail());
             return taskWarn;
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
@@ -697,7 +696,7 @@ public class TaskAction {
             String mail = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
             mail = mail.replaceAll("MESSAGE", "خصم من " + task.getPerson().getNickname() + " / " + task.getPerson().getName() + " بشأن المهمة رقم " + "(" + task.getCode() + ")" + " وفيما يلي محتوى الخصم" + "<br/>" + "<u>" + message + "</u>");
             String title = "خصم من " + task.getPerson().getNickname() + " / " + task.getPerson().getName() + " بقيمة " + taskDeduction.getDeduction() + " ريال سعودي";
-            sendGridManager.send(title, mail, taskDeduction.getToPerson().getEmail());
+            emailSender.send(title, mail, taskDeduction.getToPerson().getEmail());
             return taskDeduction;
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);

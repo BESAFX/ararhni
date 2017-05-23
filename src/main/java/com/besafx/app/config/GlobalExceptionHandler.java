@@ -1,5 +1,4 @@
 package com.besafx.app.config;
-
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +25,10 @@ public class GlobalExceptionHandler {
 
         @Getter
         private HttpStatus status;
+
         @Getter
         private String message;
+
         @Getter
         private List<String> errors;
 

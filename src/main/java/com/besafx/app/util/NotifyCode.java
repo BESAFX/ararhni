@@ -1,5 +1,4 @@
 package com.besafx.app.util;
-
 public enum NotifyCode {
     CHAT,
     CREATE_ACCOUNT,

@@ -1,46 +1,68 @@
 package com.besafx.app.util;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 /**
- *
  * @author MazenB
  */
 public class ArabicLiteralNumberParser {
 
     private static final String ZERO = "صفر";
+
     private static final String ONE = "واحد";
+
     private static final String TWO = "إثنان";
+
     private static final String THREE = "ثلاثة";
+
     private static final String FOUR = "أربعة";
+
     private static final String FIVE = "خمسة";
+
     private static final String SIX = "ستة";
+
     private static final String SEVEN = "سبعة";
+
     private static final String EIGHT = "ثمانية";
+
     private static final String NINE = "تسعة";
+
     private static final String TEN = "عشرة";
+
     private static final String TWENTY = "عشرون";
+
     private static final String THIRTY = "ثلاثون";
+
     private static final String FOURTY = "أربعون";
+
     private static final String FIFTY = "خمسون";
+
     private static final String SIXTY = "ستون";
+
     private static final String SEVENTY = "سبعون";
+
     private static final String EIGHTY = "ثمانون";
+
     private static final String NINETY = "تسعون";
+
     private static final String HUNDRED = "مائة";
+
     private static final String THOUSAND = "الف";
+
     private static final String MILLION = "مليون";
+
     private static final String MILLIARD = "مليار";
+
     private static final String BILLION = "بليون";
+
     private static final String BILLIARD = "بليار";
+
     private static final String TRILLION = "تريليون";
+
     private static final Map<Long, String> namesMap;
 
-
     static {
-
         namesMap = new HashMap<Long, String>();
         namesMap.put(0l, ZERO);
         namesMap.put(1l, ONE);
@@ -76,7 +98,6 @@ public class ArabicLiteralNumberParser {
         int index = 0;
         boolean negative;
         int len = (negative = buf.charAt(buf.length() - 1) == '-') ? buf.length() - 1 : buf.length();
-
         String[] name = new String[len];
         long unitValue = 0;
         while (index < len) {
@@ -118,7 +139,6 @@ public class ArabicLiteralNumberParser {
                             tmp = tmp.substring(0, tmp.length() - 1);
                         }
                     }
-
                     if (unitValue > 1l && index + 1 == len) {
                         if (n == 1 && tmp.equals(ZERO)) {
                             if (unitValue == 1000l) {
@@ -126,7 +146,6 @@ public class ArabicLiteralNumberParser {
                             } else if (unitValue == 1000000l) {
                                 name[index] = TEN + "ملايين ";
                             } else {
-
                                 name[index] = TEN + " " + namesMap.get(unitValue) + "ات";
                             }
                         } else {
@@ -139,10 +158,8 @@ public class ArabicLiteralNumberParser {
                         name[index - 1] = name[index];
                         name[index] = tmp;
                     }
-
                     break;
                 case 100:
-
                     String s;
                     if (n > 2) {
                         s = namesMap.get(n);
@@ -174,17 +191,13 @@ public class ArabicLiteralNumberParser {
                     } else if (unitValue > 1l && n != 0) {
                         s = s + " " + namesMap.get(unitValue);
                     }
-
                     name[index] = s;
 
             }
             index++;
         }
-
-
         String s = "";
         for (int i = 0; i < len; i++) {
-
             if (name[i].equals(ZERO)) {
                 continue;
             }
@@ -200,18 +213,12 @@ public class ArabicLiteralNumberParser {
             return " اكبر من " + parse(Long.MAX_VALUE);
         }
         a = String.valueOf(a).toLowerCase().contains("e") ? a.longValue() : a;
-
         String[] array = String.valueOf(a).split("\\.");
-
         long i = Long.valueOf(array[0]);
         long f = array.length == 2 ? Long.valueOf(array[1]) : 0;
-
         int fractSize = f > 0 ? array[1].length() : 0;
-
         String integralPart = (i != 0 || f == 0) ? parse(i) : "";
-
         String fractionalPart = f > 0 ? parse(f) + " من " + parse(Double.valueOf(Math.pow(10, fractSize)).longValue()) : "";
-
         return integralPart + (f * i != 0 ? " و " : "") + fractionalPart;
     }
 }

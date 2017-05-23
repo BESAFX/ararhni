@@ -1,5 +1,4 @@
 package com.besafx.app.service;
-
 import com.besafx.app.entity.Role;
 import com.besafx.app.entity.Team;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

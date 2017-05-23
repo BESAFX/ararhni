@@ -1,5 +1,4 @@
 package com.besafx.app.rest;
-
 import com.besafx.app.entity.Permission;
 import com.besafx.app.service.PermissionService;
 import com.google.common.collect.Lists;

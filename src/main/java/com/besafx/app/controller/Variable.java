@@ -1,5 +1,4 @@
 package com.besafx.app.controller;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,8 +13,11 @@ import java.io.IOException;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Variable {
+
     private String name;
+
     private String expression;
+
     private String operation;
 
     @JsonCreator

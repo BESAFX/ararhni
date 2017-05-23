@@ -1,7 +1,6 @@
 package com.besafx.app.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.io.File;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Properties;
@@ -69,9 +69,6 @@ public class EmailSender {
                     log.info(ex.getMessage());
                 }
             });
-            /////
-//            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
-            /////
             transport.connect(SMTP_HOST_NAME, SMTP_HOST_PORT, SMTP_AUTH_USER, SMTP_AUTH_PWD);
             transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
             transport.close();
@@ -82,7 +79,7 @@ public class EmailSender {
     }
 
     @Async("threadPoolEmailSender")
-    public void send(String title, String content, List<String> toEmailList, List<FileSystemResource> files) {
+    public void send(String title, String content, List<String> toEmailList, List<File> files) {
         try {
             log.info("Sleeping for 10 seconds");
             Thread.sleep(10000);
@@ -98,20 +95,17 @@ public class EmailSender {
                     log.info(ex.getMessage());
                 }
             });
-            /////
-//            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
-            /////
             BodyPart messageBodyPart = new MimeBodyPart();
             messageBodyPart.setContent(content, "text/html; charset=UTF-8");
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
-            ListIterator<FileSystemResource> fileSystemResourceListIterator = files.listIterator();
-            while (fileSystemResourceListIterator.hasNext()) {
-                FileSystemResource fileSystemResource = fileSystemResourceListIterator.next();
+            ListIterator<File> fileListIterator = files.listIterator();
+            while (fileListIterator.hasNext()) {
+                File file = fileListIterator.next();
                 messageBodyPart = new MimeBodyPart();
-                DataSource source = new FileDataSource(fileSystemResource.getFile());
+                DataSource source = new FileDataSource(file);
                 messageBodyPart.setDataHandler(new DataHandler(source));
-                messageBodyPart.setFileName(fileSystemResource.getFilename());
+                messageBodyPart.setFileName(file.getName());
                 multipart.addBodyPart(messageBodyPart);
             }
             message.setContent(multipart);
@@ -136,9 +130,6 @@ public class EmailSender {
             message.setText(content, "UTF-8", "html");
             message.setFrom(new InternetAddress("admin@ararhni.com", "المدير الذكي", "UTF-8"));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-            /////
-//            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
-            /////
             transport.connect(SMTP_HOST_NAME, SMTP_HOST_PORT, SMTP_AUTH_USER, SMTP_AUTH_PWD);
             transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
             transport.close();
@@ -149,7 +140,7 @@ public class EmailSender {
     }
 
     @Async("threadPoolEmailSender")
-    public Future<Boolean> send(String title, String content, String email, List<FileSystemResource> files) {
+    public Future<Boolean> send(String title, String content, String email, List<File> files) {
         try {
             log.info("Sleeping for 10 seconds");
             Thread.sleep(10000);
@@ -159,20 +150,17 @@ public class EmailSender {
             message.setFrom(new InternetAddress("admin@ararhni.com", "المدير الذكي", "UTF-8"));
             message.setSubject(title, "UTF-8");
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-            /////
-//            message.addRecipient(Message.RecipientType.TO, new InternetAddress("anni4ksa@gmail.com"));
-            /////
             BodyPart messageBodyPart = new MimeBodyPart();
             messageBodyPart.setContent(content, "text/html; charset=UTF-8");
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
-            ListIterator<FileSystemResource> fileSystemResourceListIterator = files.listIterator();
-            while (fileSystemResourceListIterator.hasNext()) {
-                FileSystemResource fileSystemResource = fileSystemResourceListIterator.next();
+            ListIterator<File> fileListIterator = files.listIterator();
+            while (fileListIterator.hasNext()) {
+                File file = fileListIterator.next();
                 messageBodyPart = new MimeBodyPart();
-                DataSource source = new FileDataSource(fileSystemResource.getFile());
+                DataSource source = new FileDataSource(file);
                 messageBodyPart.setDataHandler(new DataHandler(source));
-                messageBodyPart.setFileName(fileSystemResource.getFilename());
+                messageBodyPart.setFileName(file.getName());
                 multipart.addBodyPart(messageBodyPart);
             }
             message.setContent(multipart);

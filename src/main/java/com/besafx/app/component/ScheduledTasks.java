@@ -1,5 +1,5 @@
 package com.besafx.app.component;
-import com.besafx.app.config.SendGridManager;
+import com.besafx.app.config.EmailSender;
 import com.besafx.app.controller.ReportTaskController;
 import com.besafx.app.entity.*;
 import com.besafx.app.search.TaskSearch;
@@ -71,7 +71,7 @@ public class ScheduledTasks {
     private EmployeeService employeeService;
 
     @Autowired
-    private SendGridManager sendGridManager;
+    private EmailSender emailSender;
 
     @Scheduled(cron = "0 0 2 * * SUN,MON,TUE,WED,THU")
     public void warnAllAboutUnCommentedTasksAtMidNight() {
@@ -197,7 +197,7 @@ public class ScheduledTasks {
 //        String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
 //        message = message.replaceAll("MESSAGE", content.toString());
 //        String title = "تحذير يومي بشأن عدم التعامل مع المهام";
-//        sendGridManager.send(title, message, to.getEmail());
+//        emailSender.send(title, message, to.getEmail());
     }
 
     private void createDeductionEmail(List<Task> tasks, String content, Person to) throws IOException {
@@ -226,7 +226,7 @@ public class ScheduledTasks {
 //        String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
 //        message = message.replaceAll("MESSAGE", content.toString());
 //        String title = "خصم يومي بشأن عدم التعامل مع المهام";
-//        sendGridManager.send(title, message, to.getEmail());
+//        emailSender.send(title, message, to.getEmail());
     }
 
     //@Scheduled(cron = "0 0 9 * * SUN,MON,TUE,WED,THU")
@@ -245,7 +245,7 @@ public class ScheduledTasks {
                 FileUtils.writeByteArrayToFile(reportFile, fileBytes);
                 log.info("جاري تحويل الملف");
                 Thread.sleep(10000);
-                Future<Boolean> mail = sendGridManager.send("تقرير يومي لمتابعة الموظفين المكلفين - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(reportFile));
+                Future<Boolean> mail = emailSender.send("تقرير يومي لمتابعة الموظفين المكلفين - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(reportFile));
                 mail.get();
                 log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
             }
@@ -296,7 +296,7 @@ public class ScheduledTasks {
 //                        String message = org.apache.commons.io.IOUtils.toString(classPathResource.getInputStream(), Charset.defaultCharset());
 //                        message = message.replaceAll("MESSAGE", "خصم إلكتروني بسبب إغلاق المهمة رقم / " + task.getCode() + " عليك تلقائي دون إرسال اى طلبات إغلاق طوال فترة حياة المهمة.");
 //                        String title = "خصم إلكتروني يومي بسبب إغلاق المهمة تلقائي بمقدار / " + task.getDeductionOnAutoClose() + " ريال سعودي.";
-//                        sendGridManager.send(title, message, taskDeduction.getToPerson().getEmail());
+//                        emailSender.send(title, message, taskDeduction.getToPerson().getEmail());
                         log.info("تم إرسال الخصم بنجاح إلى الموظف / " + taskTo.getPerson().getName());
                     }
                     log.info("إغلاق المهمة على هذا الموظف بتاريخ وقت الفحص");
@@ -364,7 +364,7 @@ public class ScheduledTasks {
                 FileUtils.writeByteArrayToFile(reportFile, fileBytes);
                 log.info("جاري تحويل الملف");
                 Thread.sleep(10000);
-                Future<Boolean> mail = sendGridManager.send("تنبية بخصوص مهامك التى أوشكت على الإغلاق - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(reportFile));
+                Future<Boolean> mail = emailSender.send("تنبية بخصوص مهامك التى أوشكت على الإغلاق - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(reportFile));
                 mail.get();
                 log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
             } catch (Exception ex) {
@@ -391,7 +391,7 @@ public class ScheduledTasks {
                     FileUtils.writeByteArrayToFile(reportFile, fileBytes);
                     log.info("جاري تحويل الملف");
                     Thread.sleep(10000);
-                    Future<Boolean> mail = sendGridManager.send("تقرير حركات الموظفين اليوم - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(reportFile));
+                    Future<Boolean> mail = emailSender.send("تقرير حركات الموظفين اليوم - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(reportFile));
                     mail.get();
                     log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
                 } else {
@@ -428,7 +428,7 @@ public class ScheduledTasks {
                             FileUtils.writeByteArrayToFile(reportFile, fileBytes);
                             log.info("جاري تحويل الملف");
                             Thread.sleep(10000);
-                            Future<Boolean> mail = sendGridManager.send("تقرير متابعة حركة العمل داخل فرع / " + branch.getName(), "التقرير بالمرفقات", company.getManager().getEmail(), Lists.newArrayList(reportFile));
+                            Future<Boolean> mail = emailSender.send("تقرير متابعة حركة العمل داخل فرع / " + branch.getName(), "التقرير بالمرفقات", company.getManager().getEmail(), Lists.newArrayList(reportFile));
                             mail.get();
                             log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
                         } else {
@@ -461,7 +461,7 @@ public class ScheduledTasks {
                 FileUtils.writeByteArrayToFile(reportFile, fileBytes);
                 log.info("جاري تحويل الملف");
                 Thread.sleep(10000);
-                Future<Boolean> mail = sendGridManager.send("تقرير مختصر لحسومات المكلفين - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(reportFile));
+                Future<Boolean> mail = emailSender.send("تقرير مختصر لحسومات المكلفين - " + person.getNickname() + " / " + person.getName(), "", person.getEmail(), Lists.newArrayList(reportFile));
                 mail.get();
                 log.info("تم إرسال الملف فى البريد الإلكتروني بنجاح");
             } catch (Exception ex) {

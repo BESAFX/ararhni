@@ -1,5 +1,4 @@
 package com.besafx.app.util;
-
 import lombok.Data;
 
 @Data
