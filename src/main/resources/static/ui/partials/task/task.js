@@ -680,6 +680,9 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
                     },
                     taskType: function () {
                         return true;
+                    },
+                    closeType: function () {
+                        return 'Pending';
                     }
                 }
             });
@@ -781,6 +784,9 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
                     },
                     taskType: function () {
                         return true;
+                    },
+                    closeType: function () {
+                        return 'Auto';
                     }
                 }
             });
@@ -882,6 +888,9 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
                     },
                     taskType: function () {
                         return true;
+                    },
+                    closeType: function () {
+                        return 'Manual';
                     }
                 }
             });
@@ -1097,6 +1106,9 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
                     },
                     taskType: function () {
                         return false;
+                    },
+                    closeType: function () {
+                        return 'Pending';
                     }
                 }
             });
@@ -1196,6 +1208,9 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
                     },
                     taskType: function () {
                         return false;
+                    },
+                    closeType: function () {
+                        return 'Auto';
                     }
                 }
             });
@@ -1295,6 +1310,9 @@ app.controller("taskCtrl", ['TaskService', 'TaskToService', 'TaskWarnService', '
                     },
                     taskType: function () {
                         return false;
+                    },
+                    closeType: function () {
+                        return 'Manual';
                     }
                 }
             });
