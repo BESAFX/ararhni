@@ -9,13 +9,14 @@
 
         <div class="row">
 
-            <div class="form-group text-right col-md-12" ng-show="form.$invalid && form.$submitted">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                 ng-show="form.$invalid && form.$submitted">
                 <div class="alert alert-danger" role="alert">
                     <strong>فضلاً اكمل الحقول المطلوبة</strong>
                 </div>
             </div>
 
-            <div class="form-group text-right col-md-12">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <div class="panel-title-box pull-right">
@@ -83,7 +84,7 @@
                 </div>
             </div>
 
-            <div class="form-group text-right col-md-12">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="alert alert-info" role="alert">
                     <strong>عند إغلاق المهمة على موظف من المكلفين لن يكون بإمكانه اضافة حركات او تعليقات على
                         المهمة مرة اخرى، بالاضافة الى انه لن تصله رسائل تحذير او خصومات بشأن المهمة، ولكن
@@ -91,7 +92,7 @@
                 </div>
             </div>
 
-            <div class="form-group text-right col-md-12">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <div class="panel-title-box pull-right">
@@ -99,7 +100,7 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <div class="form-group text-right col-md-12">
+                        <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <label for="taskTos" class="control-label">الموظف</label>
                             <select id="taskTos"
                                     data-placeholder="ابحث عن الاسم"
@@ -110,20 +111,19 @@
                                     required="required"
                                     disable-validation-message=""
                                     ng-model="buffer.taskTo"
-                                    focus-index="1"
-                                    ng-options="taskTo.person.name for taskTo in task.taskTos track by taskTo.id">
+                                    focus-autofocus="1"
+                                    ng-options="(taskTo.person.nickname + ' / ' + taskTo.person.name) for taskTo in task.taskTos | orderBy:'name' track by taskTo.id">
                             </select>
                         </div>
 
-                        <div class="form-group text-right col-md-12">
+                        <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <label for="importance" class="control-label">
                                 <span>تقييم الآداء</span>
                             </label>
                             <select id="importance"
                                     placeholder="اختر درجة التقييم للمساعدة فى التصنيف"
                                     class="form-control text-right"
-                                    ng-model="buffer.degree"
-                                    focus-index="2">
+                                    ng-model="buffer.degree">
                                 <option value="A">ممتاز</option>
                                 <option value="B">جيد جداً</option>
                                 <option value="C">جيد</option>
@@ -132,11 +132,10 @@
                             </select>
                         </div>
 
-                        <div class="form-group text-right col-md-12">
+                        <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <label for="note" class="control-label">التعليق</label>
                             <textarea id="note"
                                       type="text"
-                                      focus-index="3"
                                       msd-elastic="\n"
                                       required="required"
                                       class="form-control text-right"
@@ -159,7 +158,6 @@
         <div class="row">
             <button uib-tooltip="حفظ"
                     tooltip-append-to-body="true"
-                    focus-index="4"
                     type="submit"
                     class="mdl-button mdl-js-button mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">
                 <i class="material-icons">save</i>
@@ -173,7 +171,6 @@
             </button>
             <button uib-tooltip="خروج"
                     tooltip-append-to-body="true"
-                    focus-index="5"
                     type="button"
                     ng-click="cancel()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect col-xs-4 col-sm-4 col-md-4">

@@ -113,7 +113,7 @@
                                     ng-model="buffer.taskTo"
                                     disable-validation-message=""
                                     focus-autofocus="1"
-                                    ng-options="(taskTo.person.nickname + ' / ' + taskTo.person.name) for taskTo in task.taskTos orderBy:'name' track by taskTo.id">
+                                    ng-options="(taskTo.person.nickname + ' / ' + taskTo.person.name) for taskTo in task.taskTos | orderBy:'name' track by taskTo.id">
                             </select>
                         </div>
 
