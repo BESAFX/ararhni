@@ -60,7 +60,7 @@ public class TaskOperationRest {
 
     @RequestMapping(value = "create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public TaskOperation create(@RequestBody TaskOperation taskOperation, Principal principal) throws IOException {
+    public synchronized TaskOperation create(@RequestBody TaskOperation taskOperation, Principal principal) throws IOException {
         return create(taskOperation, personService.findByEmail(principal.getName()));
     }
 
