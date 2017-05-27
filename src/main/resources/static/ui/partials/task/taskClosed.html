@@ -23,60 +23,62 @@
                         </div>
                     </div>
                     <div class="panel-body panel-body-table">
-                        <table class="table table-bordered">
-                            <tbody>
-                            <tr>
-                                <td>رقم المهمة</td>
-                                <td>{{task.code}}</td>
-                            </tr>
-                            <tr>
-                                <td>عنوان المهمة</td>
-                                <td>{{task.title}}</td>
-                            </tr>
-                            <tr>
-                                <td>تفاصيل المهمة</td>
-                                <td>{{task.content}}</td>
-                            </tr>
-                            <tr>
-                                <td>الحد الأقصى للتحذيرات</td>
-                                <td>{{task.warn}}</td>
-                            </tr>
-                            <tr>
-                                <td class="fit">مقدار الحسم عند الوصول للحد الاقصي للتحذيرات</td>
-                                <td>{{task.deduction}} ريال سعودي</td>
-                            </tr>
-                            <tr>
-                                <td>مقدار الحسم عند إغلاق المهمة تلقائياً</td>
-                                <td>{{task.deductionOnAutoClose}} ريال سعودي</td>
-                            </tr>
-                            <tr>
-                                <td>تاريخ الإنشاء</td>
-                                <td>
-                                    <span ng-show="dateType==='H'">{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                    <span ng-show="dateType==='G'">{{task.startDate | date: 'yyyy-MM-dd'}}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>تاريخ التسليم</td>
-                                <td>
-                                    <span ng-show="dateType==='H'">{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                    <span ng-show="dateType==='G'">{{task.endDate | date: 'yyyy-MM-dd'}}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>جهة التكليف</td>
-                                <td>{{task.person.nickname}} / {{task.person.name}}</td>
-                            </tr>
-                            <tr>
-                                <td>الموظفون</td>
-                                <td>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>رقم المهمة</td>
+                                    <td>{{task.code}}</td>
+                                </tr>
+                                <tr>
+                                    <td>عنوان المهمة</td>
+                                    <td>{{task.title}}</td>
+                                </tr>
+                                <tr>
+                                    <td>تفاصيل المهمة</td>
+                                    <td>{{task.content}}</td>
+                                </tr>
+                                <tr>
+                                    <td>الحد الأقصى للتحذيرات</td>
+                                    <td>{{task.warn}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fit">مقدار الحسم عند الوصول للحد الاقصي للتحذيرات</td>
+                                    <td>{{task.deduction}} ريال سعودي</td>
+                                </tr>
+                                <tr>
+                                    <td>مقدار الحسم عند إغلاق المهمة تلقائياً</td>
+                                    <td>{{task.deductionOnAutoClose}} ريال سعودي</td>
+                                </tr>
+                                <tr>
+                                    <td>تاريخ الإنشاء</td>
+                                    <td>
+                                        <span ng-show="dateType==='H'">{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{task.startDate | date: 'yyyy-MM-dd'}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>تاريخ التسليم</td>
+                                    <td>
+                                        <span ng-show="dateType==='H'">{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{task.endDate | date: 'yyyy-MM-dd'}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>جهة التكليف</td>
+                                    <td>{{task.person.nickname}} / {{task.person.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>الموظفون</td>
+                                    <td>
                                     <span class="label label-info"
                                           ng-repeat="to in task.taskTos"
                                           style="margin: 2px">{{to.person.name}}</span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

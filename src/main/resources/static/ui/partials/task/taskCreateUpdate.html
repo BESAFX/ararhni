@@ -17,13 +17,14 @@
 
         <div class="row">
 
-            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12" ng-show="form.$invalid && form.$submitted">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                 ng-show="form.$invalid && form.$submitted">
                 <div class="alert alert-danger" role="alert">
                     <strong>فضلاً اكمل الحقول المطلوبة</strong>
                 </div>
             </div>
 
-            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12" ng-show="action=='create'">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-show="action=='create'">
                 <label for="master" class="control-label">
                     <span>الموظفون</span>
                     <span class="fa fa-info-circle" tooltip-append-to-body="true"
@@ -44,7 +45,7 @@
                 </select>
             </div>
 
-            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12" ng-if="action==='update'">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="action==='update'">
                 <label for="code" class="control-label"> رقم المهمة </label>
                 <input id="code"
                        type="text"

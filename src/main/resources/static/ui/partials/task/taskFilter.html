@@ -9,7 +9,7 @@
 
         <div class="row">
 
-            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <label for="fromPerson" class="control-label">{{buffer.taskType?'الموظف':'جهة التكليف'}}</label>
                 <select id="fromPerson"
                         data-placeholder="ابحث عن الاسم"
@@ -18,16 +18,15 @@
                         class="form-control text-right"
                         chosen=""
                         ng-model="buffer.person"
-                        focus-index="1"
+                        focus-autofocus="1"
                         ng-options="(person.nickname + ' / ' + person.name) for person in persons | orderBy:'name' track by person.id">
                 </select>
             </div>
 
-            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <label for="title" class="control-label">عنوان المهمة يحتوي على</label>
                 <input id="title"
                        type="text"
-                       focus-index="1"
                        class="form-control text-right"
                        placeholder="ادخل نص البحث"
                        ng-model="buffer.title">
@@ -35,15 +34,14 @@
 
             <div class="form-group row">
 
-                <div class="text-right col-xs-12 col-sm-12 col-md-12">
+                <div class="text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <label for="importance" class="control-label">
                         <span>درجة الأهمية</span>
                     </label>
                     <select id="importance"
                             placeholder="اختر درجة الأهمية للمساعدة فى التصنيف"
                             class="form-control text-right"
-                            ng-model="buffer.importance"
-                            focus-index="2">
+                            ng-model="buffer.importance">
                         <option value="Regular">عادية</option>
                         <option value="Important">متوسطة</option>
                         <option value="Critical">عاجلة</option>
@@ -58,7 +56,6 @@
                     <input id="codeFrom"
                            type="number"
                            min="1"
-                           focus-index="4"
                            class="form-control text-right"
                            placeholder="ادخل رقم المهمة من"
                            ng-model="buffer.codeFrom">
@@ -69,7 +66,6 @@
                     <input id="codeTo"
                            type="number"
                            min="1"
-                           focus-index="5"
                            class="form-control text-right"
                            placeholder="ادخل رقم المهمة إلى"
                            ng-model="buffer.codeTo">

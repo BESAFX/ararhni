@@ -9,7 +9,7 @@
 
         <div class="row">
 
-            <div class="form-group text-right col-md-12">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <div class="panel-title-box pull-right">
@@ -17,72 +17,74 @@
                         </div>
                     </div>
                     <div class="panel-body panel-body-table">
-                        <table class="table table-bordered">
-                            <tbody>
-                            <tr>
-                                <td>رقم المهمة</td>
-                                <td>{{task.code}}</td>
-                            </tr>
-                            <tr>
-                                <td>عنوان المهمة</td>
-                                <td>{{task.title}}</td>
-                            </tr>
-                            <tr>
-                                <td>تفاصيل المهمة</td>
-                                <td>{{task.content}}</td>
-                            </tr>
-                            <tr>
-                                <td>الحد الأقصى للتحذيرات</td>
-                                <td>{{task.warn}}</td>
-                            </tr>
-                            <tr>
-                                <td class="fit">مقدار الحسم عند الوصول للحد الاقصي للتحذيرات</td>
-                                <td>{{task.deduction}} ريال سعودي</td>
-                            </tr>
-                            <tr>
-                                <td>مقدار الحسم عند إغلاق المهمة تلقائياً</td>
-                                <td>{{task.deductionOnAutoClose}} ريال سعودي</td>
-                            </tr>
-                            <tr>
-                                <td>تاريخ الإنشاء</td>
-                                <td>
-                                    <span ng-show="dateType==='H'">{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                    <span ng-show="dateType==='G'">{{task.startDate | date: 'yyyy-MM-dd'}}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>تاريخ التسليم</td>
-                                <td>
-                                    <span ng-show="dateType==='H'">{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
-                                    <span ng-show="dateType==='G'">{{task.endDate | date: 'yyyy-MM-dd'}}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>جهة التكليف</td>
-                                <td>{{task.person.nickname}} / {{task.person.name}}</td>
-                            </tr>
-                            <tr>
-                                <td>الموظفون</td>
-                                <td>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>رقم المهمة</td>
+                                    <td>{{task.code}}</td>
+                                </tr>
+                                <tr>
+                                    <td>عنوان المهمة</td>
+                                    <td>{{task.title}}</td>
+                                </tr>
+                                <tr>
+                                    <td>تفاصيل المهمة</td>
+                                    <td>{{task.content}}</td>
+                                </tr>
+                                <tr>
+                                    <td>الحد الأقصى للتحذيرات</td>
+                                    <td>{{task.warn}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fit">مقدار الحسم عند الوصول للحد الاقصي للتحذيرات</td>
+                                    <td>{{task.deduction}} ريال سعودي</td>
+                                </tr>
+                                <tr>
+                                    <td>مقدار الحسم عند إغلاق المهمة تلقائياً</td>
+                                    <td>{{task.deductionOnAutoClose}} ريال سعودي</td>
+                                </tr>
+                                <tr>
+                                    <td>تاريخ الإنشاء</td>
+                                    <td>
+                                        <span ng-show="dateType==='H'">{{task.startDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{task.startDate | date: 'yyyy-MM-dd'}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>تاريخ التسليم</td>
+                                    <td>
+                                        <span ng-show="dateType==='H'">{{task.endDate | kdate: 'yyyy-mm-dd' : 'ar' : 'ummalqura'}}</span>
+                                        <span ng-show="dateType==='G'">{{task.endDate | date: 'yyyy-MM-dd'}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>جهة التكليف</td>
+                                    <td>{{task.person.nickname}} / {{task.person.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>الموظفون</td>
+                                    <td>
                                     <span class="label label-info"
                                           ng-repeat="to in task.taskTos"
                                           style="margin: 2px">{{to.person.name}}</span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group text-right col-md-12">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="alert alert-info" role="alert">
                     <strong>ملاحظة هامة: سيتم إرسال طلب الإغلاق/التمديد إلى جهة التكليف، ويجب عليك إستمرار التفاعل مع
                         المهمة حتى يتم الرد وإلا سيتم تطبيق الخصومات.</strong>
                 </div>
             </div>
 
-            <div class="form-group text-right col-md-12">
+            <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
                         <div class="panel-title-box pull-right">
@@ -91,17 +93,18 @@
                     </div>
                     <div class="panel-body">
 
-                        <div class="form-group text-right col-md-12" ng-show="form.$invalid && form.$submitted">
+                        <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                             ng-show="form.$invalid && form.$submitted">
                             <div class="alert alert-danger" role="alert">
                                 <strong>فضلاً اكمل الحقول المطلوبة</strong>
                             </div>
                         </div>
 
-                        <div class="form-group text-right col-md-12">
+                        <div class="form-group text-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <label for="note" class="control-label">ملاحظات</label>
                             <textarea id="note"
                                       type="text"
-                                      focus-index="2"
+                                      focus-autofocus="1"
                                       msd-elastic="\n"
                                       required="required"
                                       class="form-control text-right"
