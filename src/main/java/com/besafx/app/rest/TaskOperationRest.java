@@ -77,6 +77,12 @@ public class TaskOperationRest {
         if (new DateTime(taskOperation.getTask().getEndDate()).isBefore(new DateTime())) {
             throw new CustomException("لا يمكن اضافة حركات إلى مهمة مغلقة");
         }
+        TaskOperation topOperation = taskOperationService.findTopByOrderByIdDesc();
+        if (topOperation == null) {
+            taskOperation.setId(Long.valueOf(1));
+        } else {
+            taskOperation.setId(topOperation.getId() + 1);
+        }
         Integer maxCode = taskOperationService.findLastCodeByTask(taskOperation.getTask().getId());
         if (maxCode == null) {
             taskOperation.setCode(1);
