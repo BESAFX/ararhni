@@ -74,7 +74,7 @@ public class TaskOperationRest {
                 .findAny().ifPresent(value -> {
             throw new CustomException("عفواً، تم إغلاق المهمة عليك ولن يمكنك اضافة حركات او تعليقات.");
         });
-        if (taskOperation.getTask().getEndDate().before(new Date())) {
+        if (new DateTime(taskOperation.getTask().getEndDate()).isBefore(new DateTime())) {
             throw new CustomException("لا يمكن اضافة حركات إلى مهمة مغلقة");
         }
         Integer maxCode = taskOperationService.findLastCodeByTask(taskOperation.getTask().getId());
